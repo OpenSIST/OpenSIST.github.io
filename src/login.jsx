@@ -1,7 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from 'react-router-dom';
 
-
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -14,6 +13,7 @@ function Login() {
             setValid(false);
             return;
         }
+
         try {
             const response = await fetch("https://opensist-auth.caoster.workers.dev/api/auth/login", {
                 method: "POST",
@@ -23,28 +23,24 @@ function Login() {
                 body: JSON.stringify({email, password}),
             });
 
+            const content = await response.json();
             if (response.status === 200) {
+                const token = content.token;
+                const user_info = {
+                    user: email.split("@")[0],
+                    token: token
+                }
+                Object.entries(user_info).map(([key, value]) => {
+                    localStorage.setItem(key, value);
+                })
                 navigate("/");
+                alert("Login successful!")
             } else {
-                const content = await response.json();
                 alert(`${content.error}, Error code: ${response.status}`);
             }
         } catch (e) {
             alert(e)
         }
-        // const response = await fetch("https://opensist-auth.caoster.workers.dev/api/auth/login", {
-        //     method: "POST",
-        //     // mode: "cors",
-        //     credentials: "include",
-        //     headers: {"Content-Type": "application/json"},
-        //     body: JSON.stringify({email, password}),
-        // });
-        // if (response.status === 200) {
-        //     navigate("/");
-        // } else {
-        //     const content = await response.json();
-        //     alert(`${content.error}, Error code: ${response.status}`);
-        // }
     };
 
     return (
@@ -52,10 +48,12 @@ function Login() {
             <h1>Login</h1>
             <form onSubmit={handleLogin} style={{display: 'flex', flexDirection: 'column'}}>
                 <input
-                    type="email"
+                    type="Username"
                     placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={email.split("@")[0]}
+                    onChange={(e) => setEmail(
+                        e.target.value.split("@")[0] + "@shanghaitech.edu.cn"
+                    )}
                     required
                 />
                 <input
