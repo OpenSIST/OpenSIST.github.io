@@ -23,34 +23,6 @@ async function fetch_url(url) {
             'MIIS': {'test info for frontend': {}},
         }
     };
-    // return {
-    //     "university": [
-    //         'MIT', 'Stanford', 'UCB', 'CMU',
-    //         'UIUC', 'UPenn', 'Cornell',
-    //         'UCSD', 'UCSB', 'UCI',
-    //         'UCD', 'UCSC', 'UofT',
-    //         'UBC', 'UChi', 'UCLA',
-    //         'UMich', 'UMN', 'UMD',
-    //         'Columbia', 'UW', 'UWash',
-    //         'NYU', 'Rice', 'NEU',
-    //         'Brown', 'Duke', 'Yale',
-    //         'Princeton', 'Harvard', 'Caltech',
-    //         'GeorgiaTech', 'JohnsHopkins', 'Northwestern',
-    //         'Purdue', 'UofA', 'UofI',
-    //         'UofR', 'UofW', 'UofWisc',
-    //         'UToronto', 'UTAustin', 'UVA',
-    //         'UWisc', 'WashU', 'UofC',
-    //         'UofMD', 'UofM', 'UofMN',
-    //         'UofMO', 'UofNC', 'UofND',
-    //         'UofOR', 'UofPA', 'UofSC',
-    //         'UofVA', 'UofVT', 'UofWA',
-    //         'UofWI', 'UofWV', 'UofWash',
-    //     ]
-    // };
 }
-
-// async function getUnivList(url) {
-//     return fetch_url(url);
-// }
 
 export default fetch_url;

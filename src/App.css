@@ -32,7 +32,7 @@
     border: 1px solid black;
     border-radius: 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     background-color: whitesmoke;
@@ -62,20 +62,12 @@
     border-radius: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
-    /*display: flex;*/
-    /*flex-direction: column;*/
     justify-content: flex-start;
-    /*align-items: center;*/
-}
-
-.Univ-block {
-    display: flex;
-    flex-direction: column;
-    /*align-content: flex-end;*/
-    justify-content: flex-end;
 }
 
 .Univ-list {
+    display: flex;
+    flex-direction: column;
     justify-content: flex-start;
     width: 90%;
     height: 90%;
@@ -109,11 +101,8 @@
 .Program-list {
     display: flex;
     flex-direction: column;
-    /*justify-content: flex-end;*/
-    /*align-items: flex-end;*/
     align-self: flex-end;
     width: 90%;
-    height: 80%;
     overflow-y: scroll;
     padding-left: 0;
     border-radius: 10px;

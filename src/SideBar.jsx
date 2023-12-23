@@ -22,8 +22,6 @@ function SideBar(props) {
             <div className='Center-block Side-bar'>
                 <input className='Search-bar' onInput={event => {
                     event.preventDefault();
-                    // setSearchedUniv(univList.filter((univ) => univ[0].includes(event.target.value)
-                    //     || Object.keys(univ[1]).some((program) => program.includes(event.target.value))));
                     setSearchedUniv(univList.filter((univ) => univ[0].toLowerCase().includes(
                         event.target.value.toLowerCase())));
                 }} placeholder='search for...'/>
@@ -49,7 +47,7 @@ function UnivItem(props) {
     };
 
     return (
-        <div className='Univ-block'>
+        <>
             <li className='Univ-item' onClick={handleClick}>
                 <div>
                     {props.univ[0]}
@@ -60,7 +58,7 @@ function UnivItem(props) {
                 </div>
             </li>
             {showList ? <ProgramItem program={props.univ[1]}/> : null}
-        </div>
+        </>
     );
 }
 
