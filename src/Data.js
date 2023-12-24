@@ -24,12 +24,14 @@ async function fetch_url(url) {
     };
 }
 
-const DataPoint = {
+const Applicant = {
     "Name": "Xiaoming Li",
-    "Year": "2024Fall", // 2024Fall / 2024Spring / 2023Fall / 2023Spring / 2022Fall / 2022Spring / 2021Fall / 2021Spring
+    "Gender": "Female", // Female / Male / Others
+    "CurrentDegree": "Undergraduate", // Undergraduate / Master
+    "ApplyYear": "2024Fall", // 2024Fall / 2024Spring / 2023Fall / 2023Spring / 2022Fall / 2022Spring / 2021Fall / 2021Spring
     "Major": "CS", // CS / EE / IE
     "GPA": "3.99",
-    "Rank": {
+    "Ranking": {
         "Rank": "1",
         "Total": "200", // Total number of students in the MAJOR
     },
@@ -40,32 +42,57 @@ const DataPoint = {
         "W": "5.5",
     },
     "EnglishProficiency": {
-        "TOEFL": { // TOEFL / IELTS
+        "TOEFL": {
             "Total": "116",
             "S": "29",
             "R": "29",
             "L": "29",
             "W": "29",
         },
-    },
-    "Exchange": {
-        "University": "University of California, Berkeley",
-        "TimeLine": {
-            "Start": "2021-01-01",
-            "End": "2021-01-01",
+        "IELTS": {
+            "Total": "7.0",
+            "S": "6.0",
+            "R": "6.5",
+            "L": "8.0",
+            "W": "8.0",
         },
-        "Detail": "I have done an exchange program in UC Berkeley for 1 year.",
+        "Duolingo": {
+            "Total": "130",
+            "RW": "135",
+            "LR": "125",
+            "LS": "130",
+            "WS": "140",
+        },
     },
+    "Exchange": [
+        {
+            "University": "University of California, Berkeley",
+            "TimeLine": {
+                "Start": "2021-01-01",
+                "End": "2021-01-01",
+            },
+            "Detail": "I have done an exchange program in UC Berkeley for 1 year.",
+        },
+        {
+            "University": "Massachusetts Institute of Technology",
+            "TimeLine": {
+                "Start": "2021-01-01",
+                "End": "2021-01-01",
+            },
+            "Detail": "I have done an exchange program in UC Berkeley for 1 year.",
+        }
+    ],
     "Publication": [
         {
             "Type": "Conference", // Conference / Journal
-            "Conference": "CVPR",
-            "AuthorOrder": "First", // First / Co-First / Other
+            "Name": "CVPR",
+            "AuthorOrder": "I am the first author", // Describe by yourself
             "Status": "Accepted", // Accepted / Rejected / UnderReview
             "Detail": "I am the first author of this paper.",
         },
     ],
     "Research": {
+        "Focus": "Computer Vision",
         "Domestic": {
             "Num": "2",
             "Detail": "I have done research in the field of computer vision for 2 years. I have published 2 papers in CVPR and 1 paper in ICCV. I have also done 2 internships in the field of computer vision.",
@@ -87,23 +114,41 @@ const DataPoint = {
     },
     "Recommendation": [
         {
-            "Type": ["Academic", "TA"], // Academic / Industry / Research / TA
-            "Prestige": "Bigwig", // Bigwig / RisingStar / Unknown
+            "Type": ["Course", "TA"], // Research / Course / TA / Internship
+            "Prestige": "Bigwig", // Bigwig / Smallwig / Unknown
             "Strength": "Strong", // Strong / Medium / Weak / Unknown
         },
     ],
-    "Results": [
-        {
-            "Program": "MSCS@Stanford",
-            "Status": "Accepted", // Accepted / Rejected / WaitListed
-            "TimeLine": {
-                "Submit": "2021-01-01",
-                "Interview": "2021-01-01",
-                "Decision": "2021-01-01",
-            },
-            "Detail": "I have received an offer from CMU MSCS.",
-        },
-    ]
+    "Results": ["Record ID 1", "Record ID 2"],
+    "Contact": "homepage/email/others"
+}
+
+const Program = {
+    "University": "Stanford",
+    "Department": "CS", // CS / EE / ECE / etc.
+    "ID": "MSCS@Stanford",
+    "Content": {
+        "Overview": "This is the overview of the program.",
+        "Curriculum": "This is the curriculum of the program.",
+        "Research": "This is the research of the program.",
+        "Career": "This is the career of the program.",
+    },
+    "Applicants": ["app1@", "app2@"],
+}
+
+const Record = {
+    "ApplicantID": "example@",
+    "ProgramID": "Program ID",
+    "RecordID": "Record ID",
+    "Year": "2024",
+    "Semester": "Fall",
+    "Status": "Admit", // Admit / Reject / Waitlist
+    "TimeLine": {
+        "Submit": "2021-01-01",
+        "Interview": "2021-01-01",
+        "Decision": "2021-01-01",
+    },
+    "Detail": "Include sth like deferred to this semester",
 }
 
 export default fetch_url;

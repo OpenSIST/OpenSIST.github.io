@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import fetch_url from "./Data";
+import fetch_url from "../Data";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 function SideBar(props) {

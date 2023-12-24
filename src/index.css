@@ -1,13 +1,139 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.Center-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.Left-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border: 1px solid black;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    font-size: 15px;
+}
+
+.TopBar {
+    width: 100%;
+    height: 60px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: whitesmoke;
+}
+
+.TopBarHeader {
+    display: flex;
+    justify-content: center;
+}
+
+.StatusBlock {
+    /*width: 100%;*/
+    /*height: 100%;*/
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
+}
+
+.Context {
+    width: 100%;
+    height: calc(100vh - 60px);
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.Side-bar {
+    width: 150px;
+    height: 100%;
+    margin-left: 2vw
+}
+
+.Search-bar {
+    width: 90%;
+    height: 30px;
+    border: 1px solid black;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    justify-content: flex-start;
+}
+
+.Univ-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 90%;
+    height: 100%;
+    overflow-y: auto;
+    border: 1px solid black;
+    padding: 0;
+    margin: 0;
+}
+
+.Univ-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    justify-content: space-between;
+    height: 30px;
+    transition: all 0.2s;
+    transition-timing-function: cubic-bezier(0.6, 0.2, 0.2, 0.6);
+    list-style-type: none;
+    background-color: #f8f8e4;
+    user-select: none;
+}
+
+.Univ-item:hover {
+    transform: scale(1.05);
+}
+
+.Program-list {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
+    width: 90%;
+    /*height: 100%;*/
+    overflow-y: auto;
+    padding-left: 0;
+}
+
+.Program-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    justify-content: flex-start;
+    height: 30px;
+    transition: all 0.2s;
+    transition-timing-function: cubic-bezier(0.6, 0.2, 0.2, 0.6);
+    list-style-type: none;
+    background-color: #f3f3d0;
+    user-select: none;
+}
+
+.Program-item:hover {
+    transform: scale(1.05);
 }

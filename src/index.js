@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Login from "./login";
-import Register from "./register";
-import Verify from "./verify";
-import Home from "./home";
+import Login from "./Components/login";
+import Register from "./Components/register";
+import Verify from "./Components/verify";
+import Home from "./Components/home";
 import {
     createBrowserRouter,
     RouterProvider, useNavigate,
