@@ -9,6 +9,7 @@ import {
     createBrowserRouter,
     RouterProvider, useNavigate,
 } from "react-router-dom";
+import Agreement from "./Components/agreement";
 
 const router = createBrowserRouter([{
     path: "/",
@@ -22,6 +23,9 @@ const router = createBrowserRouter([{
 }, {
     path: "/verify",
     element: <Verify/>
+}, {
+    path: "/agreement",
+    element: <Agreement/>
 }
 ]);
 

@@ -54,7 +54,7 @@ function UnivItem(props) {
                 </div>
                 <div>
                     {isClicked ? <FontAwesomeIcon icon={solid("caret-down")}/> :
-                        <FontAwesomeIcon icon={solid("caret-left")}/>}
+                        <FontAwesomeIcon icon={solid("caret-right")}/>}
                 </div>
             </li>
             {showList ? <ProgramItem program={props.univ[1]}/> : null}

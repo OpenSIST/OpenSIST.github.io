@@ -68,7 +68,7 @@ function Login() {
                 <a onClick={() => {
                     navigate('/register')
                 }}
-                   style={{textDecoration: "underline"}}>
+                   style={{textDecoration: "underline", cursor: "pointer"}}>
                     Don't have an account? Register now!</a>
             </form>
         </div>

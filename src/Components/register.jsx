@@ -9,7 +9,15 @@ function Register() {
     // const [match, setMatch] = useState(true);
     const [valid, setValid] = useState(true);
 
+    // check if the agreements are already checked
+    const [boxChecked, setChecked] = useState(false);
+
     const navigate = useNavigate();
+
+    const handleAgreementCheck = async (e) => {
+        setChecked(e.target.checked);
+    };
+
     const handleRegister = async (e) => {
         e.preventDefault();
 
@@ -37,14 +45,34 @@ function Register() {
         } catch (e) {
             alert(e)
         }
-
-
     };
 
     return (
         <div className="register">
             <h1>Register</h1>
             <form onSubmit={handleRegister} style={{display: 'flex', flexDirection: 'column'}}>
+                <div>
+                    <input
+                        type="checkbox"
+                        id="privacyPolicy"
+                        name="privacyPolicy"
+                        checked={boxChecked}
+                        onChange={handleAgreementCheck}
+                        required
+                    />
+                    <label>我已阅读并同意OpenSIST
+                        <a onClick={() => {
+                            navigate('/agreement')
+                        }}
+                           style={{textDecoration: "underline", cursor: "pointer"}}>隐私条款</a>
+                        ，且愿意遵守OpenSIST
+                        <a onClick={() => {
+                            navigate('/agreement')
+                        }}
+                           style={{textDecoration: "underline", cursor: "pointer"}}>用户守则</a>。
+                    </label>
+                </div>
+                <br/>
                 <input
                     type="Username"
                     placeholder="Email"
@@ -77,7 +105,7 @@ function Register() {
                 <a onClick={() => {
                     navigate('/login')
                 }}
-                   style={{textDecoration: "underline"}}>
+                   style={{textDecoration: "underline", cursor: "pointer"}}>
                     Already have an account? Login now!</a>
             </form>
         </div>
