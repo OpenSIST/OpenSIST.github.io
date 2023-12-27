@@ -57,13 +57,6 @@ const Applicant = {
             "L": "8.0",
             "W": "8.0",
         },
-        "Duolingo": {
-            "Total": "130",
-            "RW": "135",
-            "LR": "125",
-            "LS": "130",
-            "WS": "140",
-        },
     },
     "Exchange": [
         {
@@ -116,8 +109,7 @@ const Applicant = {
     "Recommendation": [
         {
             "Type": ["Course", "TA"], // Research / Course / TA / Internship
-            "Prestige": "Bigwig", // Bigwig / Smallwig / Unknown
-            "Strength": "Strong", // Strong / Medium / Weak / Unknown
+            "Detail": "A strong letter from a bigwig professor in the field of computer vision.",
         },
     ],
     "Results": ["Record ID 1", "Record ID 2"], // Can only record programID, but subject to change
@@ -125,22 +117,17 @@ const Applicant = {
 }
 
 const Program = {
-    "University": "Stanford",
-    "Department": "CS", // CS / EE / ECE / etc.
-    "ID": "MSCS@Stanford",
-    "Content": {
-        "Overview": "This is the overview of the program.",
-        "Curriculum": "This is the curriculum of the program.",
-        "Research": "This is the research of the program.",
-        "Career": "This is the career of the program.",
-    },
+    "University": "Name",
+    "TargetApplicantMajor": "CS", // CS / EE / IE
+    "ID": "MSCS@Name",
+    "Description": "This is description.",
     "Applicants": ["id1", "id2"],
 }
 
 const Record = {
-    "RecordID": "XiaomingLi|MSCS@Stanford", // ApplicantID|ProgramID
+    "RecordID": "XiaomingLi|MSCS@Name", // ApplicantID|ProgramID
     "ApplicantID": "XiaomingLi",
-    "ProgramID": "MSCS@Stanford",
+    "ProgramID": "MSCS@Name",
     "Year": "2024",
     "Semester": "Fall",
     "Status": "Admit", // Admit / Reject / Waitlist
