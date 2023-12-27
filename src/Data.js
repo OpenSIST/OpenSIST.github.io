@@ -134,7 +134,7 @@ const Program = {
         "Research": "This is the research of the program.",
         "Career": "This is the career of the program.",
     },
-    "Applicants": ["app1@", "app2@"],
+    "Applicants": ["id1", "id2"],
 }
 
 const Record = {
