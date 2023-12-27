@@ -25,10 +25,11 @@ async function fetch_url(url) {
 }
 
 const Applicant = {
-    "Name": "Xiaoming Li",
+    "Email": "XiaomingLi",
     "Gender": "Female", // Female / Male / Others
     "CurrentDegree": "Undergraduate", // Undergraduate / Master
-    "ApplyYear": "2024Fall", // 2024Fall / 2024Spring / 2023Fall / 2023Spring / 2022Fall / 2022Spring / 2021Fall / 2021Spring
+    "Year": "2024",
+    "Semester": "Fall",
     "Major": "CS", // CS / EE / IE
     "GPA": "3.99",
     "Ranking": {
@@ -119,7 +120,7 @@ const Applicant = {
             "Strength": "Strong", // Strong / Medium / Weak / Unknown
         },
     ],
-    "Results": ["Record ID 1", "Record ID 2"],
+    "Results": ["Record ID 1", "Record ID 2"], // Can only record programID, but subject to change
     "Contact": "homepage/email/others"
 }
 
@@ -137,9 +138,9 @@ const Program = {
 }
 
 const Record = {
-    "ApplicantID": "example@",
-    "ProgramID": "Program ID",
-    "RecordID": "Record ID",
+    "RecordID": "XiaomingLi|MSCS@Stanford", // ApplicantID|ProgramID
+    "ApplicantID": "XiaomingLi",
+    "ProgramID": "MSCS@Stanford",
     "Year": "2024",
     "Semester": "Fall",
     "Status": "Admit", // Admit / Reject / Waitlist
