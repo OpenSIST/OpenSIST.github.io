@@ -23,24 +23,22 @@ function SideBar(props) {
     }
 
     return (
-        <div>
-            <div className='ProgramMainBlock Context'>
-                <div className='Center-block Side-bar'>
-                    <input className='Search-bar' onInput={event => {
-                        event.preventDefault();
-                        setSearchedUniv(univList.filter((univ) => univ[0].toLowerCase().includes(
-                            event.target.value.toLowerCase())));
-                    }} placeholder='search for...'/>
-                    <ul className="Univ-list">
-                        {searched_univ.map((univ) => (
-                                <UnivItem univ={univ} key={univ[0]} onProgramSelect={handleProgramSelect}/>
-                            )
-                        )}
-                    </ul>
-                </div>
+        <div className='ProgramMainBlock'>
+            <div className='Center-block Side-bar'>
+                <input className='Search-bar' onInput={event => {
+                    event.preventDefault();
+                    setSearchedUniv(univList.filter((univ) => univ[0].toLowerCase().includes(
+                        event.target.value.toLowerCase())));
+                }} placeholder='search for...'/>
+                <ul className="Univ-list">
+                    {searched_univ.map((univ) => (
+                            <UnivItem univ={univ} key={univ[0]} onProgramSelect={handleProgramSelect}/>
+                        )
+                    )}
+                </ul>
             </div>
             <div className='Program-Description'>
-                <ProgramContent programDesc={selectedProgramDesc} />
+                <ProgramContent programDesc={selectedProgramDesc}/>
             </div>
         </div>
     );

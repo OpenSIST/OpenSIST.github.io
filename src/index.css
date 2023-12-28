@@ -16,17 +16,6 @@
     align-items: flex-start;
 }
 
-.ProgramContent {
-    width: calc(100vw - 150px);
-    height: 100%;
-    border: 1px solid black;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 20px;
-}
-
 #root {
     display: flex;
     flex-direction: column;
