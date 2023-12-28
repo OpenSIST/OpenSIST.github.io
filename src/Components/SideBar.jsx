@@ -23,26 +23,24 @@ function SideBar(props) {
     }
 
     return (
-        <>
-            <div className='ProgramMainBlock Context'>
-                <div className='Center-block Side-bar'>
-                    <input className='Search-bar' onInput={event => {
-                        event.preventDefault();
-                        setSearchedUniv(univList.filter((univ) => univ[0].toLowerCase().includes(
-                            event.target.value.toLowerCase())));
-                    }} placeholder='search for...'/>
-                    <ul className="Univ-list">
-                        {searched_univ.map((univ) => (
-                                <UnivItem univ={univ} key={univ[0]} onProgramSelect={handleProgramSelect}/>
-                            )
-                        )}
-                    </ul>
-                </div>
-                <div>
-                    <ProgramContent programDesc={selectedProgramDesc} />
-                </div>
+        <div className='ProgramMainBlock Context'>
+            <div className='Center-block Side-bar'>
+                <input className='Search-bar' onInput={event => {
+                    event.preventDefault();
+                    setSearchedUniv(univList.filter((univ) => univ[0].toLowerCase().includes(
+                        event.target.value.toLowerCase())));
+                }} placeholder='search for...'/>
+                <ul className="Univ-list">
+                    {searched_univ.map((univ) => (
+                            <UnivItem univ={univ} key={univ[0]} onProgramSelect={handleProgramSelect}/>
+                        )
+                    )}
+                </ul>
             </div>
-        </>
+            <div className='Program-Description'>
+                <ProgramContent programDesc={selectedProgramDesc} />
+            </div>
+        </div>
     );
 }
 
@@ -80,9 +78,7 @@ function ProgramItem({program, onProgramSelect}) {
                 <li className='Program-item' key={program[0]} onClick={
                     () => onProgramSelect(program[1].description)
                 } style={{cursor: "pointer"}}>
-                    <div>
-                        {program[1].name}
-                    </div>
+                    {program[1].name}
                 </li>
             ))}
         </ul>
