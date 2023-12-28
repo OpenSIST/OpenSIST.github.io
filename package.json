@@ -21,10 +21,12 @@
     "react-router-dom": "^6.21.1",
     "react-scripts": "^5.0.1",
     "sort-by": "^0.0.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zod": "^3.22.4"
   },
   "scripts": {
-    "start": "export PORT=61234 && react-scripts start",
+    "start_win": "set PORT=61234 && react-scripts start",
+    "start_unix": "export PORT=61234 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

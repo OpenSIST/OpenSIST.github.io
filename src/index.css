@@ -7,11 +7,24 @@
 }
 
 .ProgramMainBlock {
+    width: 100%;
+    height: calc(100vh - 60px);
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.ProgramContent {
+    width: calc(100vw - 150px);
+    height: 100%;
+    border: 1px solid black;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
-    border: 1px solid black;
+    padding: 20px;
 }
 
 #root {
@@ -51,15 +64,15 @@
 
 }
 
-.Context {
-    width: 100%;
-    height: calc(100vh - 60px);
-    border: 1px solid black;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-}
+/*.Context {*/
+/*    width: 100%;*/
+/*    height: calc(100vh - 60px);*/
+/*    border: 1px solid black;*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*    justify-content: flex-start;*/
+/*    align-items: center;*/
+/*}*/
 
 .Side-bar {
     width: 150px;

@@ -38,7 +38,7 @@ function SideBar(props) {
                         )}
                     </ul>
                 </div>
-                <div>
+                <div className='ProgramContent'>
                     <ProgramContent programDesc={selectedProgramDesc} />
                 </div>
             </div>

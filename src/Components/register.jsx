@@ -1,7 +1,17 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {z} from 'zod';
 
+const passwordSchema = z.string().min(8).max(24).refine(password => (
+    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password)
+),
+    // message: "Password must contain at least one number, one lowercase and one uppercase letter",
+);
 
+function isValidPassword(password) {
+    const result = passwordSchema.safeParse(password);
+    return result.success;
+}
 function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -20,9 +30,13 @@ function Register() {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-
-        if (password !== passwordConfirm) {
-            setValid(false);
+        if (!boxChecked) {
+            alert("Please check the agreements!");
+            return;
+        }
+        if (!isValidPassword(password) || password !== passwordConfirm) {
+            setValid(false)
+            // alert("Password must contain at least one number, one lowercase and one uppercase letter");
             return;
         }
 
@@ -51,28 +65,6 @@ function Register() {
         <div className="register">
             <h1>Register</h1>
             <form onSubmit={handleRegister} style={{display: 'flex', flexDirection: 'column'}}>
-                <div>
-                    <input
-                        type="checkbox"
-                        id="privacyPolicy"
-                        name="privacyPolicy"
-                        checked={boxChecked}
-                        onChange={handleAgreementCheck}
-                        required
-                    />
-                    <label>我已阅读并同意OpenSIST
-                        <a onClick={() => {
-                            navigate('/agreement')
-                        }}
-                           style={{textDecoration: "underline", cursor: "pointer"}}>隐私条款</a>
-                        ，且愿意遵守OpenSIST
-                        <a onClick={() => {
-                            navigate('/agreement')
-                        }}
-                           style={{textDecoration: "underline", cursor: "pointer"}}>用户守则</a>。
-                    </label>
-                </div>
-                <br/>
                 <input
                     type="Username"
                     placeholder="Email"
@@ -100,7 +92,32 @@ function Register() {
                     }
                     required
                 />
-                {valid ? null : <p style={{color: 'red'}}> Two passwords don't match </p>}
+                <br/>
+
+                <div>
+                    <input
+                        type="checkbox"
+                        id="privacyPolicy"
+                        name="privacyPolicy"
+                        checked={boxChecked}
+                        onChange={handleAgreementCheck}
+                        required
+                    />
+                    <label>我已阅读并同意OpenSIST
+                        <a onClick={() => {
+                            navigate('/agreement')
+                        }}
+                           style={{textDecoration: "underline", cursor: "pointer"}}>隐私条款</a>
+                        ，且愿意遵守OpenSIST
+                        <a onClick={() => {
+                            navigate('/agreement')
+                        }}
+                           style={{textDecoration: "underline", cursor: "pointer"}}>用户守则</a>。
+                    </label>
+                </div>
+                <br/>
+
+                {valid ? null : <p style={{color: 'red'}}> "Password must contain at least one number, one lowercase and one uppercase letter" </p>}
                 <button type="submit">Register</button>
                 <a onClick={() => {
                     navigate('/login')
