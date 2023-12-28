@@ -1,5 +1,6 @@
-// import './App.css';
+import React from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
+import './TopBar.css';
 
 function TopBar() {
     const navigate = useNavigate();
@@ -28,5 +29,4 @@ function TopBar() {
     );
 }
 
-export default TopBar
-
+export default TopBar;

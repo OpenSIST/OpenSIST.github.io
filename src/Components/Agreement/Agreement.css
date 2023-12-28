@@ -1,0 +1,28 @@
+.Agreement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.Agreement h1 {
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.Agreement h2 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.Agreement ol {
+    margin-bottom: 2rem;
+}
+
+.Agreement li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}

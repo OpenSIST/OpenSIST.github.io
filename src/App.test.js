@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import TopBar from './Components/TopBar';
+import TopBar from './Components/TopBar/TopBar';
 
 test('renders learn react link', () => {
   render(<TopBar />);

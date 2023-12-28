@@ -1,6 +1,9 @@
+import React from "react";
+import "./Agreement.css";
+
 export default function Agreement() {
     return (
-        <>
+        <div className="Agreement">
             <h1>OpenSIST隐私条款及用户守则</h1>
             <div>
                 <h2>OpenSIST隐私条款</h2>
@@ -22,6 +25,6 @@ export default function Agreement() {
                     <li>如果您违反上述承诺，OpenSIST平台将有权对您的OpenSIST账户做封禁处理，您将失去访问OpenSIST的权利。</li>
                 </ol>
             </div>
-        </>
+        </div>
     );
 }

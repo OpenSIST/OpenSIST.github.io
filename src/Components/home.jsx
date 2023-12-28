@@ -1,5 +1,5 @@
-import TopBar from "./TopBar";
-import SideBar from "./SideBar";
+import TopBar from "./TopBar/TopBar";
+import SideBar from "./SideBar/SideBar";
 import {useNavigate} from "react-router-dom";
 function Home() {
     const navigate = useNavigate();

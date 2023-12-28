@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Login from "./Components/login";
-import Register from "./Components/register";
-import Verify from "./Components/verify";
+import Login from "./Components/Auth/Login/Login";
+import Register from "./Components/Auth/Register/Register";
+import Verify from "./Components/Auth/Verify/Verify";
 import Home from "./Components/home";
 import {
     createBrowserRouter,
     RouterProvider, useNavigate,
 } from "react-router-dom";
-import Agreement from "./Components/agreement";
+import Agreement from "./Components/Agreement/Agreement";
+import AddModifyProgram from "./Components/Modify/Program/AddModifyProgram";
 
 const router = createBrowserRouter([{
     path: "/",
@@ -26,6 +27,9 @@ const router = createBrowserRouter([{
 }, {
     path: "/agreement",
     element: <Agreement/>
+}, {
+    path: "/add-modify-program",
+    element: <AddModifyProgram/>
 }
 ]);
 

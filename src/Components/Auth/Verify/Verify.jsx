@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-
+import "./Verify.css"
 function Verify() {
     const location = useLocation();
     const [token, setToken] = useState("");

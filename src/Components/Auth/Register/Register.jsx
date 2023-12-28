@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {z} from 'zod';
-
+import "./Register.css"
 const passwordSchema = z.string().min(8).max(24).refine(password => (
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password)
 ),

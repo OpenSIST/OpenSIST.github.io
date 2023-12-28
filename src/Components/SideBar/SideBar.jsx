@@ -1,12 +1,22 @@
 import React, {useState, useEffect} from 'react';
-import fetch_url from "../Data";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import ProgramContent from "./ProgramContent/ProgramContent";
+import fetch_url from "../../Data";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {solid} from '@fortawesome/fontawesome-svg-core/import.macro'
+import ProgramContent from "../ProgramContent/ProgramContent";
+import {useNavigate} from "react-router-dom";
+import "./SideBar.css"
+import AddModifyProgram from "../Modify/Program/AddModifyProgram";
+
 function SideBar(props) {
+    const navigate = useNavigate();
     const [univList, setUnivList] = useState([]);
     const [searched_univ, setSearchedUniv] = useState([]);
     const [selectedProgramDesc, setSelectedProgramDesc] = useState("");
+    const [addProgram, setAddProgram] = useState(false);
+
+    const handleAddProgram = () => {
+        setAddProgram(!addProgram);
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -15,7 +25,7 @@ function SideBar(props) {
             setUnivList(data);
             setSearchedUniv(data);
         };
-        fetchData();
+        fetchData().then();
     }, [props.url]);
 
     const handleProgramSelect = (programDesc) => {
@@ -24,8 +34,8 @@ function SideBar(props) {
 
     return (
         <>
-            <div className='ProgramMainBlock Context'>
-                <div className='Center-block Side-bar'>
+            <div className='ProgramMainBlock'>
+                <div className='Side-bar'>
                     <input className='Search-bar' onInput={event => {
                         event.preventDefault();
                         setSearchedUniv(univList.filter((univ) => univ[0].toLowerCase().includes(
@@ -37,14 +47,19 @@ function SideBar(props) {
                             )
                         )}
                     </ul>
+                    <button onClick={handleAddProgram}>
+                        Add Program
+                    </button>
                 </div>
+                {addProgram ? <AddModifyProgram/> : null}
                 <div className='ProgramContent'>
-                    <ProgramContent programDesc={selectedProgramDesc} />
+                    <ProgramContent programDesc={selectedProgramDesc}/>
                 </div>
             </div>
         </>
     );
 }
+
 
 function UnivItem(props) {
 

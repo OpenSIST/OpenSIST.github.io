@@ -1,0 +1,91 @@
+.ProgramMainBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.ProgramContent {
+    flex-grow: 1;
+    padding: 20px;
+    margin-right: 2vw;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.Side-bar {
+    width: 200px;
+    height: 100%;
+    margin-right: 2vw;
+    margin-left: 2vw;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #e7e7e7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.Search-bar {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+}
+
+.Univ-list {
+    width: 100%;
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.Univ-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: #fff;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    list-style-type: none;
+}
+
+.Univ-item:hover {
+    background-color: #e7e7e7;
+}
+
+.Program-list {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.Program-item {
+    padding: 0.5rem;
+    background-color: #fff;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    list-style-type: none;
+}
+
+.Program-item:hover {
+    background-color: #e7e7e7;
+}
+
+.Univ-item:active,
+.Program-item:active {
+    transform: scale(0.98);
+}
+
