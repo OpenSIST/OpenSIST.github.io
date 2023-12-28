@@ -5,7 +5,6 @@ function TopBar() {
     const navigate = useNavigate();
     const location = useLocation();
     const user = location.state?.user;
-    console.log(localStorage.getItem("user"))
     const handleLogin = () => {
         navigate('/login');
     };

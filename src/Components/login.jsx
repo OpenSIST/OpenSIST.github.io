@@ -9,7 +9,7 @@ function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        if (password.length < 8) {
+        if (password.length < 8 || password.length > 24) {
             setValid(false);
             return;
         }
@@ -63,7 +63,7 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                {!valid && <p style={{color: 'red'}}>Password must be at least 8 characters</p>}
+                {!valid && <p style={{color: 'red'}}>Password should be within 8~24 characters</p>}
                 <button type="submit">Login</button>
                 <a onClick={() => {
                     navigate('/register')
