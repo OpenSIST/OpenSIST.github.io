@@ -1,26 +1,65 @@
 async function fetch_url(url) {
     return {
-        "MIT": {
-            'MSCSE': {'test info for frontend': {}},
-        },
-        "Stanford": {
-            'MSCS': {'test info for frontend': {}},
-            'MSEE': {'test info for frontend': {}}
-        },
-        "UCB": {
-            'MSCS': {'test info for frontend': {}},
-            'MEng': {'test info for frontend': {}}
-        },
-        "CMU": {
-            'MSCS': {'test info for frontend': {}},
-            'MSR': {'test info for frontend': {}},
-            'MLT': {'test info for frontend': {}},
-            'MSCV': {'test info for frontend': {}},
-            'MSML': {'test info for frontend': {}},
-            'MSDS': {'test info for frontend': {}},
-            'MSAII': {'test info for frontend': {}},
-            'MIIS': {'test info for frontend': {}},
-        }
+        "MIT": [
+            {
+                name: 'MSCSE',
+                description: '# Hi there!\n `code block`\n MSCSE is super hard for all applicants from mainland china!',
+            },
+        ],
+        "Stanford": [
+            {
+                name: 'MSCS',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSEE',
+                description: 'test info for frontend',
+            },
+        ],
+        "UCB": [
+            {
+                name: 'MSCS',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'EECS MEng',
+                description: 'test info for frontend',
+            },
+        ],
+        "CMU": [
+            {
+                name: 'MSCS',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSR',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MLT',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSCV',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSML',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSDS',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSAII',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MIIS',
+                description: 'test info for frontend',
+            },
+        ]
     };
 }
 

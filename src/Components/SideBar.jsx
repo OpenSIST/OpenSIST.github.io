@@ -2,9 +2,11 @@ import React, {useState, useEffect} from 'react';
 import fetch_url from "../Data";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import ProgramContent from "./ProgramContent/ProgramContent";
 function SideBar(props) {
     const [univList, setUnivList] = useState([]);
     const [searched_univ, setSearchedUniv] = useState([]);
+    const [selectedProgramDesc, setSelectedProgramDesc] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -16,23 +18,31 @@ function SideBar(props) {
         fetchData();
     }, [props.url]);
 
+    const handleProgramSelect = (programDesc) => {
+        setSelectedProgramDesc(programDesc);
+    }
 
     return (
-        <div className='Left-block Context'>
-            <div className='Center-block Side-bar'>
-                <input className='Search-bar' onInput={event => {
-                    event.preventDefault();
-                    setSearchedUniv(univList.filter((univ) => univ[0].toLowerCase().includes(
-                        event.target.value.toLowerCase())));
-                }} placeholder='search for...'/>
-                <ul className="Univ-list">
-                    {searched_univ.map((univ) => (
-                        <UnivItem univ={univ} key={univ[0]}/>
-                        )
-                    )}
-                </ul>
+        <>
+            <div className='ProgramMainBlock Context'>
+                <div className='Center-block Side-bar'>
+                    <input className='Search-bar' onInput={event => {
+                        event.preventDefault();
+                        setSearchedUniv(univList.filter((univ) => univ[0].toLowerCase().includes(
+                            event.target.value.toLowerCase())));
+                    }} placeholder='search for...'/>
+                    <ul className="Univ-list">
+                        {searched_univ.map((univ) => (
+                                <UnivItem univ={univ} key={univ[0]} onProgramSelect={handleProgramSelect}/>
+                            )
+                        )}
+                    </ul>
+                </div>
+                <div>
+                    <ProgramContent programDesc={selectedProgramDesc} />
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
@@ -57,19 +67,21 @@ function UnivItem(props) {
                         <FontAwesomeIcon icon={solid("caret-right")}/>}
                 </div>
             </li>
-            {showList ? <ProgramItem program={props.univ[1]}/> : null}
+            {showList ? <ProgramItem program={props.univ[1]} onProgramSelect={props.onProgramSelect}/> : null}
         </>
     );
 }
 
 
-function ProgramItem({program}) {
+function ProgramItem({program, onProgramSelect}) {
     return (
         <ul className='Program-list'>
             {Object.entries(program).map((program) => (
-                <li className='Program-item' key={program[0]}>
+                <li className='Program-item' key={program[0]} onClick={
+                    () => onProgramSelect(program[1].description)
+                } style={{cursor: "pointer"}}>
                     <div>
-                        {program[0]}
+                        {program[1].name}
                     </div>
                 </li>
             ))}
