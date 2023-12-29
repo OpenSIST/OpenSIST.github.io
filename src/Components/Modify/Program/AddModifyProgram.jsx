@@ -67,10 +67,9 @@ function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
             }
         }
         try {
-            console.log(localStorage.getItem('token'));
             const response = await addModifyProgram({session: localStorage.getItem('token'), data: data});
             if (response.success) {
-                alert("Program Added/Modified Successfully!");
+                alert(`Program ${mode} Successfully!`);
                 setIsShow(false);
             } else {
                 const content = await response.json();
@@ -88,7 +87,7 @@ function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
     return (
         <div className={className}>
             <form onSubmit={handleSubmit} className='ProgramForm'>
-                <h1 id="Title">{`${originData === null ? 'Add' : 'Modify'} Program`}</h1>
+                <h1 id="Title">{`${mode} Program`}</h1>
                 <h4 className='Subtitle'>University Name</h4>
                 <input type="text" id="university" name="university"
                        defaultValue={originData === null ? '' : originData.University}

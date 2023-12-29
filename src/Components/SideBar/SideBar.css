@@ -20,7 +20,7 @@
 }
 
 .Side-bar {
-    width: 200px;
+    width: 250px;
     height: calc(100vh - 200px);
     margin-right: 2vw;
     margin-left: 2vw;
@@ -43,7 +43,7 @@
 .Univ-list {
     width: 100%;
     height: calc(100vh - 350px);
-    overflow-y: auto;
+    overflow-y: scroll;
     padding: 0;
     margin: 0;
     list-style-type: none;
@@ -95,15 +95,3 @@
 .Program-item:active {
     transform: scale(0.98);
 }
-
-/*.Side-bar button {*/
-/*    width: 100%;*/
-/*    padding: 0.5rem;*/
-/*    border: none;*/
-/*    border-radius: 4px;*/
-/*    background-color: #007bff;*/
-/*    color: #fff;*/
-/*    cursor: pointer;*/
-/*    transition: background-color 0.3s ease;*/
-/*}*/
-
