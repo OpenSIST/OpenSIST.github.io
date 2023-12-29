@@ -15,7 +15,8 @@ function SideBar(props) {
     const [addProgram, setAddProgram] = useState(false);
 
     const handleAddProgram = () => {
-        setAddProgram(!addProgram);
+        setSelectedProgramDesc("")
+        setAddProgram(true);
     }
 
     useEffect(() => {
@@ -29,6 +30,7 @@ function SideBar(props) {
     }, [props.url]);
 
     const handleProgramSelect = (programDesc) => {
+        setAddProgram(false);
         setSelectedProgramDesc(programDesc);
     }
 
@@ -51,10 +53,8 @@ function SideBar(props) {
                         Add Program
                     </button>
                 </div>
-                {addProgram ? <AddModifyProgram/> : null}
-                <div className='ProgramContent'>
-                    <ProgramContent programDesc={selectedProgramDesc}/>
-                </div>
+                <AddModifyProgram addProgram={addProgram} setAddProgram={setAddProgram} className='ProgramContent'/>
+                <ProgramContent programDesc={selectedProgramDesc} className='ProgramContent'/>
             </div>
         </>
     );

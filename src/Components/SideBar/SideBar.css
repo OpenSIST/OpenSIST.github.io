@@ -11,6 +11,7 @@
 
 .ProgramContent {
     flex-grow: 1;
+    width: 80vw;
     padding: 20px;
     margin-right: 2vw;
     background-color: #f8f9fa;
@@ -54,7 +55,7 @@
     padding: 0.5rem;
     background-color: #fff;
     border-radius: 4px;
-    margin-bottom: 1rem;
+    /*margin-bottom: 1rem;*/
     cursor: pointer;
     transition: background-color 0.3s ease;
     list-style-type: none;
@@ -75,10 +76,14 @@
     padding: 0.5rem;
     background-color: #fff;
     border-radius: 4px;
-    margin-bottom: 1rem;
+    /*margin-bottom: 1rem;*/
     cursor: pointer;
     transition: background-color 0.3s ease;
     list-style-type: none;
+}
+
+.Program-item div {
+    padding-left: 20px;
 }
 
 .Program-item:hover {

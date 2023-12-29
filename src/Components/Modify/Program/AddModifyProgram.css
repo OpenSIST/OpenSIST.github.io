@@ -1,18 +1,5 @@
-.MainBody {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-}
-
 #Title {
-    font-size: 2em;
+    font-size: 2.25em;
     color: #333;
     margin-bottom: 1rem;
 }
@@ -28,14 +15,12 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    width: 60%;
-    margin-top: 2rem;
-    padding: 2rem;
+    width: 90%;
 }
 
 .ProgramForm input[type="text"],
 .ProgramForm textarea {
-    width: 60%;
+    width: 100%;
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -64,10 +49,13 @@
     margin-bottom: 10px;
 }
 
-.description-container {
-  width: 100%;
-}
-
 .markdown-preview {
-    width: 60%;
+    width: 100%;
+    height: 500px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    background-color: #fff;
 }

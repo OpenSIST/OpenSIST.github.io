@@ -27,10 +27,7 @@ const router = createBrowserRouter([{
 }, {
     path: "/agreement",
     element: <Agreement/>
-}, {
-    path: "/add-modify-program",
-    element: <AddModifyProgram/>
-}
+},
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

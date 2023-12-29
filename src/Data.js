@@ -85,7 +85,7 @@ async function fetch_url(url) {
     };
 }
 
-async function fetchProgramList(url = "https://opensist-auth.caoster.workers.dev/api/list/program", session = null) {
+export async function fetchProgramList(url = "https://opensist-auth.caoster.workers.dev/api/list/program", session = null) {
     const response = await fetch(url, {
         method: 'POST',
         mode: 'cors',
@@ -98,7 +98,7 @@ async function fetchProgramList(url = "https://opensist-auth.caoster.workers.dev
     return response.json();
 }
 
-async function addModifyProgram(url = "https://opensist-auth.caoster.workers.dev/api/mutating/new_modify_program", session = null, data) {
+export async function addModifyProgram(data, url = "https://opensist-auth.caoster.workers.dev/api/mutating/new_modify_program", session = null) {
     const response = await fetch(url, {
         method: 'POST',
         mode: 'cors',
@@ -109,7 +109,7 @@ async function addModifyProgram(url = "https://opensist-auth.caoster.workers.dev
         },
         body: JSON.stringify(data),
     });
-    return response.json();
+    return response;
 }
 
 export default fetch_url;
