@@ -167,12 +167,12 @@ export async function fetchProgramList({
             'Authorization': `Bearer ${session}`,
         },
     });
-    return response.json();
+    return response;
 }
 
 export async function addModifyProgram({
                                            url = "https://opensist-auth.caoster.workers.dev/api/mutating/new_modify_program",
-                                           session= null,
+                                           session= "",
                                            data
                                        }) {
     return await fetch(url, {

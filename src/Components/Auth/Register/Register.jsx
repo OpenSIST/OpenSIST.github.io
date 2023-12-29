@@ -13,7 +13,7 @@ const passwordSchema = z.string().min(8).max(24).refine(password => (
 const checkMark = <FontAwesomeIcon icon={solid("check")} style={{color: "#439d2a",}} />
 const crossMark = <FontAwesomeIcon icon={solid("xmark")} style={{color: "#c24b24",}} />
 
-function isValidPassword(password) {
+export function isValidPassword(password) {
     const result = passwordSchema.safeParse(password);
     return result.success;
 }

@@ -52,6 +52,11 @@
     flex-direction: row;
     justify-content: flex-end;
     gap: 10px;
+    width: 20%;
+}
+
+.ProgramForm button:not(:last-child) {
+    margin-right: 1rem;
 }
 
 #WritePreviewButtonGroup button,
