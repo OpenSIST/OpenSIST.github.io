@@ -6,6 +6,7 @@ import ProgramContent from "../ProgramContent/ProgramContent";
 import {useNavigate} from "react-router-dom";
 import "./SideBar.css"
 import AddModifyProgram from "../Modify/Program/AddModifyProgram";
+import {fetchProgramList} from "../../Data";
 
 function SideBar(props) {
     const [univList, setUnivList] = useState([]);
@@ -28,6 +29,19 @@ function SideBar(props) {
         fetchData().then();
     }, [props.url]);
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         let response = await fetchProgramList({
+    //             session: localStorage.getItem('token'),
+    //         });
+    //         console.log(response);
+    //         let data = Object.entries(response.data);
+    //         setUnivList(data);
+    //         setSearchedUniv(data);
+    //     };
+    //     fetchData().then();
+    // });
+
     const handleProgramSelect = (programDesc) => {
         setAddProgram(false);
         setSelectedProgramDesc(programDesc);
@@ -35,34 +49,32 @@ function SideBar(props) {
     }
 
     return (
-        <>
-            <div className='ProgramMainBlock'>
-                <div className='Side-bar'>
-                    <form onSubmit={event => {
-                        event.preventDefault();
-                        setSearchedUniv(univList.filter((univ) => univ[0].toLowerCase().includes(
-                            event.target.Search.value.toLowerCase())));
-                    }}>
-                        <input type='text' id='Search' name='Search' className='Search-bar' placeholder='search for...'/>
-                        <button type='submit' title='SearchButton'><FontAwesomeIcon icon={solid("magnifying-glass")} /></button>
-                    </form>
-                    <ul className="Univ-list">
-                        {searched_univ.map((univ) => (
-                                <UnivItem univ={univ} key={univ[0]} onProgramSelect={handleProgramSelect}/>
-                            )
-                        )}
-                    </ul>
-                    <button onClick={handleAddProgram} title='AddProgramButton'>
-                        <FontAwesomeIcon icon={solid("plus")} />
-                    </button>
+        <div className='ProgramMainBlock'>
+            <div className='Side-bar'>
+                <form onSubmit={event => {
+                    event.preventDefault();
+                    setSearchedUniv(univList.filter((univ) => univ[0].toLowerCase().includes(
+                        event.target.Search.value.toLowerCase())));
+                }}>
+                    <input type='text' id='Search' name='Search' className='Search-bar' placeholder='search for...'/>
+                    <button type='submit' title='SearchButton'><FontAwesomeIcon icon={solid("magnifying-glass")} /></button>
+                </form>
+                <ul className="Univ-list">
+                    {searched_univ.map((univ) => (
+                            <UnivItem univ={univ} key={univ[0]} onProgramSelect={handleProgramSelect}/>
+                        )
+                    )}
+                </ul>
+                <button onClick={handleAddProgram} title='AddProgramButton'>
+                    <FontAwesomeIcon icon={solid("plus")} />
+                </button>
 
-                </div>
-                <AddModifyProgram isShow={addProgram} setIsShow={setAddProgram} className='ProgramContent'/>
-                <ProgramContent programDesc={selectedProgramDesc} setProgramDesc={setSelectedProgramDesc}
-                                isEditMode={isEditMode} setIsEditMode={setIsEditMode}
-                                className='ProgramContent'/>
             </div>
-        </>
+            <AddModifyProgram isShow={addProgram} setIsShow={setAddProgram} className='ProgramContent'/>
+            <ProgramContent programDesc={selectedProgramDesc} setProgramDesc={setSelectedProgramDesc}
+                            isEditMode={isEditMode} setIsEditMode={setIsEditMode}
+                            className='ProgramContent'/>
+        </div>
     );
 }
 

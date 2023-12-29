@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import Agreement from "./Components/Agreement/Agreement";
 import AddModifyProgram from "./Components/Modify/Program/AddModifyProgram";
+import Reset from "./Components/Auth/Reset/Reset";
 
 const router = createBrowserRouter([{
     path: "/",
@@ -27,6 +28,9 @@ const router = createBrowserRouter([{
 }, {
     path: "/agreement",
     element: <Agreement/>
+}, {
+    path: "/reset",
+    element: <Reset/>
 },
 ]);
 
