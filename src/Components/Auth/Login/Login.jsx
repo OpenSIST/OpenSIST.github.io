@@ -19,7 +19,6 @@ function Login() {
         try {
             const response = await fetch("https://opensist-auth.caoster.workers.dev/api/auth/login", {
                 method: "POST",
-                // mode: "cors",
                 credentials: "include",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({email, password}),

@@ -2,11 +2,16 @@ import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {z} from 'zod';
 import "./Register.css"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 const passwordSchema = z.string().min(8).max(24).refine(password => (
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password)
 ),
     // message: "Password must contain at least one number, one lowercase and one uppercase letter",
 );
+
+const checkMark = <FontAwesomeIcon icon={solid("check")} style={{color: "#439d2a",}} />
+const crossMark = <FontAwesomeIcon icon={solid("xmark")} style={{color: "#c24b24",}} />
 
 export function isValidPassword(password) {
     const result = passwordSchema.safeParse(password);
@@ -112,10 +117,10 @@ function Register() {
                     required
                 />
                 <div>
-                    <span>{isLengthValid ? "✅" : "❌"} 密码长度为8-24个字符</span><br/>
-                    <span>{hasNumber ? "✅" : "❌"} 密码至少包含一个数字</span><br/>
-                    <span>{hasLowercase ? "✅" : "❌"} 密码至少包含一个小写字母</span><br/>
-                    <span>{hasUppercase ? "✅" : "❌"} 密码至少包含一个大写字母</span>
+                    <span>{isLengthValid ? checkMark : crossMark} 密码长度为8-24个字符</span><br/>
+                    <span>{hasNumber ? checkMark : crossMark} 密码至少包含一个数字</span><br/>
+                    <span>{hasLowercase ? checkMark : crossMark} 密码至少包含一个小写字母</span><br/>
+                    <span>{hasUppercase ? checkMark : crossMark} 密码至少包含一个大写字母</span>
                 </div>
                 <div>
                     <input

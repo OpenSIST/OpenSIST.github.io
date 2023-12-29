@@ -68,7 +68,7 @@ function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
         }
         try {
             const response = await addModifyProgram({session: localStorage.getItem('token'), data: data});
-            if (response.success) {
+            if (response.status === 200) {
                 alert(`Program ${mode} Successfully!`);
                 setIsShow(false);
             } else {
