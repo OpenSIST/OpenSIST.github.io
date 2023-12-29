@@ -45,7 +45,7 @@ function SideBar(props) {
                             )
                         )}
                     </ul>
-                    <button onClick={handleAddProgram} title='AddProgramButton'>
+                    <button onClick={handleAddProgram} id='AddProgramButton' title='AddProgramButton'>
                         <FontAwesomeIcon icon={solid("plus")}/>
                     </button>
 
