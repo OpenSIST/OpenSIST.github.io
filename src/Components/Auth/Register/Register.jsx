@@ -74,7 +74,7 @@ function Register() {
             });
 
             if (response.status === 200) {
-                navigate("/verify", {state: {email: email}});
+                navigate("/verify", {state: {email: email, statusToVerify: 'Register'}});
                 alert("Verification code sent to your email!")
             } else {
                 const content = await response.json();
