@@ -8,15 +8,14 @@ import "./SideBar.css"
 import AddModifyProgram from "../Modify/Program/AddModifyProgram";
 
 function SideBar(props) {
-    const navigate = useNavigate();
     const [univList, setUnivList] = useState([]);
     const [searched_univ, setSearchedUniv] = useState([]);
     const [selectedProgramDesc, setSelectedProgramDesc] = useState("");
     const [addProgram, setAddProgram] = useState(false);
-
+    const [isEditMode, setIsEditMode] = useState(false);
     const handleAddProgram = () => {
         setSelectedProgramDesc("")
-        setAddProgram(true);
+        setAddProgram(!addProgram);
     }
 
     useEffect(() => {
@@ -32,29 +31,36 @@ function SideBar(props) {
     const handleProgramSelect = (programDesc) => {
         setAddProgram(false);
         setSelectedProgramDesc(programDesc);
+        setIsEditMode(false);
     }
 
     return (
         <>
             <div className='ProgramMainBlock'>
                 <div className='Side-bar'>
-                    <input className='Search-bar' onInput={event => {
+                    <form onSubmit={event => {
                         event.preventDefault();
                         setSearchedUniv(univList.filter((univ) => univ[0].toLowerCase().includes(
-                            event.target.value.toLowerCase())));
-                    }} placeholder='search for...'/>
+                            event.target.Search.value.toLowerCase())));
+                    }}>
+                        <input type='text' id='Search' name='Search' className='Search-bar' placeholder='search for...'/>
+                        <button type='submit' title='SearchButton'><FontAwesomeIcon icon={solid("magnifying-glass")} /></button>
+                    </form>
                     <ul className="Univ-list">
                         {searched_univ.map((univ) => (
                                 <UnivItem univ={univ} key={univ[0]} onProgramSelect={handleProgramSelect}/>
                             )
                         )}
                     </ul>
-                    <button onClick={handleAddProgram}>
-                        Add Program
+                    <button onClick={handleAddProgram} title='AddProgramButton'>
+                        <FontAwesomeIcon icon={solid("plus")} />
                     </button>
+
                 </div>
-                <AddModifyProgram addProgram={addProgram} setAddProgram={setAddProgram} className='ProgramContent'/>
-                <ProgramContent programDesc={selectedProgramDesc} className='ProgramContent'/>
+                <AddModifyProgram isShow={addProgram} setIsShow={setAddProgram} className='ProgramContent'/>
+                <ProgramContent programDesc={selectedProgramDesc} setProgramDesc={setSelectedProgramDesc}
+                                isEditMode={isEditMode} setIsEditMode={setIsEditMode}
+                                className='ProgramContent'/>
             </div>
         </>
     );
@@ -82,13 +88,16 @@ function UnivItem(props) {
                         <FontAwesomeIcon icon={solid("caret-right")}/>}
                 </div>
             </li>
-            {showList ? <ProgramItem program={props.univ[1]} onProgramSelect={props.onProgramSelect}/> : null}
+            <ProgramItem showList={showList} program={props.univ[1]} onProgramSelect={props.onProgramSelect}/>
         </>
     );
 }
 
 
-function ProgramItem({program, onProgramSelect}) {
+function ProgramItem({showList, program, onProgramSelect}) {
+    if (!showList) {
+        return null;
+    }
     return (
         <ul className='Program-list'>
             {Object.entries(program).map((program) => (

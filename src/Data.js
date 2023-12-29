@@ -81,11 +81,83 @@ async function fetch_url(url) {
                 name: 'MIIS',
                 description: 'test info for frontend',
             },
-        ]
+        ],
+        "CMU1": [
+            {
+                name: 'MSCS',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSR',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MLT',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSCV',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSML',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSDS',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSAII',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MIIS',
+                description: 'test info for frontend',
+            },
+        ],
+        "CMU2": [
+            {
+                name: 'MSCS',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSR',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MLT',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSCV',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSML',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSDS',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MSAII',
+                description: 'test info for frontend',
+            },
+            {
+                name: 'MIIS',
+                description: 'test info for frontend',
+            },
+        ],
+
     };
 }
 
-export async function fetchProgramList(url = "https://opensist-auth.caoster.workers.dev/api/list/program", session = null) {
+export async function fetchProgramList({
+                                           url = "https://opensist-auth.caoster.workers.dev/api/list/program",
+                                           session = null
+                                       }) {
     const response = await fetch(url, {
         method: 'POST',
         mode: 'cors',
@@ -98,8 +170,12 @@ export async function fetchProgramList(url = "https://opensist-auth.caoster.work
     return response.json();
 }
 
-export async function addModifyProgram(data, url = "https://opensist-auth.caoster.workers.dev/api/mutating/new_modify_program", session = null) {
-    const response = await fetch(url, {
+export async function addModifyProgram({
+                                           url = "https://opensist-auth.caoster.workers.dev/api/mutating/new_modify_program",
+                                           session= null,
+                                           data
+                                       }) {
+    return await fetch(url, {
         method: 'POST',
         mode: 'cors',
         credentials: 'include',
@@ -109,7 +185,6 @@ export async function addModifyProgram(data, url = "https://opensist-auth.caoste
         },
         body: JSON.stringify(data),
     });
-    return response;
 }
 
 export default fetch_url;

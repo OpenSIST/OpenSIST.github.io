@@ -1,13 +1,44 @@
-import './css/github.css'
-import ReactMarkdown from 'react-markdown'
+import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import AddModifyProgram from "../Modify/Program/AddModifyProgram";
+import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import "./css/github.css";
 
-export default function ProgramContent({programDesc, className}) {
+function ProgramContent({ programDesc, setProgramDesc, isEditMode, setIsEditMode, className }) {
+    const handleReviseClick = () => {
+        setIsEditMode(!isEditMode);
+    };
+
+    const handleContentChange = (event) => {
+        setProgramDesc(event.target.value);
+    };
+
     if (programDesc === '') {
         return null
     }
+
     return (
-            <div className={className}>
-                <ReactMarkdown>{programDesc}</ReactMarkdown>
-            </div>
+        isEditMode ? (
+            <AddModifyProgram
+                isShow={isEditMode} setIsShow={setIsEditMode}
+                originData={
+                    {
+                        ProgramID: 'CS@ShanghaiTech',
+                        University: 'ShanghaiTech',
+                        Description: programDesc,
+                        TargetApplicantMajor: ['CS', 'EE']
+
+                    }
+                }
+                className={className}
+            /> ) : (
+                <div className={className}>
+                    <ReactMarkdown>{programDesc}</ReactMarkdown>
+                    <button onClick={handleReviseClick}><FontAwesomeIcon icon={solid("pen")} /></button>
+                </div>
+        )
     );
 }
+
+export default ProgramContent;
