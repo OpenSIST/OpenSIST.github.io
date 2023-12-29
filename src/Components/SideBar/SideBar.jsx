@@ -3,7 +3,6 @@ import fetch_url from "../../Data";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {solid} from '@fortawesome/fontawesome-svg-core/import.macro'
 import ProgramContent from "./ProgramContent/ProgramContent";
-import {useNavigate} from "react-router-dom";
 import "./SideBar.css"
 import AddModifyProgram from "../Modify/Program/AddModifyProgram";
 import SearchBar from "./SearchBar/SearchBar";

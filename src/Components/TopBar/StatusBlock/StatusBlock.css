@@ -14,14 +14,15 @@
     align-items: center;
     gap: 10px;
     cursor: pointer;
-    background-color: #dddddd;
+    background-color: #fcfcfc;
     border-radius: 5px;
     padding: 10px 20px;
+    transition: background-color 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .UserBlock:hover {
-    background-color: #999999;
+    background-color: #e7e7e7;
 }
 
 .UserBlock:active {
@@ -44,18 +45,7 @@
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     user-select: none; /* Standard syntax */
-}
-
-.UserMenu p {
-    margin: 0;
-    padding: 0;
-    font-size: 1em;
-    color: #333;
-    cursor: pointer;
-}
-
-.UserMenu p:hover {
-    color: #007bff;
+    /*opacity: 70%;*/
 }
 
 .UserMenu ul {
