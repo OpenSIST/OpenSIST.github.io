@@ -19,6 +19,12 @@ function Register() {
     // const [match, setMatch] = useState(true);
     const [valid, setValid] = useState(true);
 
+    // check the state for password requirements
+    const [isLengthValid, setIsLengthValid] = useState(false);
+    const [hasNumber, setHasNumber] = useState(false);
+    const [hasLowercase, setHasLowercase] = useState(false);
+    const [hasUppercase, setHasUppercase] = useState(false);
+
     // check if the agreements are already checked
     const [boxChecked, setChecked] = useState(false);
 
@@ -27,6 +33,19 @@ function Register() {
     const handleAgreementCheck = async (e) => {
         setChecked(e.target.checked);
     };
+
+    const updatePasswordRequirements = (password) => {
+        setIsLengthValid(password.length >= 8 && password.length <= 24);
+        setHasNumber(/[0-9]/.test(password));
+        setHasLowercase(/[a-z]/.test(password));
+        setHasUppercase(/[A-Z]/.test(password));
+    };
+
+    const handlePasswordChange = (e) => {
+        const newPassword = e.target.value;
+        setPassword(newPassword);
+        updatePasswordRequirements(newPassword);
+    }
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -78,7 +97,7 @@ function Register() {
                     type="password"
                     placeholder="Password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={handlePasswordChange}
                     required
                 />
                 <input
@@ -92,8 +111,12 @@ function Register() {
                     }
                     required
                 />
-                <br/>
-
+                <div>
+                    <span>{isLengthValid ? "✅" : "❌"} 密码长度为8-24个字符</span><br/>
+                    <span>{hasNumber ? "✅" : "❌"} 密码至少包含一个数字</span><br/>
+                    <span>{hasLowercase ? "✅" : "❌"} 密码至少包含一个小写字母</span><br/>
+                    <span>{hasUppercase ? "✅" : "❌"} 密码至少包含一个大写字母</span>
+                </div>
                 <div>
                     <input
                         type="checkbox"
@@ -115,9 +138,7 @@ function Register() {
                            style={{textDecoration: "underline", cursor: "pointer"}}>用户守则</a>。
                     </label>
                 </div>
-                <br/>
-
-                {valid ? null : <p style={{color: 'red'}}> "Password must contain at least one number, one lowercase and one uppercase letter" </p>}
+                {valid ? null : <p style={{color: 'red'}}>请按照规范重新设置密码。</p>}
                 <button type="submit">Register</button>
                 <a onClick={() => {
                     navigate('/login')
