@@ -5,7 +5,6 @@
     font-size: 1em;
     color: #333;
     background-color: #f8f9fa;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 0 5px 5px 0;
 }
 
@@ -21,4 +20,5 @@
     background-color: #99bfe7;
     padding-left: 10px;
     border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

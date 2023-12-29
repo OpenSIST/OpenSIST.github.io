@@ -132,24 +132,24 @@ function Register() {
                         required
                     />
                     <label>我已阅读并同意OpenSIST
-                        <a onClick={() => {
+                        <b onClick={() => {
                             navigate('/agreement')
                         }}
-                           style={{textDecoration: "underline", cursor: "pointer"}}>隐私条款</a>
+                           style={{textDecoration: "underline", cursor: "pointer"}}>隐私条款</b>
                         ，且愿意遵守OpenSIST
-                        <a onClick={() => {
+                        <b onClick={() => {
                             navigate('/agreement')
                         }}
-                           style={{textDecoration: "underline", cursor: "pointer"}}>用户守则</a>。
+                           style={{textDecoration: "underline", cursor: "pointer"}}>用户守则</b>。
                     </label>
                 </div>
                 {valid ? null : <p style={{color: 'red'}}>请按照规范重新设置密码。</p>}
                 <button type="submit">Register</button>
-                <a onClick={() => {
+                <p onClick={() => {
                     navigate('/login')
                 }}
                    style={{textDecoration: "underline", cursor: "pointer"}}>
-                    Already have an account? Login now!</a>
+                    Already have an account? Login now!</p>
             </form>
         </div>
     );

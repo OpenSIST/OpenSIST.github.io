@@ -1,7 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from 'react-router-dom';
 import "./Login.css"
-import Reset from '../Reset/Reset'
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -66,18 +65,18 @@ function Login() {
                 />
                 {!valid && <p style={{color: 'red'}}>Password should be within 8~24 characters</p>}
                 <button type="submit">Login</button>
-                <a onClick={() => {
+                <p onClick={() => {
                     navigate('/reset')
                 }}
                     style={{textDecoration: "underline", cursor: "pointer"}}>
                     Forget Password
-                </a>
-                <a onClick={() => {
+                </p>
+                <p onClick={() => {
                     navigate('/register')
                 }}
                    style={{textDecoration: "underline", cursor: "pointer"}}>
                     Don't have an account? Register now!
-                </a>
+                </p>
             </form>
         </div>
     );
