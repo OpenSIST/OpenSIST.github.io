@@ -2,10 +2,11 @@ import React, {useState, useEffect} from 'react';
 import fetch_url from "../../Data";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {solid} from '@fortawesome/fontawesome-svg-core/import.macro'
-import ProgramContent from "../ProgramContent/ProgramContent";
+import ProgramContent from "./ProgramContent/ProgramContent";
 import {useNavigate} from "react-router-dom";
 import "./SideBar.css"
 import AddModifyProgram from "../Modify/Program/AddModifyProgram";
+import SearchBar from "./SearchBar/SearchBar";
 
 function SideBar(props) {
     const [univList, setUnivList] = useState([]);
@@ -38,14 +39,7 @@ function SideBar(props) {
         <>
             <div className='ProgramMainBlock'>
                 <div className='Side-bar'>
-                    <form onSubmit={event => {
-                        event.preventDefault();
-                        setSearchedUniv(univList.filter((univ) => univ[0].toLowerCase().includes(
-                            event.target.Search.value.toLowerCase())));
-                    }}>
-                        <input type='text' id='Search' name='Search' className='Search-bar' placeholder='search for...'/>
-                        <button type='submit' title='SearchButton'><FontAwesomeIcon icon={solid("magnifying-glass")} /></button>
-                    </form>
+                    <SearchBar setSearchedUniv={setSearchedUniv} univList={univList}/>
                     <ul className="Univ-list">
                         {searched_univ.map((univ) => (
                                 <UnivItem univ={univ} key={univ[0]} onProgramSelect={handleProgramSelect}/>
@@ -53,7 +47,7 @@ function SideBar(props) {
                         )}
                     </ul>
                     <button onClick={handleAddProgram} title='AddProgramButton'>
-                        <FontAwesomeIcon icon={solid("plus")} />
+                        <FontAwesomeIcon icon={solid("plus")}/>
                     </button>
 
                 </div>

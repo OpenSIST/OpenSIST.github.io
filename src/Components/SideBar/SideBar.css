@@ -17,6 +17,7 @@
     background-color: #f8f9fa;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    user-select: text;
 }
 
 .Side-bar {
@@ -29,15 +30,6 @@
     border-right: 1px solid #e7e7e7;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
-}
-
-.Search-bar {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 1rem;
-    box-sizing: border-box;
 }
 
 .Univ-list {

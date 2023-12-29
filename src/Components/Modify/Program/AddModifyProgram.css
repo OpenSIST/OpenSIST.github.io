@@ -51,4 +51,10 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    gap: 10px;
+}
+
+#WritePreviewButtonGroup button,
+#SaveCancelButtonGroup button {
+    width: 5rem;
 }

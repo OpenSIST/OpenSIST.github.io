@@ -15,11 +15,3 @@
     color: #333;
 }
 
-.StatusBlock {
-    display: flex;
-    gap: 20px;
-}
-
-.StatusBlock h2 {
-    margin-right: 10px;
-}

@@ -1,0 +1,24 @@
+.Search-bar {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    font-size: 1em;
+    color: #333;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0 5px 5px 0;
+}
+
+.Search-bar:focus {
+    outline: none;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    background-color: #999999;
+    padding-left: 10px;
+    border-radius: 5px;
+}

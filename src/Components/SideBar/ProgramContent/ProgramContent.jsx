@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import AddModifyProgram from "../Modify/Program/AddModifyProgram";
+import AddModifyProgram from "../../Modify/Program/AddModifyProgram";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import "./css/github.css";
