@@ -13,12 +13,12 @@
     outline: none;
 }
 
-form {
+.SearchBlock {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 10px;
-    background-color: #999999;
+    background-color: #99bfe7;
     padding-left: 10px;
     border-radius: 5px;
 }

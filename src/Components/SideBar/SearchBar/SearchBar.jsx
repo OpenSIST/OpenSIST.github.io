@@ -5,7 +5,7 @@ import "./SearchBar.css"
 
 export default function SearchBar({setSearchedUniv, univList}) {
     return (
-        <form onSubmit={event => {
+        <form className='SearchBlock' onSubmit={event => {
             event.preventDefault();
             setSearchedUniv(univList.filter((univ) => univ[0].toLowerCase().includes(
                 event.target.Search.value.toLowerCase())));
