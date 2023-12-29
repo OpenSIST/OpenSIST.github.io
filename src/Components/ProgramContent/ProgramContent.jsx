@@ -35,7 +35,7 @@ function ProgramContent({ programDesc, setProgramDesc, isEditMode, setIsEditMode
             /> ) : (
                 <div className={className}>
                     <ReactMarkdown>{programDesc}</ReactMarkdown>
-                    <button onClick={handleReviseClick}><FontAwesomeIcon icon={solid("pen")} /></button>
+                    <button onClick={handleReviseClick}><FontAwesomeIcon icon={solid("pen-to-square")} /></button>
                 </div>
         )
     );
