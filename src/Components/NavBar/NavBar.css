@@ -1,0 +1,25 @@
+.NavBar {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    /*background-color: #34cfeb;*/
+    background-color: #f8f9fa;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.NavBar-item {
+    display: inline-block;
+    margin-right: 25px;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.NavBar-item:hover {
+    display: inline-block;
+    margin-right: 20px;
+    font-weight: bold;
+    background-color: #e7e7e7;
+    font-size: 24px;
+}

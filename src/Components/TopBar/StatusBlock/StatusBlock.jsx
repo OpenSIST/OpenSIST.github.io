@@ -69,7 +69,7 @@ const UserMenu = React.forwardRef((props, ref) => {
         <div className="UserMenu" ref={ref}>
             <ul>
                 <button name='Profile' id='Profile' onClick={() => navigate('/Profile')}>
-                    <FontAwesomeIcon icon={solid("gear")}/>
+                    <FontAwesomeIcon icon={solid("home")}/>
                 </button>
                 <button name='Reset' id='Reset' onClick={() => navigate('/Reset')}>
                     <FontAwesomeIcon icon={solid("undo")}/>

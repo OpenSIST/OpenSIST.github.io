@@ -11,7 +11,7 @@ export default function SearchBar({setSearchedUniv, univList}) {
 
     return (
         <form className='SearchBlock'>
-            <FontAwesomeIcon icon={solid("magnifying-glass")}/>
+            <FontAwesomeIcon icon={solid("magnifying-glass")}/>|
             <input onChange={handleSearch} type='text' id='Search' name='Search'
                    className='Search-bar' placeholder='search for...'
             />

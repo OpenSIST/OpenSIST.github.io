@@ -1,5 +1,4 @@
 import React from 'react';
-import {useNavigate} from "react-router-dom";
 import './TopBar.css';
 import {StatusBlock} from "./StatusBlock/StatusBlock";
 
@@ -9,7 +8,7 @@ function TopBar() {
     return (
         <div className="TopBar">
             <div className="TopBarHeader">
-                <h1> Welcome to OpenSIST </h1>
+                <p> Welcome to OpenSIST </p>
             </div>
             <StatusBlock user={user}/>
         </div>

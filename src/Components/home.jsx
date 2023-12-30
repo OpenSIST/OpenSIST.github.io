@@ -1,9 +1,10 @@
 import TopBar from "./TopBar/TopBar";
 import SideBar from "./SideBar/SideBar";
+import NavBar from "./NavBar/NavBar";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 
-const checkLogin = async () => {
+export const checkLogin = async () => {
     try {
         if (!localStorage.getItem("token")) {
             return false;
@@ -48,6 +49,7 @@ function Home() {
     return (
         <>
             <TopBar/>
+            <NavBar/>
             <SideBar/>
         </>
     );
