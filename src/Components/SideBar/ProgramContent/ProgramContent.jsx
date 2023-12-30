@@ -27,6 +27,8 @@ function ProgramContent({ programDesc, setProgramDesc, isEditMode, setIsEditMode
                         ProgramID: 'MSCS@Stanford',
                         University: 'Stanford',
                         Program: 'MSCS',
+                        Region: ['United States'],
+                        Degree: 'Master',
                         TargetApplicantMajor: ['CS', 'EE'],
                         Description: programDesc
                     }

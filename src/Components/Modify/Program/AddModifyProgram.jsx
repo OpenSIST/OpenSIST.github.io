@@ -1,34 +1,23 @@
 import React, {useState} from 'react';
 import ReactMarkdown from 'react-markdown';
 import "./AddModifyProgram.css";
-import {addModifyProgram} from "../../../Data";
+import {addModifyProgram} from "../../../Data/Data";
+import {DescriptionTemplate, ProgramTargetApplicantMajorChoices,
+    ProgramRegionChoices} from "../../../Data/Schemas";
 
-const DescriptionTemplate = `# Program Name
+function getListChoices(choices) {
+    return Array.from(choices).map(
+        (choice) => {
+            if (choice.checked) {
+                return choice.value;
+            }
+        }
+    ).filter((choice) => choice !== undefined);
+}
 
-## Overview
-Write a brief overview of the program here.
-
-## Structure
-Describe the structure of the program here.
-
-## Curriculum
-Detail the curriculum of the program here.
-
-## Faculty
-List and describe the faculty involved in the program here.
-
-## Research
-Describe the research opportunities and ongoing projects in the program here.
-
-## Admission
-Detail the admission process and requirements for the program here.
-
-## Contact
-Provide contact information for inquiries about the program here.
-`
 
 function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
-    const [description, setDescription] = useState(originData === null ? DescriptionTemplate : originData.Description);
+    const [Description, setDescription] = useState(originData === null ? DescriptionTemplate : originData.Description);
     const [view, setView] = useState('write');
     const handleDescriptionChange = (event) => {
         setDescription(event.target.value);
@@ -46,27 +35,25 @@ function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const university = event.target.university.value;
-        const program = event.target.program.value;
-        const targetApplicantMajor = Array.from(event.target.TargetApplicantMajor).map(
-            (option) => {
-                if (option.checked) {
-                    return option.value;
-                }
-            }
-        ).filter((option) => option !== undefined);
-        const description = event.target.description.value;
+        const University = event.target.University.value;
+        const Program = event.target.Program.value;
+        const targetApplicantMajor = getListChoices(event.target.TargetApplicantMajor);
+        const Region = getListChoices(event.target.Region);
+        const Description = event.target.Description.value;
+
         const data = {
             'newProgram': false,
             'content': {
-                'ProgramID': `${program}@${university}`,
-                'University': university,
-                'Program': program,
+                'ProgramID': `${Program}@${University}`,
+                'University': University,
+                'Program': Program,
+                'Region': Region,
+                'Degree': event.target.Degree.value,
                 'TargetApplicantMajor': targetApplicantMajor,
-                'Description': description,
+                'Description': Description,
                 'Applicants': []
             }
-        }
+        };
         try {
             const response = await addModifyProgram({session: localStorage.getItem('token'), data: data});
             if (response.status === 200) {
@@ -89,50 +76,57 @@ function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
         <div className={className}>
             <form onSubmit={handleSubmit} className='ProgramForm'>
                 <h1 id="Title">{`${mode} Program`}</h1>
+
                 <h4 className='Subtitle'>University Name</h4>
-                <input type="text" id="university" name="university"
+                <input type="text" id="University" name="University"
                        defaultValue={originData === null ? '' : originData.University}
                        placeholder="University Name" required/>
+
                 <h4 className='Subtitle'>Program Name</h4>
-                <input type="text" id="program" name="program"
-                       defaultValue={originData === null ? '' : originData.ProgramID.split('@')[0]}
+                <input type="text" id="Program" name="Program"
+                       defaultValue={originData === null ? '' : originData.Program}
                        placeholder="Program Name" required/>
-                <h4 className='Subtitle'>Target Applicant Major (Multi-options)</h4>
-                <div className="TargetApplicantMajorOption">
-                    <input type="checkbox" id="CS" name="TargetApplicantMajor"
-                           defaultChecked={originData === null ? false : originData.TargetApplicantMajor.includes('CS')}
-                           value="CS"/>
-                    <label htmlFor="CS">CS</label>
-                </div>
-                <div className="TargetApplicantMajorOption">
-                    <input type="checkbox" id="EE" name="TargetApplicantMajor"
-                           defaultChecked={originData === null ? false : originData.TargetApplicantMajor.includes('EE')}
-                           value="EE"/>
-                    <label htmlFor="EE">EE</label>
-                </div>
-                <div className="TargetApplicantMajorOption">
-                    <input type="checkbox" id="IE" name="TargetApplicantMajor"
-                           defaultChecked={originData === null ? false : originData.TargetApplicantMajor.includes('IE')}
-                           value="IE"/>
-                    <label htmlFor="IE">IE</label>
-                </div>
+
+                <h4 className='Subtitle'>Program Degree</h4>
+                <SingleChoice
+                    choices={['Master', 'PhD']}
+                    defaultValue={originData === null ? 'Master' : originData.Degree}
+                    name={'Degree'}
+                />
+
+                <h4 className='Subtitle'>Target Applicant Major (Multi-choices)</h4>
+                <MultiChoice
+                    choices={ProgramTargetApplicantMajorChoices}
+                    defaultValue={originData === null ? [] : originData.TargetApplicantMajor}
+                    name="TargetApplicantMajor"
+                />
+
+                <h4 className='Subtitle'>Program Region (Multi-choices)</h4>
+                <MultiChoice
+                    choices={ProgramRegionChoices}
+                    defaultValue={originData === null ? [] : originData.Region}
+                    name="Region"
+                />
+
                 <h4 className='Subtitle'>Program Description</h4>
                 <div id='WritePreviewButtonGroup'>
                     <button type="button" onClick={handleWriteClick}>Write</button>
                     <button type="button" onClick={handlePreviewClick}>Preview</button>
                 </div>
+
                 {view === 'write' ? (
-                    <textarea id="description" name="description" placeholder="Program Description"
-                              defaultValue={description}
+                    <textarea id="Description" name="Description" placeholder="Program Description"
+                              defaultValue={Description}
                               required onChange={handleDescriptionChange}
                               rows="20" cols="50"
                               style={{display: view === 'write' ? 'block' : 'none'}}
                     />
                 ) : (
                     <div className="markdown-preview" style={{display: view === 'preview' ? 'block' : 'none'}}>
-                        <ReactMarkdown>{description === '' ? 'Nothing here yet' : description}</ReactMarkdown>
+                        <ReactMarkdown>{Description === '' ? 'Nothing here yet' : Description}</ReactMarkdown>
                     </div>
                 )}
+
                 <div id='SaveCancelButtonGroup'>
                     <button type="submit">Save</button>
                     <button onClick={() => {
@@ -142,6 +136,30 @@ function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
                     </button>
                 </div>
             </form>
+        </div>
+    )
+}
+
+function SingleChoice({choices, defaultValue, name}) {
+    return (
+        <select defaultValue={defaultValue} name={name}>
+            {choices.map((choice) => (
+                <option value={choice} key={choice}>{choice}</option>
+            ))}
+        </select>
+    )
+}
+
+function MultiChoice({choices, defaultValue, name}) {
+    return (
+        <div className="MultiChoice">
+            {choices.map((choice) => (
+                <div className="MultiChoiceOption" key={choice}>
+                    <input type="checkbox" id={choice} name={name} value={choice}
+                           defaultChecked={defaultValue.includes(choice)}/>
+                    <label htmlFor={choice}>{choice}</label>
+                </div>
+            ))}
         </div>
     )
 }

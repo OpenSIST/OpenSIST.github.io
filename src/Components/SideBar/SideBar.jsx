@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import fetch_url from "../../Data";
+import fetch_url from "../../Data/Data";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {solid} from '@fortawesome/fontawesome-svg-core/import.macro'
 import ProgramContent from "./ProgramContent/ProgramContent";
