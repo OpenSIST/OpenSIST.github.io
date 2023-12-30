@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import Agreement from "./Components/Agreement/Agreement";
 import Reset from "./Components/Auth/Reset/Reset";
+import ResetPassword from "./Components/Auth/Reset/ResetPassword";
 
 const router = createBrowserRouter([{
     path: "/",
@@ -30,7 +31,10 @@ const router = createBrowserRouter([{
 }, {
     path: "/reset",
     element: <Reset/>
-},
+}, {
+    path: "reset_password",
+    element: <ResetPassword/>
+}
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
