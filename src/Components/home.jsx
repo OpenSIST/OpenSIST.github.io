@@ -16,18 +16,7 @@ export const checkLogin = async () => {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             }
         });
-        if (response.status === 200) {
-            console.log("Login success!")
-            return true;
-        } else if (response.status === 401) {
-            console.log("Token expired!")
-            return false;
-        } else {
-            console.log("Unknown error!")
-            const content = await response.json();
-            alert(`${content.error}, Error code: ${response.status}`);
-            return false;
-        }
+        return response.status === 200;
     } catch (e) {
         alert(e);
         return false;

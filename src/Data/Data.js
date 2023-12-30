@@ -154,20 +154,22 @@ async function fetch_url(url) {
     };
 }
 
-export async function fetchProgramList({
-                                           url = "https://opensist-auth.caoster.workers.dev/api/list/program",
-                                           session = null
-                                       }) {
-    const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session}`,
-        },
-    });
-    return response;
+export async function fetchProgramList(url = "https://opensist-auth.caoster.workers.dev/api/static_data/program") {
+    const cacheName = 'programListCache';
+    const cache = await caches.open(cacheName);
+    let response = await cache.match(url);
+
+    if (!response || (Date.now() - Date.parse(response.headers.get('Date'))) > 24 * 60 * 60 * 1000) {
+        response = await fetch(url, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        await cache.put(url, response.clone());
+    }
+    return (await response.json())['data'];
 }
 
 export async function addModifyProgram({
@@ -177,7 +179,6 @@ export async function addModifyProgram({
                                        }) {
     return await fetch(url, {
         method: 'POST',
-        mode: 'cors',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
@@ -187,4 +188,4 @@ export async function addModifyProgram({
     });
 }
 
-export default fetch_url;
+export {fetch_url};

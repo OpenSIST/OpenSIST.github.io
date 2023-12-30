@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import fetch_url from "../../Data/Data";
+import {fetch_url, fetchProgramList} from "../../Data/Data";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {solid} from '@fortawesome/fontawesome-svg-core/import.macro'
 import ProgramContent from "./ProgramContent/ProgramContent";
@@ -20,7 +20,7 @@ function SideBar(props) {
 
     useEffect(() => {
         const fetchData = async () => {
-            let response = await fetch_url(props.url);
+            let response = await fetchProgramList();
             let data = Object.entries(response);
             setUnivList(data);
             setSearchedUniv(data);
@@ -98,7 +98,7 @@ function ProgramItem({showList, program, onProgramSelect}) {
                     () => onProgramSelect(program[1].description)
                 } style={{cursor: "pointer"}}>
                     <div>
-                        {program[1].name}
+                        {program[1].Program}
                     </div>
                 </li>
             ))}
