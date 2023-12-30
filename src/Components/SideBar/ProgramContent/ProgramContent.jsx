@@ -24,11 +24,11 @@ function ProgramContent({ programDesc, setProgramDesc, isEditMode, setIsEditMode
                 isShow={isEditMode} setIsShow={setIsEditMode}
                 originData={
                     {
-                        ProgramID: 'CS@ShanghaiTech',
-                        University: 'ShanghaiTech',
-                        Description: programDesc,
-                        TargetApplicantMajor: ['CS', 'EE']
-
+                        ProgramID: 'MSCS@Stanford',
+                        University: 'Stanford',
+                        Program: 'MSCS',
+                        TargetApplicantMajor: ['CS', 'EE'],
+                        Description: programDesc
                     }
                 }
                 className={className}

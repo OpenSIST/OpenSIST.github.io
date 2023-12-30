@@ -61,6 +61,7 @@ function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
             'content': {
                 'ProgramID': `${program}@${university}`,
                 'University': university,
+                'Program': program,
                 'TargetApplicantMajor': targetApplicantMajor,
                 'Description': description,
                 'Applicants': []
