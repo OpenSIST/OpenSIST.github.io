@@ -23,9 +23,10 @@
     width: 100%;
     padding: 0.5rem;
     border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 1rem;
+    border-radius: 5px;
+    /*margin-bottom: 1rem;*/
     box-sizing: border-box;
+    font-size: 16px;
 }
 
 .TargetApplicantMajorOption {
@@ -35,15 +36,20 @@
     margin-bottom: 10px;
 }
 
+.ProgramForm textarea,
 .markdown-preview {
     width: 100%;
-    height: 500px;
+    /*height: 384px;*/
+    height: 30em;
     padding: 0.5rem;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 5px;
     box-sizing: border-box;
     overflow-y: scroll;
     background-color: #fff;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
 }
 
 #WritePreviewButtonGroup,
@@ -57,4 +63,6 @@
 #WritePreviewButtonGroup button,
 #SaveCancelButtonGroup button {
     width: 6rem;
+    font-size: 16px;
+
 }
