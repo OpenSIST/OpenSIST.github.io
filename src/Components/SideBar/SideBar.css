@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
-    height: calc(100vh - 160px);
+    height: calc(100vh - 120px);
     background-color: #f8f9fa;
     border-radius: 0 0 5px 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
@@ -16,7 +16,7 @@
     padding: 20px;
     margin-right: 2vw;
     background-color: #f8f9fa;
-    border-radius: 5px;
+    border-radius: 0 0 5px 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     user-select: text;
     overflow-y: auto;
@@ -31,6 +31,7 @@
     background-color: #f8f9fa;
     border-right: 1px solid #e7e7e7;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 5px 5px;
     overflow-y: auto;
 }
 

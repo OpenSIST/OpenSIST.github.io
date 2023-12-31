@@ -14,6 +14,9 @@ function SideBar(props) {
     const [selectedProgram, setSelectedProgram] = useState(null);
     const [addProgram, setAddProgram] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
+    const [isForceFetchList, setIsForceFetchList] = useState(false);
+    const [isForceFetchDesc, setIsForceFetchDesc] = useState(false);
+
     const handleAddProgram = () => {
         setSelectedUniversity(null);
         setSelectedProgram(null);
@@ -22,28 +25,36 @@ function SideBar(props) {
 
     useEffect(() => {
         const fetchData = async () => {
-            let response = await fetchProgramList();
+            let response = await fetchProgramList(isForceFetchList);
             let data = Object.entries(response);
             setFullList(data);
             setUniversityProgramList(data);
+            setIsForceFetchList(false);
         };
         fetchData().then();
-    }, []);
+    }, [isForceFetchList]);
 
-    const handleProgramSelect = async (Program) => {
-        setAddProgram(false);
+    useEffect(() => {
+        const fetchData = async () => {
+            if (selectedProgram !== null) {
+                let response = await fetchProgramDesc({
+                    session: localStorage.getItem('token'),
+                    ProgramID: selectedProgram.ProgramID,
+                    forceFetch: isForceFetchDesc
+                });
+                const ProgramWithDesc = {...selectedProgram};
+                ProgramWithDesc['Description'] = response;
+                setSelectedProgram(ProgramWithDesc);
+                setSelectedUniversity(selectedProgram.University)
+                setIsEditMode(false);
+                setIsForceFetchDesc(false);
+            }
+        };
+        fetchData().then();
+    }, [selectedProgram ? selectedProgram.ProgramID : null, isForceFetchDesc]);
 
-        let response = await fetchProgramDesc({
-            session: localStorage.getItem('token'),
-            ProgramID: Program.ProgramID
-        });
-
-        const ProgramWithDesc = {
-            ...Program, "Description": response
-        }
-        setSelectedProgram(ProgramWithDesc);
-        setSelectedUniversity(Program.University)
-        setIsEditMode(false);
+    const handleProgramSelect = (Program) => {
+        setSelectedProgram(Program);
     }
 
     return (
@@ -59,10 +70,14 @@ function SideBar(props) {
                     <button onClick={handleAddProgram} id='AddProgramButton' title='AddProgramButton'>
                         <FontAwesomeIcon icon={solid("plus")}/>
                     </button>
+                    <button onClick={() => setIsForceFetchList(true)} id='RefreshButton' title='RefreshButton'>
+                        <FontAwesomeIcon icon={solid("arrows-rotate")}/>
+                    </button>
                 </div>
-                <AddModifyProgram isShow={addProgram} setIsShow={setAddProgram} className='ProgramContent'/>
+                <AddModifyProgram isShow={addProgram} setIsShow={setAddProgram} setIsForceFetch={setIsForceFetchList} className='ProgramContent'/>
                 <ProgramContent program={selectedProgram}
                                 isEditMode={isEditMode} setIsEditMode={setIsEditMode}
+                                setIsForceFetch={setIsForceFetchDesc}
                                 className='ProgramContent'/>
             </div>
         </>
@@ -120,7 +135,8 @@ function ProgramItem({program, selectedProgram, setSelectedProgram}) {
     const isClicked = (selectedProgram !== null && selectedProgram.ProgramID === program.ProgramID);
     // console.log(`ProgramItem: ${program.ProgramID} ${isClicked}`);
     return (
-        <li className={'ProgramItem' + (isClicked ? 'Selected' : '')} onClick={() => setSelectedProgram(program)}>
+        <li className={'ProgramItem' + (isClicked ? 'Selected' : '')}
+            onClick={() => setSelectedProgram(program)}>
             <div> {program.Program} </div>
         </li>
     );

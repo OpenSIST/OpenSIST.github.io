@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactMarkdown from 'react-markdown';
 import "./AddModifyProgram.css";
 import {addModifyProgram} from "../../../Data/Data";
@@ -18,7 +18,7 @@ function getListChoices(choices) {
 }
 
 
-function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
+function AddModifyProgram({isShow, setIsShow, setIsForceFetch, className, originData = null}) {
 
     const [Description, setDescription] = useState(originData === null ? DescriptionTemplate : originData.Description);
     const [view, setView] = useState('write');
@@ -61,7 +61,8 @@ function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
             const response = await addModifyProgram({session: localStorage.getItem('token'), data: data});
             if (response.status === 200) {
                 alert(`Program ${mode} Successfully!`);
-                window.location.reload();
+                // window.location.reload();
+                setIsForceFetch(true);
                 setIsShow(false);
             } else {
                 const content = await response.json();

@@ -1,35 +1,37 @@
-export async function fetchProgramList(url = "https://opensist-auth.caoster.workers.dev/api/static_data/programs") {
+import {PROGRAM_LIST, PROGRAM_DESC, ADD_MODIFY_PROGRAM} from "../APIs/APIs"
+export async function fetchProgramList(forceFetch = false) {
     const cacheName = 'programListCache';
     const cache = await caches.open(cacheName);
-    await cache.delete(url); // TODO: delete this
-    let response = await cache.match(url);
+    // await cache.delete(url); // TODO: delete this
+    let response = await cache.match(PROGRAM_LIST);
 
-    if (!response || (Date.now() - Date.parse(response.headers.get('Date'))) > 24 * 60 * 60 * 1000) {
-        response = await fetch(url, {
+    if (forceFetch || !response || (Date.now() - Date.parse(response.headers.get('Date'))) > 24 * 60 * 60 * 1000) {
+        response = await fetch(PROGRAM_LIST, {
             method: 'POST',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        await cache.put(url, response.clone());
+        await cache.put(PROGRAM_LIST, response.clone());
     }
     return (await response.json())['data'];
 }
 
 export async function fetchProgramDesc({
-                                           url = "https://opensist-auth.caoster.workers.dev/api/query/program_description",
-                                           session= "",
-                                           ProgramID = ""
+                                           session = "",
+                                           ProgramID = "",
+                                           forceFetch = false
                                        }) {
-    const cacheUrl = `${url}?ProgramID=${ProgramID}`;
+    const cacheUrl = `${PROGRAM_DESC}?ProgramID=${ProgramID}`;
     const cacheName = 'programDescCache';
     const cache = await caches.open(cacheName);
-    await cache.delete(cacheUrl); // TODO: delete this
+    // await cache.delete(cacheUrl); // TODO: delete this
     let response = await cache.match(cacheUrl);
 
-    if (!response || (Date.now() - Date.parse(response.headers.get('Date'))) > 24 * 60 * 60 * 1000) {
-        response = await fetch(url, {
+    if (forceFetch || !response || (Date.now() - Date.parse(response.headers.get('Date'))) > 24 * 60 * 60 * 1000) {
+        console.log('Fetching program description from server.')
+        response = await fetch(PROGRAM_DESC, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -39,16 +41,17 @@ export async function fetchProgramDesc({
             body: JSON.stringify({'ProgramID': ProgramID}),
         });
         await cache.put(cacheUrl, response.clone());
+    } else {
+        console.log('Using cached program description.');
     }
     return (await response.json())['description'];
 }
 
 export async function addModifyProgram({
-                                           url = "https://opensist-auth.caoster.workers.dev/api/mutating/new_modify_program",
-                                           session= "",
+                                           session = "",
                                            data
                                        }) {
-    return await fetch(url, {
+    return await fetch(ADD_MODIFY_PROGRAM, {
         method: 'POST',
         credentials: 'include',
         headers: {
