@@ -5,16 +5,12 @@ import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import "./css/github.css";
 
-function ProgramContent({ programDesc, setProgramDesc, isEditMode, setIsEditMode, className }) {
+function ProgramContent({ program, isEditMode, setIsEditMode, className }) {
     const handleReviseClick = () => {
         setIsEditMode(!isEditMode);
     };
 
-    const handleContentChange = (event) => {
-        setProgramDesc(event.target.value);
-    };
-
-    if (programDesc === '') {
+    if (program === null) {
         return null
     }
 
@@ -22,21 +18,11 @@ function ProgramContent({ programDesc, setProgramDesc, isEditMode, setIsEditMode
         isEditMode ? (
             <AddModifyProgram
                 isShow={isEditMode} setIsShow={setIsEditMode}
-                originData={
-                    {
-                        ProgramID: 'MSCS@Stanford',
-                        University: 'Stanford',
-                        Program: 'MSCS',
-                        Region: ['United States'],
-                        Degree: 'Master',
-                        TargetApplicantMajor: ['CS', 'EE'],
-                        Description: programDesc
-                    }
-                }
+                originData={program}
                 className={className}
             /> ) : (
                 <div className={className}>
-                    <ReactMarkdown>{programDesc}</ReactMarkdown>
+                    <ReactMarkdown>{program.Description}</ReactMarkdown>
                     <button onClick={handleReviseClick}><FontAwesomeIcon icon={solid("pen-to-square")} /></button>
                 </div>
         )

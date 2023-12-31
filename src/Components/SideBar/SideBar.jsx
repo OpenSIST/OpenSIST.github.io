@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {fetch_url, fetchProgramList} from "../../Data/Data";
+import {fetchProgramList ,fetchProgramDesc} from "../../Data/Data";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {solid} from '@fortawesome/fontawesome-svg-core/import.macro'
 import ProgramContent from "./ProgramContent/ProgramContent";
@@ -10,11 +10,11 @@ import SearchBar from "./SearchBar/SearchBar";
 function SideBar(props) {
     const [univList, setUnivList] = useState([]);
     const [searched_univ, setSearchedUniv] = useState([]);
-    const [selectedProgramDesc, setSelectedProgramDesc] = useState("");
+    const [selectedProgram, setSelectedProgram] = useState("");
     const [addProgram, setAddProgram] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
     const handleAddProgram = () => {
-        setSelectedProgramDesc("")
+        setSelectedProgram(null)
         setAddProgram(!addProgram);
     }
 
@@ -28,18 +28,37 @@ function SideBar(props) {
         fetchData().then();
     }, [props.url]);
 
-    const handleProgramSelect = (programDesc) => {
+    // const handleProgramSelect = async (ProgramID) => {
+    //     setAddProgram(false);
+    //     let response = await fetchProgramDesc({
+    //         session: localStorage.getItem('token'),
+    //         ProgramID: ProgramID
+    //     });
+    //     setSelectedProgramDesc(response);
+    //     setIsEditMode(false);
+    // }
+
+    const handleProgramSelect = async (Program) => {
         setAddProgram(false);
-        setSelectedProgramDesc(programDesc);
+        let response = await fetchProgramDesc({
+            session: localStorage.getItem('token'),
+            ProgramID: Program.ProgramID
+        });
+
+        const selectedProgram = {
+            ...Program, "Description": response
+        }
+
+        setSelectedProgram(selectedProgram);
         setIsEditMode(false);
     }
 
     return (
         <>
             <div className='ProgramMainBlock'>
-                <div className='Side-bar'>
+                <div className='SideBar'>
                     <SearchBar setSearchedUniv={setSearchedUniv} univList={univList}/>
-                    <ul className="Univ-list">
+                    <ul className="UnivList">
                         {searched_univ.map((univ) => (
                                 <UnivItem univ={univ} key={univ[0]} onProgramSelect={handleProgramSelect}/>
                             )
@@ -51,7 +70,7 @@ function SideBar(props) {
 
                 </div>
                 <AddModifyProgram isShow={addProgram} setIsShow={setAddProgram} className='ProgramContent'/>
-                <ProgramContent programDesc={selectedProgramDesc} setProgramDesc={setSelectedProgramDesc}
+                <ProgramContent program={selectedProgram}
                                 isEditMode={isEditMode} setIsEditMode={setIsEditMode}
                                 className='ProgramContent'/>
             </div>
@@ -72,7 +91,7 @@ function UnivItem(props) {
 
     return (
         <>
-            <li className='Univ-item' onClick={handleClick}>
+            <li className='UnivItem' onClick={handleClick}>
                 <div>
                     {props.univ[0]}
                 </div>
@@ -92,11 +111,11 @@ function ProgramItem({showList, program, onProgramSelect}) {
         return null;
     }
     return (
-        <ul className='Program-list'>
+        <ul className='ProgramList'>
             {Object.entries(program).map((program) => (
-                <li className='Program-item' key={program[0]} onClick={
-                    () => onProgramSelect(program[1].description)
-                } style={{cursor: "pointer"}}>
+                <li className='ProgramItem' key={program[0]} onClick={
+                    () => onProgramSelect(program[1])
+                }>
                     <div>
                         {program[1].Program}
                     </div>

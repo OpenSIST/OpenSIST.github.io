@@ -1,0 +1,30 @@
+.NavBar {
+    background-color: #f8f9fa;
+}
+
+.NavBarList {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 2vw;
+}
+
+.NavBarItem {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    /*background-color: #fcfcfc;*/
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+}
+
+.NavBarItem:hover {
+    background-color: #e7e7e7;
+}
+
+.NavBarItem:active {
+    transform: scale(0.98);;
+}

@@ -1,6 +1,6 @@
 import TopBar from "./TopBar/TopBar";
 import SideBar from "./SideBar/SideBar";
-import NavBar from "./NavBar/NavBar";
+import NavBar from "./TopBar/NavBar/NavBar";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 
@@ -38,7 +38,7 @@ function Home() {
     return (
         <>
             <TopBar/>
-            <NavBar/>
+            {/*<NavBar/>*/}
             <SideBar/>
         </>
     );

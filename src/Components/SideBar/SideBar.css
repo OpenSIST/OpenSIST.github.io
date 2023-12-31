@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 160px);
     background-color: #f8f9fa;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
@@ -22,7 +22,7 @@
     overflow-y: auto;
 }
 
-.Side-bar {
+.SideBar {
     width: 250px;
     height: calc(100vh - 200px);
     margin-right: 2vw;
@@ -34,7 +34,7 @@
     overflow-y: auto;
 }
 
-.Univ-list {
+.UnivList {
     width: 100%;
     height: calc(100vh - 350px);
     overflow-y: auto;
@@ -46,7 +46,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.Univ-item {
+.UnivItem {
     /*width: 160px;*/
     display: flex;
     justify-content: space-between;
@@ -60,18 +60,18 @@
     list-style-type: none;
 }
 
-.Univ-item:hover {
+.UnivItem:hover {
     background-color: #e7e7e7;
 }
 
-.Program-list {
+.ProgramList {
     width: 100%;
     padding: 0;
     margin: 0;
     list-style-type: none;
 }
 
-.Program-item {
+.ProgramItem {
     /*width: 160px;*/
     padding: 0.5rem;
     background-color: #fcfcfc;
@@ -82,16 +82,16 @@
     border: solid 1px #e7e7e7;
 }
 
-.Program-item div {
+.ProgramItem div {
     padding-left: 20px;
 }
 
-.Program-item:hover {
+.ProgramItem:hover {
     background-color: #e7e7e7;
 }
 
-.Univ-item:active,
-.Program-item:active {
+.UnivItem:active,
+.ProgramItem:active {
     transform: scale(0.98);
 }
 

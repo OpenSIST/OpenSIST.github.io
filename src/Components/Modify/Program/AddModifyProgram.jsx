@@ -17,6 +17,9 @@ function getListChoices(choices) {
 
 
 function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
+
+    // console.log(originData)
+
     const [Description, setDescription] = useState(originData === null ? DescriptionTemplate : originData.Description);
     const [view, setView] = useState('write');
     const handleDescriptionChange = (event) => {
