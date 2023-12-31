@@ -61,6 +61,7 @@ function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
             const response = await addModifyProgram({session: localStorage.getItem('token'), data: data});
             if (response.status === 200) {
                 alert(`Program ${mode} Successfully!`);
+                window.location.reload();
                 setIsShow(false);
             } else {
                 const content = await response.json();
@@ -111,7 +112,7 @@ function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
                     name="Region"
                 />
 
-                <h4 className='Subtitle'>Program Description</h4>
+                <h4 className='Subtitle'>Program Description (The editor supports MarkDown syntax)</h4>
                 <div id='WritePreviewButtonGroup'>
                     <button type="button" onClick={handleWriteClick}>Write</button>
                     <button type="button" onClick={handlePreviewClick}>Preview</button>
