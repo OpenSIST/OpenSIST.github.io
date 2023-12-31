@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {fetchProgramList ,fetchProgramDesc} from "../../Data/Data";
+import {fetchProgramList, fetchProgramDesc} from "../../Data/Data";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {solid} from '@fortawesome/fontawesome-svg-core/import.macro'
 import ProgramContent from "./ProgramContent/ProgramContent";
@@ -8,13 +8,15 @@ import AddModifyProgram from "../Modify/Program/AddModifyProgram";
 import SearchBar from "./SearchBar/SearchBar";
 
 function SideBar(props) {
-    const [univList, setUnivList] = useState([]);
-    const [searched_univ, setSearchedUniv] = useState([]);
-    const [selectedProgram, setSelectedProgram] = useState("");
+    const [fullList, setFullList] = useState([]);
+    const [universityProgramList, setUniversityProgramList] = useState([]);
+    const [selectedUniversity, setSelectedUniversity] = useState(null);
+    const [selectedProgram, setSelectedProgram] = useState(null);
     const [addProgram, setAddProgram] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
     const handleAddProgram = () => {
-        setSelectedProgram(null)
+        setSelectedUniversity(null);
+        setSelectedProgram(null);
         setAddProgram(!addProgram);
     }
 
@@ -22,34 +24,25 @@ function SideBar(props) {
         const fetchData = async () => {
             let response = await fetchProgramList();
             let data = Object.entries(response);
-            setUnivList(data);
-            setSearchedUniv(data);
+            setFullList(data);
+            setUniversityProgramList(data);
         };
         fetchData().then();
-    }, [props.url]);
-
-    // const handleProgramSelect = async (ProgramID) => {
-    //     setAddProgram(false);
-    //     let response = await fetchProgramDesc({
-    //         session: localStorage.getItem('token'),
-    //         ProgramID: ProgramID
-    //     });
-    //     setSelectedProgramDesc(response);
-    //     setIsEditMode(false);
-    // }
+    }, []);
 
     const handleProgramSelect = async (Program) => {
         setAddProgram(false);
+
         let response = await fetchProgramDesc({
             session: localStorage.getItem('token'),
             ProgramID: Program.ProgramID
         });
 
-        const selectedProgram = {
+        const ProgramWithDesc = {
             ...Program, "Description": response
         }
-
-        setSelectedProgram(selectedProgram);
+        setSelectedProgram(ProgramWithDesc);
+        setSelectedUniversity(Program.University)
         setIsEditMode(false);
     }
 
@@ -57,17 +50,15 @@ function SideBar(props) {
         <>
             <div className='ProgramMainBlock'>
                 <div className='SideBar'>
-                    <SearchBar setSearchedUniv={setSearchedUniv} univList={univList}/>
-                    <ul className="UnivList">
-                        {searched_univ.map((univ) => (
-                                <UnivItem univ={univ} key={univ[0]} onProgramSelect={handleProgramSelect}/>
-                            )
-                        )}
-                    </ul>
+                    <SearchBar setSearchedUniv={setUniversityProgramList} univList={fullList}/>
+                    <UnivProgramList universityProgramList={universityProgramList}
+                                     selectedUniversity={selectedUniversity}
+                                     selectedProgram={selectedProgram}
+                                     setSelectedProgram={handleProgramSelect}
+                    />
                     <button onClick={handleAddProgram} id='AddProgramButton' title='AddProgramButton'>
                         <FontAwesomeIcon icon={solid("plus")}/>
                     </button>
-
                 </div>
                 <AddModifyProgram isShow={addProgram} setIsShow={setAddProgram} className='ProgramContent'/>
                 <ProgramContent program={selectedProgram}
@@ -78,51 +69,63 @@ function SideBar(props) {
     );
 }
 
+function UnivProgramList({
+                             universityProgramList,
+                             selectedUniversity,
+                             selectedProgram,
+                             setSelectedProgram
+                         }) {
+    return (
+        <ul className="UnivProgramList">
+            {universityProgramList.map(([university, programs]) => (
+                <React.Fragment key={university}>
+                    <UnivItem university={university} programs={programs} key={university}
+                              selectedUniversity={selectedUniversity}
+                              selectedProgram={selectedProgram}
+                              setSelectedProgram={setSelectedProgram}
+                    />
+                </React.Fragment>
+            ))}
+        </ul>
+    );
 
-function UnivItem(props) {
+}
 
-    const [isClicked, setClicked] = useState(false);
-    const [showList, setShowList] = useState(false);
 
-    const handleClick = () => {
-        setClicked(!isClicked);
-        setShowList(!showList);
-    };
-
+function UnivItem({university, programs, selectedUniversity, selectedProgram, setSelectedProgram}) {
+    // const isClicked = unfoldUniversities.includes(university);
+    const [isFolded, setIsFolded] = useState(false);
+    const isSelected = (selectedUniversity === university);
     return (
         <>
-            <li className='UnivItem' onClick={handleClick}>
+            <li className={'UnivItem' + (isSelected ? "Selected" : "")}
+                onClick={() => setIsFolded(!isFolded)}>
+                <div> {university} </div>
                 <div>
-                    {props.univ[0]}
-                </div>
-                <div>
-                    {isClicked ? <FontAwesomeIcon icon={solid("caret-down")}/> :
+                    {isFolded ? <FontAwesomeIcon icon={solid("caret-down")}/> :
                         <FontAwesomeIcon icon={solid("caret-right")}/>}
                 </div>
             </li>
-            <ProgramItem showList={showList} program={props.univ[1]} onProgramSelect={props.onProgramSelect}/>
+            {isFolded ? programs.map((program) => (
+                <ProgramItem program={program} key={program.Program}
+                             selectedProgram={selectedProgram}
+                             setSelectedProgram={setSelectedProgram}
+                />
+            )) : null}
         </>
     );
 }
 
-
-function ProgramItem({showList, program, onProgramSelect}) {
-    if (!showList) {
-        return null;
-    }
+function ProgramItem({program, selectedProgram, setSelectedProgram}) {
+    const isClicked = (selectedProgram !== null && selectedProgram.ProgramID === program.ProgramID);
+    // console.log(`ProgramItem: ${program.ProgramID} ${isClicked}`);
     return (
-        <ul className='ProgramList'>
-            {Object.entries(program).map((program) => (
-                <li className='ProgramItem' key={program[0]} onClick={
-                    () => onProgramSelect(program[1])
-                }>
-                    <div>
-                        {program[1].Program}
-                    </div>
-                </li>
-            ))}
-        </ul>
-    )
+        <li className={'ProgramItem' + (isClicked ? 'Selected' : '')} onClick={() => setSelectedProgram(program)}>
+            <div> {program.Program} </div>
+        </li>
+    );
+
 }
+
 
 export default SideBar;

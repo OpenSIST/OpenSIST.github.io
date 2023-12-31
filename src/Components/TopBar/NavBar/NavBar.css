@@ -10,16 +10,21 @@
     margin-left: 2vw;
 }
 
-.NavBarItem {
+.NavBarItem,
+.NavBarItemSelected{
     display: flex;
     align-items: center;
     cursor: pointer;
-    /*background-color: #fcfcfc;*/
-    border-radius: 5px;
+    border-radius: 5px 5px 0 0;
     padding: 10px 20px;
     transition: background-color 0.3s ease;
-    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
 }
+
+.NavBarItemSelected {
+    color: #fff;
+    background-color: #007bff;
+}
+
 
 .NavBarItem:hover {
     background-color: #e7e7e7;

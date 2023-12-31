@@ -1,40 +1,17 @@
-/*.WelcomeBar {*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*    align-items: center;*/
-/*}*/
-
-/*.TopBar {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    padding: 0 20px;*/
-/*    height: 100px;*/
-/*    background-color: #f8f9fa;*/
-/*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
-/*}*/
-
-/*.TopBarHeader {*/
-/*    font-size: 36pt;*/
-/*    font-weight: bold;*/
-/*    color: #333;*/
-/*}*/
-
 .TopBar {
     display: flex;
     flex-direction: column;
-    /*padding: 20px;*/
     background-color: #f8f9fa;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid #e7e7e7;
+    border-radius: 5px 5px 0 0;
 }
 
 .WelcomeBar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /*margin-bottom: 20px;*/
     padding: 0 20px;
-    /*height: 100px;*/
 }
 
 .TopBarHeader {

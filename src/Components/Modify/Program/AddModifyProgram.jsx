@@ -2,8 +2,10 @@ import React, {useState} from 'react';
 import ReactMarkdown from 'react-markdown';
 import "./AddModifyProgram.css";
 import {addModifyProgram} from "../../../Data/Data";
-import {DescriptionTemplate, ProgramTargetApplicantMajorChoices,
-    ProgramRegionChoices} from "../../../Data/Schemas";
+import {
+    DescriptionTemplate, ProgramTargetApplicantMajorChoices,
+    ProgramRegionChoices
+} from "../../../Data/Schemas";
 
 function getListChoices(choices) {
     return Array.from(choices).map(
@@ -17,8 +19,6 @@ function getListChoices(choices) {
 
 
 function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
-
-    // console.log(originData)
 
     const [Description, setDescription] = useState(originData === null ? DescriptionTemplate : originData.Description);
     const [view, setView] = useState('write');
@@ -84,12 +84,16 @@ function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
                 <h4 className='Subtitle'>University Name</h4>
                 <input type="text" id="University" name="University"
                        defaultValue={originData === null ? '' : originData.University}
-                       placeholder="University Name" required/>
+                       placeholder="University Name" required
+                       disabled={originData !== null}
+                />
 
                 <h4 className='Subtitle'>Program Name</h4>
                 <input type="text" id="Program" name="Program"
                        defaultValue={originData === null ? '' : originData.Program}
-                       placeholder="Program Name" required/>
+                       placeholder="Program Name" required
+                       disabled={originData !== null}
+                />
 
                 <h4 className='Subtitle'>Program Degree</h4>
                 <SingleChoice
@@ -114,8 +118,12 @@ function AddModifyProgram({isShow, setIsShow, className, originData = null}) {
 
                 <h4 className='Subtitle'>Program Description (The editor supports MarkDown syntax)</h4>
                 <div id='WritePreviewButtonGroup'>
-                    <button type="button" onClick={handleWriteClick}>Write</button>
-                    <button type="button" onClick={handlePreviewClick}>Preview</button>
+                    <button type="button" onClick={handleWriteClick}
+                            className={view === 'write' ? 'selected' : ''}>Write
+                    </button>
+                    <button type="button" onClick={handlePreviewClick}
+                            className={view === 'preview' ? 'selected' : ''}>Preview
+                    </button>
                 </div>
 
                 {view === 'write' ? (

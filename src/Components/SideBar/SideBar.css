@@ -5,7 +5,7 @@
     width: 100%;
     height: calc(100vh - 160px);
     background-color: #f8f9fa;
-    border-radius: 5px;
+    border-radius: 0 0 5px 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
@@ -34,7 +34,7 @@
     overflow-y: auto;
 }
 
-.UnivList {
+.UnivProgramList {
     width: 100%;
     height: calc(100vh - 350px);
     overflow-y: auto;
@@ -46,13 +46,13 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.UnivItem {
+.UnivItem,
+.UnivItemSelected {
     /*width: 160px;*/
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem;
-    background-color: #fcfcfc;
     border-radius: 5px;
     border: solid 1px #e7e7e7;
     cursor: pointer;
@@ -60,21 +60,24 @@
     list-style-type: none;
 }
 
-.UnivItem:hover {
+.UnivItem {
+    background-color: #fcfcfc;
+}
+
+.UnivItemSelected {
+    background-color: #f1f1f1;
+}
+
+.UnivItem:hover,
+.UnivItemSelected:hover {
     background-color: #e7e7e7;
 }
 
-.ProgramList {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-}
 
-.ProgramItem {
-    /*width: 160px;*/
+.ProgramItem,
+.ProgramItemSelected {
     padding: 0.5rem;
-    background-color: #fcfcfc;
+    /*background-color: #fcfcfc;*/
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -82,11 +85,22 @@
     border: solid 1px #e7e7e7;
 }
 
-.ProgramItem div {
+.ProgramItem {
+    background-color: #fcfcfc;
+}
+
+.ProgramItemSelected {
+    /*background-color: #f1f1f1;*/
+    color: #007bff;
+}
+
+.ProgramItem div,
+.ProgramItemSelected div{
     padding-left: 20px;
 }
 
-.ProgramItem:hover {
+.ProgramItem:hover,
+.ProgramItemSelected:hover{
     background-color: #e7e7e7;
 }
 

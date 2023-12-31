@@ -1,60 +1,30 @@
-import React from "react";
+import React, {useState} from "react";
 import "./NavBar.css";
 import {useNavigate} from "react-router-dom";
 
 export default function NavBar() {
     const navigate = useNavigate();
-
+    const [selection, setSelection] = useState('Programs');
     return (
-        // <div className='NavBar'>
-        //     <nav>
-        //         <div className='NavBar-item'>
-        //             <b onClick={() => {
-        //                 navigate('/')
-        //             }} style={{cursor: 'pointer'}}>
-        //                 项目信息表
-        //             </b>
-        //         </div>
-        //         <div className='NavBar-item'>
-        //             <b onClick={() => {
-        //                 navigate('/applicants')
-        //             }} style={{cursor: 'pointer'}}>
-        //                 申请人信息表
-        //             </b>
-        //         </div>
-        //     </nav>
-        // </div>
         <nav className='NavBar'>
             <ul className='NavBarList'>
-                <li className='NavBarItem'>
+                <li className={'NavBarItem' + (selection === 'Programs' ? 'Selected' : '')}>
                     <b onClick={() => {
+                        setSelection('Programs')
                         navigate('/')
                     }}>
                         项目信息表
                     </b>
                 </li>
-                <li className='NavBarItem'>
+                <li className={'NavBarItem' + (selection === 'Applicants' ? 'Selected' : '')}>
                     <b onClick={() => {
+                        setSelection('Applicants')
                         navigate('/applicants')
                     }}>
                         申请人信息表
                     </b>
                 </li>
             </ul>
-            {/*<div className='NavBar-item'>*/}
-            {/*    <b onClick={() => {*/}
-            {/*        navigate('/')*/}
-            {/*    }} style={{cursor: 'pointer'}}>*/}
-            {/*        项目信息表*/}
-            {/*    </b>*/}
-            {/*</div>*/}
-            {/*<div className='NavBar-item'>*/}
-            {/*    <b onClick={() => {*/}
-            {/*        navigate('/applicants')*/}
-            {/*    }} style={{cursor: 'pointer'}}>*/}
-            {/*        申请人信息表*/}
-            {/*    </b>*/}
-            {/*</div>*/}
         </nav>
     );
 }

@@ -31,6 +31,12 @@
     font-size: 16px;
 }
 
+.ProgramForm input:disabled {
+    background-color: #ddd;
+    color: #666;
+    cursor: not-allowed;
+}
+
 .MultiChoice {
     display: flex;
     flex-direction: column;
@@ -57,7 +63,7 @@
     box-sizing: border-box;
     overflow-y: scroll;
     background-color: #fff;
-    margin-top: 1rem;
+    /*margin-top: 1rem;*/
     margin-bottom: 1rem;
 
 }
@@ -74,5 +80,19 @@
 #SaveCancelButtonGroup button {
     width: 6rem;
     font-size: 16px;
+    user-select: none;
+}
 
+#WritePreviewButtonGroup button {
+    border-radius: 5px 5px 0 0;
+}
+
+#WritePreviewButtonGroup button.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+#WritePreviewButtonGroup button {
+    background-color: #0056b3;
+    color: white;
 }
