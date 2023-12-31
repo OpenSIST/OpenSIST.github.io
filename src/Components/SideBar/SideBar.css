@@ -10,6 +10,8 @@
 }
 
 .ProgramContent {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
     width: 80vw;
     height: calc(100vh - 200px);
@@ -19,6 +21,17 @@
     border-radius: 0 0 5px 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     user-select: text;
+    overflow-y: auto;
+}
+
+.ProgramDescription {
+    /*width: 100%;*/
+    height: calc(100vh - 10%);
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: solid 1px #e7e7e7;
+    background-color: #fcfcfc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
 }
 
@@ -37,7 +50,8 @@
 
 .UnivProgramList {
     width: 100%;
-    height: calc(100vh - 350px);
+    height: calc(100vh - 320px);
+    /*height: calc(100vh - 25%);*/
     overflow-y: auto;
     padding: 0;
     margin: 0;
@@ -110,6 +124,24 @@
     transform: scale(0.98);
 }
 
-#AddProgramButton {
+.AddRefreshButtonGroup button,
+.ReviseRefreshButtonGroup button {
     margin-top: 1rem;
 }
+
+.AddRefreshButtonGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 20px;
+}
+
+.ReviseRefreshButtonGroup {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 20px;
+    margin-left: 80%;
+}
+

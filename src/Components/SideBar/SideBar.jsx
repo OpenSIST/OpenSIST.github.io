@@ -6,6 +6,7 @@ import ProgramContent from "./ProgramContent/ProgramContent";
 import "./SideBar.css"
 import AddModifyProgram from "../Modify/Program/AddModifyProgram";
 import SearchBar from "./SearchBar/SearchBar";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 
 function SideBar(props) {
     const [fullList, setFullList] = useState([]);
@@ -16,6 +17,18 @@ function SideBar(props) {
     const [isEditMode, setIsEditMode] = useState(false);
     const [isForceFetchList, setIsForceFetchList] = useState(false);
     const [isForceFetchDesc, setIsForceFetchDesc] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        if (!isForceFetchList) {
+            setIsLoading(false);
+        }
+    }, [isForceFetchList]);
+
+    const handleRefresh = () => {
+        setIsLoading(true);
+        setIsForceFetchList(true);
+    }
 
     const handleAddProgram = () => {
         setSelectedUniversity(null);
@@ -67,16 +80,21 @@ function SideBar(props) {
                                      selectedProgram={selectedProgram}
                                      setSelectedProgram={handleProgramSelect}
                     />
-                    <button onClick={handleAddProgram} id='AddProgramButton' title='AddProgramButton'>
-                        <FontAwesomeIcon icon={solid("plus")}/>
-                    </button>
-                    <button onClick={() => setIsForceFetchList(true)} id='RefreshButton' title='RefreshButton'>
-                        <FontAwesomeIcon icon={solid("arrows-rotate")}/>
-                    </button>
+                    <div className="AddRefreshButtonGroup">
+                        <button onClick={handleAddProgram} id='AddProgramButton' title='AddProgramButton'>
+                            <FontAwesomeIcon icon={solid("plus")}/>
+                        </button>
+                        <button onClick={handleRefresh} id='RefreshButton' title='RefreshButton'>
+                            {isLoading ? <FontAwesomeIcon icon={faSpinner} spin/> :
+                                <FontAwesomeIcon icon={solid("arrows-rotate")}/>}
+                        </button>
+                    </div>
                 </div>
-                <AddModifyProgram isShow={addProgram} setIsShow={setAddProgram} setIsForceFetch={setIsForceFetchList} className='ProgramContent'/>
+                <AddModifyProgram isShow={addProgram} setIsShow={setAddProgram} setIsForceFetch={setIsForceFetchList}
+                                  className='ProgramContent'/>
                 <ProgramContent program={selectedProgram}
                                 isEditMode={isEditMode} setIsEditMode={setIsEditMode}
+                                isForceFetch={isForceFetchDesc}
                                 setIsForceFetch={setIsForceFetchDesc}
                                 className='ProgramContent'/>
             </div>

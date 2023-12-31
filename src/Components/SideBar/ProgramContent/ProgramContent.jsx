@@ -1,12 +1,26 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactMarkdown from 'react-markdown';
 import AddModifyProgram from "../../Modify/Program/AddModifyProgram";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import "./css/github.css";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 
-function ProgramContent({program, isEditMode, setIsEditMode, setIsForceFetch, className}) {
-    const handleReviseClick = () => {
+function ProgramContent({program, isEditMode, setIsEditMode, isForceFetch, setIsForceFetch, className}) {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleRefresh = () => {
+        setIsLoading(true);
+        setIsForceFetch(true);
+    };
+
+    useEffect(() => {
+        if (!isForceFetch) {
+            setIsLoading(false);
+        }
+    }, [isForceFetch]);
+
+    const handleRevise = () => {
         setIsEditMode(!isEditMode);
     };
 
@@ -23,11 +37,16 @@ function ProgramContent({program, isEditMode, setIsEditMode, setIsForceFetch, cl
                 setIsForceFetch={setIsForceFetch}
             />) : (
             <div className={className}>
-                <ReactMarkdown>{program.Description}</ReactMarkdown>
-                <button onClick={handleReviseClick}><FontAwesomeIcon icon={solid("pen-to-square")}/></button>
-                <button onClick={() => setIsForceFetch(true)} id='RefreshButton' title='RefreshButton'>
-                    <FontAwesomeIcon icon={solid("arrows-rotate")}/>
-                </button>
+                <div className='ProgramDescription'>
+                    <ReactMarkdown>{program.Description}</ReactMarkdown>
+                </div>
+                <div className='ReviseRefreshButtonGroup'>
+                    <button onClick={handleRevise} id='ReviseButton' title='ReviseButton'><FontAwesomeIcon icon={solid("pen-to-square")}/></button>
+                    <button onClick={handleRefresh} id='RefreshButton' title='RefreshButton'>
+                        {isLoading ? <FontAwesomeIcon icon={faSpinner} spin/> :
+                            <FontAwesomeIcon icon={solid("arrows-rotate")}/>}
+                    </button>
+                </div>
             </div>
         )
     );

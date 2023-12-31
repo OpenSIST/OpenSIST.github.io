@@ -2,7 +2,6 @@ import {PROGRAM_LIST, PROGRAM_DESC, ADD_MODIFY_PROGRAM} from "../APIs/APIs"
 export async function fetchProgramList(forceFetch = false) {
     const cacheName = 'programListCache';
     const cache = await caches.open(cacheName);
-    // await cache.delete(url); // TODO: delete this
     let response = await cache.match(PROGRAM_LIST);
 
     if (forceFetch || !response || (Date.now() - Date.parse(response.headers.get('Date'))) > 24 * 60 * 60 * 1000) {
@@ -26,11 +25,9 @@ export async function fetchProgramDesc({
     const cacheUrl = `${PROGRAM_DESC}?ProgramID=${ProgramID}`;
     const cacheName = 'programDescCache';
     const cache = await caches.open(cacheName);
-    // await cache.delete(cacheUrl); // TODO: delete this
     let response = await cache.match(cacheUrl);
 
     if (forceFetch || !response || (Date.now() - Date.parse(response.headers.get('Date'))) > 24 * 60 * 60 * 1000) {
-        console.log('Fetching program description from server.')
         response = await fetch(PROGRAM_DESC, {
             method: 'POST',
             credentials: 'include',
@@ -41,8 +38,6 @@ export async function fetchProgramDesc({
             body: JSON.stringify({'ProgramID': ProgramID}),
         });
         await cache.put(cacheUrl, response.clone());
-    } else {
-        console.log('Using cached program description.');
     }
     return (await response.json())['description'];
 }
