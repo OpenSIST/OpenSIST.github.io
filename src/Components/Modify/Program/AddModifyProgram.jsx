@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import ReactMarkdown from 'react-markdown';
 import "./AddModifyProgram.css";
 import {addModifyProgram} from "../../../Data/Data";
 import {
-    DescriptionTemplate, ProgramTargetApplicantMajorChoices,
+    DescriptionTemplate,
+    ProgramTargetApplicantMajorChoices,
     ProgramRegionChoices
 } from "../../../Data/Schemas";
+import MarkDownEditor from "./MarkDownEditor/MarkDownEditor";
 
 function getListChoices(choices) {
     return Array.from(choices).map(
@@ -19,20 +20,8 @@ function getListChoices(choices) {
 
 
 function AddModifyProgram({isShow, setIsShow, setIsForceFetch, className, originData = null}) {
-
-    const [Description, setDescription] = useState(originData === null ? DescriptionTemplate : originData.Description);
-    const [view, setView] = useState('write');
-    const handleDescriptionChange = (event) => {
-        setDescription(event.target.value);
-    }
-
-    const handleWriteClick = () => {
-        setView('write');
-    }
-
-    const handlePreviewClick = () => {
-        setView('preview');
-    }
+    const OriginDesc = originData === null ? DescriptionTemplate : originData.Description;
+    const [Description, setDescription] = useState(OriginDesc);
 
     const mode = originData === null ? 'Add' : 'Modify';
 
@@ -42,7 +31,6 @@ function AddModifyProgram({isShow, setIsShow, setIsForceFetch, className, origin
         const Program = event.target.Program.value;
         const targetApplicantMajor = getListChoices(event.target.TargetApplicantMajor);
         const Region = getListChoices(event.target.Region);
-        const Description = event.target.Description.value;
 
         const data = {
             'newProgram': false,
@@ -61,7 +49,6 @@ function AddModifyProgram({isShow, setIsShow, setIsForceFetch, className, origin
             const response = await addModifyProgram({session: localStorage.getItem('token'), data: data});
             if (response.status === 200) {
                 alert(`Program ${mode} Successfully!`);
-                // window.location.reload();
                 setIsForceFetch(true);
                 setIsShow(false);
             } else {
@@ -118,34 +105,14 @@ function AddModifyProgram({isShow, setIsShow, setIsForceFetch, className, origin
                 />
 
                 <h4 className='Subtitle'>Program Description (The editor supports MarkDown syntax)</h4>
-                <div id='WritePreviewButtonGroup'>
-                    <button type="button" onClick={handleWriteClick}
-                            className={view === 'write' ? 'selected' : ''}>Write
-                    </button>
-                    <button type="button" onClick={handlePreviewClick}
-                            className={view === 'preview' ? 'selected' : ''}>Preview
-                    </button>
-                </div>
-
-                {view === 'write' ? (
-                    <textarea id="Description" name="Description" placeholder="Program Description"
-                              defaultValue={Description}
-                              required onChange={handleDescriptionChange}
-                              rows="20" cols="50"
-                              style={{display: view === 'write' ? 'block' : 'none'}}
-                    />
-                ) : (
-                    <div className="markdown-preview" style={{display: view === 'preview' ? 'block' : 'none'}}>
-                        <ReactMarkdown>{Description === '' ? 'Nothing here yet' : Description}</ReactMarkdown>
-                    </div>
-                )}
+                <MarkDownEditor OriginDesc={OriginDesc} Description={Description} setDescription={setDescription}/>
 
                 <div id='SaveCancelButtonGroup'>
-                    <button type="submit">Save</button>
+                    <button type="submit" className='Button'>Save</button>
                     <button onClick={() => {
                         setDescription(DescriptionTemplate)
                         setIsShow(false)
-                    }}>Cancel
+                    }} className='Button'>Cancel
                     </button>
                 </div>
             </form>

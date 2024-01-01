@@ -41,8 +41,8 @@ function ProgramContent({program, isEditMode, setIsEditMode, isForceFetch, setIs
                     <ReactMarkdown>{program.Description}</ReactMarkdown>
                 </div>
                 <div className='ReviseRefreshButtonGroup'>
-                    <button onClick={handleRevise} id='ReviseButton' title='ReviseButton'><FontAwesomeIcon icon={solid("pen-to-square")}/></button>
-                    <button onClick={handleRefresh} id='RefreshButton' title='RefreshButton'>
+                    <button onClick={handleRevise} id='ReviseButton' title='ReviseButton' className='Button'><FontAwesomeIcon icon={solid("pen-to-square")}/></button>
+                    <button onClick={handleRefresh} id='RefreshButton' title='RefreshButton' className='Button'>
                         {isLoading ? <FontAwesomeIcon icon={faSpinner} spin/> :
                             <FontAwesomeIcon icon={solid("arrows-rotate")}/>}
                     </button>

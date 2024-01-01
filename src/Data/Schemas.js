@@ -1,6 +1,6 @@
 export const DescriptionTemplate = `# Program Name
 
-## Overview
+## Overview\n
 Write a brief overview of the program here.
 
 ## Structure

@@ -59,7 +59,6 @@ function SideBar(props) {
                 ProgramWithDesc['Description'] = response;
                 setSelectedProgram(ProgramWithDesc);
                 setSelectedUniversity(selectedProgram.University)
-                setIsEditMode(false);
                 setIsForceFetchDesc(false);
             }
         };
@@ -68,6 +67,8 @@ function SideBar(props) {
 
     const handleProgramSelect = (Program) => {
         setSelectedProgram(Program);
+        setIsEditMode(false);
+        setAddProgram(false);
     }
 
     return (
@@ -81,10 +82,10 @@ function SideBar(props) {
                                      setSelectedProgram={handleProgramSelect}
                     />
                     <div className="AddRefreshButtonGroup">
-                        <button onClick={handleAddProgram} id='AddProgramButton' title='AddProgramButton'>
+                        <button onClick={handleAddProgram} id='AddProgramButton' title='Add Program' className='Button'>
                             <FontAwesomeIcon icon={solid("plus")}/>
                         </button>
-                        <button onClick={handleRefresh} id='RefreshButton' title='RefreshButton'>
+                        <button onClick={handleRefresh} id='RefreshButton' title='Refresh' className='Button'>
                             {isLoading ? <FontAwesomeIcon icon={faSpinner} spin/> :
                                 <FontAwesomeIcon icon={solid("arrows-rotate")}/>}
                         </button>

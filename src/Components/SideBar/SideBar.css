@@ -27,11 +27,11 @@
 .ProgramDescription {
     /*width: 100%;*/
     height: calc(100vh - 10%);
-    padding: 0.5rem;
+    /*padding: 1rem 3rem 1rem 3rem;*/
     border-radius: 5px;
-    border: solid 1px #e7e7e7;
-    background-color: #fcfcfc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /*border: solid 1px #e7e7e7;*/
+    /*background-color: #fcfcfc;*/
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
     overflow-y: auto;
 }
 

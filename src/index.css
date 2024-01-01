@@ -1,4 +1,4 @@
-#root button {
+.Button {
     width: 100%;
     padding: 0.5rem;
     border: none;
@@ -9,7 +9,7 @@
     transition: background-color 0.3s ease;
 }
 
-#root button:hover {
+.Button:hover {
     background-color: #0056b3;
 }
 
