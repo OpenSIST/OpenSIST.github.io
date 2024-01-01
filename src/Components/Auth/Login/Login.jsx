@@ -10,11 +10,6 @@ function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        if (password.length < 8 || password.length > 24) {
-            setValid(false);
-            return;
-        }
-
         try {
             const response = await fetch("https://opensist-auth.caoster.workers.dev/api/auth/login", {
                 method: "POST",
@@ -63,18 +58,17 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                {!valid && <p style={{color: 'red'}}>Password should be within 8~24 characters</p>}
                 <button className="Button" type="submit">Login</button>
-                <p onClick={() => {navigate('/reset')}}
+                <div onClick={() => {navigate('/reset', {state: {status: 'Reset'}})}}
                     style={{textDecoration: "underline", cursor: "pointer"}}>
-                    Forget Password
-                </p>
-                <p onClick={() => {
-                    navigate('/register')
+                    Forget Password? Click here to reset!
+                </div>
+                <div onClick={() => {
+                    navigate('/register', {state: {status: 'Register'}})
                 }}
                    style={{textDecoration: "underline", cursor: "pointer"}}>
                     Don't have an account? Register now!
-                </p>
+                </div>
             </form>
         </div>
     );

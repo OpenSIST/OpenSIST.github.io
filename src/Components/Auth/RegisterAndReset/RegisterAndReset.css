@@ -1,4 +1,4 @@
-.register {
+.RegisterAndReset {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,31 +8,42 @@
     background-color: #f8f9fa;
 }
 
-.register h1 {
+.RegisterAndReset h1 {
     margin-bottom: 2rem;
     color: #333;
 }
 
-.register form {
+.RegisterAndReset form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     width: 300px;
 }
 
-.register input {
+.RegisterAndReset input {
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 5px;
 }
 
-.register a {
+.RegisterAndReset a {
     color: #007bff;
     text-decoration: none;
     margin-top: 1rem;
     cursor: pointer;
 }
 
-.register a:hover {
+.RegisterAndReset a:hover {
     text-decoration: underline;
+}
+
+.VerificationSendBlock button {
+    width: 40%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 17px;
 }

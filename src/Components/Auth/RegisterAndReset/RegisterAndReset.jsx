@@ -1,21 +1,30 @@
-import {useNavigate} from "react-router-dom";
 import {useState} from "react";
-import './Reset.css'
+import {useNavigate, useLocation} from "react-router-dom";
+import {z} from 'zod';
+import "./RegisterAndReset.css"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import {SEND_RESET_VERIFY_TOKEN, RESET_PASSWORD} from "../../../APIs/APIs";
-import {isValidPassword} from "../Register/Register";
+import {REGISTER, RESET_PASSWORD, SEND_RESET_VERIFY_TOKEN, SEND_VERIFY_TOKEN} from "../../../APIs/APIs";
+const passwordSchema = z.string().min(8).max(24).refine(password => (
+    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password)
+),
+    // message: "Password must contain at least one number, one lowercase and one uppercase letter",
+);
 
-const checkMark = <FontAwesomeIcon icon={solid("check")} style={{color: "#439d2a",}}/>
-const crossMark = <FontAwesomeIcon icon={solid("xmark")} style={{color: "#c24b24",}}/>
+const checkMark = <FontAwesomeIcon icon={solid("check")} style={{color: "#439d2a",}} />
+const crossMark = <FontAwesomeIcon icon={solid("xmark")} style={{color: "#c24b24",}} />
 
-export default function Reset() {
+export function isValidPassword(password) {
+    const result = passwordSchema.safeParse(password);
+    return result.success;
+}
+export default function RegisterAndReset() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [valid, setValid] = useState(true);
     const [token, setToken] = useState("");
     const [tokenSent, setTokenSent] = useState(false);
-    const [valid, setValid] = useState(true);
 
     // check the state for password requirements
     const [isLengthValid, setIsLengthValid] = useState(false);
@@ -23,7 +32,17 @@ export default function Reset() {
     const [hasLowercase, setHasLowercase] = useState(false);
     const [hasUppercase, setHasUppercase] = useState(false);
 
+    // check if the agreements are already checked
+    const [boxChecked, setChecked] = useState(false);
+
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const status = location.state.status;
+
+    const handleAgreementCheck = async (e) => {
+        setChecked(e.target.checked);
+    };
 
     const updatePasswordRequirements = (password) => {
         setIsLengthValid(password.length >= 8 && password.length <= 24);
@@ -40,8 +59,9 @@ export default function Reset() {
 
     const handleVerify = async (e) => {
         e.preventDefault();
+        const api = status === 'Reset' ? SEND_RESET_VERIFY_TOKEN : SEND_VERIFY_TOKEN;
         try {
-            const response = await fetch(SEND_RESET_VERIFY_TOKEN, {
+            const response = await fetch(api, {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",
@@ -51,7 +71,7 @@ export default function Reset() {
 
             if (response.status === 200) {
                 setTokenSent(true);
-                alert("Verification code sent to your email!")
+                alert("Verification code sent to your email.")
             } else {
                 const content = await response.json();
                 alert(`${content.error}, Error code: ${response.status}`);
@@ -61,10 +81,11 @@ export default function Reset() {
         }
     };
 
-    const handleReset = async (e) => {
+    const handleSubmit= async (e) => {
         e.preventDefault();
-        if (token.length < 6) {
-            setValid(false);
+        const api = status === 'Reset' ? RESET_PASSWORD : REGISTER;
+        if (!boxChecked && status === 'Register') {
+            alert("Please check the agreements.");
             return;
         }
         if (!isValidPassword(password) || password !== passwordConfirm) {
@@ -73,17 +94,22 @@ export default function Reset() {
         }
 
         try {
-            const response = await fetch(RESET_PASSWORD, {
+            const response = await fetch(api, {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({email, token, password}),
+                body: JSON.stringify({email, password, token}),
             });
 
             if (response.status === 200) {
                 navigate("/");
-                alert("Password Reset successful!");
+                if (status === 'Reset') {
+                    alert("Password reset successful.");
+                }
+                else if (status === 'Register') {
+                    alert("Registration successful.");
+                }
             } else {
                 const content = await response.json();
                 alert(`${content.error}, Error code: ${response.status}`);
@@ -91,16 +117,17 @@ export default function Reset() {
         } catch (e) {
             alert(e)
         }
-    }
+    };
+
+    const title = status === 'Reset' ? 'Reset Password' : 'Register';
 
     return (
-        <div className="reset">
-            <h1>Reset Password</h1>
-            <form onSubmit={handleReset} style={{display: 'flex', flexDirection: 'column'}}>
+        <div className="RegisterAndReset">
+            <h1>{title}</h1>
+            <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column'}}>
                 <input
                     type="Username"
-                    id="Username"
-                    placeholder="Your ShanghaiTech Email"
+                    placeholder="Email"
                     value={email.split("@")[0]}
                     onChange={(e) => setEmail(
                         e.target.value.split("@")[0] + "@shanghaitech.edu.cn"
@@ -124,7 +151,7 @@ export default function Reset() {
                     }
                     required
                 />
-                <div className="VerificationSendBlock">
+                <div className='VerificationSendBlock'>
                     <input
                         type="token"
                         placeholder="Verification Code"
@@ -132,20 +159,42 @@ export default function Reset() {
                         onChange={(e) => setToken(e.target.value)}
                         required
                     />
-                    <button className='Button' type="button" onClick={handleVerify}>Send</button>
+                    <button className='Button' type="button" onClick={handleVerify}>Send code</button>
                 </div>
-                {/*{tokenSent ? <p>如果您的邮箱收不到验证码，请查看postmaster</p> :*/}
-                {/*    <button className='Button' type="button" onClick={handleVerify}>Send Verification Code</button>}*/}
                 <div>
                     <span>{isLengthValid ? checkMark : crossMark} 密码长度为8-24个字符</span><br/>
                     <span>{hasNumber ? checkMark : crossMark} 密码至少包含一个数字</span><br/>
                     <span>{hasLowercase ? checkMark : crossMark} 密码至少包含一个小写字母</span><br/>
                     <span>{hasUppercase ? checkMark : crossMark} 密码至少包含一个大写字母</span>
                 </div>
+                {status === 'Register' && <div>
+                    <input
+                        type="checkbox"
+                        id="privacyPolicy"
+                        name="privacyPolicy"
+                        checked={boxChecked}
+                        onChange={handleAgreementCheck}
+                        required
+                    />
+                    <label>我已阅读并同意OpenSIST
+                        <b onClick={() => {
+                            navigate('/agreement')
+                        }}
+                           style={{textDecoration: "underline", cursor: "pointer"}}>隐私条款</b>
+                        ，且愿意遵守OpenSIST
+                        <b onClick={() => {
+                            navigate('/agreement')
+                        }}
+                           style={{textDecoration: "underline", cursor: "pointer"}}>用户守则</b>。
+                    </label>
+                </div>}
                 {valid ? null : <p style={{color: 'red'}}>请按照规范重新设置密码。</p>}
-                <button className='Button' title='Reset password' type="submit">
-                    Reset Password
-                </button>
+                <button className='Button' title={title} type="submit">{title}</button>
+                {status === 'Register' && <div onClick={() => {
+                    navigate('/login')
+                }}
+                    style={{textDecoration: "underline", cursor: "pointer"}}>
+                    Already have an account? Login now!</div>}
             </form>
         </div>
     );

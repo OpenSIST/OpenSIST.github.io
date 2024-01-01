@@ -2,10 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Login from "./Components/Auth/Login/Login";
-import Register from "./Components/Auth/Register/Register";
+import RegisterAndReset from "./Components/Auth/RegisterAndReset/RegisterAndReset";
 import Home from "./Components/home";
 import Agreement from "./Components/Agreement/Agreement";
-import Reset from "./Components/Auth/Reset/Reset";
 import {
     createBrowserRouter,
     RouterProvider,
@@ -19,13 +18,13 @@ const router = createBrowserRouter([{
     element: <Login/>
 }, {
     path: "/register",
-    element: <Register/>
+    element: <RegisterAndReset/>
 }, {
     path: "/agreement",
     element: <Agreement/>
 }, {
     path: "/reset",
-    element: <Reset/>
+    element: <RegisterAndReset/>
 }, {
     path: "/applicants",
     element: <h1>Applicants</h1>
