@@ -6,8 +6,8 @@ import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {SEND_RESET_VERIFY_TOKEN, RESET_PASSWORD} from "../../../APIs/APIs";
 import {isValidPassword} from "../Register/Register";
 
-const checkMark = <FontAwesomeIcon icon={solid("check")} style={{color: "#439d2a",}} />
-const crossMark = <FontAwesomeIcon icon={solid("xmark")} style={{color: "#c24b24",}} />
+const checkMark = <FontAwesomeIcon icon={solid("check")} style={{color: "#439d2a",}}/>
+const crossMark = <FontAwesomeIcon icon={solid("xmark")} style={{color: "#c24b24",}}/>
 
 export default function Reset() {
     const [email, setEmail] = useState("");
@@ -99,6 +99,7 @@ export default function Reset() {
             <form onSubmit={handleReset} style={{display: 'flex', flexDirection: 'column'}}>
                 <input
                     type="Username"
+                    id="Username"
                     placeholder="Your ShanghaiTech Email"
                     value={email.split("@")[0]}
                     onChange={(e) => setEmail(
@@ -123,16 +124,20 @@ export default function Reset() {
                     }
                     required
                 />
-                <input
-                    type="token"
-                    placeholder="Verification Code"
-                    value={token}
-                    onChange={(e) => setToken(e.target.value)}
-                    required
-                />
-                {tokenSent ? <p>如果您的邮箱收不到验证码，请查看postmaster</p> : <button className='Button' type="button" onClick={handleVerify}>Send Verification Code</button>}
+                <div className="VerificationSendBlock">
+                    <input
+                        type="token"
+                        placeholder="Verification Code"
+                        value={token}
+                        onChange={(e) => setToken(e.target.value)}
+                        required
+                    />
+                    <button className='Button' type="button" onClick={handleVerify}>Send</button>
+                </div>
+                {/*{tokenSent ? <p>如果您的邮箱收不到验证码，请查看postmaster</p> :*/}
+                {/*    <button className='Button' type="button" onClick={handleVerify}>Send Verification Code</button>}*/}
                 <div>
-                <span>{isLengthValid ? checkMark : crossMark} 密码长度为8-24个字符</span><br/>
+                    <span>{isLengthValid ? checkMark : crossMark} 密码长度为8-24个字符</span><br/>
                     <span>{hasNumber ? checkMark : crossMark} 密码至少包含一个数字</span><br/>
                     <span>{hasLowercase ? checkMark : crossMark} 密码至少包含一个小写字母</span><br/>
                     <span>{hasUppercase ? checkMark : crossMark} 密码至少包含一个大写字母</span>

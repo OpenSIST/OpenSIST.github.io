@@ -36,3 +36,20 @@
 .reset a:hover {
     text-decoration: underline;
 }
+
+.VerificationSendBlock {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px
+}
+
+.VerificationSendBlock button {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
