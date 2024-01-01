@@ -4,6 +4,7 @@ import {z} from 'zod';
 import "./Register.css"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
+import {REGISTER, SEND_VERIFY_TOKEN} from "../../../APIs/APIs";
 const passwordSchema = z.string().min(8).max(24).refine(password => (
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password)
 ),
@@ -21,8 +22,9 @@ function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
-    // const [match, setMatch] = useState(true);
     const [valid, setValid] = useState(true);
+    const [token, setToken] = useState("");
+    const [tokenSent, setTokenSent] = useState(false);
 
     // check the state for password requirements
     const [isLengthValid, setIsLengthValid] = useState(false);
@@ -52,6 +54,29 @@ function Register() {
         updatePasswordRequirements(newPassword);
     }
 
+    const handleVerify = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(SEND_VERIFY_TOKEN, {
+                method: "POST",
+                mode: "cors",
+                credentials: "include",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({email}),
+            });
+
+            if (response.status === 200) {
+                setTokenSent(true);
+                alert("Verification code sent to your email!")
+            } else {
+                const content = await response.json();
+                alert(`${content.error}, Error code: ${response.status}`);
+            }
+        } catch (e) {
+            alert(e)
+        }
+    };
+
     const handleRegister = async (e) => {
         e.preventDefault();
         if (!boxChecked) {
@@ -65,7 +90,7 @@ function Register() {
         }
 
         try {
-            const response = await fetch("https://opensist-auth.caoster.workers.dev/api/auth/register", {
+            const response = await fetch(REGISTER, {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",
@@ -116,6 +141,14 @@ function Register() {
                     }
                     required
                 />
+                <input
+                    type="token"
+                    placeholder="Verification Code"
+                    value={token}
+                    onChange={(e) => setToken(e.target.value)}
+                    required
+                />
+                {tokenSent ? <p>如果您的邮箱收不到验证码，请查看postmaster</p> : <button className='Button' type="button" onClick={handleVerify}>Send Verification Code</button>}
                 <div>
                     <span>{isLengthValid ? checkMark : crossMark} 密码长度为8-24个字符</span><br/>
                     <span>{hasNumber ? checkMark : crossMark} 密码至少包含一个数字</span><br/>
@@ -144,7 +177,7 @@ function Register() {
                     </label>
                 </div>
                 {valid ? null : <p style={{color: 'red'}}>请按照规范重新设置密码。</p>}
-                <button type="submit">Register</button>
+                <button className='Button' title='' type="submit">Register</button>
                 <p onClick={() => {
                     navigate('/login')
                 }}

@@ -64,7 +64,7 @@ function Login() {
                     required
                 />
                 {!valid && <p style={{color: 'red'}}>Password should be within 8~24 characters</p>}
-                <button type="submit">Login</button>
+                <button className="Button" type="submit">Login</button>
                 <p onClick={() => {
                     navigate('/reset')
                 }}

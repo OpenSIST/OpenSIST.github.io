@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import Login from "./Components/Auth/Login/Login";
 import Register from "./Components/Auth/Register/Register";
-import Verify from "./Components/Auth/Verify/Verify";
 import Home from "./Components/home";
+import Agreement from "./Components/Agreement/Agreement";
+import Reset from "./Components/Auth/Reset/Reset";
 import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import Agreement from "./Components/Agreement/Agreement";
-import Reset from "./Components/Auth/Reset/Reset";
 
 const router = createBrowserRouter([{
     path: "/",
@@ -21,9 +20,6 @@ const router = createBrowserRouter([{
 }, {
     path: "/register",
     element: <Register/>
-}, {
-    path: "/verify",
-    element: <Verify/>
 }, {
     path: "/agreement",
     element: <Agreement/>

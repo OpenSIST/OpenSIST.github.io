@@ -77,6 +77,7 @@
 
 .UnivItem {
     background-color: #fcfcfc;
+    padding-left: 20px;
 }
 
 .UnivItemSelected {
@@ -102,6 +103,7 @@
 
 .ProgramItem {
     background-color: #fcfcfc;
+    margin-left: 40px;
 }
 
 .ProgramItemSelected {
@@ -111,7 +113,7 @@
 
 .ProgramItem div,
 .ProgramItemSelected div{
-    padding-left: 20px;
+    padding-left: 10px;
 }
 
 .ProgramItem:hover,
