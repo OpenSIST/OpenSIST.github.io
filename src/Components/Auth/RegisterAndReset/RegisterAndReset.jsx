@@ -159,7 +159,7 @@ export default function RegisterAndReset() {
                         onChange={(e) => setToken(e.target.value)}
                         required
                     />
-                    <button className='Button' type="button" onClick={handleVerify}>Send code</button>
+                    <button className='Button' type="button" onClick={handleVerify}>Send</button>
                 </div>
                 <div>
                     <span>{isLengthValid ? checkMark : crossMark} 密码长度为8-24个字符</span><br/>

@@ -37,6 +37,10 @@
     text-decoration: underline;
 }
 
+.VerificationSendBlock {
+    display: flex;
+}
+
 .VerificationSendBlock button {
     width: 40%;
     padding: 0.5rem;
