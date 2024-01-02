@@ -3,6 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {NavLink} from "react-router-dom";
 import "./SideBar.css";
+import {getPrograms} from "../../Data/ProgramData";
 
 export default function SideBar({twoLevelList}) {
     return (

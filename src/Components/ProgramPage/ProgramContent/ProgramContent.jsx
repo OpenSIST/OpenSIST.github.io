@@ -9,7 +9,7 @@ import Draggable from 'react-draggable';
 import './ProgramContent.css'
 import {Form, useLoaderData} from "react-router-dom";
 
-import {getProgramContent} from "../../../Data/ProgramData";
+import {getProgramContent, getProgramDesc, getPrograms} from "../../../Data/ProgramData";
 
 export async function loader({params}) {
     const programId = params.programId;
@@ -17,10 +17,12 @@ export async function loader({params}) {
     return {programContent};
 }
 
-// export async function action({params}) {
-//     const programId = params.programId;
-//
-// }
+export async function action({request, params}) {
+    const programId = params.programId;
+    const Desc = await getProgramDesc(programId, true);
+    console.log(Desc);
+    return Desc;
+}
 
 function ProgramContent() {
     const {programContent} = useLoaderData();
@@ -30,17 +32,20 @@ function ProgramContent() {
         <div className="ProgramContent">
             <div className='ProgramDescription'>
                 <ReactMarkdown>{programContent.description}</ReactMarkdown>
+                <Draggable nodeRef={nodeRef} defaultClassName="DraggableButtonGroup">
+                    <div ref={nodeRef}>
+                        <Form action='edit'>
+                            <button type='submit' title='Edit' className='Button'>
+                                <FontAwesomeIcon icon={solid("pen-to-square")}/>
+                            </button>
+                        </Form>
+                        <Form method='post'>
+                            <button type='submit' title='Refresh' className='Button'><FontAwesomeIcon
+                                icon={solid("arrows-rotate")}/></button>
+                        </Form>
+                    </div>
+                </Draggable>
             </div>
-            <Draggable nodeRef={nodeRef}>
-                <div ref={nodeRef} className='EditRefreshButtonGroup'>
-                    <Form action='edit'>
-                        <button type='submit' title='EditButton'
-                                className='Button'>
-                            <FontAwesomeIcon icon={solid("pen-to-square")}/>
-                        </button>
-                    </Form>
-                </div>
-            </Draggable>
         </div>
     );
 }

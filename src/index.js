@@ -10,7 +10,8 @@ import ProgramPage, {
     loader as programPageLoader
 } from "./Components/ProgramPage/ProgramPage";
 import ProgramContent, {
-    loader as programContentLoader
+    loader as programContentLoader,
+    action as programContentAction
 } from "./Components/ProgramPage/ProgramContent/ProgramContent";
 import Login from "./Components/Auth/Login/Login";
 import RegisterAndReset from "./Components/Auth/RegisterAndReset/RegisterAndReset";
@@ -31,7 +32,8 @@ const router = createBrowserRouter([
                     {
                         path: '/programs/:programId',
                         element: <ProgramContent/>,
-                        loader: programContentLoader
+                        loader: programContentLoader,
+                        action: programContentAction
                     }, {
                         path: '/programs/:programId/edit',
                         element: <AddModifyProgram/>,
