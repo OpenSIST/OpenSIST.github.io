@@ -15,5 +15,5 @@
 
 #root {
     user-select: none;
-    font-size: 16px;
+    font-size: clamp(10px, 1.5vw, 16px);
 }

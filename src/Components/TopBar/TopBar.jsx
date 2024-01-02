@@ -2,18 +2,18 @@ import React from 'react';
 import './TopBar.css';
 import {StatusBlock} from "./StatusBlock/StatusBlock";
 import NavBar from "./NavBar/NavBar";
+import localforage from "localforage";
 
 
 function TopBar() {
-    const user = localStorage.getItem('user');
     return (
         <>
             <div className="TopBar">
                 <div className='WelcomeBar'>
                     <div className="TopBarHeader">
-                        <p> Welcome to OpenSIST </p>
+                        <h1> Welcome to OpenSIST </h1>
                     </div>
-                    <StatusBlock user={user}/>
+                    <StatusBlock/>
                 </div>
                 <NavBar/>
             </div>

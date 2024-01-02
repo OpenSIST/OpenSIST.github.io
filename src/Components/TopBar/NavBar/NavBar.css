@@ -10,24 +10,32 @@
     margin-left: 2vw;
 }
 
-.NavBarItem,
-.NavBarItemSelected{
+.NavBarItem {
     display: flex;
     align-items: center;
     cursor: pointer;
     border-radius: 5px 5px 0 0;
     padding: 10px 20px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #d2d2d2;
     transition: background-color 0.3s ease;
 }
 
-.NavBarItemSelected {
-    color: #fff;
+.NavBarItem:hover {
+    background-color: #bfbfbf;
+}
+
+.NavBarItem.active {
     background-color: #007bff;
 }
 
+.NavBarItem.active:hover {
+    background-color: #0056b3;
+}
 
-.NavBarItem:hover {
-    background-color: #e7e7e7;
+.NavBarItem.pending {
+    background-color: #ffc107;
 }
 
 .NavBarItem:active {

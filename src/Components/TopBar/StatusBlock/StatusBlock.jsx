@@ -3,9 +3,18 @@ import "./StatusBlock.css"
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import React, {useEffect, useRef, useState} from "react";
-export function StatusBlock({user}) {
+import localforage from "localforage";
+export function StatusBlock() {
     const [isMenuVisible, setIsMenuVisible] = useState(false)
     const menuRef = useRef(null)
+    const [user, setUser] = useState('')
+    useEffect(() => {
+        const fetchData = async () => {
+            setUser(await localforage.getItem('user'));
+        };
+        fetchData().then();
+    }, []);
+
 
     const handleClickOutside = (event) => {
         if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -41,11 +50,12 @@ const UserMenu = React.forwardRef((props, ref) => {
     const navigate = useNavigate();
     const handleLogout = async () => {
         try {
+            const session = await localforage.getItem('session');
             const response = await fetch('https://opensist-auth.caoster.workers.dev/api/my/logout', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    "Authorization": `Bearer ${session}`
                 }
             })
             if (response.status !== 200) {
@@ -57,8 +67,8 @@ const UserMenu = React.forwardRef((props, ref) => {
         } catch (e) {
             alert(e);
         }
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        await localforage.removeItem('user')
+        await localforage.removeItem('session')
         navigate('/login');
     }
 

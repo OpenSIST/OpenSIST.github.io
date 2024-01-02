@@ -1,12 +1,18 @@
 import {useState} from "react";
 import {useNavigate} from 'react-router-dom';
 import "./Login.css"
+import {async} from "ajv";
+import localforage from "localforage";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [valid, setValid] = useState(true);
     const navigate = useNavigate();
+
+    const setUserInfo = async ([key, value]) => {
+        await localforage.setItem(key, value);
+    }
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -23,11 +29,9 @@ function Login() {
                 const token = content.token;
                 const user_info = {
                     user: email.split("@")[0],
-                    token: token
+                    session: token
                 }
-                Object.entries(user_info).map(([key, value]) => {
-                    localStorage.setItem(key, value);
-                })
+                Object.entries(user_info).map(setUserInfo)
                 navigate("/");
                 alert("Login successful!")
             } else {

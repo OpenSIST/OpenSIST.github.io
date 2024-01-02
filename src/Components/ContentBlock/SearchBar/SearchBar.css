@@ -2,10 +2,10 @@
     width: 100%;
     padding: 10px;
     border: none;
-    font-size: 1em;
     color: #333;
     background-color: #f8f9fa;
     border-radius: 0 5px 5px 0;
+    justify-content: center;
 }
 
 .Search-bar:focus {
@@ -15,10 +15,14 @@
 .SearchBlock {
     display: flex;
     align-items: center;
-    gap: 10px;
+
     margin-bottom: 10px;
     background-color: #f8f9fa;
-    padding-left: 10px;
+    /*padding-left: 10px;*/
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.SearchBlock svg {
+    padding: 10px;
 }

@@ -1,28 +1,31 @@
-import React, {useState} from "react";
+import React from "react";
 import "./NavBar.css";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, NavLink, Form} from "react-router-dom";
 
 export default function NavBar() {
     const navigate = useNavigate();
-    const [selection, setSelection] = useState('Programs');
     return (
         <nav className='NavBar'>
             <ul className='NavBarList'>
-                <li className={'NavBarItem' + (selection === 'Programs' ? 'Selected' : '')}>
-                    <b onClick={() => {
-                        setSelection('Programs')
-                        navigate('/')
-                    }}>
-                        项目信息表
-                    </b>
+                <li>
+                    <NavLink
+                        to="/programs"
+                        className={"NavBarItem " + (({isActive, isPending}) =>
+                            isActive ? "active" : isPending ? "pending" : "")
+                        }
+                    >
+                        <b>项目信息表</b>
+                    </NavLink>
                 </li>
-                <li className={'NavBarItem' + (selection === 'Applicants' ? 'Selected' : '')}>
-                    <b onClick={() => {
-                        setSelection('Applicants')
-                        navigate('/applicants')
-                    }}>
-                        申请人信息表
-                    </b>
+                <li>
+                    <NavLink
+                        to="/applicants"
+                        className={"NavBarItem " + (({isActive, isPending}) =>
+                            isActive ? "active" : isPending ? "pending" : "")
+                        }
+                    >
+                        <b>申请人信息表</b>
+                    </NavLink>
                 </li>
             </ul>
         </nav>

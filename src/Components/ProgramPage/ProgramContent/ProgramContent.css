@@ -1,0 +1,14 @@
+.ProgramContent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 80vw;
+    height: calc(100vh - 200px);
+    padding: 20px;
+    margin-right: 2vw;
+    background-color: #f8f9fa;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    user-select: text;
+    overflow-y: auto;
+}

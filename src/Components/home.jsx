@@ -1,19 +1,20 @@
 import TopBar from "./TopBar/TopBar";
-import SideBar from "./SideBar/SideBar";
-import NavBar from "./TopBar/NavBar/NavBar";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
+import {Outlet} from "react-router-dom";
+import localforage from "localforage";
 
 export const checkLogin = async () => {
     try {
-        if (!localStorage.getItem("token")) {
+        const session = await localforage.getItem('session');
+        if (!session) {
             return false;
         }
         const response = await fetch("https://opensist-auth.caoster.workers.dev/api/my/is_login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
+                "Authorization": `Bearer ${session}`
             }
         });
         return response.status === 200;
@@ -38,8 +39,7 @@ function Home() {
     return (
         <>
             <TopBar/>
-            {/*<NavBar/>*/}
-            <SideBar/>
+            <Outlet/>
         </>
     );
 }

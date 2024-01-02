@@ -1,40 +1,3 @@
-.ProgramMainBlock {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    height: calc(100vh - 120px);
-    background-color: #f8f9fa;
-    border-radius: 0 0 5px 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-}
-
-.ProgramContent {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    width: 80vw;
-    height: calc(100vh - 200px);
-    padding: 20px;
-    margin-right: 2vw;
-    background-color: #f8f9fa;
-    border-radius: 0 0 5px 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    user-select: text;
-    overflow-y: auto;
-}
-
-.ProgramDescription {
-    /*width: 100%;*/
-    height: calc(100vh - 10%);
-    /*padding: 1rem 3rem 1rem 3rem;*/
-    border-radius: 5px;
-    /*border: solid 1px #e7e7e7;*/
-    /*background-color: #fcfcfc;*/
-    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
-    overflow-y: auto;
-}
-
 .SideBar {
     width: 250px;
     height: calc(100vh - 200px);
@@ -48,10 +11,9 @@
     overflow-y: auto;
 }
 
-.UnivProgramList {
+.FirstLevelList {
     width: 100%;
     height: calc(100vh - 320px);
-    /*height: calc(100vh - 25%);*/
     overflow-y: auto;
     padding: 0;
     margin: 0;
@@ -61,13 +23,11 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.UnivItem,
-.UnivItemSelected {
-    /*width: 160px;*/
+.FirstLevelItem {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 20px;
     border-radius: 5px;
     border: solid 1px #e7e7e7;
     cursor: pointer;
@@ -75,75 +35,43 @@
     list-style-type: none;
 }
 
-.UnivItem {
+.FirstLevelItem {
     background-color: #fcfcfc;
-    padding-left: 20px;
 }
 
-.UnivItemSelected {
-    background-color: #f1f1f1;
-}
-
-.UnivItem:hover,
-.UnivItemSelected:hover {
+.FirstLevelItem:hover{
     background-color: #e7e7e7;
 }
 
 
-.ProgramItem,
-.ProgramItemSelected {
-    padding: 0.5rem;
-    /*background-color: #fcfcfc;*/
-    border-radius: 5px;
+.SecondLevelItem {
     cursor: pointer;
     transition: background-color 0.3s ease;
     list-style-type: none;
-    border: solid 1px #e7e7e7;
-}
-
-.ProgramItem {
     background-color: #fcfcfc;
-    margin-left: 40px;
+    border: solid 1px #e7e7e7;
+    margin-left: 20px;
+    border-radius: 5px;
+    text-decoration: none;
 }
 
-.ProgramItemSelected {
-    /*background-color: #f1f1f1;*/
-    color: #007bff;
+.SecondLevelItem a {
+    display: block;
+    padding: 0.5rem 0.5rem 0.5rem 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    color: #333;
 }
 
-.ProgramItem div,
-.ProgramItemSelected div{
-    padding-left: 10px;
-}
-
-.ProgramItem:hover,
-.ProgramItemSelected:hover{
+.SecondLevelItem a.active {
     background-color: #e7e7e7;
 }
 
-.UnivItem:active,
-.ProgramItem:active {
+.SecondLevelItem:hover {
+    background-color: #e7e7e7;
+}
+
+.FirstLevelItem:active,
+.SecondLevelItem:active {
     transform: scale(0.98);
 }
-
-.AddRefreshButtonGroup button,
-.ReviseRefreshButtonGroup button {
-    margin-top: 1rem;
-}
-
-.AddRefreshButtonGroup {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    gap: 20px;
-}
-
-.ReviseRefreshButtonGroup {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    gap: 20px;
-    margin-left: 80%;
-}
-
