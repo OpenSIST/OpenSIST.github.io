@@ -59,12 +59,12 @@ function Login() {
                     required
                 />
                 <button className="Button" type="submit">Login</button>
-                <div onClick={() => {navigate('/reset', {state: {status: 'Reset'}})}}
+                <div onClick={() => {navigate('/reset')}}
                     style={{textDecoration: "underline", cursor: "pointer"}}>
                     Forget Password? Click here to reset!
                 </div>
                 <div onClick={() => {
-                    navigate('/register', {state: {status: 'Register'}})
+                    navigate('/register')
                 }}
                    style={{textDecoration: "underline", cursor: "pointer"}}>
                     Don't have an account? Register now!

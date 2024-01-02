@@ -38,7 +38,7 @@ export default function RegisterAndReset() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const status = location.state.status;
+    const status = location.pathname.split('/')[1];
 
     const handleAgreementCheck = async (e) => {
         setChecked(e.target.checked);
@@ -59,7 +59,7 @@ export default function RegisterAndReset() {
 
     const handleVerify = async (e) => {
         e.preventDefault();
-        const api = status === 'Reset' ? SEND_RESET_VERIFY_TOKEN : SEND_VERIFY_TOKEN;
+        const api = status === 'reset' ? SEND_RESET_VERIFY_TOKEN : SEND_VERIFY_TOKEN;
         try {
             const response = await fetch(api, {
                 method: "POST",
@@ -83,8 +83,8 @@ export default function RegisterAndReset() {
 
     const handleSubmit= async (e) => {
         e.preventDefault();
-        const api = status === 'Reset' ? RESET_PASSWORD : REGISTER;
-        if (!boxChecked && status === 'Register') {
+        const api = status === 'reset' ? RESET_PASSWORD : REGISTER;
+        if (!boxChecked && status === 'register') {
             alert("Please check the agreements.");
             return;
         }
@@ -104,10 +104,10 @@ export default function RegisterAndReset() {
 
             if (response.status === 200) {
                 navigate("/");
-                if (status === 'Reset') {
+                if (status === 'reset') {
                     alert("Password reset successful.");
                 }
-                else if (status === 'Register') {
+                else if (status === 'register') {
                     alert("Registration successful.");
                 }
             } else {
@@ -119,7 +119,7 @@ export default function RegisterAndReset() {
         }
     };
 
-    const title = status === 'Reset' ? 'Reset Password' : 'Register';
+    const title = status === 'reset' ? 'Reset Password' : 'Register';
 
     return (
         <div className="RegisterAndReset">
@@ -167,7 +167,7 @@ export default function RegisterAndReset() {
                     <span>{hasLowercase ? checkMark : crossMark} 密码至少包含一个小写字母</span><br/>
                     <span>{hasUppercase ? checkMark : crossMark} 密码至少包含一个大写字母</span>
                 </div>
-                {status === 'Register' && <div>
+                {status === 'register' && <div>
                     <input
                         type="checkbox"
                         id="privacyPolicy"
@@ -190,7 +190,7 @@ export default function RegisterAndReset() {
                 </div>}
                 {valid ? null : <p style={{color: 'red'}}>请按照规范重新设置密码。</p>}
                 <button className='Button' title={title} type="submit">{title}</button>
-                {status === 'Register' && <div onClick={() => {
+                {status === 'register' && <div onClick={() => {
                     navigate('/login')
                 }}
                     style={{textDecoration: "underline", cursor: "pointer"}}>
