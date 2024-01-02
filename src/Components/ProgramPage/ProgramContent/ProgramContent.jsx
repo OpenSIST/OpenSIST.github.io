@@ -1,15 +1,13 @@
 import React, {useRef} from 'react';
 import ReactMarkdown from 'react-markdown';
-import AddModifyProgram from "../../Modify/Program/AddModifyProgram";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import "./css/github.css";
-import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import Draggable from 'react-draggable';
 import './ProgramContent.css'
 import {Form, useLoaderData} from "react-router-dom";
 
-import {getProgramContent, getProgramDesc, getPrograms} from "../../../Data/ProgramData";
+import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 
 export async function loader({params}) {
     const programId = params.programId;
@@ -19,9 +17,7 @@ export async function loader({params}) {
 
 export async function action({request, params}) {
     const programId = params.programId;
-    const Desc = await getProgramDesc(programId, true);
-    console.log(Desc);
-    return Desc;
+    return await getProgramDesc(programId, true);
 }
 
 function ProgramContent() {

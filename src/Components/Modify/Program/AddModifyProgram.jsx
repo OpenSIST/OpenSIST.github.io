@@ -37,10 +37,12 @@ export async function action({request, params}) {
 
 function AddModifyProgram() {
     const navigate = useNavigate();
-    const {programContent} = useLoaderData();
-    const OriginDesc = programContent === null ? DescriptionTemplate : programContent.description;
+    const loaderData = useLoaderData();
+    const programContent = loaderData?.programContent;
+    const AddMode = programContent === undefined;
+    const OriginDesc = AddMode ? DescriptionTemplate : programContent.description;
     const [Description, setDescription] = useState(OriginDesc);
-    const mode = programContent === null ? 'Add' : 'Modify';
+    const mode = AddMode ? 'Add' : 'Modify';
 
     return (
         <div className='ProgramContent'>
@@ -49,38 +51,36 @@ function AddModifyProgram() {
 
                 <h4 className='Subtitle'>University Name</h4>
                 <input type="text" id="University" name="University"
-                       defaultValue={programContent === null ? '' : programContent.University}
+                       defaultValue={AddMode ? '' : programContent.University}
                        placeholder="University Name" required
-                       className={programContent !== null ? 'disabled' : ''}
-                       // disabled={programContent !== null}
+                       className={AddMode ? '' : 'disabled'}
                 />
 
                 <h4 className='Subtitle'>Program Name</h4>
                 <input type="text" id="Program" name="Program"
-                       defaultValue={programContent === null ? '' : programContent.Program}
+                       defaultValue={AddMode ? '' : programContent.Program}
                        placeholder="Program Name" required
-                          className={programContent !== null ? 'disabled' : ''}
-                       // disabled={programContent !== null}
+                          className={AddMode ? '' : 'disabled'}
                 />
 
                 <h4 className='Subtitle'>Program Degree</h4>
                 <SingleChoice
                     choices={['Master', 'PhD']}
-                    defaultValue={programContent === null ? 'Master' : programContent.Degree}
+                    defaultValue={AddMode ? 'Master' : programContent.Degree}
                     name='Degree'
                 />
 
                 <h4 className='Subtitle'>Target Applicant Major (Multi-choices)</h4>
                 <MultiChoice
                     choices={ProgramTargetApplicantMajorChoices}
-                    defaultValue={programContent === null ? [] : programContent.TargetApplicantMajor}
+                    defaultValue={AddMode ? [] : programContent.TargetApplicantMajor}
                     name="TargetApplicantMajor"
                 />
 
                 <h4 className='Subtitle'>Program Region (Multi-choices)</h4>
                 <MultiChoice
                     choices={ProgramRegionChoices}
-                    defaultValue={programContent === null ? [] : programContent.Region}
+                    defaultValue={AddMode ? [] : programContent.Region}
                     name="Region"
                 />
 

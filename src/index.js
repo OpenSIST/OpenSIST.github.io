@@ -18,6 +18,8 @@ import RegisterAndReset from "./Components/Auth/RegisterAndReset/RegisterAndRese
 import AddModifyProgram, {
     action as addModifyProgramAction
 } from "./Components/Modify/Program/AddModifyProgram";
+// import {action as SideBarAction} from "./Components/SideBar/SideBar";
+import {getPrograms} from "./Data/ProgramData";
 
 const router = createBrowserRouter([
     {
@@ -28,6 +30,7 @@ const router = createBrowserRouter([
                 path: '/programs',
                 element: <ProgramPage/>,
                 loader: programPageLoader,
+                action: (() => getPrograms(true)),
                 children: [
                     {
                         path: '/programs/:programId',
@@ -39,6 +42,10 @@ const router = createBrowserRouter([
                         element: <AddModifyProgram/>,
                         loader: programContentLoader,
                         action: addModifyProgramAction
+                    }, {
+                        path: '/programs/new',
+                        element: <AddModifyProgram/>,
+
                     }
                 ]
             }, {

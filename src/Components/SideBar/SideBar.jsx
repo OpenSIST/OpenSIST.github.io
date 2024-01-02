@@ -1,13 +1,26 @@
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import {NavLink} from "react-router-dom";
+import {Form, NavLink} from "react-router-dom";
 import "./SideBar.css";
 import {getPrograms} from "../../Data/ProgramData";
+
+// export async function action() {
+//     return getPrograms(true);
+// }
 
 export default function SideBar({twoLevelList}) {
     return (
         <div className='SideBar'>
+            {/*<Form action='/programs/new'>*/}
+            {/*    <button className='Button'>*/}
+            {/*        <FontAwesomeIcon icon={solid('plus')}/>*/}
+            {/*    </button>*/}
+            {/*</Form>*/}
+            <Form method='post'>
+                <button type='submit' title='Refresh' className='Button'><FontAwesomeIcon
+                    icon={solid("arrows-rotate")}/></button>
+            </Form>
             <ul className='FirstLevelList'>
                 {
                     Object.entries(twoLevelList).map(([firstLevel, secondLevelList]) => (

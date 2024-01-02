@@ -15,8 +15,6 @@ export async function getPrograms(isRefresh = false) {
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: list of programs (without description)
      */
-    // TODO: implement force refresh
-    // await localforage.removeItem('programs') //TODO: remove this line
     let programs = await localforage.getItem('programs');
     if (isRefresh || programs === null || (Date.now() - programs.Date) > 24 * 60 * 60 * 1000) {
         const response = await fetch(PROGRAM_LIST, {
