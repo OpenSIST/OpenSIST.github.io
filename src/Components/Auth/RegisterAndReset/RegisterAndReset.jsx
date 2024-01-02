@@ -127,7 +127,7 @@ export default function RegisterAndReset() {
             <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column'}}>
                 <input
                     type="Username"
-                    placeholder="Email"
+                    placeholder="Your ShanghaiTech Email"
                     value={email.split("@")[0]}
                     onChange={(e) => setEmail(
                         e.target.value.split("@")[0] + "@shanghaitech.edu.cn"
@@ -159,7 +159,7 @@ export default function RegisterAndReset() {
                         onChange={(e) => setToken(e.target.value)}
                         required
                     />
-                    <button className='Button' type="button" onClick={handleVerify}>Send code</button>
+                    <button className='Button' type="button" title="Send verification code to your email" onClick={handleVerify}>Send code</button>
                 </div>
                 <div>
                     <span>{isLengthValid ? checkMark : crossMark} 密码长度为8-24个字符</span><br/>
