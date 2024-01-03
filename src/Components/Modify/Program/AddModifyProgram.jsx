@@ -6,7 +6,7 @@ import {
     ProgramRegionChoices
 } from "../../../Data/Schemas";
 import MarkDownEditor from "./MarkDownEditor/MarkDownEditor";
-import {useLoaderData, useNavigate, redirect, Form} from "react-router-dom";
+import {useLoaderData, useNavigate, redirect, Form, useNavigation} from "react-router-dom";
 import {setProgramContent} from "../../../Data/ProgramData";
 
 export async function action({request}) {

@@ -1,5 +1,5 @@
 import SideBar from "../SideBar/SideBar";
-import {Outlet, useLoaderData} from "react-router-dom";
+import {Outlet, useLoaderData, useNavigation} from "react-router-dom";
 import {getPrograms} from "../../Data/ProgramData";
 import './ProgramPage.css';
 
@@ -12,8 +12,9 @@ export async function loader({ request }) {
 
 export default function ProgramPage() {
     const programs = useLoaderData().programs;
+    const navigation = useNavigation();
     return (
-        <div className='ContentBlock'>
+        <div className={'ContentBlock ' + (navigation.state === 'loading' ? 'loading' : '')}>
             <SideBar twoLevelList={programs}/>
             <Outlet/>
         </div>

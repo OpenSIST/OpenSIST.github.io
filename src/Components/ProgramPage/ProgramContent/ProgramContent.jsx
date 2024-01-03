@@ -5,7 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import "./css/github.css";
 import Draggable from 'react-draggable';
 import './ProgramContent.css'
-import {Form, useLoaderData} from "react-router-dom";
+import {Form, useLoaderData, useNavigation} from "react-router-dom";
 
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 
@@ -23,9 +23,13 @@ export async function action({request, params}) {
 function ProgramContent() {
     const {programContent} = useLoaderData();
     const nodeRef = useRef(null);
-
+    const navigation = useNavigation();
+    const loading =
+        navigation.state !== 'idle'
+        && navigation.formData != null
+        && navigation.formAction === navigation.location?.pathname;
     return (
-        <div className="ProgramContent">
+        <div className="ProgramContent" >
             <div className='ProgramDescription'>
                 <ReactMarkdown>{programContent.description}</ReactMarkdown>
                 <Draggable nodeRef={nodeRef} defaultClassName="DraggableButtonGroup">
@@ -37,7 +41,7 @@ function ProgramContent() {
                         </Form>
                         <Form method='post'>
                             <button type='submit' title='Refresh' className='Button'><FontAwesomeIcon
-                                icon={solid("arrows-rotate")}/></button>
+                                icon={solid("arrows-rotate")} spin={loading}/></button>
                         </Form>
                     </div>
                 </Draggable>
