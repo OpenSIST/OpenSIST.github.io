@@ -1,5 +1,4 @@
 import localforage from "localforage";
-import {handleErrors} from "./Common";
 import {redirect} from "react-router-dom";
 
 export async function checkLogin() {

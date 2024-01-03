@@ -44,13 +44,13 @@ const router = createBrowserRouter([
                         action: programContentAction
                     }, {
                         path: '/programs/:programId/edit',
-                        element: <AddModifyProgram/>,
+                        element: <AddModifyProgram key='edit'/>,
                         loader: programContentLoader,
                         action: addModifyProgramAction
                     }, {
                         path: '/programs/new',
-                        element: <AddModifyProgram/>,
-
+                        element: <AddModifyProgram key='new'/>,
+                        action: addModifyProgramAction
                     }
                 ]
             }, {

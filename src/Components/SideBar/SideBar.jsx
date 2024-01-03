@@ -1,7 +1,7 @@
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import {Form, NavLink} from "react-router-dom";
+import {Form, NavLink, useNavigate} from "react-router-dom";
 import "./SideBar.css";
 import {getPrograms} from "../../Data/ProgramData";
 
@@ -10,13 +10,12 @@ import {getPrograms} from "../../Data/ProgramData";
 // }
 
 export default function SideBar({twoLevelList}) {
+    const navigate = useNavigate()
     return (
         <div className='SideBar'>
-            {/*<Form action='/programs/new'>*/}
-            {/*    <button className='Button'>*/}
-            {/*        <FontAwesomeIcon icon={solid('plus')}/>*/}
-            {/*    </button>*/}
-            {/*</Form>*/}
+            <button onClick={() => navigate('/programs/new')} className='Button'>
+                <FontAwesomeIcon icon={solid('plus')}/>
+            </button>
             <Form method='post'>
                 <button type='submit' title='Refresh' className='Button'><FontAwesomeIcon
                     icon={solid("arrows-rotate")}/></button>

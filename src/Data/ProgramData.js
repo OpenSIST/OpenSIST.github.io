@@ -93,6 +93,9 @@ export async function setProgram(program) {
      */
     const programs = await getPrograms();
     const univName = program.ProgramID.split('@')[1]
+    if (programs[univName] === undefined) {
+        programs[univName] = []
+    }
     programs[univName] = programs[univName].filter(p => p.ProgramID !== program.ProgramID);
     programs[univName].push(program);
     await setPrograms(programs);
