@@ -1,40 +1,22 @@
 import TopBar from "./TopBar/TopBar";
-import {useNavigate} from "react-router-dom";
+import {redirect, useLoaderData, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {Outlet} from "react-router-dom";
 import localforage from "localforage";
+import {checkLogin} from "../Data/UserData";
 
-export const checkLogin = async () => {
-    try {
-        const session = await localforage.getItem('session');
-        if (!session) {
-            return false;
-        }
-        const response = await fetch("https://opensist-auth.caoster.workers.dev/api/my/is_login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${session}`
-            }
-        });
-        return response.status === 200;
-    } catch (e) {
-        alert(e);
-        return false;
-    }
+export async function loader() {
+    return {isLoggedIn: await checkLogin()};
 }
 
 function Home() {
     const navigate = useNavigate();
+    const {isLoggedIn} = useLoaderData();
     useEffect(() => {
-        const verifyLogin = async () => {
-            const isLoggedIn = await checkLogin();
-            if (!isLoggedIn) {
-                navigate("/login");
-            }
-        };
-        verifyLogin().then();
-    }, [navigate]);
+        if (!isLoggedIn) {
+            navigate("/login");
+        }
+    }, []);
 
     return (
         <>

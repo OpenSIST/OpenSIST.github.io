@@ -26,13 +26,8 @@
     border-radius: 5px;
 }
 
-.login a {
-    color: #007bff;
-    text-decoration: none;
-    margin-top: 1rem;
+.login p {
+    margin: 0;
     cursor: pointer;
-}
-
-.login a:hover {
     text-decoration: underline;
 }

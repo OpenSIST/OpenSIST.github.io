@@ -1,13 +1,7 @@
 import localforage from "localforage";
 import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST} from "../APIs/APIs";
+import {handleErrors} from "./Common";
 
-async function handleErrors(response) {
-    if (response.status !== 200) {
-        const content = await response.json();
-        throw new Error(`${content.error}, Error code: ${response.status}`);
-    }
-    return response;
-}
 
 export async function getPrograms(isRefresh = false) {
     /*
