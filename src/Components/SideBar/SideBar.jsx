@@ -11,6 +11,7 @@ export default function SideBar({twoLevelList}) {
         navigation.state !== 'idle'
         && navigation.formData != null
         && navigation.formAction === navigation.location?.pathname;
+
     return (
         <div className='SideBar'>
             <SearchBar/>

@@ -1,5 +1,6 @@
 import localforage from "localforage";
 import {redirect} from "react-router-dom";
+import {LOGIN, LOGOUT} from "../APIs/APIs";
 
 export async function checkLogin() {
     const session = await localforage.getItem('session');
@@ -10,14 +11,13 @@ export async function checkLogin() {
 
 export async function login(username, password) {
     const email = username + "@shanghaitech.edu.cn";
-    const response = await fetch("https://opensist-auth.caoster.workers.dev/api/auth/login", {
+    const response = await fetch(LOGIN, {
         method: "POST",
         credentials: "include",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({email, password}),
     })
     if (response.status !== 200) {
-
         const content = await response.json();
         alert(`${content.error}, Error code: ${response.status}`)
         return redirect("/login");
@@ -29,7 +29,6 @@ export async function login(username, password) {
             expireAt: data.expireAt,
         }
         await setUserInfo(user_info);
-        alert("Login successfully!");
         return redirect("/");
     }
 }
@@ -38,4 +37,23 @@ export async function setUserInfo(user_info) {
     Object.entries(user_info).map(async ([key, value]) => {
         await localforage.setItem(key, value)
     })
+}
+
+export async function logout() {
+    const session = await localforage.getItem('session');
+    const response = await fetch(LOGOUT, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${session}`
+        }
+    })
+    if (response.status !== 200) {
+        const content = await response.json();
+        alert(`${content.error}, Error code: ${response.status}`);
+    }
+    await localforage.removeItem('user')
+    await localforage.removeItem('session')
+    await localforage.removeItem('expireAt')
+    return redirect("/login");
 }

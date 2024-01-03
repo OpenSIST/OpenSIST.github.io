@@ -1,7 +1,9 @@
 import {useState} from "react";
-import {Form, useNavigate} from 'react-router-dom';
+import {Form, useNavigate, useNavigation} from 'react-router-dom';
 import "./Login.css"
 import {login} from "../../../Data/UserData";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -14,6 +16,12 @@ function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const navigation = useNavigation();
+
+    const logging =
+        navigation.state !== 'idle'
+        && navigation.formData != null
+        && navigation.formAction === navigation.location?.pathname;
 
     return (
         <div className="login">
@@ -37,11 +45,17 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <button className="Button" type="submit">Login</button>
-                <p onClick={() => {navigate('/reset')}}>
+                <button className="Button" type="submit">
+                    {logging ? <FontAwesomeIcon icon={solid('arrows-rotate')} spin={logging}/> : 'Login'}
+                </button>
+                <p onClick={() => {
+                    navigate('/reset')
+                }}>
                     Forget Password? Click here to reset!
                 </p>
-                <p onClick={() => {navigate('/register')}}>
+                <p onClick={() => {
+                    navigate('/register')
+                }}>
                     Don't have an account? Register now!
                 </p>
             </Form>

@@ -25,11 +25,14 @@ import {getPrograms} from "./Data/ProgramData";
 
 import {loader as homeLoader} from "./Components/home";
 
+import {action as homeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
+
 const router = createBrowserRouter([
     {
         path: '/',
         element: <Home/>,
         loader: homeLoader,
+        action: homeAction,
         children: [
             {
                 path: '/programs',
@@ -57,7 +60,8 @@ const router = createBrowserRouter([
                 path: '/applicants'
             }
         ]
-    }, {
+    },
+    {
         path: '/login',
         element: <Login/>,
         action: loginAction

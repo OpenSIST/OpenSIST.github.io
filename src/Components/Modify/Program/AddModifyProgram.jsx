@@ -10,7 +10,6 @@ import {useLoaderData, useNavigate, redirect, Form, useNavigation} from "react-r
 import {setProgramContent} from "../../../Data/ProgramData";
 
 export async function action({request}) {
-    console.log("This is action in AddModifyProgram.jsx");
     const formData = await request.formData();
     const University = formData.get('University');
     const Program = formData.get('Program');
