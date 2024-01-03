@@ -10,13 +10,13 @@ export default function SideBar({twoLevelList}) {
     return (
         <div className='SideBar'>
             <SearchBar />
-            <button onClick={() => navigate('/programs/new')} className='Button'>
-                <FontAwesomeIcon icon={solid('plus')}/>
-            </button>
-            <Form method='post'>
-                <button type='submit' title='Refresh' className='Button'><FontAwesomeIcon
-                    icon={solid("arrows-rotate")}/></button>
-            </Form>
+                <Form method='post' className="AddRefreshButtonGroup">
+                    <button onClick={() => navigate('/programs/new')} className='Button'>
+                        <FontAwesomeIcon icon={solid('plus')}/>
+                    </button>
+                    <button type='submit' title='Refresh' className='Button'><FontAwesomeIcon
+                        icon={solid("arrows-rotate")}/></button>
+                </Form>
             <ul className='FirstLevelList'>
                 {
                     Object.entries(twoLevelList).map(([firstLevel, secondLevelList]) => (

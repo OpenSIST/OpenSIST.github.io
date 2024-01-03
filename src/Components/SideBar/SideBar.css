@@ -75,3 +75,11 @@
 .SecondLevelItem:active {
     transform: scale(0.98);
 }
+
+.AddRefreshButtonGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 20px;
+}
