@@ -1,4 +1,4 @@
-.Search-bar {
+.SearchBar {
     width: 100%;
     padding: 10px;
     border: none;
@@ -8,7 +8,7 @@
     justify-content: center;
 }
 
-.Search-bar:focus {
+.SearchBar:focus {
     outline: none;
 }
 

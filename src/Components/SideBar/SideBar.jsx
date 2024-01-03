@@ -1,18 +1,15 @@
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import {Form, NavLink, useNavigate} from "react-router-dom";
+import {Form, NavLink, useLoaderData, useNavigate} from "react-router-dom";
 import "./SideBar.css";
-import {getPrograms} from "../../Data/ProgramData";
-
-// export async function action() {
-//     return getPrograms(true);
-// }
+import SearchBar from "./SearchBar/SearchBar";
 
 export default function SideBar({twoLevelList}) {
     const navigate = useNavigate()
     return (
         <div className='SideBar'>
+            <SearchBar />
             <button onClick={() => navigate('/programs/new')} className='Button'>
                 <FontAwesomeIcon icon={solid('plus')}/>
             </button>

@@ -3,13 +3,21 @@ import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST} from "../APIs/APIs";
 import {handleErrors} from "./Common";
 
 
-export async function getPrograms(isRefresh = false) {
+export async function getPrograms(isRefresh = false, query = {}) {
     /*
     * Get the list of programs (without description) from the server or local storage
     * @param isRefresh [Boolean]: whether to refresh the data
+    * @param query [Object]: {
+    *   'u': [String]: university name,
+    *   (NO PROGRAM) [Delete] 'p': [String]: program name [Delete],
+    *   'd': [String]: degree,
+    *   'm': [String]: major,
+    *   'r': [String]: region,
+    * }
     * @return: list of programs (without description)
      */
     let programs = await localforage.getItem('programs');
+
     if (isRefresh || programs === null || (Date.now() - programs.Date) > 24 * 60 * 60 * 1000) {
         const response = await fetch(PROGRAM_LIST, {
             method: 'POST',
@@ -22,7 +30,18 @@ export async function getPrograms(isRefresh = false) {
         programs = (await response.json());
         await setPrograms(programs['data'])
     }
-    return programs['data'];
+
+    programs = programs['data'];
+    const filter_keys = Object.keys(programs).filter((univName) => {
+        return univName.toLowerCase().includes(query.u?.toLowerCase() ?? '')
+    })
+
+    const filter_programs = {}
+    filter_keys.forEach((key) => {
+        filter_programs[key] = programs[key]
+    })
+
+    return filter_programs;
 }
 
 export async function getProgram(programId, isRefresh = false) {
@@ -92,7 +111,8 @@ export async function setProgram(program) {
     * @param program [Object]: program (without description)
      */
     const programs = await getPrograms();
-    const univName = program.ProgramID.split('@')[1]
+    // const univName = program.ProgramID.split('@')[1]
+    const univName = program.University;
     if (programs[univName] === undefined) {
         programs[univName] = []
     }
