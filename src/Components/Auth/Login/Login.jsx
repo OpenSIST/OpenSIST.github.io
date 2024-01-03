@@ -4,6 +4,7 @@ import "./Login.css"
 import {login} from "../../../Data/UserData";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
+import {ResponsiveButton} from "../../common";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -45,9 +46,7 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <button className="Button" type="submit">
-                    {logging ? <FontAwesomeIcon icon={solid('arrows-rotate')} spin={logging}/> : 'Login'}
-                </button>
+                <ResponsiveButton content='Login' title='Login'/>
                 <p onClick={() => {
                     navigate('/reset')
                 }}>

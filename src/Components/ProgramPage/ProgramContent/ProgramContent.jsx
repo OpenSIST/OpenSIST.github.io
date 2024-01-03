@@ -8,6 +8,7 @@ import './ProgramContent.css'
 import {Form, useLoaderData, useNavigation} from "react-router-dom";
 
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
+import {ResponsiveButton} from "../../common";
 
 export async function loader({params}) {
     const programId = params.programId;
@@ -23,11 +24,6 @@ export async function action({request, params}) {
 function ProgramContent() {
     const {programContent} = useLoaderData();
     const nodeRef = useRef(null);
-    const navigation = useNavigation();
-    const loading =
-        navigation.state !== 'idle'
-        && navigation.formData != null
-        && navigation.formAction === navigation.location?.pathname;
     return (
         <div className="ProgramContent" >
             <div className='ProgramDescription'>
@@ -40,8 +36,7 @@ function ProgramContent() {
                             </button>
                         </Form>
                         <Form method='post'>
-                            <button type='submit' title='Refresh' className='Button'><FontAwesomeIcon
-                                icon={solid("arrows-rotate")} spin={loading}/></button>
+                            <ResponsiveButton/>
                         </Form>
                     </div>
                 </Draggable>

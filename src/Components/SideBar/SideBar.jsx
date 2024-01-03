@@ -4,14 +4,8 @@ import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {Form, NavLink, useLoaderData, useNavigate, useNavigation} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
-
+import {ResponsiveButton} from "../common";
 export default function SideBar({twoLevelList}) {
-    const navigation = useNavigation();
-    const loading =
-        navigation.state !== 'idle'
-        && navigation.formData != null
-        && navigation.formAction === navigation.location?.pathname;
-
     return (
         <div className='SideBar'>
             <SearchBar/>
@@ -23,15 +17,7 @@ export default function SideBar({twoLevelList}) {
                     </button>
                 </Form>
                 <Form method='post'>
-                    <button
-                        type='submit'
-                        title='Refresh'
-                        className='Button'
-                    >
-                        <FontAwesomeIcon
-                            icon={solid("arrows-rotate")} spin={loading}
-                        />
-                    </button>
+                    <ResponsiveButton/>
                 </Form>
             </div>
             <ul className='FirstLevelList'>

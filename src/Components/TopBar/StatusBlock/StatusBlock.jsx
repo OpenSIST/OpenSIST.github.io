@@ -5,6 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import React, {useEffect, useRef, useState} from "react";
 import localforage from "localforage";
 import {logout} from "../../../Data/UserData";
+import {ResponsiveButton} from "../../common";
 
 export async function action() {
     return await logout();
@@ -53,18 +54,11 @@ export function StatusBlock() {
 }
 
 const UserMenu = React.forwardRef((props, ref) => {
-    const navigation = useNavigation()
-    const loading =
-        navigation.state !== 'idle'
-        && navigation.formData != null
-        && navigation.formAction === navigation.location?.pathname;
-
     return (
         <div className="UserMenu" ref={ref}>
             <ul>
                 <Form action='/profile'>
                     <button
-                        id='Profile'
                         title='Profile'
                         className='Button'
                     >
@@ -73,7 +67,6 @@ const UserMenu = React.forwardRef((props, ref) => {
                 </Form>
                 <Form action='/reset'>
                     <button
-                        id='Reset'
                         title='Reset Password'
                         className='Button'
                     >
@@ -81,17 +74,10 @@ const UserMenu = React.forwardRef((props, ref) => {
                     </button>
                 </Form>
                 <Form method='post'>
-                    <button
-                        name='Logout'
-                        id='Logout'
+                    <ResponsiveButton
+                        content={(<FontAwesomeIcon icon={solid("sign-out-alt")}/>)}
                         title='Logout'
-                        className='Button'
-                    >
-                        {loading ?
-                            <FontAwesomeIcon icon={solid('arrows-rotate')} spin={loading}/>
-                            :
-                            <FontAwesomeIcon icon={solid("sign-out-alt")}/>}
-                    </button>
+                    />
                 </Form>
             </ul>
         </div>
