@@ -9,7 +9,8 @@ import MarkDownEditor from "./MarkDownEditor/MarkDownEditor";
 import {useLoaderData, useNavigate, redirect, Form} from "react-router-dom";
 import {setProgramContent} from "../../../Data/ProgramData";
 
-export async function action({request, params}) {
+export async function action({request}) {
+    console.log("This is action in AddModifyProgram.jsx");
     const formData = await request.formData();
     const University = formData.get('University');
     const Program = formData.get('Program');
@@ -35,7 +36,6 @@ export async function action({request, params}) {
 }
 
 function AddModifyProgram() {
-    // window.location.reload();
     const navigate = useNavigate();
     const loaderData = useLoaderData();
     const programContent = loaderData?.programContent;

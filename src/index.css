@@ -17,3 +17,9 @@
     user-select: none;
     font-size: clamp(10px, 1.5vw, 16px);
 }
+
+.loading {
+    opacity: 0.25;
+    transition: opacity 200ms;
+    transition-delay: 200ms;
+}

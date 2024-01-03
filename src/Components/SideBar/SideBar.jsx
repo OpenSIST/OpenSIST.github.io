@@ -9,14 +9,20 @@ export default function SideBar({twoLevelList}) {
     const navigate = useNavigate()
     return (
         <div className='SideBar'>
-            <SearchBar />
-                <Form method='post' className="AddRefreshButtonGroup">
-                    <button onClick={() => navigate('/programs/new')} className='Button'>
+            <SearchBar/>
+            <div className='AddRefreshButtonGroup'>
+                <Form action='/programs/new'>
+                    <button
+                        // onClick={() => navigate('/programs/new')}
+                        className='Button'>
                         <FontAwesomeIcon icon={solid('plus')}/>
                     </button>
+                </Form>
+                <Form method='post'>
                     <button type='submit' title='Refresh' className='Button'><FontAwesomeIcon
                         icon={solid("arrows-rotate")}/></button>
                 </Form>
+            </div>
             <ul className='FirstLevelList'>
                 {
                     Object.entries(twoLevelList).map(([firstLevel, secondLevelList]) => (
