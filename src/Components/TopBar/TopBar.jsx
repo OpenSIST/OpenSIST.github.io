@@ -8,7 +8,6 @@ import {useNavigation} from "react-router-dom";
 
 function TopBar() {
     const navigation= useNavigation();
-
     return (
         <>
             <div className={"TopBar " + (navigation.state === 'loading' ? 'loading' : '')}>

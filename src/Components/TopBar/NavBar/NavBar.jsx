@@ -10,8 +10,8 @@ export default function NavBar() {
                 <li>
                     <NavLink
                         to="/programs"
-                        className={"NavBarItem " + (({isActive, isPending}) =>
-                            isActive ? "active" : isPending ? "pending" : "")
+                        className={"NavBarItem " + (({isActive}) =>
+                            isActive ? "active" : "")
                         }
                     >
                         <b>项目信息表</b>
@@ -20,8 +20,8 @@ export default function NavBar() {
                 <li>
                     <NavLink
                         to="/applicants"
-                        className={"NavBarItem " + (({isActive, isPending}) =>
-                            isActive ? "active" : isPending ? "pending" : "")
+                        className={"NavBarItem " + (({isActive}) =>
+                            isActive ? "active" : "")
                         }
                     >
                         <b>申请人信息表</b>

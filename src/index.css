@@ -19,5 +19,7 @@
 }
 
 .loading {
-    background-color: #333333;
+    opacity: 0.25;
+    transition: opacity 200ms;
+    transition-delay: 200ms;
 }

@@ -20,7 +20,7 @@ import RegisterAndReset from "./Components/Auth/RegisterAndReset/RegisterAndRese
 import AddModifyProgram, {
     action as addModifyProgramAction
 } from "./Components/Modify/Program/AddModifyProgram";
-// import {action as SideBarAction} from "./Components/SideBar/SideBar";
+
 import {getPrograms} from "./Data/ProgramData";
 
 import {loader as homeLoader} from "./Components/home";

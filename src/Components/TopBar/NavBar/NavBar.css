@@ -34,10 +34,6 @@
     background-color: #0056b3;
 }
 
-.NavBarItem.pending {
-    background-color: #ffc107;
-}
-
 .NavBarItem:active {
     transform: scale(0.98);;
 }
