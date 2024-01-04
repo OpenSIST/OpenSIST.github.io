@@ -1,7 +1,7 @@
 import {useNavigation} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 export function ResponsiveButton({
                                      content = (<FontAwesomeIcon icon={solid("arrows-rotate")}/>),
@@ -41,4 +41,23 @@ export function useHidden() {
 export function usePending() {
     const navigation = useNavigation();
     return navigation.state === 'loading' ? 'loading' : '';
+}
+
+export function useClickOutSideRef() {
+    const [isMenuVisible, setIsMenuVisible] = useState(false)
+    const menuRef = useRef(null)
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsMenuVisible(false)
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    return [isMenuVisible, setIsMenuVisible, menuRef];
 }

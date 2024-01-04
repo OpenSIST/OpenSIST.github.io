@@ -38,6 +38,7 @@
 
 .UserMenu {
     position: absolute;
+    z-index: 1;
     top: 105%;
     background-color: #fff;
     border: 1px solid #ddd;

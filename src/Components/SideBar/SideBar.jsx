@@ -4,13 +4,14 @@ import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {Form, NavLink, useLoaderData, useNavigate, useNavigation} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
-import {ResponsiveButton, useHidden} from "../common";
+import {ResponsiveButton, useClickOutSideRef, useHidden} from "../common";
 
 export default function SideBar({twoLevelList}) {
     const SideBarHidden = useHidden();
-    const [SideBarOpen, setSideBarOpen] = useState(false);
+    const [SideBarOpen, setSideBarOpen, SideBarRef] = useClickOutSideRef();
+
     return (
-        <div style={{display: "flex"}}>
+        <div style={{display: "flex"}} ref={SideBarRef}>
             <div className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}>
                 <SearchBar/>
                 <div className='AddRefreshButtonGroup'>
