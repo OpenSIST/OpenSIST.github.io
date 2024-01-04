@@ -1,24 +1,17 @@
-.SearchBar {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    color: #333;
-    background-color: #f8f9fa;
-    border-radius: 0 5px 5px 0;
-    justify-content: center;
-}
-
-.SearchBar:focus {
-    outline: none;
-}
-
 .SearchBlock {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-    background-color: #f8f9fa;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.SearchBar {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 0 5px 5px 0;
 }
 
 .SearchBlock svg {

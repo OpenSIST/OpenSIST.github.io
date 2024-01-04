@@ -1,13 +1,10 @@
-.NavBar {
-    background-color: #f8f9fa;
-}
-
 .NavBarList {
     list-style-type: none;
     padding: 0;
     display: flex;
     justify-content: flex-start;
-    margin-left: 2vw;
+    /*margin-left: 2vw;*/
+    margin: 0 2vw;
 }
 
 .NavBarItem {
@@ -18,21 +15,22 @@
     border-radius: 5px 5px 0 0;
     padding: 10px;
     text-decoration: none;
-    color: #fff;
-    background-color: #d2d2d2;
+    color: inherit;
+    border: solid 1px var(--border-color);
     transition: background-color 0.3s ease;
 }
 
 .NavBarItem:hover {
-    background-color: #bfbfbf;
+    background-color: var(--block-hover-bg-color);
 }
 
 .NavBarItem.active {
-    background-color: #007bff;
+    color: var(--button-color);
+    background-color: var(--button-bg-color);
 }
 
 .NavBarItem.active:hover {
-    background-color: #0056b3;
+    background-color: var(--button-hover-bg-color);
 }
 
 .NavBarItem:active {

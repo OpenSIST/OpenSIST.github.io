@@ -1,4 +1,4 @@
-import {useNavigation} from "react-router-dom";
+import {useLocation, useNavigation} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {useEffect, useRef, useState} from "react";
@@ -17,7 +17,6 @@ export function ResponsiveButton({
         <button
             type='submit'
             title={title}
-            className='Button'
         >
             {loading ? <FontAwesomeIcon icon={solid("arrows-rotate")} spin={loading}/> : content}
         </button>
@@ -60,4 +59,9 @@ export function useClickOutSideRef() {
     }, []);
 
     return [isMenuVisible, setIsMenuVisible, menuRef];
+}
+
+export function useUnAuthorized() {
+    const location = useLocation();
+    return ['/login', '/register', '/reset', '/agreement'].includes(location.pathname);
 }

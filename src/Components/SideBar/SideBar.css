@@ -10,10 +10,8 @@
 .SideBar {
     width: 250px;
     height: calc(100vh - 200px);
-    /*margin-right: 2vw;*/
     margin-left: 2vw;
     padding: 20px;
-    background-color: #f8f9fa;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 0 0 5px 5px;
     overflow-y: auto;
@@ -71,7 +69,6 @@
     padding: 0;
     margin: 0;
     list-style-type: none;
-    background-color: #fcfcfc;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -82,30 +79,22 @@
     align-items: center;
     padding: 0.5rem 0.5rem 0.5rem 20px;
     border-radius: 5px;
-    border: solid 1px #e7e7e7;
+    border: solid 1px var(--border-color);
     cursor: pointer;
     transition: background-color 0.3s ease;
-    list-style-type: none;
 }
-
-.FirstLevelItem {
-    background-color: #fcfcfc;
-}
-
-.FirstLevelItem:hover{
-    background-color: #e7e7e7;
-}
-
 
 .SecondLevelItem {
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    list-style-type: none;
-    background-color: #fcfcfc;
-    border: solid 1px #e7e7e7;
     margin-left: 20px;
     border-radius: 5px;
-    text-decoration: none;
+    border: solid 1px var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.FirstLevelItem:hover,
+.SecondLevelItem:hover {
+    background-color: var(--block-hover-bg-color);
 }
 
 .SecondLevelItem a {
@@ -113,15 +102,7 @@
     padding: 0.5rem 0.5rem 0.5rem 20px;
     text-decoration: none;
     border-radius: 5px;
-    color: #333;
-}
-
-.SecondLevelItem a.active {
-    background-color: #e7e7e7;
-}
-
-.SecondLevelItem:hover {
-    background-color: #e7e7e7;
+    color: inherit;
 }
 
 .FirstLevelItem:active,
