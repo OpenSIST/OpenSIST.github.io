@@ -38,7 +38,9 @@ const router = createBrowserRouter([
                 path: '/programs',
                 element: <ProgramPage/>,
                 loader: programPageLoader,
-                action: (() => getPrograms(true)),
+                action: (
+                    () => getPrograms(true)
+                ),
                 children: [
                     {
                         path: '/programs/:programId',

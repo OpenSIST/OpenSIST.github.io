@@ -5,6 +5,7 @@
     width: 80vw;
     height: calc(100vh - 200px);
     padding: 20px;
+    margin-left: 2vw;
     margin-right: 2vw;
     background-color: #f8f9fa;
     border-radius: 0 0 5px 5px;

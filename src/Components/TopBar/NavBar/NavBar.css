@@ -13,9 +13,10 @@
 .NavBarItem {
     display: flex;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
     border-radius: 5px 5px 0 0;
-    padding: 10px 20px;
+    padding: 10px;
     text-decoration: none;
     color: #fff;
     background-color: #d2d2d2;

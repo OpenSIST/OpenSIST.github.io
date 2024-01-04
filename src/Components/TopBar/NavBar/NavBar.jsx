@@ -1,9 +1,11 @@
-import React from "react";
+import React, {createContext, useState} from "react";
 import "./NavBar.css";
-import {useNavigate, NavLink, Form} from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
+import {useHidden} from "../../common";
 
 export default function NavBar() {
-    const navigate = useNavigate();
     return (
         <nav className='NavBar'>
             <ul className='NavBarList'>

@@ -5,15 +5,45 @@
     margin-left: 2vw;
     padding: 20px;
     background-color: #f8f9fa;
-    border-right: 1px solid #e7e7e7;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 0 0 5px 5px;
     overflow-y: auto;
+    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
+    transform: translateX(0);
+}
+
+.SideBar.hidden {
+    position: absolute;
+    z-index: 1000;
+    margin: 0;
+    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
+    transform: translateX(-100%);
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.SideBar.hidden.open {
+    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
+    transform: translateX(0);
+}
+
+.Button.hidden {
+    position: absolute;
+    width: 40px;
+    z-index: 1000;
+    border-radius: 0 5px 5px 0;
+    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
+}
+
+
+.Button.hidden.open {
+    margin-left: 0;
+    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
+    transform: translateX(290px);
 }
 
 .FirstLevelList {
     width: 100%;
-    height: calc(100vh - 320px);
+    height: calc(100vh - 300px);
     overflow-y: auto;
     padding: 0;
     margin: 0;

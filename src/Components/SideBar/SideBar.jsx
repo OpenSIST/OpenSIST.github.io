@@ -1,37 +1,48 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {Form, NavLink, useLoaderData, useNavigate, useNavigation} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
-import {ResponsiveButton} from "../common";
+import {ResponsiveButton, useHidden} from "../common";
+
 export default function SideBar({twoLevelList}) {
+    const SideBarHidden = useHidden();
+    const [SideBarOpen, setSideBarOpen] = useState(false);
     return (
-        <div className='SideBar'>
-            <SearchBar/>
-            <div className='AddRefreshButtonGroup'>
-                <Form action='/programs/new'>
-                    <button
-                        className='Button'>
-                        <FontAwesomeIcon icon={solid('plus')}/>
-                    </button>
-                </Form>
-                <Form method='post'>
-                    <ResponsiveButton/>
-                </Form>
+        <div style={{display: "flex"}}>
+            <div className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}>
+                <SearchBar/>
+                <div className='AddRefreshButtonGroup'>
+                    <Form action='/programs/new'>
+                        <button className='Button'>
+                            <FontAwesomeIcon icon={solid('plus')}/>
+                        </button>
+                    </Form>
+                    <Form method='post'>
+                        <ResponsiveButton/>
+                    </Form>
+                </div>
+                <ul className='FirstLevelList'>
+                    {
+                        Object.entries(twoLevelList).map(([firstLevel, secondLevelList]) => (
+                            <React.Fragment key={firstLevel}>
+                                <FirstLevelItem
+                                    firstLevel={firstLevel}
+                                    secondLevelList={secondLevelList}
+                                />
+                            </React.Fragment>
+                        ))
+                    }
+                </ul>
             </div>
-            <ul className='FirstLevelList'>
-                {
-                    Object.entries(twoLevelList).map(([firstLevel, secondLevelList]) => (
-                        <React.Fragment key={firstLevel}>
-                            <FirstLevelItem
-                                firstLevel={firstLevel}
-                                secondLevelList={secondLevelList}
-                            />
-                        </React.Fragment>
-                    ))
-                }
-            </ul>
+            <button
+                className={'Button ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open ' : '')}
+                hidden={!SideBarHidden}
+                onClick={() => setSideBarOpen(!SideBarOpen)}
+            >
+                <FontAwesomeIcon icon={solid('bars')}/>
+            </button>
         </div>
     )
 }
