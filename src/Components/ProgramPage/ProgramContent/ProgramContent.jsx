@@ -25,7 +25,7 @@ function ProgramContent() {
     const {programContent} = useLoaderData();
     const nodeRef = useRef(null);
     return (
-        <div className="ProgramContent" >
+        <div className="ProgramContent" key={programContent.ProgramID}>
             <div className='ProgramDescription'>
                 <ReactMarkdown>{programContent.description}</ReactMarkdown>
                 <Draggable nodeRef={nodeRef} defaultClassName="DraggableButtonGroup">

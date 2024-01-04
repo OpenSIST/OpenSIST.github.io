@@ -1,7 +1,16 @@
+@keyframes slideDown {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
 .SideBar {
     width: 250px;
     height: calc(100vh - 200px);
-    margin-right: 2vw;
+    /*margin-right: 2vw;*/
     margin-left: 2vw;
     padding: 20px;
     background-color: #f8f9fa;
@@ -10,6 +19,7 @@
     overflow-y: auto;
     transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
     transform: translateX(0);
+    animation: slideDown 0.3s cubic-bezier(0.11, 0.88, 0.58, 1);
 }
 
 .SideBar.hidden {
@@ -26,19 +36,32 @@
     transform: translateX(0);
 }
 
-.Button.hidden {
+.ShowUpButton {
     position: absolute;
     width: 40px;
     z-index: 1000;
     border-radius: 0 5px 5px 0;
     transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
+    transform: translateX(calc(290px + 2vw));
+    visibility: hidden;
 }
 
+.ShowUpButton.hidden {
+    position: absolute;
+    width: 40px;
+    z-index: 1000;
+    border-radius: 0 5px 5px 0;
+    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
+    transform: translateX(0);
+    visibility: visible;
+}
 
-.Button.hidden.open {
+.ShowUpButton.hidden.open {
     margin-left: 0;
     transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
     transform: translateX(290px);
+    visibility: visible;
+
 }
 
 .FirstLevelList {

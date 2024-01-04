@@ -38,8 +38,8 @@ export default function SideBar({twoLevelList}) {
                 </ul>
             </div>
             <button
-                className={'Button ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open ' : '')}
-                hidden={!SideBarHidden}
+                className={'Button ShowUpButton ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open ' : '')}
+                // hidden={!SideBarHidden}
                 onClick={() => setSideBarOpen(!SideBarOpen)}
             >
                 <FontAwesomeIcon icon={solid('bars')}/>
