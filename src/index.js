@@ -26,53 +26,68 @@ import {getPrograms} from "./Data/ProgramData";
 import {loader as homeLoader} from "./Components/home";
 
 import {action as homeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
+import Agreement from "./Components/Agreement/Agreement";
+import ErrorPage from "./Components/Errors/ErrorPage";
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <Home/>,
+        errorElement: <ErrorPage/>,
         loader: homeLoader,
         action: homeAction,
         children: [
             {
-                path: '/programs',
-                element: <ProgramPage/>,
-                loader: programPageLoader,
-                action: (
-                    () => getPrograms(true)
-                ),
+                errorElement: <ErrorPage/>,
                 children: [
                     {
-                        path: '/programs/:programId',
-                        element: <ProgramContent/>,
-                        loader: programContentLoader,
-                        action: programContentAction
+                        path: '/programs',
+                        element: <ProgramPage/>,
+                        loader: programPageLoader,
+                        action: (
+                            () => getPrograms(true)
+                        ),
+                        children: [
+                            {
+                                path: '/programs/:programId',
+                                element: <ProgramContent/>,
+                                loader: programContentLoader,
+                                action: programContentAction
+                            }, {
+                                path: '/programs/:programId/edit',
+                                element: <AddModifyProgram key='edit'/>,
+                                loader: programContentLoader,
+                                action: addModifyProgramAction
+                            }, {
+                                path: '/programs/new',
+                                element: <AddModifyProgram key='new'/>,
+                                action: addModifyProgramAction
+                            }
+                        ]
                     }, {
-                        path: '/programs/:programId/edit',
-                        element: <AddModifyProgram key='edit'/>,
-                        loader: programContentLoader,
-                        action: addModifyProgramAction
-                    }, {
-                        path: '/programs/new',
-                        element: <AddModifyProgram key='new'/>,
-                        action: addModifyProgramAction
+                        path: '/applicants'
                     }
                 ]
-            }, {
-                path: '/applicants'
             }
         ]
     },
     {
         path: '/login',
         element: <Login/>,
+        errorElement: <ErrorPage/>,
         action: loginAction
     }, {
         path: '/register',
-        element: <RegisterAndReset/>
+        element: <RegisterAndReset/>,
+        errorElement: <ErrorPage/>,
     }, {
         path: '/reset',
-        element: <RegisterAndReset/>
+        element: <RegisterAndReset/>,
+        errorElement: <ErrorPage/>,
+    }, {
+        path: '/agreement',
+        element: <Agreement/>,
+        errorElement: <ErrorPage/>,
     }
 ])
 
