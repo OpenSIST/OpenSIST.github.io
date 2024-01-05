@@ -2,10 +2,10 @@ import React, {useRef} from 'react';
 import ReactMarkdown from 'react-markdown';
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import "./css/github.css";
+// import "./css/github.css";
 import Draggable from 'react-draggable';
 import './ProgramContent.css'
-import {Form, useLoaderData, useNavigation} from "react-router-dom";
+import {Form, useLoaderData} from "react-router-dom";
 
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 import {ResponsiveButton} from "../../common";
@@ -31,7 +31,7 @@ function ProgramContent() {
                 <Draggable nodeRef={nodeRef} defaultClassName="DraggableButtonGroup">
                     <div ref={nodeRef}>
                         <Form action='edit'>
-                            <button type='submit' title='Edit' className='Button'>
+                            <button type='submit' title='Edit'>
                                 <FontAwesomeIcon icon={solid("pen-to-square")}/>
                             </button>
                         </Form>

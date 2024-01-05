@@ -28,6 +28,7 @@ import {loader as homeLoader} from "./Components/home";
 import {action as homeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
 import Agreement from "./Components/Agreement/Agreement";
 import ErrorPage from "./Components/Errors/ErrorPage";
+import Profile from "./Components/Profile/Profile";
 
 const router = createBrowserRouter([
     {
@@ -65,30 +66,32 @@ const router = createBrowserRouter([
                             }
                         ]
                     }, {
-                        path: '/applicants'
+                        path: '/applicants',
+                    }, {
+                        path: '/profile',
+                        element: <Profile/>,
+                    }, {
+                        path: '/login',
+                        element: <Login/>,
+                        errorElement: <ErrorPage/>,
+                        action: loginAction
+                    }, {
+                        path: '/register',
+                        element: <RegisterAndReset/>,
+                        errorElement: <ErrorPage/>,
+                    }, {
+                        path: '/reset',
+                        element: <RegisterAndReset/>,
+                        errorElement: <ErrorPage/>,
+                    }, {
+                        path: '/agreement',
+                        element: <Agreement/>,
+                        errorElement: <ErrorPage/>,
                     }
                 ]
             }
         ]
     },
-    {
-        path: '/login',
-        element: <Login/>,
-        errorElement: <ErrorPage/>,
-        action: loginAction
-    }, {
-        path: '/register',
-        element: <RegisterAndReset/>,
-        errorElement: <ErrorPage/>,
-    }, {
-        path: '/reset',
-        element: <RegisterAndReset/>,
-        errorElement: <ErrorPage/>,
-    }, {
-        path: '/agreement',
-        element: <Agreement/>,
-        errorElement: <ErrorPage/>,
-    }
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

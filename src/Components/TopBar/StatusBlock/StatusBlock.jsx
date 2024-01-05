@@ -5,7 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import React, {useEffect, useRef, useState} from "react";
 import localforage from "localforage";
 import {logout} from "../../../Data/UserData";
-import {ResponsiveButton, useClickOutSideRef} from "../../common";
+import {ResponsiveButton, useClickOutSideRef, useUnAuthorized} from "../../common";
 
 export async function action() {
     return await logout();
@@ -20,6 +20,9 @@ export function StatusBlock() {
         };
         fetchData().then();
     }, []);
+    if (useUnAuthorized()) {
+        return null;
+    }
 
     return (
         <div className='StatusBlock' ref={MenuRef}>
@@ -40,7 +43,6 @@ function UserMenu() {
                 <Form action='/profile'>
                     <button
                         title='Profile'
-                        className='Button'
                     >
                         <FontAwesomeIcon icon={solid("home")}/>
                     </button>
@@ -48,7 +50,6 @@ function UserMenu() {
                 <Form action='/reset'>
                     <button
                         title='Reset Password'
-                        className='Button'
                     >
                         <FontAwesomeIcon icon={solid("undo")}/>
                     </button>

@@ -52,14 +52,14 @@ function AddModifyProgram() {
                 <input type="text" id="University" name="University"
                        defaultValue={programContent?.University}
                        placeholder="University Name" required
-                       className={AddMode ? '' : 'disabled'}
+                       disabled={!AddMode}
                 />
 
                 <h4 className='Subtitle'>Program Name</h4>
                 <input type="text" id="Program" name="Program"
                        defaultValue={programContent?.Program}
                        placeholder="Program Name" required
-                       className={AddMode ? '' : 'disabled'}
+                       disabled={!AddMode}
                 />
 
                 <h4 className='Subtitle'>Program Degree</h4>
@@ -87,8 +87,8 @@ function AddModifyProgram() {
                 <MarkDownEditor OriginDesc={OriginDesc} Description={Description} setDescription={setDescription}/>
                 <textarea id='Description' name='Description' hidden={true} value={Description} readOnly/>
                 <div id='SaveCancelButtonGroup'>
-                    <button type="submit" className='Button'>Submit</button>
-                    <button onClick={() => navigate(-1)} className='Button'>Cancel</button>
+                    <button type="submit">Submit</button>
+                    <button onClick={() => navigate(-1)}>Cancel</button>
                 </div>
             </Form>
         </div>

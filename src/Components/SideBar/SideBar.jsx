@@ -16,7 +16,7 @@ export default function SideBar({twoLevelList}) {
                 <SearchBar/>
                 <div className='AddRefreshButtonGroup'>
                     <Form action='/programs/new'>
-                        <button className='Button'>
+                        <button title='add new program'>
                             <FontAwesomeIcon icon={solid('plus')}/>
                         </button>
                     </Form>

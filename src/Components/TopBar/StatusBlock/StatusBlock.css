@@ -5,16 +5,12 @@
     margin-right: 2vmin;
 }
 
-.StatusBlock button:hover {
-    background-color: #0056b3;
-}
-
 .UserBlock {
     display: flex;
     align-items: center;
     gap: 1vw;
     cursor: pointer;
-    background-color: #fcfcfc;
+    background-color: var(--menu-bg-color);
     border-radius: 5px;
     padding: 10px 20px;
     transition: background-color 0.3s ease;
@@ -22,7 +18,7 @@
 }
 
 .UserBlock:hover {
-    background-color: #e7e7e7;
+    background-color: var(--block-hover-bg-color);
 }
 
 .UserBlock:active {
@@ -32,16 +28,14 @@
 .UserBlock p {
     margin: 0;
     padding: 0;
-    /*font-size: 2vmin;*/
-    color: #333;
 }
 
 .UserMenu {
     position: absolute;
     z-index: 1;
     top: 105%;
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: var(--menu-bg-color);
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

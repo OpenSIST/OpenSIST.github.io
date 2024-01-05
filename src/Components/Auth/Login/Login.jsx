@@ -47,16 +47,8 @@ function Login() {
                     required
                 />
                 <ResponsiveButton content='Login' title='Login'/>
-                <p onClick={() => {
-                    navigate('/reset')
-                }}>
-                    Forget Password? Click here to reset!
-                </p>
-                <p onClick={() => {
-                    navigate('/register')
-                }}>
-                    Don't have an account? Register now!
-                </p>
+                <p onClick={() => navigate('/reset')}> Forget Password? Click here to reset! </p>
+                <p onClick={() => navigate('/register')}> Don't have an account? Register now! </p>
             </Form>
         </div>
     );

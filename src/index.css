@@ -1,21 +1,59 @@
-.Button {
+:root {
+    --color: #333;
+    --bg-color: #f8f9fa;
+    --button-bg-color: #007bff;
+    --button-hover-bg-color: #0056b3;
+    --button-color: #fff;
+    --input-bg-color: #f8f9fa;
+    --input-disabled-bg-color: #ddd;
+    --input-disabled-color: #666;
+    --block-hover-bg-color: #ddd;
+    --border-color: #ddd;
+    --menu-bg-color: #fff;
+
+    user-select: none;
+    font-size: clamp(10px, 1.5vw, 16px);
+    background-color: var(--bg-color);
+    color: var(--color);
+}
+
+:root.dark {
+    --bg-color: #343a40;
+    --button-bg-color: #007bff;
+    --button-hover-bg-color: #0056b3;
+    --button-color: #fff;
+    --input-bg-color: #343a40;
+    --input-disabled-bg-color: #555;
+    --input-disabled-color: #999;
+    --block-hover-bg-color: #555;
+    --border-color: #555;
+    --menu-bg-color: #343a40;
+    --color: #fff;
+}
+
+button {
     width: 100%;
     padding: 0.5rem;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
+    background-color: var(--button-bg-color);
+    color: var(--button-color);
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.Button:hover {
-    background-color: #0056b3;
+button:hover {
+    background-color: var(--button-hover-bg-color);
 }
 
-#root {
-    user-select: none;
-    font-size: clamp(10px, 1.5vw, 16px);
+input {
+    background-color: var(--input-bg-color);
+}
+
+input:disabled {
+    background-color: var(--input-disabled-bg-color);
+    color: var(--input-disabled-color);
+    cursor: not-allowed;
 }
 
 .loading {
