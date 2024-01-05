@@ -1,6 +1,7 @@
 import localforage from "localforage";
 import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST} from "../APIs/APIs";
 import {handleErrors} from "./Common";
+import {map} from "zod";
 
 
 export async function getPrograms(isRefresh = false, query = {}) {
@@ -16,6 +17,23 @@ export async function getPrograms(isRefresh = false, query = {}) {
     * }
     * @return: list of programs (without description)
      */
+
+    const regionMapping = {
+        "US": "United States",
+        "EU": "Europe",
+        "UK": "United Kingdom",
+        "CA": "Canada",
+        "HK": "Hong Kong",
+        "SG": "Singapore"
+    };
+    const degreeMapping = {
+        'MS': 'Master'
+    };
+
+    query.r = query.r?.split(',').map(abbr => regionMapping[abbr] || abbr) || query.r;
+    query.d = degreeMapping[query.d] || query.d;
+    query.m = query.m?.split(',') || query.m;
+
     let programs = await localforage.getItem('programs');
 
     if (isRefresh || programs === null || (Date.now() - programs.Date) > 24 * 60 * 60 * 1000) {
@@ -32,12 +50,24 @@ export async function getPrograms(isRefresh = false, query = {}) {
     }
 
     programs = programs['data'];
-    const filter_keys = Object.keys(programs).filter((univName) => {
+    const search_keys = Object.keys(programs).filter((univName) => {
         return univName.toLowerCase().includes(query.u?.toLowerCase() ?? '')
     })
+    // console.log("search keys=" + search_keys);
+
+    const filter_keys = Object.entries(programs).filter(([university, programs]) =>
+            programs.some(program =>
+                (!query.d || program.Degree.toLowerCase() === query.d?.toLowerCase()) &&
+                (!query.m || query.m.some(major => program.TargetApplicantMajor.includes(major))) &&
+                (!query.r || query.r.some(region => program.Region.includes(region)))
+            )
+        ).map(([university]) => university);
+    // console.log("filter keys=" + filter_keys);
+
+    const keys = search_keys.filter(key => filter_keys.includes(key));
 
     const filter_programs = {}
-    filter_keys.forEach((key) => {
+    keys.forEach((key) => {
         filter_programs[key] = programs[key]
     })
 

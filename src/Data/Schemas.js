@@ -27,7 +27,7 @@ export const ProgramRegionChoices = [
     'United States',
     'Canada',
     'Europe',
-    'Britain',
+    'United Kingdom',
     'Hong Kong',
     'Singapore',
     'Others'

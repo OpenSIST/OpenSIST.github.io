@@ -14,6 +14,15 @@
 
 .SearchBlock {
     display: flex;
+    flex-direction: column;
+}
+
+.SearchBlock svg {
+    padding: 10px;
+}
+
+.searchContainer {
+    display: flex;
     align-items: center;
     margin-bottom: 10px;
     background-color: #f8f9fa;
@@ -21,6 +30,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.SearchBlock svg {
-    padding: 10px;
+.Select {
+    width: 100%;
+    margin-bottom: 10px;
 }
