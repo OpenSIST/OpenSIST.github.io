@@ -20,7 +20,6 @@ export function StatusBlock() {
         };
         fetchData().then();
     }, []);
-
     if (useUnAuthorized()) {
         return null;
     }
