@@ -2,9 +2,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import React, {useState, useEffect} from "react";
 import "./SearchBar.css"
-import {faArrowsRotate, faSpinner} from "@fortawesome/free-solid-svg-icons";
 import {Form, useLoaderData, useNavigation, useSearchParams, useSubmit} from "react-router-dom";
-import Select, { StylesConfig } from 'react-select'
+import Select from 'react-select'
 
 export default function SearchBar() {
     const loaderData = useLoaderData();
@@ -44,34 +43,120 @@ export default function SearchBar() {
         { value: 'IE', label: 'IE' }
     ];
     const regionOptions = [
-        { value: 'US', label: 'United States' },
-        { value: 'CA', label: 'Canada' },
-        { value: 'EU', label: 'Europe' },
-        { value: 'UK', label: 'United Kingdom' },
-        { value: 'HK', label: 'Hong Kong' },
-        { value: 'SG', label: 'Singapore' },
+        { value: 'US', label: 'US 🇺🇸' },
+        { value: 'CA', label: 'CA 🇨🇦' },
+        { value: 'EU', label: 'EU 🇪🇺' },
+        { value: 'UK', label: 'UK 🇬🇧' },
+        { value: 'HK', label: 'HK 🇭🇰' },
+        { value: 'SG', label: 'SG 🇸🇬' },
         { value: 'Others', label: 'Others' }
     ];
+
+    const regionColorMapping = [
+        { label: 'US 🇺🇸', color: 'rgb(21,168,47)' },
+        { label: 'CA 🇨🇦', color: 'rgb(25,35,185)' },
+        { label: 'EU 🇪🇺', color: 'rgb(67,144,213)' },
+        { label: 'UK 🇬🇧', color: 'rgb(227,195,68)' },
+        { label: 'HK 🇭🇰', color: 'rgb(234,64,95)' },
+        { label: 'SG 🇸🇬', color: 'rgb(220,126,49)' },
+        { label: 'Others', color: 'rgb(128,128,128)' },
+        { label: 'CS', color: 'rgb(21,168,47)' },
+        { label: 'EE', color: 'rgb(67,144,213)' },
+        { label: 'IE', color: 'rgb(220,126,49)' },
+    ]
 
     const defaultDegree = degreeOptions.find(x => x.value === loaderData.d);
     const defaultMajor = majorOptions.filter(x => loaderData.m?.split(',').includes(x.value));
     const defaultRegion = regionOptions.filter(x => loaderData.r?.split(',').includes(x.value));
 
-    const MultiSelectStyles: StylesConfig = {
-        control: (styles) => ({ ...styles, backgroundColor: 'grey' }),
-        multiValueLabel: (styles) => ({
-            ...styles,
-            color: 'grey',
+    const colors = getComputedStyle(document.body);
+    const customStyles = {
+        control: (provided) => ({
+            ...provided,
+            width: '100%',
+            marginBottom: '10px',
+            backgroundColor: colors.getPropertyValue('--bg-color'),
+            color: colors.getPropertyValue('--color'),
+            cursor: 'pointer',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            borderRadius: '5px',
         }),
-        multiValueRemove: (styles) => ({
-            ...styles,
-            color: 'black',
-            ':hover': {
-                backgroundColor: 'black',
-                color: 'white',
+        option: (provided) => ({
+            ...provided,
+            color: colors.getPropertyValue('--color'),
+            backgroundColor: colors.getPropertyValue('--menu-bg-color'),
+            cursor: 'pointer',
+            transition: 'background-color 0.3s ease',
+            '&:hover': {
+                backgroundColor: colors.getPropertyValue('--block-hover-bg-color'),
             },
         }),
-    };
+        clearIndicator: (provided) => ({
+            ...provided,
+            padding: 0,
+            svg: {
+                paddingLeft: '6px',
+                paddingRight: '6px',
+            },
+        }),
+        dropdownIndicator: (provided) => ({
+            ...provided,
+            padding: 0,
+            svg: {
+                paddingLeft: '6px',
+                paddingRight: '6px',
+            },
+        }),
+        placeholder: (provided) => ({
+            ...provided,
+            color: colors.getPropertyValue('--color'),
+        }),
+        input: (provided) => ({
+            ...provided,
+            color: colors.getPropertyValue('--color'),
+        }),
+        singleValue: (provided) => ({
+            ...provided,
+            color: colors.getPropertyValue('--color'),
+        }),
+        multiValue: (provided) => ({
+            ...provided,
+            color: colors.getPropertyValue('--color'),
+        }),
+        multiValueLabel: (provided, state) => {
+            const color = regionColorMapping.find(x => x.label === state.data.label)?.color;
+            let backgroundColor = color.replace(/rgb/i, "rgba");
+            backgroundColor = backgroundColor.replace(/\)/i,',0.1)');
+            return {
+                ...provided,
+                color: color,
+                fontWeight: 'bold',
+                backgroundColor: backgroundColor,
+                paddingLeft: '7px',
+                display: 'flex',
+                alignSelf: 'center',
+            }
+        },
+        multiValueRemove: (provided, state) => {
+            const color = regionColorMapping.find(x => x.label === state.data.label)?.color;
+            let backgroundColor = color.replace(/rgb/i, "rgba");
+            backgroundColor = backgroundColor.replace(/\)/i,',0.1)');
+            return {
+                ...provided,
+                color: color,
+                backgroundColor: backgroundColor,
+                textAlign: 'center',
+                padding: 0,
+                '&:hover': {
+                    backgroundColor: color,
+                    color: 'white',
+                },
+                svg: {
+                    padding: '5px',
+                },
+            }
+        },
+    }
 
     return (
         <Form role='search' className='SearchBlock'>
@@ -102,7 +187,7 @@ export default function SearchBar() {
             </div>
             <div className='filterContainer'>
                 <Select
-                    className='Select'
+                    styles={customStyles}
                     name='d'
                     options={degreeOptions}
                     onChange={handleFilterChange}
@@ -113,26 +198,24 @@ export default function SearchBar() {
                     value={defaultDegree}
                 />
                 <Select
+                    styles={customStyles}
                     name='m'
                     options={majorOptions}
                     onChange={handleFilterChange}
-                    isClearable={false}
+                    isClearable
                     isMulti
                     closeMenuOnSelect={false}
                     placeholder='Select Major(s)'
-                    style={MultiSelectStyles}
-                    className='Select'
                     id='m'
                     key='m'
                     value={defaultMajor}
                 />
                 <Select
-                    style={MultiSelectStyles}
-                    className='Select'
+                    styles={customStyles}
                     name='r'
                     options={regionOptions}
                     onChange={handleFilterChange}
-                    isClearable={false}
+                    isClearable
                     isMulti
                     closeMenuOnSelect={false}
                     placeholder='Select Region(s)'

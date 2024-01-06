@@ -6,7 +6,8 @@
 }
 
 .SearchBlock svg {
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .searchContainer {
@@ -16,9 +17,4 @@
     background-color: var(--bg-color);
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.Select {
-    width: 100%;
-    margin-bottom: 10px;
 }

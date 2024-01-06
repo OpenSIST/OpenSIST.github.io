@@ -16,7 +16,7 @@ function Home() {
         if (!isLoggedIn) {
             navigate("/login");
         }
-    }, []);
+    }, [navigate, isLoggedIn]);
 
     return (
         <>

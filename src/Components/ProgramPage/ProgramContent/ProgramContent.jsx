@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import ReactMarkdown from 'react-markdown';
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-// import "./css/github.css";
+import "./css/github.css";
 import Draggable from 'react-draggable';
 import './ProgramContent.css'
 import {Form, useLoaderData} from "react-router-dom";
