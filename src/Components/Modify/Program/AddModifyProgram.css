@@ -69,3 +69,10 @@
     font-size: 16px;
     user-select: none;
 }
+
+.ProgramForm input.disabled {
+    background-color: #ddd;
+    color: #666;
+    cursor: not-allowed;
+    pointer-events: none;
+}

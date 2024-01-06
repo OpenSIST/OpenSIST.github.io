@@ -1,7 +1,6 @@
 import localforage from "localforage";
 import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST} from "../APIs/APIs";
 import {handleErrors} from "./Common";
-import {map} from "zod";
 
 
 export async function getPrograms(isRefresh = false, query = {}) {
@@ -55,23 +54,26 @@ export async function getPrograms(isRefresh = false, query = {}) {
     })
     // console.log("search keys=" + search_keys);
 
-    const filter_keys = Object.entries(programs).filter(([university, programs]) =>
-            programs.some(program =>
-                (!query.d || program.Degree.toLowerCase() === query.d?.toLowerCase()) &&
-                (!query.m || query.m.some(major => program.TargetApplicantMajor.includes(major))) &&
-                (!query.r || query.r.some(region => program.Region.includes(region)))
-            )
-        ).map(([university]) => university);
-    // console.log("filter keys=" + filter_keys);
-
-    const keys = search_keys.filter(key => filter_keys.includes(key));
-
-    const filter_programs = {}
-    keys.forEach((key) => {
-        filter_programs[key] = programs[key]
+    const search_programs = {}
+    search_keys.forEach((key) => {
+        search_programs[key] = programs[key]
     })
 
-    return filter_programs;
+    const filteredEntries = Object.entries(search_programs).map(([university, programs]) => {
+        const filteredPrograms = programs.filter(program =>
+            (!query.d || program.Degree.toLowerCase() === query.d?.toLowerCase()) &&
+            (!query.m || query.m.some(major => program.TargetApplicantMajor.includes(major))) &&
+            (!query.r || query.r.some(region => program.Region.includes(region)))
+        );
+        return [university, filteredPrograms];
+    });
+
+    return filteredEntries.reduce((acc, [university, programs]) => {
+        if (programs.length > 0) {
+            acc[university] = programs;
+        }
+        return acc;
+    }, {});
 }
 
 export async function getProgram(programId, isRefresh = false) {

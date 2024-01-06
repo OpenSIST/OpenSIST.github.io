@@ -30,6 +30,7 @@ export async function action({request}) {
             'Description': Description,
         }
     };
+    console.log(requestBody)
     await setProgramContent(requestBody)
     return redirect(`/programs/${ProgramID}`)
 }
@@ -52,14 +53,16 @@ function AddModifyProgram() {
                 <input type="text" id="University" name="University"
                        defaultValue={programContent?.University}
                        placeholder="University Name" required
-                       disabled={!AddMode}
+                       className={AddMode ? "" : "disabled"}
+                       // disabled={!AddMode}
                 />
 
                 <h4 className='Subtitle'>Program Name</h4>
                 <input type="text" id="Program" name="Program"
                        defaultValue={programContent?.Program}
                        placeholder="Program Name" required
-                       disabled={!AddMode}
+                       className={AddMode ? "" : "disabled"}
+                    // disabled={!AddMode}
                 />
 
                 <h4 className='Subtitle'>Program Degree</h4>

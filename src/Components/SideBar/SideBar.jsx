@@ -72,11 +72,17 @@ function FirstLevelItem({firstLevel, secondLevelList}) {
 }
 
 function SecondLevelItem({secondLevel}) {
+    const { programs, u, d, m, r } = useLoaderData();
+    const query = [{'key': 'u', 'value': u}, {'key': 'd', 'value': d}, {'key': 'm', 'value': m}, {'key': 'r', 'value': r}];
+    const queryString = query.reduce(
+        (accumulator, currentValue) => accumulator + (currentValue.value && currentValue.value !== '' ? `${currentValue.key}=${currentValue.value}&` : ''),
+        '?',
+    );
     return (
         <>
             <li className='SecondLevelItem'>
                 <NavLink
-                    to={`/programs/${secondLevel.ProgramID}`}
+                    to={`/programs/${secondLevel.ProgramID}${queryString.slice(0, queryString.length - 1)}`}
                     className={(({isActive, isPending}) =>
                         isActive ? "active" : isPending ? "pending" : "")}
                 >

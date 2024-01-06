@@ -1,6 +1,6 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import React, {useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import "./SearchBar.css"
 import {faArrowsRotate, faSpinner} from "@fortawesome/free-solid-svg-icons";
 import {Form, useLoaderData, useNavigation, useSearchParams, useSubmit} from "react-router-dom";
@@ -9,22 +9,30 @@ import Select, { StylesConfig } from 'react-select'
 export default function SearchBar() {
     const loaderData = useLoaderData();
     const navigation = useNavigation();
-    const submit = useSubmit();
     const searching = navigation.location && new URLSearchParams(navigation.location.search).has('u');
     const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
-        // document.getElementById('u').value = loaderData.u;
-        const searchInput = document.getElementById('u');
-        if (searchInput && loaderData.u) {
-            searchInput.value = loaderData.u;
-        }
+        document.getElementById('u').value = loaderData.u;
+        document.getElementById('d').value = loaderData.d;
+        document.getElementById('m').value = loaderData.m?.split(',');
+        document.getElementById('r').value = loaderData.r?.split(',');
+    }, [loaderData, searchParams, setSearchParams]);
 
-        if (!searchParams.get('u') && loaderData.u) {
-            searchParams.set('u', loaderData.u);
-            setSearchParams(searchParams, { replace: true });
+    const handleFilterChange = (selectedOption, actionMeta) => {
+        const newSearchParams = new URLSearchParams(searchParams);
+        if (actionMeta.action === 'select-option' || actionMeta.action === 'remove-value' || actionMeta.action === 'pop-value' || actionMeta.action === 'clear') {
+            const value = Array.isArray(selectedOption)
+                ? selectedOption.map(option => option.value).join(',')
+                : selectedOption?.value || '';
+            if (value !== '') {
+                newSearchParams.set(actionMeta.name, value);
+            } else {
+                newSearchParams.delete(actionMeta.name);
+            }
         }
-    }, [loaderData.u, searchParams, setSearchParams]);
+        setSearchParams(newSearchParams, { replace: true });
+    };
 
     const degreeOptions = [
         { value: 'MS', label: 'Master' },
@@ -45,20 +53,9 @@ export default function SearchBar() {
         { value: 'Others', label: 'Others' }
     ];
 
-    const handleFilterChange = (selectedOption, actionMeta) => {
-        const newSearchParams = new URLSearchParams(searchParams);
-        if (actionMeta.action === 'select-option' || actionMeta.action === 'remove-value' || actionMeta.action === 'pop-value' || actionMeta.action === 'clear') {
-            const value = Array.isArray(selectedOption)
-                ? selectedOption.map(option => option.value).join(',')
-                : selectedOption?.value || '';
-            if (value !== '') {
-                newSearchParams.set(actionMeta.name, value);
-            } else {
-                newSearchParams.delete(actionMeta.name);
-            }
-        }
-        setSearchParams(newSearchParams, { replace: true });
-    };
+    const defaultDegree = degreeOptions.find(x => x.value === loaderData.d);
+    const defaultMajor = majorOptions.filter(x => loaderData.m?.split(',').includes(x.value));
+    const defaultRegion = regionOptions.filter(x => loaderData.r?.split(',').includes(x.value));
 
     const MultiSelectStyles: StylesConfig = {
         control: (styles) => ({ ...styles, backgroundColor: 'grey' }),
@@ -111,6 +108,9 @@ export default function SearchBar() {
                     onChange={handleFilterChange}
                     placeholder='Select Degree'
                     isClearable
+                    id='d'
+                    key='d'
+                    value={defaultDegree}
                 />
                 <Select
                     name='m'
@@ -122,6 +122,9 @@ export default function SearchBar() {
                     placeholder='Select Major(s)'
                     style={MultiSelectStyles}
                     className='Select'
+                    id='m'
+                    key='m'
+                    value={defaultMajor}
                 />
                 <Select
                     style={MultiSelectStyles}
@@ -133,6 +136,9 @@ export default function SearchBar() {
                     isMulti
                     closeMenuOnSelect={false}
                     placeholder='Select Region(s)'
+                    id='r'
+                    key='r'
+                    value={defaultRegion}
                 />
             </div>
         </Form>
