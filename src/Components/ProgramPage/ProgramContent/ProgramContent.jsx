@@ -6,7 +6,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Draggable from 'react-draggable';
 import './ProgramContent.css'
 import {Form, useLoaderData} from "react-router-dom";
-
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 import {ResponsiveButton} from "../../common";
 

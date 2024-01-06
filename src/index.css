@@ -18,6 +18,7 @@
 }
 
 :root.dark {
+    --color: #fff;
     --bg-color: #343a40;
     --button-bg-color: #007bff;
     --button-hover-bg-color: #0056b3;
@@ -28,7 +29,6 @@
     --block-hover-bg-color: #555;
     --border-color: #555;
     --menu-bg-color: #343a40;
-    --color: #fff;
 }
 
 button {

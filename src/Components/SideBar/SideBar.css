@@ -15,6 +15,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 0 0 5px 5px;
     overflow-y: auto;
+    background-color: var(--bg-color);
     transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
     transform: translateX(0);
     animation: slideDown 0.3s cubic-bezier(0.11, 0.88, 0.58, 1);
@@ -71,6 +72,7 @@
     list-style-type: none;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--bg-color);
 }
 
 .FirstLevelItem {
@@ -79,6 +81,7 @@
     align-items: center;
     padding: 0.5rem 0.5rem 0.5rem 20px;
     border-radius: 5px;
+    background-color: var(--bg-color);
     border: solid 1px var(--border-color);
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -87,6 +90,7 @@
 .SecondLevelItem {
     margin-left: 20px;
     border-radius: 5px;
+    background-color: var(--bg-color);
     border: solid 1px var(--border-color);
     cursor: pointer;
     transition: background-color 0.3s ease;
