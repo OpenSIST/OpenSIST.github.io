@@ -46,6 +46,11 @@ button:hover {
     background-color: var(--button-hover-bg-color);
 }
 
+button:disabled {
+    background-color: #666;
+    cursor: default;
+}
+
 input {
     background-color: var(--input-bg-color);
 }

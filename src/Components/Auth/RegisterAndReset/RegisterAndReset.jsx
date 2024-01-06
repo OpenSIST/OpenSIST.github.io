@@ -59,8 +59,25 @@ export default function RegisterAndReset() {
         updatePasswordRequirements(newPassword);
     }
 
+    const [timeLeft, setTimeLeft] = useState(60);
+    const [sendButtonDisabled, setSendButtonDisabled] = useState(false);
+    
+    const sendAndStartTimer = () => {
+        setSendButtonDisabled(true);
+        const intervalId = setInterval(() => {
+            setTimeLeft((prevTime) => prevTime - 1);
+        }, 1000);
+      
+        setTimeout(() => {
+            clearInterval(intervalId);
+            setTimeLeft(60);
+            setSendButtonDisabled(false);
+        }, 60000);
+    }
+
     const handleVerify = async (e) => {
         e.preventDefault();
+        sendAndStartTimer();
         const api = status === 'reset' ? SEND_RESET_VERIFY_TOKEN : SEND_VERIFY_TOKEN;
         try {
             const response = await fetch(api, {
@@ -160,7 +177,9 @@ export default function RegisterAndReset() {
                         onChange={(e) => setToken(e.target.value)}
                         required
                     />
-                    <button type="button" onClick={handleVerify}>Send</button>
+                    <button type="button" onClick={handleVerify} disabled={sendButtonDisabled}>
+                        { sendButtonDisabled ? `Resend in ${timeLeft} s` : 'Send' }
+                    </button>
                 </div>
                 <div>
                     <span>{isLengthValid ? checkMark : crossMark} 密码长度为8-24个字符</span><br/>
