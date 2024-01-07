@@ -54,7 +54,7 @@ html {
 }
 
 body {
-    font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif, 'BabelStone Flags';
+    font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'BabelStone Flags', 'Segoe UI Emoji', sans-serif;
     color: rgb(51, 51, 51);
     line-height: 1.6;
 }
