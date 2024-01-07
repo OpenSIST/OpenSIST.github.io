@@ -198,8 +198,8 @@ export default function RegisterAndReset() {
                         onChange={(e) => setToken(e.target.value)}
                         required
                     />
-                    <button type="button" onClick={handleVerify} disabled={sendButtonDisabled}>
-                        { sendButtonDisabled ? `Resend in ${timeLeft} s` : 'Send Code' }
+                    <button type="button" onClick={handleVerify} disabled={sendButtonDisabled || email?.split('@')[0] === ""}>
+                        { sendButtonDisabled ? `Resend in ${timeLeft} s` : 'Send' }
                     </button>
                 </div>
                 <div>
