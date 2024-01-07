@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import {z} from 'zod';
 import "./RegisterAndReset.css"
@@ -61,19 +61,40 @@ export default function RegisterAndReset() {
 
     const [timeLeft, setTimeLeft] = useState(60);
     const [sendButtonDisabled, setSendButtonDisabled] = useState(false);
-    
-    const sendAndStartTimer = () => {
+    const sendAndStartTimer = (startTime = Date.now()) => {
+        localStorage.setItem('timerStart', startTime.toString());
         setSendButtonDisabled(true);
+
         const intervalId = setInterval(() => {
-            setTimeLeft((prevTime) => prevTime - 1);
+            const startTime = parseInt(localStorage.getItem('timerStart') || '0');
+            const timePassed = Math.floor((Date.now() - startTime) / 1000);
+            const timeLeft = 60 - timePassed;
+
+            if (timeLeft <= 0) {
+                clearInterval(intervalId);
+                setTimeLeft(60);
+                setSendButtonDisabled(false);
+                localStorage.removeItem('timerStart');
+            } else {
+                setTimeLeft(timeLeft);
+            }
         }, 1000);
-      
-        setTimeout(() => {
-            clearInterval(intervalId);
-            setTimeLeft(60);
-            setSendButtonDisabled(false);
-        }, 60000);
-    }
+    };
+
+    useEffect(() => {
+        const savedStartTime = localStorage.getItem('timerStart');
+        if (savedStartTime) {
+            const timePassed = Math.floor((Date.now() - parseInt(savedStartTime)) / 1000);
+            const remainingTime = 60 - timePassed;
+            if (remainingTime > 0) {
+                setTimeLeft(remainingTime);
+                setSendButtonDisabled(true);
+                sendAndStartTimer(parseInt(savedStartTime));
+            } else {
+                localStorage.removeItem('timerStart');
+            }
+        }
+    }, []);
 
     const handleVerify = async (e) => {
         e.preventDefault();
@@ -178,7 +199,7 @@ export default function RegisterAndReset() {
                         required
                     />
                     <button type="button" onClick={handleVerify} disabled={sendButtonDisabled}>
-                        { sendButtonDisabled ? `Resend in ${timeLeft} s` : 'Send' }
+                        { sendButtonDisabled ? `Resend in ${timeLeft} s` : 'Send Code' }
                     </button>
                 </div>
                 <div>
