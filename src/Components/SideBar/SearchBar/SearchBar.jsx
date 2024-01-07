@@ -1,8 +1,8 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 import "./SearchBar.css"
-import {Form, useLoaderData, useNavigation, useSearchParams, useSubmit} from "react-router-dom";
+import {Form, useLoaderData, useNavigation, useSearchParams} from "react-router-dom";
 import Select from 'react-select'
 
 export default function SearchBar() {
@@ -30,39 +30,39 @@ export default function SearchBar() {
                 newSearchParams.delete(actionMeta.name);
             }
         }
-        setSearchParams(newSearchParams, { replace: true });
+        setSearchParams(newSearchParams, {replace: true});
     };
 
     const degreeOptions = [
-        { value: 'MS', label: 'Master' },
-        { value: 'PhD', label: 'PhD' }
+        {value: 'MS', label: 'Master'},
+        {value: 'PhD', label: 'PhD'}
     ];
     const majorOptions = [
-        { value: 'CS', label: 'CS' },
-        { value: 'EE', label: 'EE' },
-        { value: 'IE', label: 'IE' }
+        {value: 'CS', label: 'CS'},
+        {value: 'EE', label: 'EE'},
+        {value: 'IE', label: 'IE'}
     ];
     const regionOptions = [
-        { value: 'US', label: `US \u{1F1FA}\u{1F1F8}` },
-        { value: 'CA', label: 'CA \u{1F1E8}\u{1F1E6}' },
-        { value: 'EU', label: 'EU \u{1F1EA}\u{1F1FA}' },
-        { value: 'UK', label: 'UK \u{1F1EC}\u{1F1E7}' },
-        { value: 'HK', label: 'HK \u{1F1ED}\u{1F1F0}' },
-        { value: 'SG', label: 'SG \u{1F1F8}\u{1F1EC}' },
-        { value: 'Others', label: 'Others' }
+        {value: 'US', label: `US \u{1F1FA}\u{1F1F8}`},
+        {value: 'CA', label: 'CA \u{1F1E8}\u{1F1E6}'},
+        {value: 'EU', label: 'EU \u{1F1EA}\u{1F1FA}'},
+        {value: 'UK', label: 'UK \u{1F1EC}\u{1F1E7}'},
+        {value: 'HK', label: 'HK \u{1F1ED}\u{1F1F0}'},
+        {value: 'SG', label: 'SG \u{1F1F8}\u{1F1EC}'},
+        {value: 'Others', label: 'Others'}
     ];
 
     const colorMapping = [
-        { label: 'US \u{1F1FA}\u{1F1F8}', color: 'rgb(21,168,47)' },
-        { label: 'CA \u{1F1E8}\u{1F1E6}', color: 'rgb(25,35,185)' },
-        { label: 'EU \u{1F1EA}\u{1F1FA}', color: 'rgb(67,144,213)' },
-        { label: 'UK \u{1F1EC}\u{1F1E7}', color: 'rgb(227,195,68)' },
-        { label: 'HK \u{1F1ED}\u{1F1F0}', color: 'rgb(234,64,95)' },
-        { label: 'SG \u{1F1F8}\u{1F1EC}', color: 'rgb(220,126,49)' },
-        { label: 'Others', color: 'rgb(128,128,128)' },
-        { label: 'CS', color: 'rgb(21,168,47)' },
-        { label: 'EE', color: 'rgb(67,144,213)' },
-        { label: 'IE', color: 'rgb(220,126,49)' },
+        {label: 'US \u{1F1FA}\u{1F1F8}', color: 'rgb(21,168,47)'},
+        {label: 'CA \u{1F1E8}\u{1F1E6}', color: 'rgb(25,35,185)'},
+        {label: 'EU \u{1F1EA}\u{1F1FA}', color: 'rgb(67,144,213)'},
+        {label: 'UK \u{1F1EC}\u{1F1E7}', color: 'rgb(227,195,68)'},
+        {label: 'HK \u{1F1ED}\u{1F1F0}', color: 'rgb(234,64,95)'},
+        {label: 'SG \u{1F1F8}\u{1F1EC}', color: 'rgb(220,126,49)'},
+        {label: 'Others', color: 'rgb(128,128,128)'},
+        {label: 'CS', color: 'rgb(21,168,47)'},
+        {label: 'EE', color: 'rgb(67,144,213)'},
+        {label: 'IE', color: 'rgb(220,126,49)'},
     ]
 
     const defaultDegree = degreeOptions.find(x => x.value === loaderData.d);
@@ -80,12 +80,21 @@ export default function SearchBar() {
             cursor: 'pointer',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
             borderRadius: '5px',
+            border: 'none',
+        }),
+        menu: (provided) => ({
+            ...provided,
+            margin: 0,
+            padding: 0,
+            backgroundColor: colors.getPropertyValue('--bg-color'),
         }),
         option: (provided) => ({
             ...provided,
             color: colors.getPropertyValue('--color'),
-            backgroundColor: colors.getPropertyValue('--menu-bg-color'),
+            backgroundColor: colors.getPropertyValue('--bg-color'),
             cursor: 'pointer',
+            border: 'solid 1px var(--border-color)',
+            borderRadius: '5px',
             transition: 'background-color 0.3s ease',
             '&:hover': {
                 backgroundColor: colors.getPropertyValue('--block-hover-bg-color'),
@@ -126,7 +135,7 @@ export default function SearchBar() {
         multiValueLabel: (provided, state) => {
             const color = colorMapping.find(x => x.label === state.data.label)?.color;
             let backgroundColor = color.replace(/rgb/i, "rgba");
-            backgroundColor = backgroundColor.replace(/\)/i,',0.1)');
+            backgroundColor = backgroundColor.replace(/\)/i, ',0.1)');
             return {
                 ...provided,
                 color: color,
@@ -140,7 +149,7 @@ export default function SearchBar() {
         multiValueRemove: (provided, state) => {
             const color = colorMapping.find(x => x.label === state.data.label)?.color;
             let backgroundColor = color.replace(/rgb/i, "rgba");
-            backgroundColor = backgroundColor.replace(/\)/i,',0.1)');
+            backgroundColor = backgroundColor.replace(/\)/i, ',0.1)');
             return {
                 ...provided,
                 color: color,
@@ -180,7 +189,7 @@ export default function SearchBar() {
                         } else {
                             newSearchParams.delete('u');
                         }
-                        setSearchParams(newSearchParams, { replace: true });
+                        setSearchParams(newSearchParams, {replace: true});
                     }}
                     defaultValue={loaderData.u}
                 />
