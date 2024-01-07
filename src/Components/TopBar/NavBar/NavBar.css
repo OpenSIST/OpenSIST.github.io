@@ -16,7 +16,9 @@
     padding: 10px;
     text-decoration: none;
     color: inherit;
-    border: solid 1px var(--border-color);
+    background-color: var(--menu-bg-color);
+    /*border: solid 1px var(--border-color);*/
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
 }
 

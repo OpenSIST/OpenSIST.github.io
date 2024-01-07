@@ -72,7 +72,7 @@
     list-style-type: none;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: var(--bg-color);
+    background-color: var(--menu-bg-color);
 }
 
 .FirstLevelItem {
@@ -81,7 +81,7 @@
     align-items: center;
     padding: 0.5rem 0.5rem 0.5rem 20px;
     border-radius: 5px;
-    background-color: var(--bg-color);
+    background-color: var(--menu-bg-color);
     border: solid 1px var(--border-color);
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -90,7 +90,7 @@
 .SecondLevelItem {
     margin-left: 20px;
     border-radius: 5px;
-    background-color: var(--bg-color);
+    background-color: var(--menu-bg-color);
     border: solid 1px var(--border-color);
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -107,6 +107,10 @@
     text-decoration: none;
     border-radius: 5px;
     color: inherit;
+}
+
+.SecondLevelItem a.active {
+    background-color: var(--block-hover-bg-color);
 }
 
 .FirstLevelItem:active,

@@ -8,6 +8,8 @@ import {
 import MarkDownEditor from "./MarkDownEditor/MarkDownEditor";
 import {useLoaderData, useNavigate, redirect, Form, useNavigation} from "react-router-dom";
 import {setProgramContent} from "../../../Data/ProgramData";
+import {faMarkdown} from "@fortawesome/free-brands-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -86,7 +88,7 @@ function AddModifyProgram() {
                     name="Region"
                 />
 
-                <h4 className='Subtitle'>Program Description (The editor supports MarkDown syntax)</h4>
+                <h4 className='Subtitle'>Program Description <FontAwesomeIcon icon={faMarkdown} /></h4>
                 <MarkDownEditor OriginDesc={OriginDesc} Description={Description} setDescription={setDescription}/>
                 <textarea id='Description' name='Description' hidden={true} value={Description} readOnly/>
                 <div id='SaveCancelButtonGroup'>
