@@ -43,7 +43,7 @@ export default function SearchBar() {
         { value: 'IE', label: 'IE' }
     ];
     const regionOptions = [
-        { value: 'US', label: 'US \u{1F1FA}\u{1F1F8}' },
+        { value: 'US', label: `US \u{1F1FA}\u{1F1F8}` },
         { value: 'CA', label: 'CA \u{1F1E8}\u{1F1E6}' },
         { value: 'EU', label: 'EU \u{1F1EA}\u{1F1FA}' },
         { value: 'UK', label: 'UK \u{1F1EC}\u{1F1E7}' },
