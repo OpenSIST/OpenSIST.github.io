@@ -30,7 +30,7 @@
   "scripts": {
     "start_win": "set PORT=61234 && react-scripts start",
     "start_unix": "export PORT=61234 && react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "臭小子别乱碰这个 react-scripts eject"
   },
@@ -53,6 +53,7 @@
     ]
   },
   "devDependencies": {
-    "webpack": "^5.89.0"
+    "webpack": "^5.89.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.0"
   }
 }
