@@ -20,14 +20,15 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     user-select: text;
     overflow-y: auto;
+    background-color: var(--menu-bg-color);
     animation: slideRight 0.3s cubic-bezier(0.11, 0.88, 0.58, 1);
 }
 
 .DraggableButtonGroup {
-    position: fixed;
+    position: absolute;
     z-index: 1;
     top: 50%;
-    right: 3vw;
+    right: 0;
     display: flex;
     flex-direction: column;
     gap: 20px;

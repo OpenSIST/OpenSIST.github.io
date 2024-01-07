@@ -35,6 +35,7 @@ export function useHidden() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
     return windowWidth / windowHeight < 0.75 || windowWidth < 768;
+    // return windowWidth < 768;
 }
 
 export function usePending() {
