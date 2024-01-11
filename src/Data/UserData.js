@@ -6,6 +6,7 @@ export async function checkLogin() {
     const session = await localforage.getItem('session');
     const expireAt = await localforage.getItem('expireAt');
     const now = Date.now() / 1000;
+    console.log("We are here!")
     const response = await fetch(IS_LOGIN, {
         method: 'POST',
         credentials: 'include',
