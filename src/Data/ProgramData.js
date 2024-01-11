@@ -1,7 +1,7 @@
 import localforage from "localforage";
 import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST} from "../APIs/APIs";
 import {handleErrors} from "./Common";
-
+import univListOrder from "./univ_list.json";
 
 export async function getPrograms(isRefresh = false, query = {}) {
     /*
@@ -49,6 +49,15 @@ export async function getPrograms(isRefresh = false, query = {}) {
     }
 
     programs = programs['data'];
+
+    const univOrder = univListOrder.map((univ) => univ.abbr);
+    programs = Object.entries(programs).sort(([univ1, _], [univ2, __]) => {
+        return univOrder.indexOf(univ1) - univOrder.indexOf(univ2);
+    }).reduce((acc, [univ, programs]) => {
+        acc[univ] = programs;
+        return acc;
+    }, {});
+
     const search_keys = Object.keys(programs).filter((univName) => {
         return univName.toLowerCase().includes(query.u?.toLowerCase() ?? '')
     })
