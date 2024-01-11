@@ -23,7 +23,7 @@ function ProgramContent() {
     const {programContent} = useLoaderData();
     const components = {
         h1: ({node, ...props}) => (
-            <h1 {...props} style={{display: 'flex'}}>
+            <h1 {...props} style={{display: 'flex', justifyContent: 'space-between'}}>
                 {props.children}
                 <div className='ReviseRefreshButtonGroup'>
                     <Form action='edit' style={{display: 'flex'}}>
