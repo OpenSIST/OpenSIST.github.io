@@ -10,7 +10,7 @@
         "abbr": "CMU"
     },
     {
-        "fullName": "Univ. of California - Berkeley",
+        "fullName": "University of California - Berkeley",
         "region": "us",
         "abbr": "UCB"
     },
@@ -20,7 +20,7 @@
         "abbr": "Stanford"
     },
     {
-        "fullName": "Univ. of Illinois at Urbana-Champaign",
+        "fullName": "University of Illinois at Urbana-Champaign",
         "region": "us",
         "abbr": "UIUC"
     },
@@ -55,7 +55,7 @@
         "abbr": "EPFL"
     },
     {
-        "fullName": "Univ. of California - San Diego",
+        "fullName": "University of California - San Diego",
         "region": "us",
         "abbr": "UCSD"
     },
@@ -90,7 +90,7 @@
         "abbr": "UBC"
     },
     {
-        "fullName": "Univ. of California - Los Angeles",
+        "fullName": "University of California - Los Angeles",
         "region": "us",
         "abbr": "UCLA"
     },
@@ -180,7 +180,7 @@
         "abbr": "Cambridge"
     },
     {
-        "fullName": "Univ. of California - Santa Barbara",
+        "fullName": "University of California - Santa Barbara",
         "region": "us",
         "abbr": "UCSB"
     },
@@ -190,7 +190,7 @@
         "abbr": "Cornell Tech"
     },
     {
-        "fullName": "Univ. of California - Irvine",
+        "fullName": "University of California - Irvine",
         "region": "us",
         "abbr": "UCI"
     },
@@ -255,7 +255,7 @@
         "abbr": "BU"
     },
     {
-        "fullName": "Univ. of California - Davis",
+        "fullName": "University of California - Davis",
         "region": "us",
         "abbr": "UCD"
     },
@@ -290,7 +290,7 @@
         "abbr": "Rutgers"
     },
     {
-        "fullName": "Univ. of California - Riverside",
+        "fullName": "University of California - Riverside",
         "region": "us",
         "abbr": "UCR"
     },
@@ -325,7 +325,7 @@
         "abbr": "UVA"
     },
     {
-        "fullName": "Univ. of California - Santa Cruz",
+        "fullName": "University of California - Santa Cruz",
         "region": "us",
         "abbr": "UCSC"
     },
@@ -650,7 +650,7 @@
         "abbr": "PolyU"
     },
     {
-        "fullName": "Univ. of California - Merced",
+        "fullName": "University of California - Merced",
         "region": "us",
         "abbr": "UCM"
     },
@@ -1147,7 +1147,7 @@
     {
         "fullName": "Texas State University",
         "region": "us",
-        "abbr": "Texas State"
+        "abbr": "TSU"
     },
     {
         "fullName": "UCCS",
@@ -1157,12 +1157,12 @@
     {
         "fullName": "University of Kansas",
         "region": "us",
-        "abbr": "KU"
+        "abbr": "UKansas"
     },
     {
         "fullName": "University of Kentucky",
         "region": "us",
-        "abbr": "UK"
+        "abbr": "UKentucky"
     },
     {
         "fullName": "University of South Florida",

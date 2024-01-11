@@ -67,6 +67,7 @@ const router = createBrowserRouter([
                         ]
                     }, {
                         path: '/applicants',
+                        element: <h1>开发组正在加班加点赶工...</h1>,
                     }, {
                         path: '/profile',
                         element: <Profile/>,
