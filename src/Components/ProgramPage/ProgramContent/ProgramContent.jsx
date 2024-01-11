@@ -1,9 +1,8 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import "./css/github.css";
-import Draggable from 'react-draggable';
 import './ProgramContent.css'
 import {Form, useLoaderData} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
@@ -15,31 +14,38 @@ export async function loader({params}) {
     return {programContent};
 }
 
-export async function action({request, params}) {
+export async function action({params}) {
     const programId = params.programId;
     return await getProgramDesc(programId, true);
 }
 
 function ProgramContent() {
     const {programContent} = useLoaderData();
-    const nodeRef = useRef(null);
+    const components = {
+        h1: ({node, ...props}) => (
+            <h1 {...props} style={{display: 'flex'}}>
+                {props.children}
+                <div className='ReviseRefreshButtonGroup'>
+                    <Form action='edit' style={{display: 'flex'}}>
+                        <button type='submit' title='Edit'>
+                            <FontAwesomeIcon icon={solid("pen-to-square")}/>
+                        </button>
+                    </Form>
+                    <Form method='post' style={{display: 'flex'}}>
+                        <ResponsiveButton/>
+                    </Form>
+                </div>
+            </h1>
+        ),
+    };
     return (
         <div className="ProgramContent" key={programContent.ProgramID}>
-            <div className='ProgramDescription'>
-                <ReactMarkdown>{programContent.description}</ReactMarkdown>
-                <Draggable nodeRef={nodeRef} defaultClassName="DraggableButtonGroup">
-                    <div ref={nodeRef}>
-                        <Form action='edit'>
-                            <button type='submit' title='Edit'>
-                                <FontAwesomeIcon icon={solid("pen-to-square")}/>
-                            </button>
-                        </Form>
-                        <Form method='post'>
-                            <ResponsiveButton/>
-                        </Form>
-                    </div>
-                </Draggable>
-            </div>
+            <ReactMarkdown
+                components={components}
+                className='ProgramDescription'
+            >
+                {programContent.description}
+            </ReactMarkdown>
         </div>
     );
 }

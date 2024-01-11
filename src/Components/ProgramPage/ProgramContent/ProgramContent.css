@@ -24,18 +24,10 @@
     animation: slideRight 0.3s cubic-bezier(0.11, 0.88, 0.58, 1);
 }
 
-.DraggableButtonGroup {
-    position: absolute;
-    z-index: 1;
-    top: 50%;
-    right: 0;
+.ReviseRefreshButtonGroup {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    background-color: var(--menu-bg-color);
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    gap: 10px;
 }
 
 .ProgramDescription {

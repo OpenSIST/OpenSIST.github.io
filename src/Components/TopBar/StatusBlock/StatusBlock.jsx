@@ -1,8 +1,8 @@
-import {Form, useNavigate, useNavigation} from "react-router-dom";
+import {Form} from "react-router-dom";
 import "./StatusBlock.css"
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useState} from "react";
 import localforage from "localforage";
 import {logout} from "../../../Data/UserData";
 import {ResponsiveButton, useClickOutSideRef, useUnAuthorized} from "../../common";

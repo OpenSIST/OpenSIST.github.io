@@ -37,8 +37,8 @@
 
 .ShowUpButton {
     position: absolute;
-    width: 40px;
-    z-index: 1000;
+    width: 2em;
+    z-index: 1;
     border-radius: 0 5px 5px 0;
     transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
     transform: translateX(calc(290px + 2vw));
@@ -47,7 +47,6 @@
 
 .ShowUpButton.hidden {
     position: absolute;
-    width: 40px;
     z-index: 1000;
     border-radius: 0 5px 5px 0;
     transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);

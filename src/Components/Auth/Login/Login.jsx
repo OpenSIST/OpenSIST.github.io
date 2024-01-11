@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Form, useNavigate, useNavigation} from 'react-router-dom';
+import {Form, useNavigate} from 'react-router-dom';
 import "./Login.css"
 import {login} from "../../../Data/UserData";
 import {ResponsiveButton} from "../../common";
@@ -15,12 +15,6 @@ function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-    const navigation = useNavigation();
-
-    const logging =
-        navigation.state !== 'idle'
-        && navigation.formData != null
-        && navigation.formAction === navigation.location?.pathname;
 
     return (
         <div className="login">

@@ -1,12 +1,20 @@
 import localforage from "localforage";
 import {redirect} from "react-router-dom";
-import {LOGIN, LOGOUT} from "../APIs/APIs";
+import {LOGIN, LOGOUT, IS_LOGIN} from "../APIs/APIs";
 
 export async function checkLogin() {
     const session = await localforage.getItem('session');
     const expireAt = await localforage.getItem('expireAt');
     const now = Date.now() / 1000;
-    return session && now < expireAt
+    const response = await fetch(IS_LOGIN, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${session}`
+        }
+    });
+    return session && now < expireAt && response.status === 200;
 }
 
 export async function login(username, password) {
