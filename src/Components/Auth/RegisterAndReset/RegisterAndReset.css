@@ -31,6 +31,10 @@
     gap: 10px;
 }
 
+.VerificationSendBlock input {
+    width: 100%;
+}
+
 .VerificationSendBlock button {
-    /*width: 80px;*/
+    width: 200px;
 }
