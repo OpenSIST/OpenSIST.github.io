@@ -1,8 +1,8 @@
-import {Form} from "react-router-dom";
+import {Form, useNavigate} from "react-router-dom";
 import "./StatusBlock.css"
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import localforage from "localforage";
 import {logout} from "../../../Data/UserData";
 import {ResponsiveButton, useClickOutSideRef, useUnAuthorized} from "../../common";
@@ -12,9 +12,15 @@ export async function action() {
 }
 
 export function StatusBlock() {
+    const navigate = useNavigate();
     const [isMenuVisible, setIsMenuVisible, MenuRef] = useClickOutSideRef();
     const [user, setUser] = useState('')
     localforage.getItem('user').then((value) => setUser(value));
+    useEffect(() => {
+        if (user === null) {
+            navigate("/login");
+        }
+    }, [user]);
     if (useUnAuthorized()) {
         return null;
     }
