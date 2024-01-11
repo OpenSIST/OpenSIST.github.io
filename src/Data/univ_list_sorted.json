@@ -1,5 +1,10 @@
 [
     {
+        "fullName": "Aalborg University",
+        "region": "eu",
+        "abbr": "AAU"
+    },
+    {
         "fullName": "Aalto University",
         "region": "eu",
         "abbr": "Aalto"
@@ -165,6 +170,11 @@
         "abbr": "ENS Paris"
     },
     {
+        "fullName": "Eindhoven University of Technology",
+        "region": "eu",
+        "abbr": "TU/e"
+    },
+    {
         "fullName": "Emory University",
         "region": "us",
         "abbr": "Emory"
@@ -253,6 +263,11 @@
         "fullName": "Indiana University",
         "region": "us",
         "abbr": "IU"
+    },
+    {
+        "fullName": "Institut Polytechnique de Paris",
+        "region": "eu",
+        "abbr": "IP-Paris"
     },
     {
         "fullName": "Iowa State University",
@@ -633,6 +648,11 @@
         "fullName": "TU Wien",
         "region": "eu",
         "abbr": "TU Wien"
+    },
+    {
+        "fullName": "Technical University of Denmark",
+        "region": "eu",
+        "abbr": "DTU"
     },
     {
         "fullName": "Texas A&M University",
@@ -1213,6 +1233,11 @@
         "fullName": "University of Zurich",
         "region": "eu",
         "abbr": "UZH"
+    },
+    {
+        "fullName": "Universit\u00e9 Paris-Saclay",
+        "region": "eu",
+        "abbr": "Saclay"
     },
     {
         "fullName": "Uppsala University",

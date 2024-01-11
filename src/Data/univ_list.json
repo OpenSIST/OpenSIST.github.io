@@ -285,6 +285,26 @@
         "abbr": "Edinburgh"
     },
     {
+        "fullName": "Politecnico di Milano",
+        "region": "eu",
+        "abbr": "Polimi"
+    },
+    {
+        "fullName": "Université Paris-Saclay",
+        "region": "eu",
+        "abbr": "Saclay"
+    },
+    {
+        "fullName": "Institut Polytechnique de Paris",
+        "region": "eu",
+        "abbr": "IP-Paris"
+    },
+    {
+        "fullName": "Eindhoven University of Technology",
+        "region": "eu",
+        "abbr": "TU/e"
+    },
+    {
         "fullName": "Rutgers University",
         "region": "us",
         "abbr": "Rutgers"
@@ -375,6 +395,21 @@
         "abbr": "SNU"
     },
     {
+        "fullName": "TU Berlin",
+        "region": "eu",
+        "abbr": "TU Berlin"
+    },
+    {
+        "fullName": "RWTH Aachen University",
+        "region": "eu",
+        "abbr": "RWTH Aachen"
+    },
+    {
+        "fullName": "Aalborg University",
+        "region": "eu",
+        "abbr": "AAU"
+    },
+    {
         "fullName": "George Mason University",
         "region": "us",
         "abbr": "George Mason"
@@ -433,6 +468,11 @@
         "fullName": "University of Tokyo",
         "region": "others",
         "abbr": "UTokyo"
+    },
+    {
+        "fullName": "Technical University of Denmark",
+        "region": "eu",
+        "abbr": "DTU"
     },
     {
         "fullName": "Saarland University",
@@ -495,11 +535,6 @@
         "abbr": "BIU"
     },
     {
-        "fullName": "TU Berlin",
-        "region": "eu",
-        "abbr": "TU Berlin"
-    },
-    {
         "fullName": "TU Wien",
         "region": "eu",
         "abbr": "TU Wien"
@@ -533,11 +568,6 @@
         "fullName": "POSTECH",
         "region": "others",
         "abbr": "POSTECH"
-    },
-    {
-        "fullName": "RWTH Aachen University",
-        "region": "eu",
-        "abbr": "RWTH Aachen"
     },
     {
         "fullName": "Rochester Institute of Technology",
@@ -638,11 +668,6 @@
         "fullName": "CRIStAL",
         "region": "eu",
         "abbr": "CRIStAL"
-    },
-    {
-        "fullName": "Politecnico di Milano",
-        "region": "eu",
-        "abbr": "Polimi"
     },
     {
         "fullName": "The Hong Kong Polytechnic University",
