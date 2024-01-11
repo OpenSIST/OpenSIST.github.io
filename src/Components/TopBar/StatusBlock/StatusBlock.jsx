@@ -16,7 +16,6 @@ export function StatusBlock() {
     const [isMenuVisible, setIsMenuVisible, MenuRef] = useClickOutSideRef();
     const [user, setUser] = useState('')
     localforage.getItem('user').then((value) => setUser(value));
-    console.log(user)
     useEffect(() => {
         if (user === null) {
             navigate("/login");
