@@ -2,8 +2,6 @@ import {useState} from "react";
 import {Form, useNavigate, useNavigation} from 'react-router-dom';
 import "./Login.css"
 import {login} from "../../../Data/UserData";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {ResponsiveButton} from "../../common";
 
 export async function action({request}) {

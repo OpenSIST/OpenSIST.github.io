@@ -14,12 +14,7 @@ export async function action() {
 export function StatusBlock() {
     const [isMenuVisible, setIsMenuVisible, MenuRef] = useClickOutSideRef();
     const [user, setUser] = useState('')
-    useEffect(() => {
-        const fetchData = async () => {
-            setUser(await localforage.getItem('user'));
-        };
-        fetchData().then();
-    }, []);
+    localforage.getItem('user').then((value) => setUser(value));
     if (useUnAuthorized()) {
         return null;
     }
