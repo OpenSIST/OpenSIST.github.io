@@ -4,6 +4,8 @@ import React, {useEffect} from "react";
 import "./SearchBar.css"
 import {Form, useLoaderData, useNavigation, useSearchParams} from "react-router-dom";
 import Select from 'react-select'
+import {getSelectorStyle} from "../../common";
+import {colorMapping, degreeOptions, majorOptions, regionOptions} from "../../../Data/Common";
 
 export default function SearchBar() {
     const loaderData = useLoaderData();
@@ -33,137 +35,43 @@ export default function SearchBar() {
         setSearchParams(newSearchParams, {replace: true});
     };
 
-    const degreeOptions = [
-        {value: 'MS', label: 'Master'},
-        {value: 'PhD', label: 'PhD'}
-    ];
-    const majorOptions = [
-        {value: 'CS', label: 'CS'},
-        {value: 'EE', label: 'EE'},
-        {value: 'IE', label: 'IE'}
-    ];
-    const regionOptions = [
-        {value: 'US', label: `US \u{1F1FA}\u{1F1F8}`},
-        {value: 'CA', label: 'CA \u{1F1E8}\u{1F1E6}'},
-        {value: 'EU', label: 'EU \u{1F1EA}\u{1F1FA}'},
-        {value: 'UK', label: 'UK \u{1F1EC}\u{1F1E7}'},
-        {value: 'HK', label: 'HK \u{1F1ED}\u{1F1F0}'},
-        {value: 'SG', label: 'SG \u{1F1F8}\u{1F1EC}'},
-        {value: 'Others', label: 'Others'}
-    ];
-
-    const colorMapping = [
-        {label: 'US \u{1F1FA}\u{1F1F8}', color: 'rgb(21,168,47)'},
-        {label: 'CA \u{1F1E8}\u{1F1E6}', color: 'rgb(25,35,185)'},
-        {label: 'EU \u{1F1EA}\u{1F1FA}', color: 'rgb(67,144,213)'},
-        {label: 'UK \u{1F1EC}\u{1F1E7}', color: 'rgb(227,195,68)'},
-        {label: 'HK \u{1F1ED}\u{1F1F0}', color: 'rgb(234,64,95)'},
-        {label: 'SG \u{1F1F8}\u{1F1EC}', color: 'rgb(220,126,49)'},
-        {label: 'Others', color: 'rgb(128,128,128)'},
-        {label: 'CS', color: 'rgb(21,168,47)'},
-        {label: 'EE', color: 'rgb(67,144,213)'},
-        {label: 'IE', color: 'rgb(220,126,49)'},
-    ]
-
     const defaultDegree = degreeOptions.find(x => x.value === loaderData.d);
     const defaultMajor = majorOptions.filter(x => loaderData.m?.split(',').includes(x.value));
     const defaultRegion = regionOptions.filter(x => loaderData.r?.split(',').includes(x.value));
 
-    const colors = getComputedStyle(document.body);
-    const customStyles = {
-        control: (provided) => ({
+    const selectorStyle = getSelectorStyle();
+    selectorStyle.multiValueLabel = (provided, state) => {
+        const color = colorMapping.find(x => x.label === state.data.label)?.color;
+        let backgroundColor = color.replace(/rgb/i, "rgba");
+        backgroundColor = backgroundColor.replace(/\)/i, ',0.1)');
+        return {
             ...provided,
-            width: '100%',
-            marginBottom: '10px',
-            backgroundColor: colors.getPropertyValue('--input-bg-color'),
-            color: colors.getPropertyValue('--color'),
-            cursor: 'pointer',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            borderRadius: '5px',
-            border: 'none',
-        }),
-        menu: (provided) => ({
+            color: color,
+            fontWeight: 'bold',
+            backgroundColor: backgroundColor,
+            paddingLeft: '7px',
+            display: 'flex',
+            alignSelf: 'center',
+        }
+    }
+    selectorStyle.multiValueRemove = (provided, state) => {
+        const color = colorMapping.find(x => x.label === state.data.label)?.color;
+        let backgroundColor = color.replace(/rgb/i, "rgba");
+        backgroundColor = backgroundColor.replace(/\)/i, ',0.1)');
+        return {
             ...provided,
-            margin: 0,
+            color: color,
+            backgroundColor: backgroundColor,
+            textAlign: 'center',
             padding: 0,
-            backgroundColor: colors.getPropertyValue('--menu-bg-color'),
-        }),
-        option: (provided) => ({
-            ...provided,
-            color: colors.getPropertyValue('--color'),
-            backgroundColor: colors.getPropertyValue('--menu-bg-color'),
-            cursor: 'pointer',
-            borderRadius: '5px',
-            transition: 'background-color 0.3s ease',
             '&:hover': {
-                backgroundColor: colors.getPropertyValue('--block-hover-bg-color'),
+                backgroundColor: color,
+                color: 'white',
             },
-        }),
-        clearIndicator: (provided) => ({
-            ...provided,
-            padding: 0,
             svg: {
-                paddingLeft: '6px',
-                paddingRight: '6px',
+                padding: '5px',
             },
-        }),
-        dropdownIndicator: (provided) => ({
-            ...provided,
-            padding: 0,
-            svg: {
-                paddingLeft: '6px',
-                paddingRight: '6px',
-            },
-        }),
-        placeholder: (provided) => ({
-            ...provided,
-            color: colors.getPropertyValue('--color'),
-        }),
-        input: (provided) => ({
-            ...provided,
-            color: colors.getPropertyValue('--color'),
-        }),
-        singleValue: (provided) => ({
-            ...provided,
-            color: colors.getPropertyValue('--color'),
-        }),
-        multiValue: (provided) => ({
-            ...provided,
-            color: colors.getPropertyValue('--color'),
-        }),
-        multiValueLabel: (provided, state) => {
-            const color = colorMapping.find(x => x.label === state.data.label)?.color;
-            let backgroundColor = color.replace(/rgb/i, "rgba");
-            backgroundColor = backgroundColor.replace(/\)/i, ',0.1)');
-            return {
-                ...provided,
-                color: color,
-                fontWeight: 'bold',
-                backgroundColor: backgroundColor,
-                paddingLeft: '7px',
-                display: 'flex',
-                alignSelf: 'center',
-            }
-        },
-        multiValueRemove: (provided, state) => {
-            const color = colorMapping.find(x => x.label === state.data.label)?.color;
-            let backgroundColor = color.replace(/rgb/i, "rgba");
-            backgroundColor = backgroundColor.replace(/\)/i, ',0.1)');
-            return {
-                ...provided,
-                color: color,
-                backgroundColor: backgroundColor,
-                textAlign: 'center',
-                padding: 0,
-                '&:hover': {
-                    backgroundColor: color,
-                    color: 'white',
-                },
-                svg: {
-                    padding: '5px',
-                },
-            }
-        },
+        }
     }
 
     return (
@@ -176,7 +84,7 @@ export default function SearchBar() {
                     spin={searching}/>}|
                 <input
                     id="u"
-                    placeholder="Search"
+                    placeholder="Search..."
                     type="search"
                     name="u"
                     className='SearchBar'
@@ -195,7 +103,7 @@ export default function SearchBar() {
             </div>
             <div className='filterContainer'>
                 <Select
-                    styles={customStyles}
+                    styles={selectorStyle}
                     name='d'
                     options={degreeOptions}
                     onChange={handleFilterChange}
@@ -206,7 +114,7 @@ export default function SearchBar() {
                     value={defaultDegree}
                 />
                 <Select
-                    styles={customStyles}
+                    styles={selectorStyle}
                     name='m'
                     options={majorOptions}
                     onChange={handleFilterChange}
@@ -219,7 +127,7 @@ export default function SearchBar() {
                     value={defaultMajor}
                 />
                 <Select
-                    styles={customStyles}
+                    styles={selectorStyle}
                     name='r'
                     options={regionOptions}
                     onChange={handleFilterChange}

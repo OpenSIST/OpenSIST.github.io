@@ -36,6 +36,9 @@ export default function SideBar({twoLevelList}) {
                         ))
                     }
                 </ul>
+                <div style={{textAlign: 'center', paddingTop: '5px'}}>
+                    对列表有问题可以<a href='https://github.com/OpenSIST/OpenSIST.github.io/issues'>联系我们</a>
+                </div>
             </div>
             <button
                 className={'Button ShowUpButton ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open ' : '')}

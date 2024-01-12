@@ -1,5 +1,4 @@
-export const DescriptionTemplate = `# \\<项目名称>
-
+export const DescriptionTemplate = `
 ## 项目介绍（如果是Master项目）
 
 ### 概况
