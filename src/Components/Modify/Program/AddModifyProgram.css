@@ -48,6 +48,7 @@
     overflow-y: scroll;
     background-color: var(--menu-bg-color);
     margin-bottom: 1rem;
+    z-index: 0;
 }
 
 .MarkDownToolBar {

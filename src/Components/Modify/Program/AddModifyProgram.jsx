@@ -50,7 +50,7 @@ function AddModifyProgram() {
     const [Description, setDescription] = useState(OriginDesc);
     const mode = AddMode ? 'Add' : 'Modify';
 
-    const sortedUnivList = univList.sort((a, b) => {
+    const sortedUnivList = [...univList].sort((a, b) => {
         return a['fullName'].localeCompare(b['fullName']);
     });
 
@@ -96,6 +96,10 @@ function AddModifyProgram() {
         ...provided,
         width: '25%',
     });
+    // detailSelectorStyle.option = (provided) => ({
+    //     ...provided,
+    //     zIndex: '9999',
+    // });
     detailSelectorStyle.multiValueLabel = (provided, state) => {
         const color = colorMapping.find(x => x.label === state.data.label)?.color;
         let backgroundColor = color.replace(/rgb/i, "rgba");
@@ -207,12 +211,14 @@ function AddModifyProgram() {
                     required
                 />
 
-                <h4 className='Subtitle'>Program Region</h4>
-                <MultiChoice
-                    choices={ProgramRegionChoices}
-                    defaultValue={programContent?.Region || univRegion || []}
-                    name="Region"
-                />
+                <div hidden>
+                    <h4 className='Subtitle'>Program Region</h4>
+                    <MultiChoice
+                        choices={ProgramRegionChoices}
+                        defaultValue={programContent?.Region || univRegion || []}
+                        name="Region"
+                    />
+                </div>
 
                 <h4 className='Subtitle'>Program Description <FontAwesomeIcon icon={faMarkdown}/></h4>
                 <MarkDownEditor OriginDesc={OriginDesc} Description={Description} setDescription={setDescription}/>
