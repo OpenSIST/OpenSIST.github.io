@@ -65,5 +65,6 @@ export const regionFlagMapping = {
     "United Kingdom": "\u{1F1EC}\u{1F1E7}",
     "Canada": "\u{1F1E8}\u{1F1E6}",
     "Hong Kong": "\u{1F1ED}\u{1F1F0}",
-    "Singapore": "\u{1F1F8}\u{1F1EC}"
+    "Singapore": "\u{1F1F8}\u{1F1EC}",
+    'Others': ''
 }
