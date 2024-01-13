@@ -94,12 +94,8 @@ function AddModifyProgram() {
     });
     detailSelectorStyle.container = (provided) => ({
         ...provided,
-        width: '25%',
+        width: '250px',
     });
-    // detailSelectorStyle.option = (provided) => ({
-    //     ...provided,
-    //     zIndex: '9999',
-    // });
     detailSelectorStyle.multiValueLabel = (provided, state) => {
         const color = colorMapping.find(x => x.label === state.data.label)?.color;
         let backgroundColor = color.replace(/rgb/i, "rgba");
