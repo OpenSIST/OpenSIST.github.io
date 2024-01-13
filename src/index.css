@@ -55,6 +55,13 @@ input {
     background-color: var(--input-bg-color);
 }
 
+input::placeholder {
+    font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'BabelStone Flags', 'Segoe UI Emoji', sans-serif;
+    font-size: clamp(10px, 1.5vw, 16px);
+    padding: 2px calc(10px - 0.5rem) 2px calc(10px - 0.5rem);
+    color: var(--color);
+}
+
 input:disabled {
     background-color: var(--input-disabled-bg-color);
     color: var(--input-disabled-color);
