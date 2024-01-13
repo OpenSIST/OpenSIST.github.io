@@ -54,7 +54,6 @@
 
 .FirstLevelList {
     width: 100%;
-    height: calc(100vh - 430px);
     overflow-y: auto;
     padding: 0;
     margin: 0;
@@ -62,6 +61,7 @@
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: var(--menu-bg-color);
+    max-height: calc(100vh - 430px);
 }
 
 .FirstLevelItem {

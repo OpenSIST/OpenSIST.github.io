@@ -136,5 +136,10 @@ export function getSelectorStyle() {
             ...provided,
             color: colors.getPropertyValue('--color'),
         }),
+        valueContainer: (provided) => ({
+            ...provided,
+            height: '40px',
+            overflowY: 'auto',
+        }),
     };
 }
