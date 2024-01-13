@@ -157,8 +157,12 @@ export async function setProgram(program) {
     if (programs[univName] === undefined) {
         programs[univName] = []
     }
-    programs[univName] = programs[univName].filter(p => p.ProgramID !== program.ProgramID);
-    programs[univName].push(program);
+    // programs[univName] = programs[univName].filter(p => p.ProgramID !== program.ProgramID);
+    if (programs[univName].find(p => p.ProgramID === program.ProgramID) !== undefined) {
+        programs[univName][programs[univName].indexOf(program)] = program;
+    } else {
+        programs[univName].push(program);
+    }
     await setPrograms(programs);
 }
 

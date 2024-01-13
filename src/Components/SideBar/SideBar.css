@@ -1,7 +1,8 @@
 .SideBar {
     width: 250px;
-    height: calc(100vh - 150px);
+    height: calc(100vh - 160px);
     margin-left: 2vw;
+    margin-top: 10px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 0 0 5px 5px;
@@ -15,6 +16,7 @@
     position: absolute;
     z-index: 1000;
     margin: 0;
+    top: 10px;
     transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
     transform: translateX(-100%);
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
@@ -29,6 +31,7 @@
     position: absolute;
     width: 2em;
     z-index: 1;
+    top: 10px;
     border-radius: 0 5px 5px 0;
     transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
     transform: translateX(calc(290px + 2vw));
