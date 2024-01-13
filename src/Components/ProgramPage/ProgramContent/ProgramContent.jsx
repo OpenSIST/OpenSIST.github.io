@@ -7,6 +7,7 @@ import './ProgramContent.css'
 import {Form, useLoaderData} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 import {ResponsiveButton} from "../../common";
+import {regionFlagMapping} from "../../../Data/Common";
 
 export async function loader({params}) {
     const programId = params.programId;
@@ -21,11 +22,13 @@ export async function action({params}) {
 
 function ProgramContent() {
     const {programContent} = useLoaderData();
+    let flags = programContent.Region.map((region) => regionFlagMapping[region]);
+    flags = flags.reduce((prev, curr) => prev + ' ' + curr, '');
     return (
         <div className="ProgramContent" key={programContent.ProgramID}>
             <div className="ProgramHeader">
                 <h1>
-                    {programContent.ProgramID}
+                    {programContent.ProgramID} {flags}
                 </h1>
                 <div className='ReviseRefreshButtonGroup'>
                     <Form action='edit' style={{display: 'flex'}}>

@@ -58,3 +58,12 @@ export const colorMapping = [
     {label: 'EE', color: 'rgb(67,144,213)'},
     {label: 'IE', color: 'rgb(220,126,49)'},
 ]
+
+export const regionFlagMapping = {
+    "United States": "\u{1F1FA}\u{1F1F8}",
+    "Europe": "\u{1F1EA}\u{1F1FA}",
+    "United Kingdom": "\u{1F1EC}\u{1F1E7}",
+    "Canada": "\u{1F1E8}\u{1F1E6}",
+    "Hong Kong": "\u{1F1ED}\u{1F1F0}",
+    "Singapore": "\u{1F1F8}\u{1F1EC}"
+}

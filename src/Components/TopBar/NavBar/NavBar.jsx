@@ -9,16 +9,16 @@ export default function NavBar() {
     const [isMenuVisible, setIsMenuVisible, menuRef] = useClickOutSideRef();
     const navItems = [
         {
+            name: "关于我们",
+            path: "/", // TODO: write ABOUT US page
+        },
+        {
             name: "项目信息表",
             path: "/programs",
         },
         {
             name: "申请人信息表",
             path: "/applicants",
-        },
-        {
-            name: "关于我们",
-            path: "/",
         },
     ]
     const isSmallPage = useSmallPage();
