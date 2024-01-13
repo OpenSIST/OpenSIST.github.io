@@ -1,24 +1,22 @@
 .TopBarBlock {
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    height: 60px;
 }
 
 .TopBar {
-    position: relative;
-    z-index: 1;
     display: flex;
-    flex-direction: column;
-    border-radius: 5px 5px 0 0;
     margin-left: auto;
     margin-right: auto;
-    max-width: 1700px;
-}
-
-.WelcomeBar {
-    display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 1700px;
+    height: 100%;
 }
 
-#ThemeButton {
-    width: 40px ;
+.IconBlock {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+    cursor: pointer;
+    margin-left: 1vw;
 }

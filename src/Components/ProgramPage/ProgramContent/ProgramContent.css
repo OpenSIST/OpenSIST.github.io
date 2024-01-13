@@ -12,7 +12,7 @@
     flex-direction: column;
     flex-grow: 1;
     width: 80vw;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 150px);
     padding: 20px;
     margin-left: 2vw;
     margin-right: 2vw;

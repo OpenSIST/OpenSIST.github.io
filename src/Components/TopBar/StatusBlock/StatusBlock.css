@@ -1,8 +1,7 @@
 .StatusBlock {
     position: relative;
     display: flex;
-    align-items: center;
-    /*margin-right: 2vmin;*/
+    margin-right: 1vw;
 }
 
 .UserBlock {
@@ -34,6 +33,7 @@
     position: absolute;
     z-index: 1;
     top: 105%;
+    right: 0;
     background-color: var(--menu-bg-color);
     border: 1px solid var(--border-color);
     border-radius: 5px;

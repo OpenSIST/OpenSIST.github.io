@@ -1,10 +1,31 @@
+.NavBar {
+    position: relative;
+}
+
 .NavBarList {
+    display: flex;
     list-style-type: none;
     padding: 0;
-    display: flex;
     justify-content: flex-start;
-    /*margin-left: 2vw;*/
-    margin: 0 2vw;
+    gap:10px;
+}
+
+.NavBarList.Shrink {
+    position: absolute;
+    z-index: 1;
+    /*top: 10px;*/
+    left: -60px;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--menu-bg-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.NavBar button {
+    color: var(--color);
+    background-color: var(--menu-bg-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .NavBarItem {
@@ -12,14 +33,14 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border-radius: 5px 5px 0 0;
     padding: 10px;
     text-decoration: none;
     color: inherit;
+    border-radius: 5px;
     background-color: var(--menu-bg-color);
-    /*border: solid 1px var(--border-color);*/
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
+    width: 100px
 }
 
 .NavBarItem:hover {

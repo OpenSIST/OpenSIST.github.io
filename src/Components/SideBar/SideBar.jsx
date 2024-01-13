@@ -4,10 +4,10 @@ import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {Form, NavLink, useLoaderData, useNavigate, useNavigation} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
-import {ResponsiveButton, useClickOutSideRef, useHidden} from "../common";
+import {ResponsiveButton, useClickOutSideRef, useSmallPage} from "../common";
 
 export default function SideBar({twoLevelList}) {
-    const SideBarHidden = useHidden();
+    const SideBarHidden = useSmallPage();
     const [SideBarOpen, setSideBarOpen, SideBarRef] = useClickOutSideRef();
 
     return (

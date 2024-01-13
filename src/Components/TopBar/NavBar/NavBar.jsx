@@ -1,35 +1,53 @@
 import React, {createContext, useState} from "react";
 import "./NavBar.css";
-import { NavLink } from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import {useHidden, useUnAuthorized} from "../../common";
+import {useClickOutSideRef, useSmallPage, useUnAuthorized} from "../../common";
 
 export default function NavBar() {
+    const [isMenuVisible, setIsMenuVisible, menuRef] = useClickOutSideRef();
+    const navItems = [
+        {
+            name: "项目信息表",
+            path: "/programs",
+        },
+        {
+            name: "申请人信息表",
+            path: "/applicants",
+        },
+        {
+            name: "关于我们",
+            path: "/",
+        },
+    ]
+    const isSmallPage = useSmallPage();
+    if (useUnAuthorized()) {
+        return null;
+    }
     return (
-        <nav className='NavBar' hidden={useUnAuthorized()}>
-            <ul className='NavBarList'>
-                <li>
-                    <NavLink
-                        to="/programs"
-                        className={"NavBarItem " + (({isActive}) =>
-                            isActive ? "active" : "")
-                        }
-                    >
-                        <b>项目信息表</b>
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink
-                        to="/applicants"
-                        className={"NavBarItem " + (({isActive}) =>
-                            isActive ? "active" : "")
-                        }
-                    >
-                        <b>申请人信息表</b>
-                    </NavLink>
-                </li>
-            </ul>
-        </nav>
+        <div className='NavBar' ref={isSmallPage ? menuRef : null}>
+            {isSmallPage && <button onMouseDown={() => setIsMenuVisible(!isMenuVisible)}>
+                <FontAwesomeIcon
+                    icon={solid('ellipsis')}
+                />
+                </button>}
+            {!isSmallPage || isMenuVisible ?
+                <ul className={'NavBarList ' + (isSmallPage ? 'Shrink' : '')}>
+                    {navItems.map((item, index) => (
+                        <li key={index}>
+                            <NavLink
+                                to={item.path}
+                                className={"NavBarItem " + (({isActive}) =>
+                                    isActive ? "active" : "")
+                                }
+                            >
+                                <b>{item.name}</b>
+                            </NavLink>
+                        </li>
+                    ))}
+                </ul> : null}
+        </div>
     );
 }
+// <FontAwesomeIcon icon={solid('ellipsis')} />

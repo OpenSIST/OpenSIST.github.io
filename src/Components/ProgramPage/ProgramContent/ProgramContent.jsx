@@ -25,7 +25,7 @@ function ProgramContent() {
         <div className="ProgramContent" key={programContent.ProgramID}>
             <div className="ProgramHeader">
                 <h1>
-                    {`${programContent.ProgramID}`}
+                    {programContent.ProgramID}
                 </h1>
                 <div className='ReviseRefreshButtonGroup'>
                     <Form action='edit' style={{display: 'flex'}}>

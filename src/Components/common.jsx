@@ -24,7 +24,7 @@ export function ResponsiveButton({
     )
 }
 
-export function useHidden() {
+export function useSmallPage() {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [windowHeight, setWindowHeight] = useState(window.innerHeight);
     useEffect(() => {

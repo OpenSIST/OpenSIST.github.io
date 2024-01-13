@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import "./AddModifyProgram.css";
 import {
     DescriptionTemplate,
@@ -6,7 +6,7 @@ import {
     ProgramRegionChoices
 } from "../../../Data/Schemas";
 import MarkDownEditor from "./MarkDownEditor/MarkDownEditor";
-import {useLoaderData, useNavigate, redirect, Form, useNavigation} from "react-router-dom";
+import {useLoaderData, useNavigate, redirect, Form} from "react-router-dom";
 import {setProgramContent} from "../../../Data/ProgramData";
 import {faMarkdown} from "@fortawesome/free-brands-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
