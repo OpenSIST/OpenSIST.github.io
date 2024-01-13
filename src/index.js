@@ -74,20 +74,19 @@ const router = createBrowserRouter([
                     }, {
                         path: '/login',
                         element: <Login/>,
-                        errorElement: <ErrorPage/>,
                         action: loginAction
                     }, {
                         path: '/register',
                         element: <RegisterAndReset/>,
-                        errorElement: <ErrorPage/>,
                     }, {
                         path: '/reset',
                         element: <RegisterAndReset/>,
-                        errorElement: <ErrorPage/>,
                     }, {
                         path: '/agreement',
                         element: <Agreement/>,
-                        errorElement: <ErrorPage/>,
+                    }, {
+                        path: '/about-us',
+                        element: <h1>开发组正在加班加点赶工...</h1>,
                     }
                 ]
             }

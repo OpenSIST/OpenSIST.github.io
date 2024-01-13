@@ -7,11 +7,11 @@ import {useClickOutSideRef, useSmallPage, useUnAuthorized} from "../../common";
 
 export default function NavBar() {
     const [isMenuVisible, setIsMenuVisible, menuRef] = useClickOutSideRef();
-    const [current, setCurrent] = useState('Welcome');
+    // const [current, setCurrent] = useState('Welcome');
     const navItems = [
         {
             name: "关于我们",
-            path: "/", // TODO: write ABOUT US page
+            path: "/about-us", // TODO: write ABOUT US page
         },
         {
             name: "项目信息表",
@@ -22,6 +22,7 @@ export default function NavBar() {
             path: "/applicants",
         },
     ]
+    const current = navItems.find((item) => window.location.pathname.startsWith(item.path))?.name ?? 'Welcome';
     const isSmallPage = useSmallPage();
     if (useUnAuthorized()) {
         return null;
@@ -29,12 +30,6 @@ export default function NavBar() {
     return (
         <div className='NavBar' ref={isSmallPage ? menuRef : null}>
             {isSmallPage &&
-                // <button className="NavBarItem" onMouseDown={() => setIsMenuVisible(!isMenuVisible)}>
-                //     <b>{current} </b>
-                //     <FontAwesomeIcon
-                //         icon={solid('caret-down')}
-                //     />
-                // </button>
                 <div className="NavBarItem" onMouseDown={() => setIsMenuVisible(!isMenuVisible)}>
                     <b>{current}    </b>
                     <FontAwesomeIcon
@@ -51,7 +46,7 @@ export default function NavBar() {
                                 className={"NavBarItem " + (({isActive}) =>
                                     isActive ? "active" : "")
                                 }
-                                onClick={() => setCurrent(item.name)}
+                                // onClick={() => setCurrent(item.name)}
                             >
                                 <b>{item.name}</b>
                             </NavLink>
