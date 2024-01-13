@@ -5,6 +5,7 @@ import {Form, NavLink, useLoaderData, useNavigate, useNavigation} from "react-ro
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
 import {ResponsiveButton, useClickOutSideRef, useSmallPage} from "../common";
+import {regionFlagMapping} from "../../Data/Common";
 
 export default function SideBar({twoLevelList}) {
     const SideBarHidden = useSmallPage();
@@ -53,13 +54,15 @@ export default function SideBar({twoLevelList}) {
 
 function FirstLevelItem({firstLevel, secondLevelList}) {
     const [isFolded, setIsFolded] = React.useState(false);
+    let flags = secondLevelList[0].Region.map((region) => regionFlagMapping[region]);
+    flags = flags.reduce((prev, curr) => prev + ' ' + curr, '');
     return (
         <>
             <li
                 className='FirstLevelItem'
                 onClick={() => setIsFolded(!isFolded)}
             >
-                {firstLevel}
+                {firstLevel} {flags}
                 <FontAwesomeIcon
                     icon={solid('caret-right')}
                     rotation={isFolded ? 90 : 0}
