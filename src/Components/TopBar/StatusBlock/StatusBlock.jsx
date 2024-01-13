@@ -28,7 +28,7 @@ export function StatusBlock() {
     return (
         <div className='StatusBlock' ref={MenuRef}>
             <div className='UserBlock' onMouseDown={() => setIsMenuVisible(!isMenuVisible)}>
-                <FontAwesomeIcon icon={solid("circle-user")} size="2xl"/>
+                <FontAwesomeIcon icon={solid("circle-user")} size="xl"/>
                 <p>{user}</p>
                 <FontAwesomeIcon icon={solid("caret-down")}/>
             </div>

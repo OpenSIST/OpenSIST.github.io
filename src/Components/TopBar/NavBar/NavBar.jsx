@@ -7,6 +7,7 @@ import {useClickOutSideRef, useSmallPage, useUnAuthorized} from "../../common";
 
 export default function NavBar() {
     const [isMenuVisible, setIsMenuVisible, menuRef] = useClickOutSideRef();
+    const [current, setCurrent] = useState('Welcome');
     const navItems = [
         {
             name: "关于我们",
@@ -27,11 +28,20 @@ export default function NavBar() {
     }
     return (
         <div className='NavBar' ref={isSmallPage ? menuRef : null}>
-            {isSmallPage && <button onMouseDown={() => setIsMenuVisible(!isMenuVisible)}>
-                <FontAwesomeIcon
-                    icon={solid('ellipsis')}
-                />
-                </button>}
+            {isSmallPage &&
+                // <button className="NavBarItem" onMouseDown={() => setIsMenuVisible(!isMenuVisible)}>
+                //     <b>{current} </b>
+                //     <FontAwesomeIcon
+                //         icon={solid('caret-down')}
+                //     />
+                // </button>
+                <div className="NavBarItem" onMouseDown={() => setIsMenuVisible(!isMenuVisible)}>
+                    <b>{current}    </b>
+                    <FontAwesomeIcon
+                        icon={solid('caret-down')}
+                    />
+                </div>
+            }
             {!isSmallPage || isMenuVisible ?
                 <ul className={'NavBarList ' + (isSmallPage ? 'Shrink' : '')}>
                     {navItems.map((item, index) => (
@@ -41,6 +51,7 @@ export default function NavBar() {
                                 className={"NavBarItem " + (({isActive}) =>
                                     isActive ? "active" : "")
                                 }
+                                onClick={() => setCurrent(item.name)}
                             >
                                 <b>{item.name}</b>
                             </NavLink>

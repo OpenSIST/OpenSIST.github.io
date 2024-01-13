@@ -14,7 +14,7 @@
     position: absolute;
     z-index: 1;
     /*top: 10px;*/
-    left: -60px;
+    left: -10px;
     flex-direction: column;
     padding: 10px;
     border-radius: 10px;
@@ -22,11 +22,11 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.NavBar button {
-    color: var(--color);
-    background-color: var(--menu-bg-color);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+/*.NavBar button {*/
+/*    color: var(--color);*/
+/*    background-color: var(--menu-bg-color);*/
+/*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*}*/
 
 .NavBarItem {
     display: flex;
@@ -40,7 +40,8 @@
     background-color: var(--menu-bg-color);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
-    width: 100px
+    width: 100px;
+    gap: 10px;
 }
 
 .NavBarItem:hover {
