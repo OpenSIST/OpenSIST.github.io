@@ -26,11 +26,16 @@
 
 .ReviseRefreshButtonGroup {
     display: flex;
-    flex-direction: column;
     gap: 10px;
+    align-self: center;
 }
 
 .ProgramDescription {
     position: relative;
     z-index: 0;
+}
+
+.ProgramHeader {
+    display: flex;
+    justify-content: space-between;
 }

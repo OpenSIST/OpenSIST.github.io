@@ -21,10 +21,12 @@ export async function action({params}) {
 
 function ProgramContent() {
     const {programContent} = useLoaderData();
-    const components = {
-        h1: ({node, ...props}) => (
-            <h1 {...props} style={{display: 'flex', justifyContent: 'space-between'}}>
-                {props.children}
+    return (
+        <div className="ProgramContent" key={programContent.ProgramID}>
+            <div className="ProgramHeader">
+                <h1>
+                    {`${programContent.ProgramID}`}
+                </h1>
                 <div className='ReviseRefreshButtonGroup'>
                     <Form action='edit' style={{display: 'flex'}}>
                         <button type='submit' title='Edit'>
@@ -35,13 +37,8 @@ function ProgramContent() {
                         <ResponsiveButton/>
                     </Form>
                 </div>
-            </h1>
-        ),
-    };
-    return (
-        <div className="ProgramContent" key={programContent.ProgramID}>
+            </div>
             <ReactMarkdown
-                components={components}
                 className='ProgramDescription'
             >
                 {programContent.description}
