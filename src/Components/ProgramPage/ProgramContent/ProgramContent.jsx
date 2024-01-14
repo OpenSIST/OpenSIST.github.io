@@ -7,7 +7,9 @@ import './ProgramContent.css'
 import {Form, useLoaderData} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 import {ResponsiveButton} from "../../common";
-import {regionFlagMapping} from "../../../Data/Common";
+import {regionFlagMapping, univAbbrFullNameMapping} from "../../../Data/Common";
+import {IconButton, Tooltip, Typography} from "@mui/material";
+import {HelpOutline} from "@mui/icons-material";
 
 export async function loader({params}) {
     const programId = params.programId;
@@ -27,8 +29,21 @@ function ProgramContent() {
     return (
         <div className="ProgramContent" key={programContent.ProgramID}>
             <div className="ProgramHeader">
-                <h1>
-                    {programContent.ProgramID} {flags}
+                <h1 style={{display: 'flex', position: 'relative'}}>
+                    {flags} {programContent.ProgramID}
+                    <div>
+                        {<Tooltip
+                            title={<Typography fontSize={15}>
+                                {univAbbrFullNameMapping[programContent.University]}
+                            </Typography>}
+                            arrow
+                            style={{position: 'absolute', width: 'fit-content'}}
+                        >
+                            <IconButton>
+                                <HelpOutline/>
+                            </IconButton>
+                        </Tooltip>}
+                    </div>
                 </h1>
                 <div className='ReviseRefreshButtonGroup'>
                     <Form action='edit' style={{display: 'flex'}}>
@@ -37,7 +52,7 @@ function ProgramContent() {
                         </button>
                     </Form>
                     <Form method='post' style={{display: 'flex'}}>
-                        <ResponsiveButton/>
+                    <ResponsiveButton/>
                     </Form>
                 </div>
             </div>

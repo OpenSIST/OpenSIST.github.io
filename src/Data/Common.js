@@ -1,4 +1,5 @@
 import {useNavigate} from "react-router-dom";
+import univList from "./univ_list.json";
 
 export async function handleErrors(response) {
     /*
@@ -68,3 +69,8 @@ export const regionFlagMapping = {
     "Singapore": "\u{1F1F8}\u{1F1EC}",
     'Others': ''
 }
+
+export const univAbbrFullNameMapping = univList.reduce((acc, univ) => {
+    acc[univ.abbr] = univ.fullName;
+    return acc;
+}, {});

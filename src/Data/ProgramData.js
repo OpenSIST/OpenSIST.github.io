@@ -1,6 +1,6 @@
 import localforage from "localforage";
 import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST} from "../APIs/APIs";
-import {handleErrors} from "./Common";
+import {handleErrors, univAbbrFullNameMapping} from "./Common";
 import univListOrder from "./univ_list.json";
 
 export async function getPrograms(isRefresh = false, query = {}) {
@@ -55,11 +55,6 @@ export async function getPrograms(isRefresh = false, query = {}) {
         return univAbbrOrder.indexOf(univ1) - univAbbrOrder.indexOf(univ2);
     }).reduce((acc, [univ, programs]) => {
         acc[univ] = programs;
-        return acc;
-    }, {});
-
-    const univAbbrFullNameMapping = univListOrder.reduce((acc, univ) => {
-        acc[univ.abbr] = univ.fullName;
         return acc;
     }, {});
 
