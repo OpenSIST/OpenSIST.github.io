@@ -19,12 +19,14 @@ import {toolbarPlugin} from "@mdxeditor/editor/plugins/toolbar";
 import {UndoRedo} from "@mdxeditor/editor/plugins/toolbar/components/UndoRedo";
 import {BoldItalicUnderlineToggles} from "@mdxeditor/editor/plugins/toolbar/components/BoldItalicUnderlineToggles";
 
-export default function MarkDownEditor({OriginDesc, Description, setDescription}) {
+export default function MarkDownEditor({ OriginDesc, Description, setDescription}) {
     return (
         <div className="MarkDownEditor">
             <MDXEditor
                 markdown={Description}
-                onChange={(value) => {setDescription(value)}}
+                onChange={(value) => {
+                    setDescription(value)
+                }}
                 plugins={[
                     headingsPlugin(),
                     listsPlugin(),

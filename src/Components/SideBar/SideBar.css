@@ -1,149 +1,128 @@
-.ProgramMainBlock {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    height: calc(100vh - 120px);
-    background-color: #f8f9fa;
-    border-radius: 0 0 5px 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-}
-
-.ProgramContent {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    width: 80vw;
-    height: calc(100vh - 200px);
-    padding: 20px;
-    margin-right: 2vw;
-    background-color: #f8f9fa;
-    border-radius: 0 0 5px 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    user-select: text;
-    overflow-y: auto;
-}
-
-.ProgramDescription {
-    /*width: 100%;*/
-    height: calc(100vh - 10%);
-    /*padding: 1rem 3rem 1rem 3rem;*/
-    border-radius: 5px;
-    /*border: solid 1px #e7e7e7;*/
-    /*background-color: #fcfcfc;*/
-    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
-    overflow-y: auto;
-}
-
 .SideBar {
     width: 250px;
-    height: calc(100vh - 200px);
-    margin-right: 2vw;
+    height: calc(100vh - 160px);
     margin-left: 2vw;
+    margin-top: 10px;
     padding: 20px;
-    background-color: #f8f9fa;
-    border-right: 1px solid #e7e7e7;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 0 0 5px 5px;
     overflow-y: auto;
+    background-color: var(--bg-color);
+    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
+    transform: translateX(0);
 }
 
-.UnivProgramList {
+.SideBar.hidden {
+    position: absolute;
+    z-index: 1000;
+    margin: 0;
+    top: 10px;
+    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
+    transform: translateX(-100%);
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.SideBar.hidden.open {
+    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
+    transform: translateX(0);
+}
+
+.ShowUpButton {
+    position: absolute;
+    width: 2em;
+    z-index: 1;
+    top: 10px;
+    border-radius: 0 5px 5px 0;
+    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
+    transform: translateX(calc(290px + 2vw));
+    visibility: hidden;
+}
+
+.ShowUpButton.hidden {
+    position: absolute;
+    z-index: 1000;
+    border-radius: 0 5px 5px 0;
+    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.ShowUpButton.hidden.open {
+    margin-left: 0;
+    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
+    transform: translateX(290px);
+    visibility: visible;
+
+}
+
+.FirstLevelList {
     width: 100%;
-    height: calc(100vh - 320px);
-    /*height: calc(100vh - 25%);*/
     overflow-y: auto;
     padding: 0;
     margin: 0;
     list-style-type: none;
-    background-color: #fcfcfc;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--menu-bg-color);
+    max-height: calc(100vh - 430px);
 }
 
-.UnivItem,
-.UnivItemSelected {
-    /*width: 160px;*/
+.FirstLevelItem {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 20px;
     border-radius: 5px;
-    border: solid 1px #e7e7e7;
+    background-color: var(--menu-bg-color);
+    border: solid 1px var(--border-color);
     cursor: pointer;
     transition: background-color 0.3s ease;
-    list-style-type: none;
+    height: 30px;
 }
 
-.UnivItem {
-    background-color: #fcfcfc;
-    padding-left: 20px;
-}
-
-.UnivItemSelected {
-    background-color: #f1f1f1;
-}
-
-.UnivItem:hover,
-.UnivItemSelected:hover {
-    background-color: #e7e7e7;
-}
-
-
-.ProgramItem,
-.ProgramItemSelected {
-    padding: 0.5rem;
-    /*background-color: #fcfcfc;*/
+.SecondLevelItem {
+    margin-left: 20px;
     border-radius: 5px;
+    background-color: var(--menu-bg-color);
+    border: solid 1px var(--border-color);
     cursor: pointer;
     transition: background-color 0.3s ease;
-    list-style-type: none;
-    border: solid 1px #e7e7e7;
 }
 
-.ProgramItem {
-    background-color: #fcfcfc;
-    margin-left: 40px;
+.FirstLevelItem:hover,
+.SecondLevelItem:hover {
+    background-color: var(--block-hover-bg-color);
 }
 
-.ProgramItemSelected {
-    /*background-color: #f1f1f1;*/
-    color: #007bff;
+.SecondLevelItem a {
+    /*display: block;*/
+    padding: 0.5rem 0.5rem 0.5rem 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    height: 30px;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.ProgramItem div,
-.ProgramItemSelected div{
-    padding-left: 10px;
+.SecondLevelItem a.active {
+    background-color: var(--block-hover-bg-color);
 }
 
-.ProgramItem:hover,
-.ProgramItemSelected:hover{
-    background-color: #e7e7e7;
-}
-
-.UnivItem:active,
-.ProgramItem:active {
+.FirstLevelItem:active,
+.SecondLevelItem:active {
     transform: scale(0.98);
-}
-
-.AddRefreshButtonGroup button,
-.ReviseRefreshButtonGroup button {
-    margin-top: 1rem;
 }
 
 .AddRefreshButtonGroup {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 10px;
     gap: 20px;
 }
 
-.ReviseRefreshButtonGroup {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    gap: 20px;
-    margin-left: 80%;
+.AddRefreshButtonGroup form {
+    width: 50%;
 }
-

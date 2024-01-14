@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@mdxeditor/editor": "^1.14.3",
+    "@mui/icons-material": "^5.15.4",
+    "@mui/material": "^5.15.4",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -18,9 +22,11 @@
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-draggable": "^4.4.6",
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.21.1",
     "react-scripts": "^5.0.1",
+    "react-select": "^5.8.0",
     "sort-by": "^0.0.2",
     "web-vitals": "^2.1.4",
     "zod": "^3.22.4"
@@ -28,7 +34,7 @@
   "scripts": {
     "start_win": "set PORT=61234 && react-scripts start",
     "start_unix": "export PORT=61234 && react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "臭小子别乱碰这个 react-scripts eject"
   },
@@ -51,6 +57,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "webpack": "^5.89.0"
   }
 }

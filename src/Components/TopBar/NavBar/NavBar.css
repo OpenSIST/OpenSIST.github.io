@@ -1,33 +1,60 @@
 .NavBar {
-    background-color: #f8f9fa;
+    position: relative;
 }
 
 .NavBarList {
+    display: flex;
     list-style-type: none;
     padding: 0;
-    display: flex;
     justify-content: flex-start;
-    margin-left: 2vw;
+    gap:10px;
 }
 
-.NavBarItem,
-.NavBarItemSelected{
+.NavBarList.Shrink {
+    position: absolute;
+    z-index: 1;
+    /*top: 10px;*/
+    left: -10px;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--menu-bg-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/*.NavBar button {*/
+/*    color: var(--color);*/
+/*    background-color: var(--menu-bg-color);*/
+/*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+.NavBarItem {
     display: flex;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
-    border-radius: 5px 5px 0 0;
-    padding: 10px 20px;
+    padding: 10px;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 5px;
+    background-color: var(--menu-bg-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
+    width: 100px;
+    gap: 10px;
 }
-
-.NavBarItemSelected {
-    color: #fff;
-    background-color: #007bff;
-}
-
 
 .NavBarItem:hover {
-    background-color: #e7e7e7;
+    background-color: var(--block-hover-bg-color);
+}
+
+.NavBarItem.active {
+    color: var(--button-color);
+    background-color: var(--button-bg-color);
+}
+
+.NavBarItem.active:hover {
+    background-color: var(--button-hover-bg-color);
 }
 
 .NavBarItem:active {

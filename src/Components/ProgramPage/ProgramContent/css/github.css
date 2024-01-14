@@ -1,9 +1,11 @@
+@import url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
 :root {
     --side-bar-bg-color: #fafafa;
     --control-text-color: #777;
 }
 
-@include-when-export url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+/*@include-when-export url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);*/
 
 /* open-sans-regular - latin-ext_latin */
 @font-face {
@@ -12,31 +14,44 @@
     font-weight: normal;
     src: local('Open Sans Regular'), local('OpenSans-Regular'), url('github/open-sans-v17-latin-ext_latin-regular.woff2') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-  }
-  /* open-sans-italic - latin-ext_latin */
-  @font-face {
+}
+
+/* open-sans-italic - latin-ext_latin */
+@font-face {
     font-family: 'Open Sans';
     font-style: italic;
     font-weight: normal;
     src: local('Open Sans Italic'), local('OpenSans-Italic'), url('github/open-sans-v17-latin-ext_latin-italic.woff2') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-  }
-  /* open-sans-700 - latin-ext_latin */
-  @font-face {
+}
+
+/* open-sans-700 - latin-ext_latin */
+@font-face {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: bold;
     src: local('Open Sans Bold'), local('OpenSans-Bold'), url('github/open-sans-v17-latin-ext_latin-700.woff2') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-  }
-  /* open-sans-700italic - latin-ext_latin */
-  @font-face {
+}
+
+/* open-sans-700italic - latin-ext_latin */
+@font-face {
     font-family: 'Open Sans';
     font-style: italic;
     font-weight: bold;
     src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url('github/open-sans-v17-latin-ext_latin-700italic.woff2') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-  }
+}
+
+/*@font-face {*/
+/*    font-family: 'BabelStone Flags';*/
+/*    src: url('./github/BabelStoneFlags.woff2') format('woff2');*/
+/*}*/
+
+@font-face {
+    font-family: 'Twemoji';
+    src: url('./github/TwemojiMozilla.ttf') format('truetype');
+}
 
 html {
     font-size: 16px;
@@ -44,38 +59,39 @@ html {
 }
 
 body {
-    font-family: "Open Sans","Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
+    font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Twemoji', 'Segoe UI Emoji', sans-serif;
     color: rgb(51, 51, 51);
     line-height: 1.6;
 }
 
 #write {
     max-width: 860px;
-  	margin: 0 auto;
-  	padding: 30px;
+    margin: 0 auto;
+    padding: 30px;
     padding-bottom: 100px;
 }
 
 @media only screen and (min-width: 1400px) {
-	#write {
-		max-width: 1024px;
-	}
+    #write {
+        max-width: 1024px;
+    }
 }
 
 @media only screen and (min-width: 1800px) {
-	#write {
-		max-width: 1200px;
-	}
+    #write {
+        max-width: 1200px;
+    }
 }
 
 #write > ul:first-child,
-#write > ol:first-child{
+#write > ol:first-child {
     margin-top: 30px;
 }
 
 a {
     color: #4183C4;
 }
+
 h1,
 h2,
 h3,
@@ -89,6 +105,7 @@ h6 {
     line-height: 1.4;
     cursor: text;
 }
+
 h1:hover a.anchor,
 h2:hover a.anchor,
 h3:hover a.anchor,
@@ -97,35 +114,43 @@ h5:hover a.anchor,
 h6:hover a.anchor {
     text-decoration: none;
 }
+
 h1 tt,
 h1 code {
     font-size: inherit;
 }
+
 h2 tt,
 h2 code {
     font-size: inherit;
 }
+
 h3 tt,
 h3 code {
     font-size: inherit;
 }
+
 h4 tt,
 h4 code {
     font-size: inherit;
 }
+
 h5 tt,
 h5 code {
     font-size: inherit;
 }
+
 h6 tt,
 h6 code {
     font-size: inherit;
 }
+
 h1 {
     font-size: 2.25em;
     line-height: 1.2;
     border-bottom: 1px solid #eee;
 }
+
 h2 {
     font-size: 1.75em;
     line-height: 1.225;
@@ -153,28 +178,34 @@ h3 {
     font-size: 1.5em;
     line-height: 1.43;
 }
+
 h4 {
     font-size: 1.25em;
 }
+
 h5 {
     font-size: 1em;
 }
+
 h6 {
-   font-size: 1em;
+    font-size: 1em;
     color: #777;
 }
+
 p,
 blockquote,
 ul,
 ol,
 dl,
-table{
+table {
     margin: 0.8em 0;
 }
-li>ol,
-li>ul {
+
+li > ol,
+li > ul {
     margin: 0 0;
 }
+
 hr {
     height: 2px;
     padding: 0;
@@ -188,39 +219,48 @@ hr {
 li p.first {
     display: inline-block;
 }
+
 ul,
 ol {
     padding-left: 30px;
 }
+
 ul:first-child,
 ol:first-child {
     margin-top: 0;
 }
+
 ul:last-child,
 ol:last-child {
     margin-bottom: 0;
 }
+
 blockquote {
     border-left: 4px solid #dfe2e5;
     padding: 0 15px;
     color: #777777;
 }
+
 blockquote blockquote {
     padding-right: 0;
 }
+
 table {
     padding: 0;
     word-break: initial;
 }
+
 table tr {
     border: 1px solid #dfe2e5;
     margin: 0;
     padding: 0;
 }
+
 table tr:nth-child(2n),
 thead {
     background-color: #f8f8f8;
 }
+
 table th {
     font-weight: bold;
     border: 1px solid #dfe2e5;
@@ -228,15 +268,18 @@ table th {
     margin: 0;
     padding: 6px 13px;
 }
+
 table td {
     border: 1px solid #dfe2e5;
     margin: 0;
     padding: 6px 13px;
 }
+
 table th:first-child,
 table td:first-child {
     margin-top: 0;
 }
+
 table th:last-child,
 table td:last-child {
     margin-bottom: 0;
@@ -247,7 +290,7 @@ table td:last-child {
 }
 
 .code-tooltip {
-    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    box-shadow: 0 1px 1px 0 rgba(0, 28, 36, .3);
     border-top: 1px solid #eef2f2;
 }
 
@@ -276,13 +319,14 @@ code {
 
 
 .md-task-list-item > input {
-  margin-left: -1.3em;
+    margin-left: -1.3em;
 }
 
 @media print {
     html {
         font-size: 13px;
     }
+
     pre {
         page-break-inside: avoid;
         word-wrap: break-word;
@@ -290,10 +334,11 @@ code {
 }
 
 .md-fences {
-	background-color: #f8f8f8;
+    background-color: #f8f8f8;
 }
+
 #write pre.md-meta-block {
-	padding: 1rem;
+    padding: 1rem;
     font-size: 85%;
     line-height: 1.45;
     background-color: #f7f7f7;
@@ -303,31 +348,35 @@ code {
     margin-top: 0 !important;
 }
 
-.mathjax-block>.code-tooltip {
-	bottom: .375rem;
+.mathjax-block > .code-tooltip {
+    bottom: .375rem;
 }
 
 .md-mathjax-midline {
     background: #fafafa;
 }
 
-#write>h3.md-focus:before{
-	left: -1.5625rem;
-	top: .375rem;
+#write > h3.md-focus:before {
+    left: -1.5625rem;
+    top: .375rem;
 }
-#write>h4.md-focus:before{
-	left: -1.5625rem;
-	top: .285714286rem;
+
+#write > h4.md-focus:before {
+    left: -1.5625rem;
+    top: .285714286rem;
 }
-#write>h5.md-focus:before{
-	left: -1.5625rem;
-	top: .285714286rem;
+
+#write > h5.md-focus:before {
+    left: -1.5625rem;
+    top: .285714286rem;
 }
-#write>h6.md-focus:before{
-	left: -1.5625rem;
-	top: .285714286rem;
+
+#write > h6.md-focus:before {
+    left: -1.5625rem;
+    top: .285714286rem;
 }
-.md-image>.md-meta {
+
+.md-image > .md-meta {
     /*border: 1px solid #ddd;*/
     border-radius: 3px;
     padding: 2px 0px 0px 4px;
@@ -340,9 +389,9 @@ code {
     opacity: 1;
 }
 
-.md-toc { 
-    margin-top:20px;
-    padding-bottom:20px;
+.md-toc {
+    margin-top: 20px;
+    padding-bottom: 20px;
 }
 
 .sidebar-tabs {
@@ -366,12 +415,12 @@ code {
     border-left-color: rgba(85, 85, 85, 0.12);
 }
 
-header, .context-menu, .megamenu-content, footer{
+header, .context-menu, .megamenu-content, footer {
     font-family: "Segoe UI", "Arial", sans-serif;
 }
 
 .file-node-content:hover .file-node-icon,
-.file-node-content:hover .file-node-open-state{
+.file-node-content:hover .file-node-open-state {
     visibility: visible;
 }
 
@@ -408,5 +457,5 @@ header, .context-menu, .megamenu-content, footer{
 
 .menu-item-container a.menu-style-btn {
     background-color: #f5f8fa;
-    background-image: linear-gradient( 180deg , hsla(0, 0%, 100%, 0.8), hsla(0, 0%, 100%, 0)); 
+    background-image: linear-gradient(180deg, hsla(0, 0%, 100%, 0.8), hsla(0, 0%, 100%, 0));
 }

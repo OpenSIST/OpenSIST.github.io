@@ -1,23 +1,25 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import {z} from 'zod';
 import "./RegisterAndReset.css"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {REGISTER, RESET_PASSWORD, SEND_RESET_VERIFY_TOKEN, SEND_VERIFY_TOKEN} from "../../../APIs/APIs";
+
 const passwordSchema = z.string().min(8).max(24).refine(password => (
-    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password)
-),
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password)
+    ),
     // message: "Password must contain at least one number, one lowercase and one uppercase letter",
 );
 
-const checkMark = <FontAwesomeIcon icon={solid("check")} style={{color: "#439d2a",}} />
-const crossMark = <FontAwesomeIcon icon={solid("xmark")} style={{color: "#c24b24",}} />
+const checkMark = <FontAwesomeIcon icon={solid("check")} style={{color: "#439d2a",}}/>
+const crossMark = <FontAwesomeIcon icon={solid("xmark")} style={{color: "#c24b24",}}/>
 
 export function isValidPassword(password) {
     const result = passwordSchema.safeParse(password);
     return result.success;
 }
+
 export default function RegisterAndReset() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -57,8 +59,46 @@ export default function RegisterAndReset() {
         updatePasswordRequirements(newPassword);
     }
 
+    const [timeLeft, setTimeLeft] = useState(60);
+    const [sendButtonDisabled, setSendButtonDisabled] = useState(false);
+    const sendAndStartTimer = (startTime = Date.now()) => {
+        localStorage.setItem('timerStart', startTime.toString());
+        setSendButtonDisabled(true);
+
+        const intervalId = setInterval(() => {
+            const startTime = parseInt(localStorage.getItem('timerStart') || '0');
+            const timePassed = Math.floor((Date.now() - startTime) / 1000);
+            const timeLeft = 60 - timePassed;
+
+            if (timeLeft <= 0) {
+                clearInterval(intervalId);
+                setTimeLeft(60);
+                setSendButtonDisabled(false);
+                localStorage.removeItem('timerStart');
+            } else {
+                setTimeLeft(timeLeft);
+            }
+        }, 1000);
+    };
+
+    useEffect(() => {
+        const savedStartTime = localStorage.getItem('timerStart');
+        if (savedStartTime) {
+            const timePassed = Math.floor((Date.now() - parseInt(savedStartTime)) / 1000);
+            const remainingTime = 60 - timePassed;
+            if (remainingTime > 0) {
+                setTimeLeft(remainingTime);
+                setSendButtonDisabled(true);
+                sendAndStartTimer(parseInt(savedStartTime));
+            } else {
+                localStorage.removeItem('timerStart');
+            }
+        }
+    }, []);
+
     const handleVerify = async (e) => {
         e.preventDefault();
+        sendAndStartTimer();
         const api = status === 'reset' ? SEND_RESET_VERIFY_TOKEN : SEND_VERIFY_TOKEN;
         try {
             const response = await fetch(api, {
@@ -81,7 +121,7 @@ export default function RegisterAndReset() {
         }
     };
 
-    const handleSubmit= async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const api = status === 'reset' ? RESET_PASSWORD : REGISTER;
         if (!boxChecked && status === 'register') {
@@ -106,8 +146,7 @@ export default function RegisterAndReset() {
                 navigate("/");
                 if (status === 'reset') {
                     alert("Password reset successful.");
-                }
-                else if (status === 'register') {
+                } else if (status === 'register') {
                     alert("Registration successful.");
                 }
             } else {
@@ -127,7 +166,7 @@ export default function RegisterAndReset() {
             <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column'}}>
                 <input
                     type="Username"
-                    placeholder="Your ShanghaiTech Email"
+                    placeholder="Email"
                     value={email.split("@")[0]}
                     onChange={(e) => setEmail(
                         e.target.value.split("@")[0] + "@shanghaitech.edu.cn"
@@ -159,7 +198,9 @@ export default function RegisterAndReset() {
                         onChange={(e) => setToken(e.target.value)}
                         required
                     />
-                    <button className='Button' type="button" title="Send verification code to your email" onClick={handleVerify}>Send code</button>
+                    <button type="button" onClick={handleVerify} disabled={sendButtonDisabled || email?.split('@')[0] === ""}>
+                        { sendButtonDisabled ? `Resend in ${timeLeft} s` : 'Send' }
+                    </button>
                 </div>
                 <div>
                     <span>{isLengthValid ? checkMark : crossMark} 密码长度为8-24个字符</span><br/>
@@ -176,25 +217,18 @@ export default function RegisterAndReset() {
                         onChange={handleAgreementCheck}
                         required
                     />
-                    <label>我已阅读并同意OpenSIST
-                        <b onClick={() => {
-                            navigate('/agreement')
-                        }}
-                           style={{textDecoration: "underline", cursor: "pointer"}}>隐私条款</b>
+                    <label htmlFor='privacyPolicy'>我已阅读并同意OpenSIST
+                        <b onClick={() => navigate('/agreement')}>隐私条款</b>
                         ，且愿意遵守OpenSIST
-                        <b onClick={() => {
-                            navigate('/agreement')
-                        }}
-                           style={{textDecoration: "underline", cursor: "pointer"}}>用户守则</b>。
+                        <b onClick={() => navigate('/agreement')}>用户守则</b>。
                     </label>
                 </div>}
                 {valid ? null : <p style={{color: 'red'}}>请按照规范重新设置密码。</p>}
-                <button className='Button' title={title} type="submit">{title}</button>
-                {status === 'register' && <div onClick={() => {
-                    navigate('/login')
-                }}
-                    style={{textDecoration: "underline", cursor: "pointer"}}>
-                    Already have an account? Login now!</div>}
+                <button title={title} type="submit">{title}</button>
+                {status === 'register' &&
+                    <p onClick={() => navigate('/login')}>
+                        Already have an account? Login now!
+                    </p>}
             </form>
         </div>
     );

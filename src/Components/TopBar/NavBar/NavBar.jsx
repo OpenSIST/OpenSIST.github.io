@@ -1,30 +1,59 @@
-import React, {useState} from "react";
+import React, {createContext, useState} from "react";
 import "./NavBar.css";
-import {useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
+import {useClickOutSideRef, useSmallPage, useUnAuthorized} from "../../common";
 
 export default function NavBar() {
-    const navigate = useNavigate();
-    const [selection, setSelection] = useState('Programs');
+    const [isMenuVisible, setIsMenuVisible, menuRef] = useClickOutSideRef();
+    // const [current, setCurrent] = useState('Welcome');
+    const navItems = [
+        {
+            name: "关于我们",
+            path: "/about-us", // TODO: write ABOUT US page
+        },
+        {
+            name: "项目信息表",
+            path: "/programs",
+        },
+        {
+            name: "申请人信息表",
+            path: "/applicants",
+        },
+    ]
+    const current = navItems.find((item) => window.location.pathname.startsWith(item.path))?.name ?? 'Welcome';
+    const isSmallPage = useSmallPage();
+    if (useUnAuthorized()) {
+        return null;
+    }
     return (
-        <nav className='NavBar'>
-            <ul className='NavBarList'>
-                <li className={'NavBarItem' + (selection === 'Programs' ? 'Selected' : '')}>
-                    <b onClick={() => {
-                        setSelection('Programs')
-                        navigate('/')
-                    }}>
-                        项目信息表
-                    </b>
-                </li>
-                <li className={'NavBarItem' + (selection === 'Applicants' ? 'Selected' : '')}>
-                    <b onClick={() => {
-                        setSelection('Applicants')
-                        navigate('/applicants')
-                    }}>
-                        申请人信息表
-                    </b>
-                </li>
-            </ul>
-        </nav>
+        <div className='NavBar' ref={isSmallPage ? menuRef : null}>
+            {isSmallPage &&
+                <div className="NavBarItem" onMouseDown={() => setIsMenuVisible(!isMenuVisible)}>
+                    <b>{current}    </b>
+                    <FontAwesomeIcon
+                        icon={solid('caret-down')}
+                    />
+                </div>
+            }
+            {!isSmallPage || isMenuVisible ?
+                <ul className={'NavBarList ' + (isSmallPage ? 'Shrink' : '')}>
+                    {navItems.map((item, index) => (
+                        <li key={index}>
+                            <NavLink
+                                to={item.path}
+                                className={"NavBarItem " + (({isActive}) =>
+                                    isActive ? "active" : "")
+                                }
+                                // onClick={() => setCurrent(item.name)}
+                            >
+                                <b>{item.name}</b>
+                            </NavLink>
+                        </li>
+                    ))}
+                </ul> : null}
+        </div>
     );
 }
+// <FontAwesomeIcon icon={solid('ellipsis')} />

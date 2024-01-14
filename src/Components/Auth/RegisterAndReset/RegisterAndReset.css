@@ -5,45 +5,36 @@
     justify-content: center;
     width: 100%;
     height: 100vh;
-    background-color: #f8f9fa;
-}
-
-.RegisterAndReset h1 {
-    margin-bottom: 2rem;
-    color: #333;
 }
 
 .RegisterAndReset form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    width: 300px;
+    width: 400px;
 }
 
 .RegisterAndReset input {
     padding: 0.5rem;
-    border: 1px solid #ddd;
+    border: solid 1px var(--border-color);
     border-radius: 5px;
 }
 
-.RegisterAndReset a {
-    color: #007bff;
-    text-decoration: none;
-    margin-top: 1rem;
+.RegisterAndReset p, .RegisterAndReset b {
+    margin: 0;
     cursor: pointer;
-}
-
-.RegisterAndReset a:hover {
     text-decoration: underline;
 }
 
+.VerificationSendBlock {
+    display: flex;
+    gap: 10px;
+}
+
+.VerificationSendBlock input {
+    width: 100%;
+}
+
 .VerificationSendBlock button {
-    width: 40%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    float: right;
+    width: 200px;
 }

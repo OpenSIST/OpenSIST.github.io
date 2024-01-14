@@ -1,83 +1,67 @@
-import {useNavigate} from "react-router-dom";
+import {Form, useNavigate} from "react-router-dom";
 import "./StatusBlock.css"
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import React, {useEffect, useRef, useState} from "react";
-export function StatusBlock({user}) {
-    const [isMenuVisible, setIsMenuVisible] = useState(false)
-    const menuRef = useRef(null)
+import React, {useEffect, useState} from "react";
+import localforage from "localforage";
+import {logout} from "../../../Data/UserData";
+import {ResponsiveButton, useClickOutSideRef, useUnAuthorized} from "../../common";
 
-    const handleClickOutside = (event) => {
-        if (menuRef.current && !menuRef.current.contains(event.target)) {
-            setIsMenuVisible(false)
-        }
-    }
+export async function action() {
+    return await logout();
+}
 
-    const handleUserBlockClick = (event) => {
-        event.stopPropagation()
-        setIsMenuVisible(!isMenuVisible)
-    }
-
+export function StatusBlock() {
+    const navigate = useNavigate();
+    const [isMenuVisible, setIsMenuVisible, MenuRef] = useClickOutSideRef();
+    const [user, setUser] = useState('')
+    localforage.getItem('user').then((value) => setUser(value));
     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
+        if (user === null) {
+            navigate("/login");
+        }
+    }, [user]);
+    if (useUnAuthorized()) {
+        return null;
+    }
 
     return (
-        <div className='StatusBlock'>
-            <div className='UserBlock' onMouseDown={handleUserBlockClick}>
-                <FontAwesomeIcon icon={solid("circle-user")} size="2xl"/>
+        <div className='StatusBlock' ref={MenuRef}>
+            <div className='UserBlock' onMouseDown={() => setIsMenuVisible(!isMenuVisible)}>
+                <FontAwesomeIcon icon={solid("circle-user")} size="xl"/>
                 <p>{user}</p>
                 <FontAwesomeIcon icon={solid("caret-down")}/>
             </div>
-            <UserMenu isShow={isMenuVisible} ref={menuRef}/>
+            {isMenuVisible ? <UserMenu/> : null}
         </div>
     );
 }
 
-const UserMenu = React.forwardRef((props, ref) => {
-    const navigate = useNavigate();
-    const handleLogout = async () => {
-        try {
-            const response = await fetch('https://opensist-auth.caoster.workers.dev/api/my/logout', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
-                }
-            })
-            if (response.status !== 200) {
-                const content = await response.json();
-                alert(`${content.error}, Error code: ${response.status}`);
-            } else {
-                alert('Logout Successfully!');
-            }
-        } catch (e) {
-            alert(e);
-        }
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        navigate('/login');
-    }
-
-    if (!props.isShow) {
-        return null;
-    }
+function UserMenu() {
     return (
-        <div className="UserMenu" ref={ref}>
+        <div className="UserMenu">
             <ul>
-                <button name='Profile' id='Profile' title='Profile' className='Button' onClick={() => navigate('/profile')}>
-                    <FontAwesomeIcon icon={solid("home")}/>
-                </button>
-                <button name='Reset' id='Reset' title='Reset Password' className='Button' onClick={() => navigate('/reset')}>
-                    <FontAwesomeIcon icon={solid("undo")}/>
-                </button>
-                <button name='Logout' id='Logout' title='Logout' className='Button' onClick={handleLogout}>
-                    <FontAwesomeIcon icon={solid("sign-out-alt")}/>
-                </button>
+                <Form action='/profile'>
+                    <button
+                        title='Profile'
+                    >
+                        <FontAwesomeIcon icon={solid("home")}/>
+                    </button>
+                </Form>
+                <Form action='/reset'>
+                    <button
+                        title='Reset Password'
+                    >
+                        <FontAwesomeIcon icon={solid("undo")}/>
+                    </button>
+                </Form>
+                <Form method='post'>
+                    <ResponsiveButton
+                        content={(<FontAwesomeIcon icon={solid("sign-out-alt")}/>)}
+                        title='Logout'
+                    />
+                </Form>
             </ul>
         </div>
     )
-});
+}

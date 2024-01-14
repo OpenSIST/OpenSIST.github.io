@@ -1,25 +1,26 @@
+.TopBarBlock {
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    height: 60px;
+}
+
 .TopBar {
     display: flex;
-    flex-direction: column;
-    background-color: #f8f9fa;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid #e7e7e7;
-    border-radius: 5px 5px 0 0;
-}
-
-.WelcomeBar {
-    display: flex;
+    margin-left: auto;
+    margin-right: auto;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    max-width: 1700px;
+    height: 100%;
 }
 
-.TopBarHeader {
-    font-size: 24pt;
-    font-weight: bold;
-    color: #333;
+.IconBlock {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+    cursor: pointer;
+    margin-left: 1vw;
 }
 
-.TopBarHeader p {
-    margin: 0;
+.IconBlock h2 {
+    cursor: pointer;
 }

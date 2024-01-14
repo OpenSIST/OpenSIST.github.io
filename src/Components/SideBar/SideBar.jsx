@@ -1,166 +1,100 @@
-import React, {useState, useEffect} from 'react';
-import {fetchProgramList, fetchProgramDesc} from "../../Data/Data";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {solid} from '@fortawesome/fontawesome-svg-core/import.macro'
-import ProgramContent from "./ProgramContent/ProgramContent";
-import "./SideBar.css"
-import AddModifyProgram from "../Modify/Program/AddModifyProgram";
+import React, {useEffect, useState} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
+import {Form, NavLink, useLoaderData, useNavigate, useNavigation} from "react-router-dom";
+import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
-import {faSpinner} from "@fortawesome/free-solid-svg-icons";
+import {ResponsiveButton, useClickOutSideRef, useSmallPage} from "../common";
+import {regionFlagMapping} from "../../Data/Common";
 
-function SideBar(props) {
-    const [fullList, setFullList] = useState([]);
-    const [universityProgramList, setUniversityProgramList] = useState([]);
-    const [selectedUniversity, setSelectedUniversity] = useState(null);
-    const [selectedProgram, setSelectedProgram] = useState(null);
-    const [addProgram, setAddProgram] = useState(false);
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [isForceFetchList, setIsForceFetchList] = useState(false);
-    const [isForceFetchDesc, setIsForceFetchDesc] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        if (!isForceFetchList) {
-            setIsLoading(false);
-        }
-    }, [isForceFetchList]);
-
-    const handleRefresh = () => {
-        setIsLoading(true);
-        setIsForceFetchList(true);
-    }
-
-    const handleAddProgram = () => {
-        setSelectedUniversity(null);
-        setSelectedProgram(null);
-        setAddProgram(!addProgram);
-    }
-
-    useEffect(() => {
-        const fetchData = async () => {
-            let response = await fetchProgramList(isForceFetchList);
-            let data = Object.entries(response);
-            setFullList(data);
-            setUniversityProgramList(data);
-            setIsForceFetchList(false);
-        };
-        fetchData().then();
-    }, [isForceFetchList]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            if (selectedProgram !== null) {
-                let response = await fetchProgramDesc({
-                    session: localStorage.getItem('token'),
-                    ProgramID: selectedProgram.ProgramID,
-                    forceFetch: isForceFetchDesc
-                });
-                const ProgramWithDesc = {...selectedProgram};
-                ProgramWithDesc['Description'] = response;
-                setSelectedProgram(ProgramWithDesc);
-                setSelectedUniversity(selectedProgram.University)
-                setIsForceFetchDesc(false);
-            }
-        };
-        fetchData().then();
-    }, [selectedProgram ? selectedProgram.ProgramID : null, isForceFetchDesc]);
-
-    const handleProgramSelect = (Program) => {
-        setSelectedProgram(Program);
-        setIsEditMode(false);
-        setAddProgram(false);
-    }
+export default function SideBar({twoLevelList}) {
+    const SideBarHidden = useSmallPage();
+    const [SideBarOpen, setSideBarOpen, SideBarRef] = useClickOutSideRef();
 
     return (
-        <>
-            <div className='ProgramMainBlock'>
-                <div className='SideBar'>
-                    <SearchBar setSearchedUniv={setUniversityProgramList} univList={fullList}/>
-                    <UnivProgramList universityProgramList={universityProgramList}
-                                     selectedUniversity={selectedUniversity}
-                                     selectedProgram={selectedProgram}
-                                     setSelectedProgram={handleProgramSelect}
-                    />
-                    <div className="AddRefreshButtonGroup">
-                        <button onClick={handleAddProgram} id='AddProgramButton' title='Add Program' className='Button'>
-                            <FontAwesomeIcon icon={solid("plus")}/>
+        <div style={{display: "flex"}} ref={SideBarRef}>
+            <div className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}>
+                <SearchBar/>
+                <div className='AddRefreshButtonGroup'>
+                    <Form action='/programs/new'>
+                        <button title='add new program'>
+                            <FontAwesomeIcon icon={solid('plus')}/>
                         </button>
-                        <button onClick={handleRefresh} id='RefreshButton' title='Refresh' className='Button'>
-                            {isLoading ? <FontAwesomeIcon icon={faSpinner} spin/> :
-                                <FontAwesomeIcon icon={solid("arrows-rotate")}/>}
-                        </button>
-                    </div>
+                    </Form>
+                    <Form method='post'>
+                        <ResponsiveButton/>
+                    </Form>
                 </div>
-                <AddModifyProgram isShow={addProgram} setIsShow={setAddProgram} setIsForceFetch={setIsForceFetchList}
-                                  className='ProgramContent'/>
-                <ProgramContent program={selectedProgram}
-                                isEditMode={isEditMode} setIsEditMode={setIsEditMode}
-                                isForceFetch={isForceFetchDesc}
-                                setIsForceFetch={setIsForceFetchDesc}
-                                className='ProgramContent'/>
+                <ul className='FirstLevelList'>
+                    {
+                        Object.entries(twoLevelList).map(([firstLevel, secondLevelList]) => (
+                            <React.Fragment key={firstLevel}>
+                                <FirstLevelItem
+                                    firstLevel={firstLevel}
+                                    secondLevelList={secondLevelList}
+                                />
+                            </React.Fragment>
+                        ))
+                    }
+                </ul>
+                <div style={{textAlign: 'center', paddingTop: '5px'}}>
+                    对列表有问题可以<a href='https://github.com/OpenSIST/OpenSIST.github.io/issues'>联系我们</a>
+                </div>
             </div>
-        </>
-    );
+            <button
+                className={'Button ShowUpButton ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open ' : '')}
+                // hidden={!SideBarHidden}
+                onClick={() => setSideBarOpen(!SideBarOpen)}
+            >
+                <FontAwesomeIcon icon={solid('bars')}/>
+            </button>
+        </div>
+    )
 }
 
-function UnivProgramList({
-                             universityProgramList,
-                             selectedUniversity,
-                             selectedProgram,
-                             setSelectedProgram
-                         }) {
-    return (
-        <ul className="UnivProgramList">
-            {universityProgramList.map(([university, programs]) => (
-                <React.Fragment key={university}>
-                    <UnivItem university={university} programs={programs} key={university}
-                              selectedUniversity={selectedUniversity}
-                              selectedProgram={selectedProgram}
-                              setSelectedProgram={setSelectedProgram}
-                    />
-                </React.Fragment>
-            ))}
-        </ul>
-    );
-
-}
-
-
-function UnivItem({university, programs, selectedUniversity, selectedProgram, setSelectedProgram}) {
-    // const isClicked = unfoldUniversities.includes(university);
-    const [isFolded, setIsFolded] = useState(false);
-    const isSelected = (selectedUniversity === university);
+function FirstLevelItem({firstLevel, secondLevelList}) {
+    const [isFolded, setIsFolded] = React.useState(false);
+    let flags = secondLevelList[0].Region.map((region) => regionFlagMapping[region]);
+    flags = flags.reduce((prev, curr) => prev + ' ' + curr, '');
     return (
         <>
-            <li className={'UnivItem' + (isSelected ? "Selected" : "")}
-                onClick={() => setIsFolded(!isFolded)}>
-                <div> {university} </div>
-                <div>
-                    {isFolded ? <FontAwesomeIcon icon={solid("caret-down")}/> :
-                        <FontAwesomeIcon icon={solid("caret-right")}/>}
-                </div>
-            </li>
-            {isFolded ? programs.map((program) => (
-                <ProgramItem program={program} key={program.Program}
-                             selectedProgram={selectedProgram}
-                             setSelectedProgram={setSelectedProgram}
+            <li
+                className='FirstLevelItem'
+                onClick={() => setIsFolded(!isFolded)}
+            >
+                {firstLevel} {flags}
+                <FontAwesomeIcon
+                    icon={solid('caret-right')}
+                    rotation={isFolded ? 90 : 0}
                 />
+            </li>
+            {isFolded ? secondLevelList.map((secondLevel) => (
+                <React.Fragment key={secondLevel.ProgramID}>
+                    <SecondLevelItem secondLevel={secondLevel}/>
+                </React.Fragment>
             )) : null}
         </>
-    );
+    )
 }
 
-function ProgramItem({program, selectedProgram, setSelectedProgram}) {
-    const isClicked = (selectedProgram !== null && selectedProgram.ProgramID === program.ProgramID);
-    // console.log(`ProgramItem: ${program.ProgramID} ${isClicked}`);
+function SecondLevelItem({secondLevel}) {
+    const { programs, u, d, m, r } = useLoaderData();
+    const query = [{'key': 'u', 'value': u}, {'key': 'd', 'value': d}, {'key': 'm', 'value': m}, {'key': 'r', 'value': r}];
+    const queryString = query.reduce(
+        (accumulator, currentValue) => accumulator + (currentValue.value && currentValue.value !== '' ? `${currentValue.key}=${currentValue.value}&` : ''),
+        '?',
+    );
     return (
-        <li className={'ProgramItem' + (isClicked ? 'Selected' : '')}
-            onClick={() => setSelectedProgram(program)}>
-            <div> {program.Program} </div>
-        </li>
-    );
-
+        <>
+            <li className='SecondLevelItem'>
+                <NavLink
+                    to={`/programs/${secondLevel.ProgramID}${queryString.slice(0, queryString.length - 1)}`}
+                    className={(({isActive, isPending}) =>
+                        isActive ? "active" : isPending ? "pending" : "")}
+                >
+                    {secondLevel.Program}
+                </NavLink>
+            </li>
+        </>
+    )
 }
-
-
-export default SideBar;
