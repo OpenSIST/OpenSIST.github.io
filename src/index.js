@@ -23,7 +23,6 @@ import AddModifyProgram, {
 
 import {getPrograms} from "./Data/ProgramData";
 
-import {loader as homeLoader} from "./Components/home";
 
 import {action as homeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
 import Agreement from "./Components/Agreement/Agreement";
@@ -35,7 +34,6 @@ const router = createBrowserRouter([
         path: '/',
         element: <Home/>,
         errorElement: <ErrorPage/>,
-        // loader: homeLoader,
         action: homeAction,
         children: [
             {

@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import {Form, NavLink, useLoaderData, useNavigate, useNavigation} from "react-router-dom";
+import {Form, NavLink, useLoaderData} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
 import {ResponsiveButton, useClickOutSideRef, useSmallPage} from "../common";

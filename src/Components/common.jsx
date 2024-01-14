@@ -2,7 +2,6 @@ import {useLocation, useNavigation} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {useEffect, useRef, useState} from "react";
-import {colorMapping} from "../Data/Common";
 
 export function ResponsiveButton({
                                      content = (<FontAwesomeIcon icon={solid("arrows-rotate")}/>),

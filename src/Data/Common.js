@@ -1,4 +1,3 @@
-import {useNavigate} from "react-router-dom";
 import univList from "./univ_list.json";
 
 export async function handleErrors(response) {

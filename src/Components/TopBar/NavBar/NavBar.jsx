@@ -1,4 +1,4 @@
-import React, {createContext, useState} from "react";
+import React from "react";
 import "./NavBar.css";
 import {NavLink} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
