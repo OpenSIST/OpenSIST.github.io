@@ -1,14 +1,15 @@
 import TopBar from "./TopBar/TopBar";
 import {Outlet} from "react-router-dom";
 import React from "react";
-import {usePending} from "./common";
+import {LoadingBackdrop} from "./common";
 
 function Home() {
 
     return (
-        <div className={usePending()}>
+        <div>
             <TopBar/>
             <Outlet/>
+            <LoadingBackdrop/>
         </div>
     );
 }

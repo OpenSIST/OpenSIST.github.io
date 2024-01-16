@@ -6,6 +6,7 @@ import {logout} from "../../../Data/UserData";
 import { useUnAuthorized} from "../../common";
 import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip} from "@mui/material";
 import {AccountBox, LockReset, Logout} from "@mui/icons-material";
+import {blue} from "@mui/material/colors";
 
 export function StatusBlock() {
     const navigate = useNavigate();
@@ -39,7 +40,7 @@ export function StatusBlock() {
         <Box sx={{mr: '1vw'}}>
             <Tooltip title="Account settings">
                 <IconButton onClick={handleMenu}>
-                    <Avatar>{user?.slice(0, 1).toUpperCase()}</Avatar>
+                    <Avatar sx={{bgcolor: blue[500]}}>{user?.slice(0, 1).toUpperCase()}</Avatar>
                 </IconButton>
             </Tooltip>
             <Menu

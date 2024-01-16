@@ -228,16 +228,6 @@ function AddModifyProgram() {
     )
 }
 
-// function SingleChoice({choices, defaultValue, name}) {
-//     return (
-//         <select defaultValue={defaultValue} name={name}>
-//             {choices.map((choice) => (
-//                 <option value={choice} key={choice}>{choice}</option>
-//             ))}
-//         </select>
-//     )
-// }
-
 function MultiChoice({choices, defaultValue, name}) {
     return (
         <div className="MultiChoice">

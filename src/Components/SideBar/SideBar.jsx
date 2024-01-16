@@ -1,11 +1,13 @@
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import {Form, NavLink, useLoaderData} from "react-router-dom";
+import {Form, NavLink, Link, useLoaderData} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
-import {ResponsiveButton, useClickOutSideRef, useSmallPage} from "../common";
+import {useClickOutSideRef, useSmallPage} from "../common";
 import {regionFlagMapping} from "../../Data/Common";
+import {Button, ButtonGroup} from "@mui/material";
+import {Add, Refresh} from "@mui/icons-material";
 
 export default function SideBar({twoLevelList}) {
     const SideBarHidden = useSmallPage();
@@ -15,16 +17,16 @@ export default function SideBar({twoLevelList}) {
         <div style={{display: "flex"}} ref={SideBarRef}>
             <div className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}>
                 <SearchBar/>
-                <div className='AddRefreshButtonGroup'>
-                    <Form action='/programs/new'>
-                        <button title='add new program'>
-                            <FontAwesomeIcon icon={solid('plus')}/>
-                        </button>
-                    </Form>
+                <ButtonGroup variant='contained'>
+                    <Button title='add new program' component={Link} to='/programs/new'>
+                        <Add/>
+                    </Button>
                     <Form method='post'>
-                        <ResponsiveButton/>
+                        <Button type='submit' title='refresh program list'>
+                            <Refresh/>
+                        </Button>
                     </Form>
-                </div>
+                </ButtonGroup>
                 <ul className='FirstLevelList'>
                     {
                         Object.entries(twoLevelList).map(([firstLevel, secondLevelList]) => (
@@ -78,17 +80,11 @@ function FirstLevelItem({firstLevel, secondLevelList}) {
 }
 
 function SecondLevelItem({secondLevel}) {
-    const { programs, u, d, m, r } = useLoaderData();
-    const query = [{'key': 'u', 'value': u}, {'key': 'd', 'value': d}, {'key': 'm', 'value': m}, {'key': 'r', 'value': r}];
-    const queryString = query.reduce(
-        (accumulator, currentValue) => accumulator + (currentValue.value && currentValue.value !== '' ? `${currentValue.key}=${currentValue.value}&` : ''),
-        '?',
-    );
     return (
         <>
             <li className='SecondLevelItem'>
                 <NavLink
-                    to={`/programs/${secondLevel.ProgramID}${queryString.slice(0, queryString.length - 1)}`}
+                    to={`/programs/${secondLevel.ProgramID}${window.location.search}`}
                     className={(({isActive, isPending}) =>
                         isActive ? "active" : isPending ? "pending" : "")}
                 >

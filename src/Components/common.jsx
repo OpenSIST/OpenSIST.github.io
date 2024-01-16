@@ -1,25 +1,14 @@
 import {useLocation, useNavigation} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {useEffect, useRef, useState} from "react";
+import {Backdrop, CircularProgress} from "@mui/material";
 
-export function ResponsiveButton({
-                                     content = (<FontAwesomeIcon icon={solid("arrows-rotate")}/>),
-                                     title = 'Refresh'
-                                 }) {
+export function LoadingBackdrop() {
     const navigation = useNavigation()
-    const loading =
-        navigation.state !== 'idle'
-        && navigation.formData != null
-        && navigation.formAction === navigation.location?.pathname;
-
+    const loading = navigation.state !== 'idle'
     return (
-        <button
-            type='submit'
-            title={title}
-        >
-            {loading ? <FontAwesomeIcon icon={solid("arrows-rotate")} spin={loading}/> : content}
-        </button>
+        <Backdrop open={loading}>
+            <CircularProgress color="inherit" />
+        </Backdrop>
     )
 }
 

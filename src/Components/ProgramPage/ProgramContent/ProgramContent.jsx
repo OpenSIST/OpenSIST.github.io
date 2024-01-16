@@ -1,15 +1,14 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import ReactMarkdown from 'react-markdown';
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import "./css/github.css";
+import "../../../github.css";
 import './ProgramContent.css'
-import {Form, useLoaderData} from "react-router-dom";
+import {Form, Link, useLoaderData, useNavigate, useNavigation} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
-import {ResponsiveButton} from "../../common";
 import {regionFlagMapping, univAbbrFullNameMapping} from "../../../Data/Common";
-import {IconButton, Tooltip, Typography} from "@mui/material";
-import {HelpOutline} from "@mui/icons-material";
+import {Backdrop, Button, CircularProgress, IconButton, Tooltip, Typography} from "@mui/material";
+import {Edit, HelpOutline, Refresh} from "@mui/icons-material";
 
 export async function loader({params}) {
     const programId = params.programId;
@@ -24,6 +23,7 @@ export async function action({params}) {
 
 function ProgramContent() {
     const {programContent} = useLoaderData();
+    const navigate = useNavigate();
     let flags = programContent.Region.map((region) => regionFlagMapping[region]);
     flags = flags.reduce((prev, curr) => prev + ' ' + curr, '');
     return (
@@ -46,13 +46,13 @@ function ProgramContent() {
                     </div>
                 </h1>
                 <div className='ReviseRefreshButtonGroup'>
-                    <Form action='edit' style={{display: 'flex'}}>
-                        <button type='submit' title='Edit'>
-                            <FontAwesomeIcon icon={solid("pen-to-square")}/>
-                        </button>
-                    </Form>
+                    <IconButton component={Link} to={`edit${window.location.search}`}>
+                        <Edit/>
+                    </IconButton>
                     <Form method='post' style={{display: 'flex'}}>
-                    <ResponsiveButton/>
+                        <IconButton type='submit' title='refresh program content'>
+                            <Refresh/>
+                        </IconButton>
                     </Form>
                 </div>
             </div>
