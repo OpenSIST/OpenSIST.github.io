@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import localforage from "localforage";
 import {logout} from "../../../Data/UserData";
 import { useUnAuthorized} from "../../common";
-import {Avatar, IconButton, ListItemIcon, Menu, MenuItem, Tooltip} from "@mui/material";
+import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip} from "@mui/material";
 import {AccountBox, LockReset, Logout} from "@mui/icons-material";
 
 export function StatusBlock() {
@@ -36,10 +36,10 @@ export function StatusBlock() {
         return null;
     }
     return (
-        <div className='StatusBlock'>
+        <Box sx={{mr: '1vw'}}>
             <Tooltip title="Account settings">
                 <IconButton onClick={handleMenu}>
-                    <Avatar>{user.slice(0, 1).toUpperCase()}</Avatar>
+                    <Avatar>{user?.slice(0, 1).toUpperCase()}</Avatar>
                 </IconButton>
             </Tooltip>
             <Menu
@@ -54,12 +54,6 @@ export function StatusBlock() {
                             overflow: 'visible',
                             filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                             mt: 1.5,
-                            // '& .MuiAvatar-root': {
-                            //     width: 32,
-                            //     height: 32,
-                            //     ml: -0.5,
-                            //     mr: 1,
-                            // },
                             '&::before': {
                                 content: '""',
                                 display: 'block',
@@ -97,6 +91,6 @@ export function StatusBlock() {
                     Logout
                 </MenuItem>
             </Menu>
-        </div>
+        </Box>
     );
 }

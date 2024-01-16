@@ -17,7 +17,7 @@ export async function loader({ request }) {
 export default function ProgramPage() {
     const programs = useLoaderData().programs;
     return (
-        <div className={'ContentBlock ' + usePending()}>
+        <div className='ContentBlock'>
             <SideBar twoLevelList={programs}/>
             <Outlet/>
         </div>

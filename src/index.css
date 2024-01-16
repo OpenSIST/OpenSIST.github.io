@@ -17,23 +17,23 @@
     color: var(--color);
 }
 
-:root.dark {
-    --color: #fff;
-    --bg-color: #343a40;
-    --button-bg-color: #007bff;
-    --button-hover-bg-color: #0056b3;
-    --button-color: #fff;
-    --input-bg-color: #343a40;
-    --input-disabled-bg-color: #555;
-    --input-disabled-color: #999;
-    --block-hover-bg-color: #555;
-    --border-color: #555;
-    --menu-bg-color: #343a40;
-}
+/*:root.dark {*/
+/*    --color: #fff;*/
+/*    --bg-color: #343a40;*/
+/*    --button-bg-color: #007bff;*/
+/*    --button-hover-bg-color: #0056b3;*/
+/*    --button-color: #fff;*/
+/*    --input-bg-color: #343a40;*/
+/*    --input-disabled-bg-color: #555;*/
+/*    --input-disabled-color: #999;*/
+/*    --block-hover-bg-color: #555;*/
+/*    --border-color: #555;*/
+/*    --menu-bg-color: #343a40;*/
+/*}*/
 
-:focus {
-    outline: none;
-}
+/*:focus {*/
+/*    outline: none;*/
+/*}*/
 
 /*button {*/
 /*    width: 100%;*/
@@ -55,22 +55,22 @@
 /*    cursor: default;*/
 /*}*/
 
-input {
-    background-color: var(--input-bg-color);
-}
+/*input {*/
+/*    background-color: var(--input-bg-color);*/
+/*}*/
 
-input::placeholder {
-    font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'BabelStone Flags', 'Segoe UI Emoji', sans-serif;
-    font-size: clamp(10px, 1.5vw, 16px);
-    padding: 2px calc(10px - 0.5rem) 2px calc(10px - 0.5rem);
-    color: var(--color);
-}
+/*input::placeholder {*/
+/*    font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'BabelStone Flags', 'Segoe UI Emoji', sans-serif;*/
+/*    font-size: clamp(10px, 1.5vw, 16px);*/
+/*    padding: 2px calc(10px - 0.5rem) 2px calc(10px - 0.5rem);*/
+/*    color: var(--color);*/
+/*}*/
 
-input:disabled {
-    background-color: var(--input-disabled-bg-color);
-    color: var(--input-disabled-color);
-    cursor: not-allowed;
-}
+/*input:disabled {*/
+/*    background-color: var(--input-disabled-bg-color);*/
+/*    color: var(--input-disabled-color);*/
+/*    cursor: not-allowed;*/
+/*}*/
 
 .loading {
     opacity: 0.25;

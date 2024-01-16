@@ -9,7 +9,7 @@ function useRouteMatch(patterns) {
 
     for (let i = 0; i < patterns.length; i += 1) {
         const pattern = patterns[i];
-        const possibleMatch = matchPath(pattern, pathname);
+        const possibleMatch = pathname.startsWith(pattern) ? pattern : null;
         if (possibleMatch !== null) {
             return possibleMatch;
         }
@@ -33,7 +33,7 @@ export default function NavBar() {
         },
     ]
     const routeMatch = useRouteMatch(navItems.map((item) => item.path));
-    const currentTab = routeMatch?.pattern.path ?? false;
+    const currentTab = routeMatch ?? false;
 
     if (useUnAuthorized()) {
         return null;
