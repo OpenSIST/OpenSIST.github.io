@@ -1,13 +1,23 @@
 import React from "react";
 import "./NavBar.css";
-import {NavLink} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import {useClickOutSideRef, useSmallPage, useUnAuthorized} from "../../common";
+import {matchPath, useLocation, Link} from "react-router-dom";
+import {useUnAuthorized} from "../../common";
+import {Tabs, Tab} from "@mui/material";
 
+function useRouteMatch(patterns) {
+    const {pathname} = useLocation();
+
+    for (let i = 0; i < patterns.length; i += 1) {
+        const pattern = patterns[i];
+        const possibleMatch = matchPath(pattern, pathname);
+        if (possibleMatch !== null) {
+            return possibleMatch;
+        }
+    }
+
+    return null;
+}
 export default function NavBar() {
-    const [isMenuVisible, setIsMenuVisible, menuRef] = useClickOutSideRef();
-    // const [current, setCurrent] = useState('Welcome');
     const navItems = [
         {
             name: "关于我们",
@@ -22,38 +32,29 @@ export default function NavBar() {
             path: "/applicants",
         },
     ]
-    const current = navItems.find((item) => window.location.pathname.startsWith(item.path))?.name ?? 'Welcome';
-    const isSmallPage = useSmallPage();
+    const routeMatch = useRouteMatch(navItems.map((item) => item.path));
+    const currentTab = routeMatch?.pattern.path ?? false;
+
     if (useUnAuthorized()) {
         return null;
     }
     return (
-        <div className='NavBar' ref={isSmallPage ? menuRef : null}>
-            {isSmallPage &&
-                <div className="NavBarItem" onMouseDown={() => setIsMenuVisible(!isMenuVisible)}>
-                    <b>{current}    </b>
-                    <FontAwesomeIcon
-                        icon={solid('caret-down')}
-                    />
-                </div>
-            }
-            {!isSmallPage || isMenuVisible ?
-                <ul className={'NavBarList ' + (isSmallPage ? 'Shrink' : '')}>
-                    {navItems.map((item, index) => (
-                        <li key={index}>
-                            <NavLink
-                                to={item.path}
-                                className={"NavBarItem " + (({isActive}) =>
-                                    isActive ? "active" : "")
-                                }
-                                // onClick={() => setCurrent(item.name)}
-                            >
-                                <b>{item.name}</b>
-                            </NavLink>
-                        </li>
-                    ))}
-                </ul> : null}
-        </div>
+        <Tabs
+            value={currentTab}
+            variant="scrollable"
+            scrollButtons
+            allowScrollButtonsMobile
+            role="navigation"
+        >
+            {navItems.map((item, index): React.ReactNode => (
+                <Tab
+                    key={index}
+                    label={item.name}
+                    value={item.path}
+                    to={item.path}
+                    component={Link}
+                />
+            ))}
+        </Tabs>
     );
 }
-// <FontAwesomeIcon icon={solid('ellipsis')} />

@@ -35,25 +35,25 @@
     outline: none;
 }
 
-button {
-    width: 100%;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 5px;
-    background-color: var(--button-bg-color);
-    color: var(--button-color);
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+/*button {*/
+/*    width: 100%;*/
+/*    padding: 0.5rem;*/
+/*    border: none;*/
+/*    border-radius: 5px;*/
+/*    background-color: var(--button-bg-color);*/
+/*    color: var(--button-color);*/
+/*    cursor: pointer;*/
+/*    transition: background-color 0.3s ease;*/
+/*}*/
 
-button:hover {
-    background-color: var(--button-hover-bg-color);
-}
+/*button:hover {*/
+/*    background-color: var(--button-hover-bg-color);*/
+/*}*/
 
-button:disabled {
-    background-color: #666;
-    cursor: default;
-}
+/*button:disabled {*/
+/*    background-color: #666;*/
+/*    cursor: default;*/
+/*}*/
 
 input {
     background-color: var(--input-bg-color);

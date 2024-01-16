@@ -49,20 +49,21 @@ export async function setUserInfo(user_info) {
 }
 
 export async function logout() {
-    const session = await localforage.getItem('session');
-    const response = await fetch(LOGOUT, {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${session}`
-        }
-    })
-    if (response.status !== 200) {
-        const content = await response.json();
-        alert(`${content.error}, Error code: ${response.status}`);
-    }
+    // const session = await localforage.getItem('session');
+    // console.log(session)
+    // const response = await fetch(LOGOUT, {
+    //     method: 'POST',
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         "Authorization": `Bearer ${session}`
+    //     }
+    // })
+    // if (response.status !== 200) {
+    //     const content = await response.json();
+    //     alert(`${content.error}, Error code: ${response.status}`);
+    // }
     await localforage.removeItem('user')
     await localforage.removeItem('session')
     await localforage.removeItem('expireAt')
-    return redirect("/login");
+    // return redirect("/login");
 }
