@@ -2,7 +2,6 @@ import SideBar from "../SideBar/SideBar";
 import {Outlet, useLoaderData} from "react-router-dom";
 import {getPrograms} from "../../Data/ProgramData";
 import './ProgramPage.css';
-import {usePending} from "../common";
 
 export async function loader({ request }) {
     const url = new URL(request.url);

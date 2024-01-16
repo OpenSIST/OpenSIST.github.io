@@ -1,6 +1,6 @@
 import React from "react";
 import "./NavBar.css";
-import {matchPath, useLocation, Link} from "react-router-dom";
+import {useLocation, Link} from "react-router-dom";
 import {useUnAuthorized} from "../../common";
 import {Tabs, Tab} from "@mui/material";
 

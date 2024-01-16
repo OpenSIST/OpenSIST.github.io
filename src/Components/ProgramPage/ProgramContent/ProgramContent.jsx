@@ -1,13 +1,11 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import "../../../github.css";
 import './ProgramContent.css'
-import {Form, Link, useLoaderData, useNavigate, useNavigation} from "react-router-dom";
+import {Form, Link, useLoaderData, useNavigate} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 import {regionFlagMapping, univAbbrFullNameMapping} from "../../../Data/Common";
-import {Backdrop, Button, CircularProgress, IconButton, Tooltip, Typography} from "@mui/material";
+import {IconButton, Tooltip, Typography} from "@mui/material";
 import {Edit, HelpOutline, Refresh} from "@mui/icons-material";
 
 export async function loader({params}) {
@@ -23,7 +21,6 @@ export async function action({params}) {
 
 function ProgramContent() {
     const {programContent} = useLoaderData();
-    const navigate = useNavigate();
     let flags = programContent.Region.map((region) => regionFlagMapping[region]);
     flags = flags.reduce((prev, curr) => prev + ' ' + curr, '');
     return (

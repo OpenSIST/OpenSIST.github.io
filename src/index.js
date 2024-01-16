@@ -20,11 +20,7 @@ import RegisterAndReset from "./Components/Auth/RegisterAndReset/RegisterAndRese
 import AddModifyProgram, {
     action as addModifyProgramAction
 } from "./Components/Modify/Program/AddModifyProgram";
-
 import {getPrograms} from "./Data/ProgramData";
-
-
-import {action as homeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
 import Agreement from "./Components/Agreement/Agreement";
 import ErrorPage from "./Components/Errors/ErrorPage";
 import Profile from "./Components/Profile/Profile";

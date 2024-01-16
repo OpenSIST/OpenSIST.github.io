@@ -27,11 +27,6 @@ export function useSmallPage() {
     // return windowWidth < 768;
 }
 
-export function usePending() {
-    const navigation = useNavigation();
-    return navigation.state === 'loading' ? 'loading' : '';
-}
-
 export function useClickOutSideRef() {
     const [isMenuVisible, setIsMenuVisible] = useState(false)
     const menuRef = useRef(null)
