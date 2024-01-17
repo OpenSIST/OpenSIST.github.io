@@ -28,19 +28,19 @@ function ProgramContent() {
             <div className="ProgramHeader">
                 <h1 style={{display: 'flex', position: 'relative'}}>
                     {flags} {programContent.ProgramID}
-                    <div>
-                        {<Tooltip
-                            title={<Typography fontSize={15}>
-                                {univAbbrFullNameMapping[programContent.University]}
-                            </Typography>}
-                            arrow
-                            style={{position: 'absolute', width: 'fit-content'}}
-                        >
-                            <IconButton>
-                                <HelpOutline/>
-                            </IconButton>
-                        </Tooltip>}
-                    </div>
+                    {/*<div>*/}
+                    {/*    {<Tooltip*/}
+                    {/*        title={<Typography fontSize={15}>*/}
+                    {/*            {univAbbrFullNameMapping[programContent.University]}*/}
+                    {/*        </Typography>}*/}
+                    {/*        arrow*/}
+                    {/*        style={{position: 'absolute', width: 'fit-content'}}*/}
+                    {/*    >*/}
+                    {/*        <IconButton>*/}
+                    {/*            <HelpOutline/>*/}
+                    {/*        </IconButton>*/}
+                    {/*    </Tooltip>}*/}
+                    {/*</div>*/}
                 </h1>
                 <div className='ReviseRefreshButtonGroup'>
                     <IconButton component={Link} to={`edit${window.location.search}`}>
