@@ -2,6 +2,7 @@ import localforage from "localforage";
 import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST} from "../APIs/APIs";
 import {handleErrors, univAbbrFullNameMapping} from "./Common";
 import univListOrder from "./univ_list.json";
+import {regionMapping} from "./Common";
 
 export async function getPrograms(isRefresh = false, query = {}) {
     /*
@@ -16,21 +17,8 @@ export async function getPrograms(isRefresh = false, query = {}) {
     * }
     * @return: list of programs (without description)
      */
-
-    const regionMapping = {
-        "US": "United States",
-        "EU": "Europe",
-        "UK": "United Kingdom",
-        "CA": "Canada",
-        "HK": "Hong Kong",
-        "SG": "Singapore"
-    };
-    const degreeMapping = {
-        'MS': 'Master'
-    };
-
-    query.r = query.r?.split(',').map(abbr => regionMapping[abbr] || abbr) || query.r;
-    query.d = degreeMapping[query.d] || query.d;
+    query.r = query.r?.split(',') || query.r;
+    query.d = query.d?.split(',') || query.d;
     query.m = query.m?.split(',') || query.m;
 
     let programs = await localforage.getItem('programs');
@@ -60,7 +48,7 @@ export async function getPrograms(isRefresh = false, query = {}) {
 
     const search_keys = Object.keys(programs).filter((univName) => {
         const fullNameResults = univAbbrFullNameMapping[univName].toLowerCase().includes(query.u?.toLowerCase() ?? '');
-        const abbrResults =  univName.toLowerCase().includes(query.u?.toLowerCase() ?? '');
+        const abbrResults = univName.toLowerCase().includes(query.u?.toLowerCase() ?? '');
         return fullNameResults || abbrResults;
     })
 
@@ -69,9 +57,10 @@ export async function getPrograms(isRefresh = false, query = {}) {
         search_programs[key] = programs[key]
     })
 
+
     const filteredEntries = Object.entries(search_programs).map(([university, programs]) => {
         const filteredPrograms = programs.filter(program =>
-            (!query.d || program.Degree.toLowerCase() === query.d?.toLowerCase()) &&
+            (!query.d || query.d.some(degree => program.Degree === degree)) &&
             (!query.m || query.m.some(major => program.TargetApplicantMajor.includes(major))) &&
             (!query.r || query.r.some(region => program.Region.includes(region)))
         );

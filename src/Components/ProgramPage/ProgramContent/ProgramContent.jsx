@@ -2,11 +2,12 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import "../../../github.css";
 import './ProgramContent.css'
-import {Form, Link, useLoaderData, useNavigate} from "react-router-dom";
+import {Form, Link, useLoaderData} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
-import {regionFlagMapping, univAbbrFullNameMapping} from "../../../Data/Common";
-import {IconButton, Tooltip, Typography} from "@mui/material";
-import {Edit, HelpOutline, Refresh} from "@mui/icons-material";
+import {regionFlagMapping} from "../../../Data/Common";
+import {IconButton} from "@mui/material";
+import {Edit, Refresh} from "@mui/icons-material";
+import {CountryFlag} from "../../common";
 
 export async function loader({params}) {
     const programId = params.programId;
@@ -21,26 +22,12 @@ export async function action({params}) {
 
 function ProgramContent() {
     const {programContent} = useLoaderData();
-    let flags = programContent.Region.map((region) => regionFlagMapping[region]);
-    flags = flags.reduce((prev, curr) => prev + ' ' + curr, '');
+    const flags = programContent.Region.map((r) => <CountryFlag key={r} country={r} width={40}/>)
     return (
         <div className="ProgramContent" key={programContent.ProgramID}>
             <div className="ProgramHeader">
                 <h1 style={{display: 'flex', position: 'relative'}}>
                     {flags} {programContent.ProgramID}
-                    {/*<div>*/}
-                    {/*    {<Tooltip*/}
-                    {/*        title={<Typography fontSize={15}>*/}
-                    {/*            {univAbbrFullNameMapping[programContent.University]}*/}
-                    {/*        </Typography>}*/}
-                    {/*        arrow*/}
-                    {/*        style={{position: 'absolute', width: 'fit-content'}}*/}
-                    {/*    >*/}
-                    {/*        <IconButton>*/}
-                    {/*            <HelpOutline/>*/}
-                    {/*        </IconButton>*/}
-                    {/*    </Tooltip>}*/}
-                    {/*</div>*/}
                 </h1>
                 <div className='ReviseRefreshButtonGroup'>
                     <IconButton component={Link} to={`edit${window.location.search}`}>

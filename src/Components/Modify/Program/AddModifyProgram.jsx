@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import "./AddModifyProgram.css";
 import {
     DescriptionTemplate,
-    ProgramTargetApplicantMajorChoices,
-    ProgramRegionChoices
+    majorOptions,
+    regionOptions
 } from "../../../Data/Schemas";
 import MarkDownEditor from "./MarkDownEditor/MarkDownEditor";
 import {useLoaderData, useNavigate, redirect, Form} from "react-router-dom";
@@ -36,7 +36,7 @@ export async function action({request}) {
             'Description': Description,
         }
     };
-    // console.log(requestBody)
+    console.log(requestBody)
     await setProgramContent(requestBody)
     return redirect(`/programs/${ProgramID}`)
 }
@@ -62,7 +62,6 @@ function AddModifyProgram() {
         }
     });
 
-    // const [selectedUniv, setSelectedUniv] = useState('');
     const [univRegion, setUnivRegion] = useState('');
     const [programDegree, setProgramDegree] = useState(programContent?.Degree ? {
         value: programContent?.Degree,
@@ -150,7 +149,8 @@ function AddModifyProgram() {
                         if (newRegion) {
                             if (JSON.stringify(newRegion) !== JSON.stringify(['others'])) {
                                 newRegion = newRegion.map((region) => {
-                                    return regionMapping[region.toUpperCase()];
+                                    // return regionMapping[region.toUpperCase()];
+                                    return region.toUpperCase();
                                 });
                             } else {
                                 newRegion = ['Others'];
@@ -196,7 +196,7 @@ function AddModifyProgram() {
                     isClearable
                     isMulti
                     placeholder={"Select Major(s)"}
-                    options={ProgramTargetApplicantMajorChoices.map((major) => {
+                    options={majorOptions.map((major) => {
                         return {value: major, label: major};
                     })}
                     defaultValue={programContent?.TargetApplicantMajor.map((major) => {
@@ -210,7 +210,7 @@ function AddModifyProgram() {
                 <div hidden>
                     <h4 className='Subtitle'>Program Region</h4>
                     <MultiChoice
-                        choices={ProgramRegionChoices}
+                        choices={regionOptions}
                         defaultValue={programContent?.Region || univRegion || []}
                         name="Region"
                     />

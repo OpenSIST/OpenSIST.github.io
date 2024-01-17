@@ -1,145 +1,124 @@
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import React, {useEffect} from "react";
 import "./SearchBar.css"
-import {Form, useLoaderData, useNavigation, useSearchParams} from "react-router-dom";
-import Select from 'react-select'
-import {getSelectorStyle} from "../../common";
-import {colorMapping, degreeOptions, majorOptions, regionOptions} from "../../../Data/Common";
+import {useLoaderData, useSearchParams} from "react-router-dom";
+import Select from "@mui/material/Select";
+import {
+    Box,
+    Checkbox,
+    Divider, FormControl,
+    InputBase,
+    InputLabel, ListItemIcon,
+    ListItemText,
+    MenuItem,
+    OutlinedInput,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import {majorOptions, degreeOptions, regionOptions} from "../../../Data/Schemas";
+import {CountryFlag, isEmptyObject} from "../../common";
 
 export default function SearchBar() {
     const loaderData = useLoaderData();
-    const navigation = useNavigation();
-    const searching = navigation.location && new URLSearchParams(navigation.location.search).has('u');
     const [searchParams, setSearchParams] = useSearchParams();
-
     useEffect(() => {
         document.getElementById('u').value = loaderData.u;
-        document.getElementById('d').value = loaderData.d;
+        document.getElementById('d').value = loaderData.d?.split(',');
         document.getElementById('m').value = loaderData.m?.split(',');
         document.getElementById('r').value = loaderData.r?.split(',');
     }, [loaderData, searchParams, setSearchParams]);
 
-    const handleFilterChange = (selectedOption, actionMeta) => {
+    const handleFilterChange = (e) => {
         const newSearchParams = new URLSearchParams(searchParams);
-        if (actionMeta.action === 'select-option' || actionMeta.action === 'remove-value' || actionMeta.action === 'pop-value' || actionMeta.action === 'clear') {
-            const value = Array.isArray(selectedOption)
-                ? selectedOption.map(option => option.value).join(',')
-                : selectedOption?.value || '';
-            if (value !== '') {
-                newSearchParams.set(actionMeta.name, value);
-            } else {
-                newSearchParams.delete(actionMeta.name);
-            }
+        const value = e.target.value;
+        if (isEmptyObject(value)) {
+            newSearchParams.delete(e.target.name);
+        } else {
+            newSearchParams.set(e.target.name, value);
         }
         setSearchParams(newSearchParams, {replace: true});
     };
 
-    const defaultDegree = degreeOptions.find(x => x.value === loaderData.d);
-    const defaultMajor = majorOptions.filter(x => loaderData.m?.split(',').includes(x.value));
-    const defaultRegion = regionOptions.filter(x => loaderData.r?.split(',').includes(x.value));
-
-    const selectorStyle = getSelectorStyle();
-    selectorStyle.multiValueLabel = (provided, state) => {
-        const color = colorMapping.find(x => x.label === state.data.label)?.color;
-        let backgroundColor = color.replace(/rgb/i, "rgba");
-        backgroundColor = backgroundColor.replace(/\)/i, ',0.1)');
-        return {
-            ...provided,
-            color: color,
-            fontWeight: 'bold',
-            backgroundColor: backgroundColor,
-            paddingLeft: '7px',
-            display: 'flex',
-            alignSelf: 'center',
-        }
-    }
-    selectorStyle.multiValueRemove = (provided, state) => {
-        const color = colorMapping.find(x => x.label === state.data.label)?.color;
-        let backgroundColor = color.replace(/rgb/i, "rgba");
-        backgroundColor = backgroundColor.replace(/\)/i, ',0.1)');
-        return {
-            ...provided,
-            color: color,
-            backgroundColor: backgroundColor,
-            textAlign: 'center',
-            padding: 0,
-            '&:hover': {
-                backgroundColor: color,
-                color: 'white',
-            },
-            svg: {
-                padding: '5px',
-            },
-        }
-    }
+    const defaultDegree = degreeOptions.filter(x => loaderData.d?.split(',').includes(x));
+    const defaultMajor = majorOptions.filter(x => loaderData.m?.split(',').includes(x));
+    const defaultRegion = regionOptions.filter(x => loaderData.r?.split(',').includes(x));
 
     return (
-        <Form role='search' className='SearchBlock'>
-            <div className='searchContainer'>
-                {searching ? <FontAwesomeIcon
-                    icon={solid("arrows-rotate")}
-                    spin={searching}/> : <FontAwesomeIcon
-                    icon={solid("magnifying-glass")}
-                    spin={searching}/>}|
-                <input
+        <Box>
+            <Box role='search' className='searchContainer'>
+                <SearchIcon sx={{m: "10px"}}/>
+                <Divider orientation="vertical" variant="middle" flexItem/>
+                <InputBase
                     id="u"
+                    label="Search"
+                    variant="outlined"
                     placeholder="Search..."
                     type="search"
                     name="u"
                     className='SearchBar'
-                    onChange={(e) => {
-                        const newSearchParams = new URLSearchParams(searchParams);
-                        const value = e.target.value;
-                        if (value !== '') {
-                            newSearchParams.set('u', value);
-                        } else {
-                            newSearchParams.delete('u');
-                        }
-                        setSearchParams(newSearchParams, {replace: true});
-                    }}
+                    onChange={handleFilterChange}
                     defaultValue={loaderData.u}
                 />
-            </div>
-            <div className='filterContainer'>
+            </Box>
+            <FormControl sx={{width: "100%"}}>
+                <InputLabel>Select Degree</InputLabel>
                 <Select
-                    styles={selectorStyle}
-                    name='d'
-                    options={degreeOptions}
-                    onChange={handleFilterChange}
-                    placeholder='Select Degree'
-                    isClearable
+                    multiple
                     id='d'
-                    key='d'
+                    name='d'
                     value={defaultDegree}
-                />
-                <Select
-                    styles={selectorStyle}
-                    name='m'
-                    options={majorOptions}
                     onChange={handleFilterChange}
-                    isClearable
-                    isMulti
-                    closeMenuOnSelect={false}
-                    placeholder='Select Major(s)'
+                    className='searchContainer'
+                    input={<OutlinedInput label="Select Degree"/>}
+                    renderValue={(selected) => selected.join(', ')}
+                >
+                    {degreeOptions.map((d) => (
+                        <MenuItem key={d} value={d}>
+                            <Checkbox checked={defaultDegree.indexOf(d) > -1}/>
+                            <ListItemText primary={d}/>
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+            <FormControl sx={{width: "100%"}}>
+                <InputLabel>Select Major</InputLabel>
+                <Select
+                    multiple
                     id='m'
-                    key='m'
+                    name='m'
                     value={defaultMajor}
-                />
-                <Select
-                    styles={selectorStyle}
-                    name='r'
-                    options={regionOptions}
                     onChange={handleFilterChange}
-                    isClearable
-                    isMulti
-                    closeMenuOnSelect={false}
-                    placeholder='Select Region(s)'
+                    className='searchContainer'
+                    input={<OutlinedInput label="Select Major"/>}
+                    renderValue={(selected) => selected.join(', ')}
+                >
+                    {majorOptions.map((m) => (
+                        <MenuItem key={m} value={m}>
+                            <Checkbox checked={defaultMajor.indexOf(m) > -1}/>
+                            <ListItemText primary={m}/>
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+            <FormControl sx={{width: "100%"}}>
+                <InputLabel>Select Region</InputLabel>
+                <Select
+                    multiple
                     id='r'
-                    key='r'
+                    name='r'
                     value={defaultRegion}
-                />
-            </div>
-        </Form>
+                    onChange={handleFilterChange}
+                    className='searchContainer'
+                    input={<OutlinedInput label="Select Region"/>}
+                    renderValue={(selected) => selected.join(', ')}
+                >
+                    {regionOptions.map((r) => (
+                        <MenuItem key={r} value={r}>
+                            <Checkbox checked={defaultRegion.indexOf(r) > -1}/>
+                            <ListItemText primary={r}/>
+                            <ListItemIcon><CountryFlag country={r}/></ListItemIcon>
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        </Box>
     )
 }

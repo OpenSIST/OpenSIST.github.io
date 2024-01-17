@@ -4,8 +4,8 @@ import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {Form, Link} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
-import {useClickOutSideRef, useSmallPage} from "../common";
-import {regionFlagMapping, univAbbrFullNameMapping} from "../../Data/Common";
+import {CountryFlag, useClickOutSideRef, useSmallPage} from "../common";
+import {univAbbrFullNameMapping} from "../../Data/Common";
 import {Button, ButtonGroup, Collapse, Divider, List, ListItemButton, ListItemText} from "@mui/material";
 import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
 
@@ -66,8 +66,7 @@ export default function SideBar({twoLevelList}) {
 
 function NestedList({firstLevel, secondLevelList, selectProgram, setSelectProgram}) {
     const [isFolded, setIsFolded] = React.useState(false);
-    let flags = secondLevelList[0].Region.map((region) => regionFlagMapping[region]);
-    flags = flags.reduce((prev, curr) => prev + ' ' + curr, '');
+    const flags = secondLevelList[0].Region.map((r) => (<CountryFlag key={r} country={r}/>))
     return (
         <>
             <ListItemButton onClick={() => setIsFolded(!isFolded)}>
@@ -90,9 +89,7 @@ function NestedList({firstLevel, secondLevelList, selectProgram, setSelectProgra
                                     sx={{pl: "3rem"}}
                                 >
                                     <ListItemText primary={secondLevel.Program} secondary={MajorString(secondLevel.TargetApplicantMajor)}/>
-
                                 </ListItemButton>
-                                {/*<Divider component="li" light />*/}
                             </React.Fragment>
                         ))
                     }

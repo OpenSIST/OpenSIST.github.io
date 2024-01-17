@@ -1,13 +1,41 @@
 import {useLocation, useNavigation} from "react-router-dom";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Backdrop, CircularProgress} from "@mui/material";
+
+export function CountryFlag({country, width = 20}) {
+    country = country.toLowerCase();
+    if (country === 'others') {
+        return null
+    }
+    if (country === 'uk') {
+        country = 'gb'
+    }
+    return (
+        <img
+            src={`https://flagcdn.com/16x12/${country}.png`}
+            srcSet={
+                `https://flagcdn.com/32x24/${country}.png 2x, 
+                https://flagcdn.com/48x36/${country}.png 3x, 
+                https://flagcdn.com/64x48/${country}.png 4x`
+            }
+            height={width * 0.6}
+            width={width}
+            style={{marginRight: '5px', alignSelf: 'center'}}
+            alt=""
+        />
+    )
+}
+
+export function isEmptyObject(value) {
+    return value === '' || value.length === 0;
+}
 
 export function LoadingBackdrop() {
     const navigation = useNavigation()
     const loading = navigation.state === 'submitting'
     return (
         <Backdrop open={loading}>
-            <CircularProgress color="inherit" />
+            <CircularProgress color="inherit"/>
         </Backdrop>
     )
 }

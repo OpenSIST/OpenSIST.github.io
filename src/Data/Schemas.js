@@ -36,13 +36,24 @@ export const DescriptionTemplate = `
 
 例：网申材料/套磁`
 
-export const ProgramTargetApplicantMajorChoices = ['CS', 'EE', 'IE'];
-export const ProgramRegionChoices = [
-    'United States',
-    'Canada',
-    'Europe',
-    'United Kingdom',
-    'Hong Kong',
-    'Singapore',
+export const majorOptions = ['CS', 'EE', 'IE'];
+
+export const degreeOptions = ['Master', 'PhD'];
+// export const regionOptions = [
+//     'United States',
+//     'Canada',
+//     'Europe',
+//     'United Kingdom',
+//     'Hong Kong',
+//     'Singapore',
+//     'Others'
+// ]
+export const regionOptions = [
+    'US',
+    'CA',
+    'EU',
+    'UK',
+    'HK',
+    'SG',
     'Others'
 ]
