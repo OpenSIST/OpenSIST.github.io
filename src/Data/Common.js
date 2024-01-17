@@ -1,4 +1,22 @@
 import univList from "./univ_list.json";
+import localforage from "localforage";
+
+export async function headerGenerator(auth=false) {
+    /*
+    * Generate the header for fetch
+    * @param auth [boolean]: whether the request is authenticated
+    * @return: header
+     */
+    const header = {
+        'Content-Type': 'application/json',
+        'Connection': 'close',
+    }
+    const session = await localforage.getItem('session');
+    if (auth) {
+        header['Authorization'] = `Bearer ${session}`;
+    }
+    return header;
+}
 
 export async function handleErrors(response) {
     /*
@@ -14,15 +32,6 @@ export async function handleErrors(response) {
         throw new Error(`${content.error}, Error code: ${response.status}`)
     }
     return response;
-}
-
-export const regionMapping = {
-    "US": "United States",
-    "EU": "Europe",
-    "UK": "United Kingdom",
-    "CA": "Canada",
-    "HK": "Hong Kong",
-    "SG": "Singapore"
 }
 
 export const colorMapping = [

@@ -5,6 +5,7 @@ import "./RegisterAndReset.css"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {REGISTER, RESET_PASSWORD, SEND_RESET_VERIFY_TOKEN, SEND_VERIFY_TOKEN} from "../../../APIs/APIs";
+import {headerGenerator} from "../../../Data/Common";
 
 const passwordSchema = z.string().min(8).max(24).refine(password => (
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password)
@@ -105,7 +106,7 @@ export default function RegisterAndReset() {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",
-                headers: {"Content-Type": "application/json"},
+                headers: await headerGenerator(),
                 body: JSON.stringify({email}),
             });
 
@@ -138,7 +139,7 @@ export default function RegisterAndReset() {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",
-                headers: {"Content-Type": "application/json"},
+                headers: await headerGenerator(),
                 body: JSON.stringify({email, password, token}),
             });
 

@@ -34,7 +34,7 @@ export function LoadingBackdrop() {
     const navigation = useNavigation()
     const loading = navigation.state === 'submitting'
     return (
-        <Backdrop open={loading}>
+        <Backdrop open={loading} sx={{zIndex:1}}>
             <CircularProgress color="inherit"/>
         </Backdrop>
     )

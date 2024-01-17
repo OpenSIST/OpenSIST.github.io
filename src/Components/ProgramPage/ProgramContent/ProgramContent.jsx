@@ -4,7 +4,6 @@ import "../../../github.css";
 import './ProgramContent.css'
 import {Form, Link, useLoaderData} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
-import {regionFlagMapping} from "../../../Data/Common";
 import {IconButton} from "@mui/material";
 import {Edit, Refresh} from "@mui/icons-material";
 import {CountryFlag} from "../../common";
@@ -22,12 +21,11 @@ export async function action({params}) {
 
 function ProgramContent() {
     const {programContent} = useLoaderData();
-    const flags = programContent.Region.map((r) => <CountryFlag key={r} country={r} width={40}/>)
     return (
         <div className="ProgramContent" key={programContent.ProgramID}>
             <div className="ProgramHeader">
                 <h1 style={{display: 'flex', position: 'relative'}}>
-                    {flags} {programContent.ProgramID}
+                    {programContent.ProgramID}
                 </h1>
                 <div className='ReviseRefreshButtonGroup'>
                     <IconButton component={Link} to={`edit${window.location.search}`}>

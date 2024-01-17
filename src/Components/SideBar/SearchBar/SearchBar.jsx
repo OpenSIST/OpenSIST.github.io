@@ -13,7 +13,7 @@ import {
     OutlinedInput,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import {majorOptions, degreeOptions, regionOptions} from "../../../Data/Schemas";
+import {majorList, degreeList, regionList} from "../../../Data/Schemas";
 import {CountryFlag, isEmptyObject} from "../../common";
 
 export default function SearchBar() {
@@ -37,9 +37,9 @@ export default function SearchBar() {
         setSearchParams(newSearchParams, {replace: true});
     };
 
-    const defaultDegree = degreeOptions.filter(x => loaderData.d?.split(',').includes(x));
-    const defaultMajor = majorOptions.filter(x => loaderData.m?.split(',').includes(x));
-    const defaultRegion = regionOptions.filter(x => loaderData.r?.split(',').includes(x));
+    const defaultDegree = degreeList.filter(x => loaderData.d?.split(',').includes(x));
+    const defaultMajor = majorList.filter(x => loaderData.m?.split(',').includes(x));
+    const defaultRegion = regionList.filter(x => loaderData.r?.split(',').includes(x));
 
     return (
         <Box>
@@ -47,18 +47,18 @@ export default function SearchBar() {
                 <SearchIcon sx={{m: "10px"}}/>
                 <Divider orientation="vertical" variant="middle" flexItem/>
                 <InputBase
-                    id="u"
+                    id='u'
+                    name='u'
                     label="Search"
                     variant="outlined"
                     placeholder="Search..."
                     type="search"
-                    name="u"
                     className='SearchBar'
                     onChange={handleFilterChange}
                     defaultValue={loaderData.u}
                 />
             </Box>
-            <FormControl sx={{width: "100%"}}>
+            <FormControl fullWidth>
                 <InputLabel>Select Degree</InputLabel>
                 <Select
                     multiple
@@ -70,7 +70,7 @@ export default function SearchBar() {
                     input={<OutlinedInput label="Select Degree"/>}
                     renderValue={(selected) => selected.join(', ')}
                 >
-                    {degreeOptions.map((d) => (
+                    {degreeList.map((d) => (
                         <MenuItem key={d} value={d}>
                             <Checkbox checked={defaultDegree.indexOf(d) > -1}/>
                             <ListItemText primary={d}/>
@@ -78,7 +78,7 @@ export default function SearchBar() {
                     ))}
                 </Select>
             </FormControl>
-            <FormControl sx={{width: "100%"}}>
+            <FormControl fullWidth>
                 <InputLabel>Select Major</InputLabel>
                 <Select
                     multiple
@@ -90,7 +90,7 @@ export default function SearchBar() {
                     input={<OutlinedInput label="Select Major"/>}
                     renderValue={(selected) => selected.join(', ')}
                 >
-                    {majorOptions.map((m) => (
+                    {majorList.map((m) => (
                         <MenuItem key={m} value={m}>
                             <Checkbox checked={defaultMajor.indexOf(m) > -1}/>
                             <ListItemText primary={m}/>
@@ -98,7 +98,7 @@ export default function SearchBar() {
                     ))}
                 </Select>
             </FormControl>
-            <FormControl sx={{width: "100%"}}>
+            <FormControl fullWidth>
                 <InputLabel>Select Region</InputLabel>
                 <Select
                     multiple
@@ -110,7 +110,7 @@ export default function SearchBar() {
                     input={<OutlinedInput label="Select Region"/>}
                     renderValue={(selected) => selected.join(', ')}
                 >
-                    {regionOptions.map((r) => (
+                    {regionList.map((r) => (
                         <MenuItem key={r} value={r}>
                             <Checkbox checked={defaultRegion.indexOf(r) > -1}/>
                             <ListItemText primary={r}/>

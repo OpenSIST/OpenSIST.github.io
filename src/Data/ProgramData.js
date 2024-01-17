@@ -1,8 +1,7 @@
 import localforage from "localforage";
 import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST} from "../APIs/APIs";
-import {handleErrors, univAbbrFullNameMapping} from "./Common";
+import {handleErrors, headerGenerator, univAbbrFullNameMapping} from "./Common";
 import univListOrder from "./univ_list.json";
-import {regionMapping} from "./Common";
 
 export async function getPrograms(isRefresh = false, query = {}) {
     /*
@@ -27,9 +26,7 @@ export async function getPrograms(isRefresh = false, query = {}) {
         const response = await fetch(PROGRAM_LIST, {
             method: 'POST',
             credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: await headerGenerator(),
         });
         await handleErrors(response)
         programs = (await response.json());
@@ -101,10 +98,7 @@ export async function getProgramDesc(programId, isRefresh = false) {
         const response = await fetch(PROGRAM_DESC, {
             method: 'POST',
             credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session}`,
-            },
+            headers: await headerGenerator(true),
             body: JSON.stringify({'ProgramID': programId}),
         });
         await handleErrors(response)
@@ -175,10 +169,7 @@ export async function setProgramContent(requestBody) {
     const response = await fetch(ADD_MODIFY_PROGRAM, {
         method: 'POST',
         credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${await localforage.getItem('session')}`,
-        },
+        headers: await headerGenerator(true),
         body: JSON.stringify({
             newProgram: requestBody.newProgram,
             content: {...(requestBody.content), Applicants: []},
