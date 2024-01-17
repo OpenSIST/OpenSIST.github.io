@@ -94,6 +94,12 @@ const theme = createTheme({
         MuiButtonBase: {
             defaultProps: {
                 disableRipple: true,
+            }, styleOverrides: {
+                root: {
+                    "&:active": {
+                        transform: "scale(0.98)",
+                    },
+                },
             },
         },
     },
