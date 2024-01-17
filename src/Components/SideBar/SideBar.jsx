@@ -5,7 +5,7 @@ import {Form, Link} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
 import {useClickOutSideRef, useSmallPage} from "../common";
-import {regionFlagMapping} from "../../Data/Common";
+import {regionFlagMapping, univAbbrFullNameMapping} from "../../Data/Common";
 import {Button, ButtonGroup, Collapse, Divider, List, ListItemButton, ListItemText} from "@mui/material";
 import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
 
@@ -72,7 +72,7 @@ function NestedList({firstLevel, secondLevelList, selectProgram, setSelectProgra
         <>
             <ListItemButton onClick={() => setIsFolded(!isFolded)}>
                 {isFolded ? <ExpandMore/> : <NavigateNext/>}
-                <ListItemText primary={firstLevel}/>
+                <ListItemText primary={firstLevel} secondary={univAbbrFullNameMapping[firstLevel]}/>
                 {flags}
             </ListItemButton>
             <Divider component="li" light />
