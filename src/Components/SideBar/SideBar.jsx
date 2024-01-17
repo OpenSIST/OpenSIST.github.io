@@ -91,7 +91,7 @@ function NestedList({firstLevel, secondLevelList, selectProgram, setSelectProgra
                                 >
                                     {secondLevel.Program}
                                 </ListItemButton>
-                                <Divider component="li" light />
+                                {/*<Divider component="li" light />*/}
                             </React.Fragment>
                         ))
                     }
