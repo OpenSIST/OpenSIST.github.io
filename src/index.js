@@ -24,6 +24,7 @@ import {getPrograms} from "./Data/ProgramData";
 import Agreement from "./Components/Agreement/Agreement";
 import ErrorPage from "./Components/Errors/ErrorPage";
 import Profile from "./Components/Profile/Profile";
+import {createTheme, ThemeProvider} from "@mui/material";
 
 const router = createBrowserRouter([
     {
@@ -88,10 +89,19 @@ const router = createBrowserRouter([
     },
 ])
 
+const theme = createTheme({
+    components: {
+        MuiButtonBase: {
+            defaultProps: {
+                disableRipple: true,
+            },
+        },
+    },
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <RouterProvider router={router}/>
+        <ThemeProvider theme={theme}><RouterProvider router={router}/></ThemeProvider>
     </React.StrictMode>
 );

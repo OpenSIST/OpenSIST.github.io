@@ -4,7 +4,7 @@ import {Backdrop, CircularProgress} from "@mui/material";
 
 export function LoadingBackdrop() {
     const navigation = useNavigation()
-    const loading = navigation.state !== 'idle'
+    const loading = navigation.state === 'submitting'
     return (
         <Backdrop open={loading}>
             <CircularProgress color="inherit" />
