@@ -17,11 +17,11 @@ export default function SideBar({twoLevelList}) {
         <div style={{display: "flex"}} ref={SideBarRef}>
             <div className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}>
                 <SearchBar/>
-                <ButtonGroup variant='contained'>
-                    <Button title='add new program' component={Link} to='/programs/new'>
+                <ButtonGroup fullWidth sx={{mb: "10px"}}>
+                    <Button fullWidth title='add new program' component={Link} to='/programs/new'>
                         <Add/>
                     </Button>
-                    <Form method='post'>
+                    <Form method='post' style={{width: "100%"}}>
                         <Button type='submit' title='refresh program list'>
                             <Refresh/>
                         </Button>
@@ -31,7 +31,6 @@ export default function SideBar({twoLevelList}) {
                     component='nav'
                     sx={{
                         width: '100%',
-                        // maxWidth: 360,
                         bgcolor: 'background.paper',
                         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
                         borderRadius: "5px",
