@@ -89,7 +89,8 @@ function NestedList({firstLevel, secondLevelList, selectProgram, setSelectProgra
                                     to={`/programs/${secondLevel.ProgramID}${window.location.search}`}
                                     sx={{pl: "3rem"}}
                                 >
-                                    {secondLevel.Program}
+                                    <ListItemText primary={secondLevel.Program} secondary={MajorString(secondLevel.TargetApplicantMajor)}/>
+
                                 </ListItemButton>
                                 {/*<Divider component="li" light />*/}
                             </React.Fragment>
@@ -99,4 +100,9 @@ function NestedList({firstLevel, secondLevelList, selectProgram, setSelectProgra
             </Collapse>
         </>
     )
+}
+
+function MajorString(majorList) {
+    const major_string = majorList.reduce((prev, curr) => prev + '/' + curr, '');
+    return major_string.slice(1);
 }
