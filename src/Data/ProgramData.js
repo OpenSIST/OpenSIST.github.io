@@ -1,5 +1,5 @@
 import localforage from "localforage";
-import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST} from "../APIs/APIs";
+import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST, REMOVE_PROGRAM} from "../APIs/APIs";
 import {handleErrors, headerGenerator, univAbbrFullNameMapping} from "./Common";
 import univListOrder from "./univ_list.json";
 
@@ -19,7 +19,6 @@ export async function getPrograms(isRefresh = false, query = {}) {
     query.r = query.r?.split(',') || query.r;
     query.d = query.d?.split(',') || query.d;
     query.m = query.m?.split(',') || query.m;
-
     let programs = await localforage.getItem('programs');
 
     if (isRefresh || programs === null || (Date.now() - programs.Date) > 24 * 60 * 60 * 1000) {
@@ -94,7 +93,6 @@ export async function getProgramDesc(programId, isRefresh = false) {
     // await localforage.removeItem(`${programId}-Desc`) //TODO: remove this line
     let programDesc = await localforage.getItem(`${programId}-Desc`);
     if (isRefresh || programDesc === null || (Date.now() - programDesc.Date) > 24 * 60 * 60 * 1000) {
-        const session = await localforage.getItem('session')
         const response = await fetch(PROGRAM_DESC, {
             method: 'POST',
             credentials: 'include',
@@ -177,8 +175,29 @@ export async function setProgramContent(requestBody) {
     });
 
     await handleErrors(response)
-
     const program = requestBody.content;
     await setProgram(program);
     await setProgramDesc(program.ProgramID, program.Description);
+}
+
+export async function removeProgram(programId) {
+    /*
+    * Delete the program (with description) from the local storage (i.e. localforage.getItem('programs') and localforage.getItem(`${programId}-Desc`), and post to the server.
+    * @param programId [String]: programId
+     */
+    const response = await fetch(REMOVE_PROGRAM, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
+        body: JSON.stringify({
+            ProgramID: programId,
+        }),
+    });
+
+    await handleErrors(response)
+    await localforage.removeItem(`${programId}-Desc`);
+    const programs = await getPrograms();
+    const univName = programId.split('@')[1]
+    programs[univName] = programs[univName].filter(p => p.ProgramID !== programId);
+    await setPrograms(programs);
 }

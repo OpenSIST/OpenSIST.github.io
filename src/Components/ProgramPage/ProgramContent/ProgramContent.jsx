@@ -7,7 +7,6 @@ import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 import {regionFlagMapping} from "../../../Data/Common";
 import {IconButton} from "@mui/material";
 import {Edit, Refresh} from "@mui/icons-material";
-import {CountryFlag} from "../../common";
 
 export async function loader({params}) {
     const programId = params.programId;

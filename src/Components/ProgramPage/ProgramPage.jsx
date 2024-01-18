@@ -14,10 +14,10 @@ export async function loader({ request }) {
 }
 
 export default function ProgramPage() {
-    const programs = useLoaderData().programs;
+    const loaderData = useLoaderData();
     return (
         <div className='ContentBlock'>
-            <SideBar twoLevelList={programs}/>
+            <SideBar loaderData={loaderData}/>
             <Outlet/>
         </div>
     )

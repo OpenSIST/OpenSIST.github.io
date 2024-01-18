@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import "./SearchBar.css"
-import {useLoaderData, useSearchParams} from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
 import Select from "@mui/material/Select";
 import {
     Box,
@@ -10,21 +10,20 @@ import {
     InputLabel, ListItemIcon,
     ListItemText,
     MenuItem,
-    OutlinedInput, TextField,
+    OutlinedInput
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {majorList, degreeList, regionList} from "../../../Data/Schemas";
 import {CountryFlag, isEmptyObject} from "../../common";
 
-export default function SearchBar() {
-    const loaderData = useLoaderData();
+export default function SearchBar({query}) {
     const [searchParams, setSearchParams] = useSearchParams();
     useEffect(() => {
-        document.getElementById('u').value = loaderData.u;
-        document.getElementById('d').value = loaderData.d?.split(',');
-        document.getElementById('m').value = loaderData.m?.split(',');
-        document.getElementById('r').value = loaderData.r?.split(',');
-    }, [loaderData, searchParams, setSearchParams]);
+        document.getElementById('u').value = query.u;
+        document.getElementById('d').value = query.d?.split(',');
+        document.getElementById('m').value = query.m?.split(',');
+        document.getElementById('r').value = query.r?.split(',');
+    }, [query, searchParams, setSearchParams]);
 
     const handleFilterChange = (e) => {
         const newSearchParams = new URLSearchParams(searchParams);
@@ -37,9 +36,9 @@ export default function SearchBar() {
         setSearchParams(newSearchParams, {replace: true});
     };
 
-    const defaultDegree = degreeList.filter(x => loaderData.d?.split(',').includes(x));
-    const defaultMajor = majorList.filter(x => loaderData.m?.split(',').includes(x));
-    const defaultRegion = regionList.filter(x => loaderData.r?.split(',').includes(x));
+    const defaultDegree = degreeList.filter(x => query.d?.split(',').includes(x));
+    const defaultMajor = majorList.filter(x => query.m?.split(',').includes(x));
+    const defaultRegion = regionList.filter(x => query.r?.split(',').includes(x));
 
     return (
         <Box>
@@ -53,7 +52,7 @@ export default function SearchBar() {
                     type="search"
                     className='SearchBar'
                     onChange={handleFilterChange}
-                    defaultValue={loaderData.u}
+                    defaultValue={query.u}
                     fullWidth
                     size="small"
                 />

@@ -11,12 +11,13 @@ function TopBar() {
     const navigate = useNavigate();
     return (
         <Box>
-            <AppBar position='static' className="TopBarBlock"
+            <AppBar position='sticky' className="TopBarBlock"
                     elevation={1}
                     sx={{
                         backgroundColor: "var(--bg-color)",
                         color: "var(--color)",
-                        display: "block"
+                        display: "block",
+                        zIndex: (theme) => theme.zIndex.drawer + 1
                     }}>
                 <Toolbar className="TopBar">
                     <div className="IconBlock" onClick={() => navigate("/")}>

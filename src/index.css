@@ -72,8 +72,8 @@
 /*    cursor: not-allowed;*/
 /*}*/
 
-.loading {
-    opacity: 0.25;
-    transition: opacity 200ms;
-    transition-delay: 200ms;
-}
+/*.loading {*/
+/*    opacity: 0.25;*/
+/*    transition: opacity 200ms;*/
+/*    transition-delay: 200ms;*/
+/*}*/

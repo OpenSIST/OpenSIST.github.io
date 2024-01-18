@@ -25,13 +25,17 @@ import Agreement from "./Components/Agreement/Agreement";
 import ErrorPage from "./Components/Errors/ErrorPage";
 import Profile from "./Components/Profile/Profile";
 import {createTheme, ThemeProvider} from "@mui/material";
+import AdminPage from "./Components/Admin/AdminPage";
+import AdminProgramPage, {
+    loader as AdminProgramLoader,
+    action as AdminProgramAction
+} from "./Components/Admin/AdminProgram/AdminProgramPage";
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <Home/>,
         errorElement: <ErrorPage/>,
-        // action: homeAction,
         children: [
             {
                 errorElement: <ErrorPage/>,
@@ -63,6 +67,21 @@ const router = createBrowserRouter([
                     }, {
                         path: '/applicants',
                         element: <h1>开发组正在加班加点赶工...</h1>,
+                    }, {
+                        path: '/admin',
+                        element: <AdminPage/>,
+                        children: [
+                            {
+                                path: '/admin/programs',
+                                element: <AdminProgramPage/>,
+                                loader: AdminProgramLoader,
+                                action: AdminProgramAction
+                            }, {
+                                path: '/admin/applicants',
+                            }, {
+                                path: '/admin/records',
+                            }
+                        ]
                     }, {
                         path: '/profile',
                         element: <Profile/>,
