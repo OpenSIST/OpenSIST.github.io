@@ -169,13 +169,11 @@ const theme = createTheme({
     },
     typography: {
         fontFamily: [
-            'Open Sans',
+            "Open Sans",
             "Clear Sans",
             "Helvetica Neue",
-            'Helvetica',
-            'Arial',
+            'Helvetica, Arial',
             'Twemoji',
-            'Segoe UI Emoji',
             'sans-serif',
         ].join(','),
     },

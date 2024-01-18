@@ -17,3 +17,7 @@
     flex-direction: row;
     justify-content: flex-start;
 }
+
+.MarkDownEditorContent {
+    font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Twemoji', 'Segoe UI Emoji', sans-serif;
+}
