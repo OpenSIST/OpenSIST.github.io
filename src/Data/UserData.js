@@ -2,6 +2,7 @@ import localforage from "localforage";
 import {redirect} from "react-router-dom";
 import {LOGIN, LOGOUT, IS_LOGIN} from "../APIs/APIs";
 import {headerGenerator} from "./Common";
+import {Alert} from "@mui/material";
 
 export async function checkLogin() {
     const session = await localforage.getItem('session');
@@ -48,7 +49,6 @@ export async function setUserInfo(user_info) {
 
 export async function logout() {
     const session = await localforage.getItem('session');
-    console.log(session)
     const response = await fetch(LOGOUT, {
         method: 'POST',
         headers: await headerGenerator(true),
