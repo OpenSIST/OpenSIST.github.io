@@ -1,16 +1,19 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import './ProgramContent.css'
-import {Form, Link, useLoaderData} from "react-router-dom";
+import {Form, Link, redirect, useLoaderData, useRevalidator} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
-import {regionFlagMapping} from "../../../Data/Common";
 import {IconButton} from "@mui/material";
 import {Edit, Refresh} from "@mui/icons-material";
 
 export async function loader({params}) {
     const programId = params.programId;
-    const programContent = await getProgramContent(programId);
-    return {programContent};
+    try {
+        const programContent = await getProgramContent(programId);
+        return {programContent};
+    } catch (e) {
+        throw e;
+    }
 }
 
 export async function action({params}) {

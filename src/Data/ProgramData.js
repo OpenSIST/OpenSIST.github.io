@@ -80,6 +80,14 @@ export async function getProgram(programId, isRefresh = false) {
      */
     const programs = await getPrograms(isRefresh);
     const univName = programId.split('@')[1]
+    // To prevent user's meaningless query
+    if (!programs[univName]) {
+        throw new Response("", {
+                status: 404,
+                statusText: "Program Not Found",
+            }
+        );
+    }
     return programs[univName].find(program => program.ProgramID === programId);
 }
 
@@ -99,8 +107,14 @@ export async function getProgramDesc(programId, isRefresh = false) {
             headers: await headerGenerator(true),
             body: JSON.stringify({'ProgramID': programId}),
         });
-        await handleErrors(response)
-
+        try {
+            await handleErrors(response);
+        } catch (e) {
+            if (e.status === 404) {
+                await getPrograms(true);
+            }
+            throw e;
+        }
         programDesc = (await response.json());
         await setProgramDesc(programId, programDesc['description'])
     }
