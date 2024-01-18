@@ -1,7 +1,9 @@
 .SearchBar {
     width: 100%;
     padding-left: 8px;
-    height: 40px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    /*height: 40px;*/
     border-radius: 0 5px 5px 0;
 }
 

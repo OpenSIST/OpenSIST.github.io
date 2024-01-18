@@ -11,13 +11,14 @@ import {useLoaderData, useNavigate, redirect, Form} from "react-router-dom";
 import {setProgramContent} from "../../../Data/ProgramData";
 import {
     Button,
-    ButtonGroup,
-    FormControl,
+    ButtonGroup, Checkbox,
+    FormControl, ListItemText,
     MenuItem,
     TextField,
     Typography
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
+import {CountryFlag} from "../../common";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -124,6 +125,19 @@ export default function AddModifyProgram() {
                     }}
                     options={majorOptions}
                     value={major}
+                    renderTags={(value, getTagProps) =>
+                        <Typography variant="body1">
+                            {value.map((option) => option.label).join(', ')}
+                        </Typography>
+                    }
+                    renderOption={(props, option) => {
+                        return (
+                            <MenuItem {...props} key={option.label} value={option.value}>
+                                <Checkbox checked={major.indexOf(option) > -1}/>
+                                <ListItemText primary={option.label}/>
+                            </MenuItem>
+                        )
+                    }}
                     renderInput={
                         (params) =>
                             <>
