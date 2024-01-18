@@ -1,4 +1,4 @@
-import {Box, Drawer, List, ListItem, ListItemButton, Toolbar} from "@mui/material";
+import {Box, Drawer, List, ListItem, ListItemButton, Toolbar, Typography} from "@mui/material";
 import {Link, Outlet} from "react-router-dom";
 export default function AdminPage() {
     const routerList = [
@@ -17,7 +17,7 @@ export default function AdminPage() {
     ]
 
     return (
-        <Box sx={{display: 'flex'}}>
+        <Box sx={{display: 'flex', justifyContent: 'center'}}>
             <Drawer
                 variant="permanent"
                 sx={{
@@ -27,7 +27,7 @@ export default function AdminPage() {
                 }}
             >
                 <Toolbar />
-                <Box sx={{ overflow: 'auto' }}>
+                <Box sx={{ overflow: 'auto'}}>
                     <List>
                         {routerList.map((item, index) => (
                             <ListItem key={item.name}>
@@ -40,6 +40,15 @@ export default function AdminPage() {
                 </Box>
             </Drawer>
             <Outlet/>
+        </Box>
+    )
+}
+
+export function AdminIndex() {
+    return (
+        <Box sx={{}}>
+            <Typography variant={'body1'} sx={{color: 'red'}}>如果您不是OpenSIST的管理员，请</Typography>
+            <Typography variant={'h1'} sx={{color: 'red'}}>拱出去</Typography>
         </Box>
     )
 }
