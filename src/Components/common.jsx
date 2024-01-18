@@ -2,37 +2,13 @@ import {useLocation, useNavigation} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 import {Backdrop, CircularProgress} from "@mui/material";
 
-// export function CountryFlag({country, width = 20}) {
-//     country = country.toLowerCase();
-//     if (country === 'others') {
-//         return null
-//     }
-//     if (country === 'uk') {
-//         country = 'gb'
-//     }
-//     return (
-//         <img
-//             src={`https://flagcdn.com/16x12/${country}.png`}
-//             srcSet={
-//                 `https://flagcdn.com/32x24/${country}.png 2x,
-//                 https://flagcdn.com/48x36/${country}.png 3x,
-//                 https://flagcdn.com/64x48/${country}.png 4x`
-//             }
-//             height={width * 0.6}
-//             width={width}
-//             style={{marginRight: '5px', alignSelf: 'center'}}
-//             alt=""
-//         />
-//     )
-// }
-
 export function isEmptyObject(value) {
     return value === '' || value.length === 0;
 }
 
 export function LoadingBackdrop() {
     const navigation = useNavigation()
-    const loading = navigation.state === 'submitting'
+    const loading = navigation.state !== 'idle'
     return (
         <Backdrop open={loading} sx={{zIndex:99999}}>
             <CircularProgress color="inherit"/>
@@ -78,79 +54,3 @@ export function useUnAuthorized() {
     const location = useLocation();
     return ['/login', '/register', '/reset', '/agreement'].includes(location.pathname);
 }
-
-// export function getSelectorStyle() {
-//     const colors = getComputedStyle(document.body);
-//     return {
-//         container: (provided) => ({
-//             ...provided,
-//             width: '100%',
-//         }),
-//         control: (provided) => ({
-//             ...provided,
-//             width: '100%',
-//             minHeight: 0,
-//             marginBottom: '10px',
-//             backgroundColor: colors.getPropertyValue('--input-bg-color'),
-//             color: colors.getPropertyValue('--color'),
-//             cursor: 'pointer',
-//             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-//             borderRadius: '5px',
-//             border: 'none',
-//         }),
-//         menu: (provided) => ({
-//             ...provided,
-//             margin: 0,
-//             padding: 0,
-//             backgroundColor: colors.getPropertyValue('--menu-bg-color'),
-//         }),
-//         option: (provided) => ({
-//             ...provided,
-//             color: colors.getPropertyValue('--color'),
-//             backgroundColor: colors.getPropertyValue('--menu-bg-color'),
-//             cursor: 'pointer',
-//             borderRadius: '5px',
-//             transition: 'background-color 0.3s ease',
-//             '&:hover': {
-//                 backgroundColor: colors.getPropertyValue('--block-hover-bg-color'),
-//             },
-//         }),
-//         clearIndicator: (provided) => ({
-//             ...provided,
-//             padding: 0,
-//             svg: {
-//                 paddingLeft: '6px',
-//                 paddingRight: '6px',
-//             },
-//         }),
-//         dropdownIndicator: (provided) => ({
-//             ...provided,
-//             padding: 0,
-//             svg: {
-//                 paddingLeft: '6px',
-//                 paddingRight: '6px',
-//             },
-//         }),
-//         placeholder: (provided) => ({
-//             ...provided,
-//             color: colors.getPropertyValue('--color'),
-//         }),
-//         input: (provided) => ({
-//             ...provided,
-//             color: colors.getPropertyValue('--color'),
-//         }),
-//         singleValue: (provided) => ({
-//             ...provided,
-//             color: colors.getPropertyValue('--color'),
-//         }),
-//         multiValue: (provided) => ({
-//             ...provided,
-//             color: colors.getPropertyValue('--color'),
-//         }),
-//         valueContainer: (provided) => ({
-//             ...provided,
-//             height: '40px',
-//             overflowY: 'auto',
-//         }),
-//     };
-// }

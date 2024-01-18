@@ -110,6 +110,9 @@ const router = createBrowserRouter([
                     }, {
                         path: '/about-us',
                         element: <h1>开发组正在加班加点赶工...</h1>,
+                    }, {
+                        path: '/how-to-use',
+                        element: <h1>开发组正在加班加点赶工...</h1>,
                     }
                 ]
             }

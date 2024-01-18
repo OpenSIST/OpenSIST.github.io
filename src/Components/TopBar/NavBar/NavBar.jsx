@@ -20,8 +20,8 @@ function useRouteMatch(patterns) {
 export default function NavBar() {
     const navItems = [
         {
-            name: "关于我们",
-            path: "/about-us", // TODO: write ABOUT US page
+            name: "使用指南",
+            path: "/how-to-use", // TODO: write how-to-use page
         },
         {
             name: "项目信息表",
@@ -30,6 +30,10 @@ export default function NavBar() {
         {
             name: "申请人信息表",
             path: "/applicants",
+        },
+        {
+            name: "关于我们",
+            path: "/about-us", // TODO: write ABOUT US page
         },
     ]
     const routeMatch = useRouteMatch(navItems.map((item) => item.path));
