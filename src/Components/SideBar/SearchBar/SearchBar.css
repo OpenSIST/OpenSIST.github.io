@@ -1,7 +1,7 @@
 .SearchBar {
     width: 100%;
-    padding: 10px;
-    border: none;
+    padding-left: 8px;
+    height: 40px;
     border-radius: 0 5px 5px 0;
 }
 
@@ -17,6 +17,5 @@
     background-color: var(--input-bg-color);
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /*height: 40px;*/
     width: 100%;
 }

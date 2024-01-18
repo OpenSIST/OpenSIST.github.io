@@ -10,7 +10,7 @@ import {
     InputLabel, ListItemIcon,
     ListItemText,
     MenuItem,
-    OutlinedInput,
+    OutlinedInput, TextField,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {majorList, degreeList, regionList} from "../../../Data/Schemas";
@@ -44,22 +44,22 @@ export default function SearchBar() {
     return (
         <Box>
             <Box role='search' className='searchContainer'>
-                <SearchIcon sx={{m: "10px"}}/>
+                <SearchIcon sx={{mx: "10px"}}/>
                 <Divider orientation="vertical" variant="middle" flexItem/>
                 <InputBase
                     id='u'
                     name='u'
-                    label="Search"
-                    variant="outlined"
                     placeholder="Search..."
                     type="search"
                     className='SearchBar'
                     onChange={handleFilterChange}
                     defaultValue={loaderData.u}
+                    fullWidth
+                    size="small"
                 />
             </Box>
             <FormControl fullWidth>
-                <InputLabel>Select Degree</InputLabel>
+                <InputLabel size="small">Select Degree</InputLabel>
                 <Select
                     multiple
                     id='d'
@@ -67,8 +67,10 @@ export default function SearchBar() {
                     value={defaultDegree}
                     onChange={handleFilterChange}
                     className='searchContainer'
-                    input={<OutlinedInput label="Select Degree"/>}
+                    input={<OutlinedInput label="Select Degree" size="small"/>}
                     renderValue={(selected) => selected.join(', ')}
+                    sx={{'.MuiOutlinedInput-notchedOutline': { border: 0 }}}
+                    size="small"
                 >
                     {degreeList.map((d) => (
                         <MenuItem key={d} value={d}>
@@ -79,7 +81,7 @@ export default function SearchBar() {
                 </Select>
             </FormControl>
             <FormControl fullWidth>
-                <InputLabel>Select Major</InputLabel>
+                <InputLabel size="small">Select Major</InputLabel>
                 <Select
                     multiple
                     id='m'
@@ -87,8 +89,10 @@ export default function SearchBar() {
                     value={defaultMajor}
                     onChange={handleFilterChange}
                     className='searchContainer'
-                    input={<OutlinedInput label="Select Major"/>}
+                    input={<OutlinedInput label="Select Major" size="small"/>}
                     renderValue={(selected) => selected.join(', ')}
+                    sx={{'.MuiOutlinedInput-notchedOutline': { border: 0 }}}
+                    size="small"
                 >
                     {majorList.map((m) => (
                         <MenuItem key={m} value={m}>
@@ -99,7 +103,7 @@ export default function SearchBar() {
                 </Select>
             </FormControl>
             <FormControl fullWidth>
-                <InputLabel>Select Region</InputLabel>
+                <InputLabel size="small">Select Region</InputLabel>
                 <Select
                     multiple
                     id='r'
@@ -107,8 +111,10 @@ export default function SearchBar() {
                     value={defaultRegion}
                     onChange={handleFilterChange}
                     className='searchContainer'
-                    input={<OutlinedInput label="Select Region"/>}
+                    input={<OutlinedInput label="Select Region" size="small"/>}
                     renderValue={(selected) => selected.join(', ')}
+                    sx={{'.MuiOutlinedInput-notchedOutline': { border: 0 }}}
+                    size="small"
                 >
                     {regionList.map((r) => (
                         <MenuItem key={r} value={r}>
