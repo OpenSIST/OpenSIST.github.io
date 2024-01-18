@@ -4,9 +4,9 @@ import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {Form, Link} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
-import {CountryFlag, useClickOutSideRef, useSmallPage} from "../common";
-import {univAbbrFullNameMapping} from "../../Data/Common";
-import {Button, ButtonGroup, Collapse, Divider, List, ListItemButton, ListItemText} from "@mui/material";
+import {useClickOutSideRef, useSmallPage} from "../common";
+import {regionFlagMapping, univAbbrFullNameMapping} from "../../Data/Common";
+import {Button, ButtonGroup, Collapse, Divider, Grid, List, ListItemButton, ListItemText} from "@mui/material";
 import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
 export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
@@ -17,14 +17,20 @@ export default function SideBar({loaderData}) {
             <div className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}>
                 <SearchBar query={getQuery(loaderData)}/>
                 <ButtonGroup fullWidth sx={{mb: "10px"}}>
-                    <Button fullWidth title='add new program' component={Link} to='/programs/new'>
-                        <Add/>
-                    </Button>
-                    <Form method='post' style={{width: "100%"}}>
-                        <Button type='submit' title='refresh program list'>
-                            <Refresh/>
-                        </Button>
-                    </Form>
+                    <Grid container spacing={1}>
+                        <Grid item xs={6}>
+                            <Button title='添加新项目' component={Link} to='/programs/new'>
+                                <Add/>
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Form method='post'>
+                                <Button type='submit' title='刷新项目列表'>
+                                    <Refresh/>
+                                </Button>
+                            </Form>
+                        </Grid>
+                    </Grid>
                 </ButtonGroup>
                 <UnivProgramList univProgramList={univProgramList}/>
                 <div style={{textAlign: 'center', paddingTop: '5px'}}>
@@ -75,7 +81,7 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
     const [isFolded, setIsFolded] = React.useState(false);
     const univName = univProgram[0];
     const programList = univProgram[1];
-    const flags = programList[0].Region.map((r) => (<CountryFlag key={r} country={r}/>))
+    const flags = programList[0].Region.map((r) => regionFlagMapping[r]).reduce((prev, curr) => prev + ' ' + curr, '');
     return (
         <>
             <ListItemButton onClick={() => setIsFolded(!isFolded)}>

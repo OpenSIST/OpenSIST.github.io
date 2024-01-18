@@ -14,7 +14,8 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {majorList, degreeList, regionList} from "../../../Data/Schemas";
-import {CountryFlag, isEmptyObject} from "../../common";
+import {isEmptyObject} from "../../common";
+import {regionFlagMapping} from "../../../Data/Common";
 
 export default function SearchBar({query}) {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -118,8 +119,7 @@ export default function SearchBar({query}) {
                     {regionList.map((r) => (
                         <MenuItem key={r} value={r}>
                             <Checkbox checked={defaultRegion.indexOf(r) > -1}/>
-                            <ListItemText primary={r}/>
-                            <ListItemIcon><CountryFlag country={r}/></ListItemIcon>
+                            <ListItemText primary={`${r} ${regionFlagMapping[r]}`}/>
                         </MenuItem>
                     ))}
                 </Select>

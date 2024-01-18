@@ -18,7 +18,6 @@ import {
     Typography
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import {CountryFlag} from "../../common";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -70,7 +69,7 @@ export default function AddModifyProgram() {
                     sx={AddMode ? {} : {color: 'gray', cursor: 'not-allowed', pointerEvents: 'none'}}
                     renderInput={(params) =>
                         <>
-                            <TextField {...params} label={"学校名称" + (AddMode ? "" : "(不可修改)")} variant="standard"
+                            <TextField {...params} label={"学校名称" + (AddMode ? "" : " (不可修改)")} variant="standard"
                                        required/>
                             <TextField sx={{display: 'none'}} name="University" value={univ?.value || ""}/>
                         </>}
@@ -97,7 +96,6 @@ export default function AddModifyProgram() {
             </FormControl>
             <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "15px"}} fullWidth>
                 <Autocomplete
-                    autoSelect
                     autoHighlight
                     options={degreeOptions}
                     defaultValue={programContent?.Degree ? degreeOptions.find((degree) => {
@@ -117,9 +115,9 @@ export default function AddModifyProgram() {
                     required
                 />
                 <Autocomplete
-                    autoSelect
                     autoHighlight
                     multiple
+                    disableCloseOnSelect
                     onChange={(event, value) => {
                         setMajor(value);
                     }}

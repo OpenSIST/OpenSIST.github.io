@@ -48,12 +48,12 @@ export const colorMapping = [
 ]
 
 export const regionFlagMapping = {
-    "United States": "\u{1F1FA}\u{1F1F8}",
-    "Europe": "\u{1F1EA}\u{1F1FA}",
-    "United Kingdom": "\u{1F1EC}\u{1F1E7}",
-    "Canada": "\u{1F1E8}\u{1F1E6}",
-    "Hong Kong": "\u{1F1ED}\u{1F1F0}",
-    "Singapore": "\u{1F1F8}\u{1F1EC}",
+    "US": "\u{1F1FA}\u{1F1F8}",
+    "EU": "\u{1F1EA}\u{1F1FA}",
+    "UK": "\u{1F1EC}\u{1F1E7}",
+    "CA": "\u{1F1E8}\u{1F1E6}",
+    "HK": "\u{1F1ED}\u{1F1F0}",
+    "SG": "\u{1F1F8}\u{1F1EC}",
     'Others': ''
 }
 
