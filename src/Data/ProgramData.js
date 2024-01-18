@@ -1,6 +1,6 @@
 import localforage from "localforage";
-import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST} from "../APIs/APIs";
-import {handleErrors, univAbbrFullNameMapping} from "./Common";
+import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST, REMOVE_PROGRAM} from "../APIs/APIs";
+import {handleErrors, headerGenerator, univAbbrFullNameMapping} from "./Common";
 import univListOrder from "./univ_list.json";
 
 export async function getPrograms(isRefresh = false, query = {}) {
@@ -16,32 +16,16 @@ export async function getPrograms(isRefresh = false, query = {}) {
     * }
     * @return: list of programs (without description)
      */
-
-    const regionMapping = {
-        "US": "United States",
-        "EU": "Europe",
-        "UK": "United Kingdom",
-        "CA": "Canada",
-        "HK": "Hong Kong",
-        "SG": "Singapore"
-    };
-    const degreeMapping = {
-        'MS': 'Master'
-    };
-
-    query.r = query.r?.split(',').map(abbr => regionMapping[abbr] || abbr) || query.r;
-    query.d = degreeMapping[query.d] || query.d;
+    query.r = query.r?.split(',') || query.r;
+    query.d = query.d?.split(',') || query.d;
     query.m = query.m?.split(',') || query.m;
-
     let programs = await localforage.getItem('programs');
 
     if (isRefresh || programs === null || (Date.now() - programs.Date) > 24 * 60 * 60 * 1000) {
         const response = await fetch(PROGRAM_LIST, {
             method: 'POST',
             credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: await headerGenerator(),
         });
         await handleErrors(response)
         programs = (await response.json());
@@ -60,7 +44,7 @@ export async function getPrograms(isRefresh = false, query = {}) {
 
     const search_keys = Object.keys(programs).filter((univName) => {
         const fullNameResults = univAbbrFullNameMapping[univName].toLowerCase().includes(query.u?.toLowerCase() ?? '');
-        const abbrResults =  univName.toLowerCase().includes(query.u?.toLowerCase() ?? '');
+        const abbrResults = univName.toLowerCase().includes(query.u?.toLowerCase() ?? '');
         return fullNameResults || abbrResults;
     })
 
@@ -69,9 +53,10 @@ export async function getPrograms(isRefresh = false, query = {}) {
         search_programs[key] = programs[key]
     })
 
+
     const filteredEntries = Object.entries(search_programs).map(([university, programs]) => {
         const filteredPrograms = programs.filter(program =>
-            (!query.d || program.Degree.toLowerCase() === query.d?.toLowerCase()) &&
+            (!query.d || query.d.some(degree => program.Degree === degree)) &&
             (!query.m || query.m.some(major => program.TargetApplicantMajor.includes(major))) &&
             (!query.r || query.r.some(region => program.Region.includes(region)))
         );
@@ -108,14 +93,10 @@ export async function getProgramDesc(programId, isRefresh = false) {
     // await localforage.removeItem(`${programId}-Desc`) //TODO: remove this line
     let programDesc = await localforage.getItem(`${programId}-Desc`);
     if (isRefresh || programDesc === null || (Date.now() - programDesc.Date) > 24 * 60 * 60 * 1000) {
-        const session = await localforage.getItem('session')
         const response = await fetch(PROGRAM_DESC, {
             method: 'POST',
             credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session}`,
-            },
+            headers: await headerGenerator(true),
             body: JSON.stringify({'ProgramID': programId}),
         });
         await handleErrors(response)
@@ -186,10 +167,7 @@ export async function setProgramContent(requestBody) {
     const response = await fetch(ADD_MODIFY_PROGRAM, {
         method: 'POST',
         credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${await localforage.getItem('session')}`,
-        },
+        headers: await headerGenerator(true),
         body: JSON.stringify({
             newProgram: requestBody.newProgram,
             content: {...(requestBody.content), Applicants: []},
@@ -197,8 +175,29 @@ export async function setProgramContent(requestBody) {
     });
 
     await handleErrors(response)
-
     const program = requestBody.content;
     await setProgram(program);
     await setProgramDesc(program.ProgramID, program.Description);
+}
+
+export async function removeProgram(programId) {
+    /*
+    * Delete the program (with description) from the local storage (i.e. localforage.getItem('programs') and localforage.getItem(`${programId}-Desc`), and post to the server.
+    * @param programId [String]: programId
+     */
+    const response = await fetch(REMOVE_PROGRAM, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
+        body: JSON.stringify({
+            ProgramID: programId,
+        }),
+    });
+
+    await handleErrors(response)
+    await localforage.removeItem(`${programId}-Desc`);
+    const programs = await getPrograms();
+    const univName = programId.split('@')[1]
+    programs[univName] = programs[univName].filter(p => p.ProgramID !== programId);
+    await setPrograms(programs);
 }

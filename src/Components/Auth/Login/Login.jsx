@@ -2,7 +2,7 @@ import {useState} from "react";
 import {Form, useNavigate} from 'react-router-dom';
 import "./Login.css"
 import {login} from "../../../Data/UserData";
-import {ResponsiveButton} from "../../common";
+import {Button} from "@mui/material";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -38,7 +38,7 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <ResponsiveButton content='Login' title='Login'/>
+                <Button variant='contained' type='submit'>Login</Button>
                 <p onClick={() => navigate('/reset')}> Forget Password? Click here to reset! </p>
                 <p onClick={() => navigate('/register')}> Don't have an account? Register now! </p>
             </Form>

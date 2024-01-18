@@ -1,15 +1,11 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import "./css/github.css";
 import './ProgramContent.css'
-import {Form, useLoaderData} from "react-router-dom";
+import {Form, Link, useLoaderData} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
-import {ResponsiveButton} from "../../common";
-import {regionFlagMapping, univAbbrFullNameMapping} from "../../../Data/Common";
-import {IconButton, Tooltip, Typography} from "@mui/material";
-import {HelpOutline} from "@mui/icons-material";
+import {regionFlagMapping} from "../../../Data/Common";
+import {IconButton} from "@mui/material";
+import {Edit, Refresh} from "@mui/icons-material";
 
 export async function loader({params}) {
     const programId = params.programId;
@@ -24,35 +20,20 @@ export async function action({params}) {
 
 function ProgramContent() {
     const {programContent} = useLoaderData();
-    let flags = programContent.Region.map((region) => regionFlagMapping[region]);
-    flags = flags.reduce((prev, curr) => prev + ' ' + curr, '');
     return (
         <div className="ProgramContent" key={programContent.ProgramID}>
             <div className="ProgramHeader">
                 <h1 style={{display: 'flex', position: 'relative'}}>
-                    {flags} {programContent.ProgramID}
-                    <div>
-                        {<Tooltip
-                            title={<Typography fontSize={15}>
-                                {univAbbrFullNameMapping[programContent.University]}
-                            </Typography>}
-                            arrow
-                            style={{position: 'absolute', width: 'fit-content'}}
-                        >
-                            <IconButton>
-                                <HelpOutline/>
-                            </IconButton>
-                        </Tooltip>}
-                    </div>
+                    {programContent.ProgramID}
                 </h1>
                 <div className='ReviseRefreshButtonGroup'>
-                    <Form action='edit' style={{display: 'flex'}}>
-                        <button type='submit' title='Edit'>
-                            <FontAwesomeIcon icon={solid("pen-to-square")}/>
-                        </button>
-                    </Form>
+                    <IconButton component={Link} to={`edit${window.location.search}`}>
+                        <Edit/>
+                    </IconButton>
                     <Form method='post' style={{display: 'flex'}}>
-                    <ResponsiveButton/>
+                        <IconButton type='submit' title='refresh program content'>
+                            <Refresh/>
+                        </IconButton>
                     </Form>
                 </div>
             </div>

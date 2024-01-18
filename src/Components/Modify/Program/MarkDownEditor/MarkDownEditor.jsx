@@ -27,6 +27,7 @@ export default function MarkDownEditor({ OriginDesc, Description, setDescription
                 onChange={(value) => {
                     setDescription(value)
                 }}
+                contentEditableClassName="MarkDownEditorContent"
                 plugins={[
                     headingsPlugin(),
                     listsPlugin(),

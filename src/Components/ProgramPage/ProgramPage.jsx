@@ -2,7 +2,6 @@ import SideBar from "../SideBar/SideBar";
 import {Outlet, useLoaderData} from "react-router-dom";
 import {getPrograms} from "../../Data/ProgramData";
 import './ProgramPage.css';
-import {usePending} from "../common";
 
 export async function loader({ request }) {
     const url = new URL(request.url);
@@ -15,10 +14,10 @@ export async function loader({ request }) {
 }
 
 export default function ProgramPage() {
-    const programs = useLoaderData().programs;
+    const loaderData = useLoaderData();
     return (
-        <div className={'ContentBlock ' + usePending()}>
-            <SideBar twoLevelList={programs}/>
+        <div className='ContentBlock'>
+            <SideBar loaderData={loaderData}/>
             <Outlet/>
         </div>
     )

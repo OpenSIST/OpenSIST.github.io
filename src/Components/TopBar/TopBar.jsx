@@ -3,26 +3,32 @@ import './TopBar.css';
 import {StatusBlock} from "./StatusBlock/StatusBlock";
 import NavBar from "./NavBar/NavBar";
 import {useNavigate} from "react-router-dom";
-import {usePending} from "../common";
-import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {AppBar, Box, Toolbar, Typography} from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
 
 
 function TopBar() {
     const navigate = useNavigate();
     return (
-        <>
-            <div className={"TopBarBlock " + usePending()}>
-                <div className="TopBar">
-                    <div className="IconBlock" onClick={()=>navigate("/")}>
-                        <FontAwesomeIcon icon={solid("bars")} size="2x"/>
-                        <h2>OpenSIST</h2>
+        <Box>
+            <AppBar position='sticky' className="TopBarBlock"
+                    elevation={1}
+                    sx={{
+                        backgroundColor: "var(--bg-color)",
+                        color: "var(--color)",
+                        display: "block",
+                        zIndex: (theme) => theme.zIndex.drawer + 1
+                    }}>
+                <Toolbar className="TopBar">
+                    <div className="IconBlock" onClick={() => navigate("/")}>
+                        <MenuIcon/>
+                        <Typography sx={{cursor: 'pointer'}} variant="h5">OpenSIST</Typography>
                     </div>
                     <NavBar/>
                     <StatusBlock/>
-                </div>
-            </div>
-        </>
+                </Toolbar>
+            </AppBar>
+        </Box>
     );
 }
 

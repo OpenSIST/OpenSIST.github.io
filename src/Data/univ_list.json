@@ -1,1312 +1,1312 @@
 [
     {
         "fullName": "Massachusetts Institute of Technology",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "MIT"
     },
     {
         "fullName": "Carnegie Mellon University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "CMU"
     },
     {
         "fullName": "University of California - Berkeley",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UCB"
     },
     {
         "fullName": "Stanford University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Stanford"
     },
     {
         "fullName": "University of Illinois at Urbana-Champaign",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UIUC"
     },
     {
         "fullName": "University of Washington",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UW"
     },
     {
         "fullName": "Princeton University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Princeton"
     },
     {
         "fullName": "California Institute of Technology",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Caltech"
     },
     {
         "fullName": "ETH Zürich",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "ETH"
     },
     {
         "fullName": "Harvard University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Harvard"
     },
     {
         "fullName": "École Polytechnique Fédérale de Lausanne",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "EPFL"
     },
     {
         "fullName": "University of California - San Diego",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UCSD"
     },
     {
         "fullName": "Georgia Institute of Technology",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "GaTech"
     },
     {
         "fullName": "University of Michigan",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UMich"
     },
     {
         "fullName": "Cornell University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Cornell"
     },
     {
         "fullName": "University of Maryland - College Park",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UMD"
     },
     {
         "fullName": "University of Toronto",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "UToronto"
     },
     {
         "fullName": "University of British Columbia",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "UBC"
     },
     {
         "fullName": "University of California - Los Angeles",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UCLA"
     },
     {
         "fullName": "Yale University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Yale"
     },
     {
         "fullName": "Max Planck Society",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Max Planck"
     },
     {
         "fullName": "University of Texas at Austin",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UT-Austin"
     },
     {
         "fullName": "University of Pennsylvania",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UPenn"
     },
     {
         "fullName": "Purdue University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Purdue"
     },
     {
         "fullName": "University of Wisconsin - Madison",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UW-Madison"
     },
     {
         "fullName": "Duke University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Duke"
     },
     {
         "fullName": "Northwestern University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "NWU"
     },
     {
         "fullName": "Brown University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Brown"
     },
     {
         "fullName": "Chinese University of Hong Kong",
-        "region": ["hk"],
+        "region": ["HK"],
         "abbr": "CUHK"
     },
     {
         "fullName": "The Hong Kong University of Science and Technology",
-        "region": ["hk"],
+        "region": ["HK"],
         "abbr": "HKUST"
     },
     {
         "fullName": "University of Hong Kong",
-        "region": ["hk"],
+        "region": ["HK"],
         "abbr": "HKU"
     },
     {
         "fullName": "National University of Singapore",
-        "region": ["sg"],
+        "region": ["SG"],
         "abbr": "NUS"
     },
     {
         "fullName": "Nanyang Technological University",
-        "region": ["sg"],
+        "region": ["SG"],
         "abbr": "NTU"
     },
     {
         "fullName": "University of Waterloo",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "UWaterloo"
     },
     {
         "fullName": "University of Oxford",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Oxford"
     },
     {
         "fullName": "University of Cambridge",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Cambridge"
     },
     {
         "fullName": "University of California - Santa Barbara",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UCSB"
     },
     {
         "fullName": "Cornell Tech",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Cornell Tech"
     },
     {
         "fullName": "University of California - Irvine",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UCI"
     },
     {
         "fullName": "TU Munich",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "TUM"
     },
     {
         "fullName": "New York University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "NYU"
     },
     {
         "fullName": "Johns Hopkins University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "JHU"
     },
     {
         "fullName": "Columbia University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Columbia"
     },
     {
         "fullName": "Rice University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Rice"
     },
     {
         "fullName": "University of Southern California",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "USC"
     },
     {
         "fullName": "Texas A&M University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "TAMU"
     },
     {
         "fullName": "Dartmouth College",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Dartmouth"
     },
     {
         "fullName": "University of Chicago",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UChicago"
     },
     {
         "fullName": "Northeastern University",
-        "region": ["us", "ca"],
+        "region": ["US", "CA"],
         "abbr": "NEU"
     },
     {
         "fullName": "King Abdullah University of Science and Technology",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "KAUST"
     },
     {
         "fullName": "Boston University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "BU"
     },
     {
         "fullName": "University of California - Davis",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UCD"
     },
     {
         "fullName": "University of Massachusetts Amherst",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UMass-Amherst"
     },
     {
         "fullName": "University of North Carolina",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UNC"
     },
     {
         "fullName": "Stony Brook University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Stony Brook"
     },
     {
         "fullName": "Imperial College London",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Imperial"
     },
     {
         "fullName": "University of Edinburgh",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Edinburgh"
     },
     {
         "fullName": "Politecnico di Milano",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Polimi"
     },
     {
         "fullName": "Université Paris-Saclay",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Saclay"
     },
     {
         "fullName": "Institut Polytechnique de Paris",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "IP-Paris"
     },
     {
         "fullName": "Eindhoven University of Technology",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "TU/e"
     },
     {
         "fullName": "Rutgers University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Rutgers"
     },
     {
         "fullName": "University of California - Riverside",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UCR"
     },
     {
         "fullName": "Ohio State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "OSU"
     },
     {
         "fullName": "Pennsylvania State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "PSU"
     },
     {
         "fullName": "University of Utah",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Utah"
     },
     {
         "fullName": "North Carolina State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "NCSU"
     },
     {
         "fullName": "Simon Fraser University",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "SFU"
     },
     {
         "fullName": "University of Virginia",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UVA"
     },
     {
         "fullName": "University of California - Santa Cruz",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UCSC"
     },
     {
         "fullName": "University College London",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "UCL"
     },
     {
         "fullName": "TU Delft",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "TU Delft"
     },
     {
         "fullName": "KU Leuven",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "KU Leuven"
     },
     {
         "fullName": "University at Buffalo",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UBuffalo"
     },
     {
         "fullName": "Washington University in St. Louis",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "WUSTL"
     },
     {
         "fullName": "Emory University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Emory"
     },
     {
         "fullName": "Vanderbilt University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Vanderbilt"
     },
     {
         "fullName": "Korea Advanced Institute of Science and Technology",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "KAIST"
     },
     {
         "fullName": "Seoul National University",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "SNU"
     },
     {
         "fullName": "TU Berlin",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "TU Berlin"
     },
     {
         "fullName": "RWTH Aachen University",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "RWTH Aachen"
     },
     {
         "fullName": "Aalborg University",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "AAU"
     },
     {
         "fullName": "George Mason University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "George Mason"
     },
     {
         "fullName": "TU Darmstadt",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "TU Darmstadt"
     },
     {
         "fullName": "University of Colorado Boulder",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Colorado Boulder"
     },
     {
         "fullName": "University of Illinois at Chicago",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UIC"
     },
     {
         "fullName": "University of Minnesota",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UMN"
     },
     {
         "fullName": "Arizona State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "ASU"
     },
     {
         "fullName": "University of Sydney",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "USyd"
     },
     {
         "fullName": "Virginia Tech",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Virginia Tech"
     },
     {
         "fullName": "Indiana University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "IU"
     },
     {
         "fullName": "Singapore Management University",
-        "region": ["sg"],
+        "region": ["SG"],
         "abbr": "SMU"
     },
     {
         "fullName": "Oregon State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Oregon State"
     },
     {
         "fullName": "University of Tokyo",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "UTokyo"
     },
     {
         "fullName": "Technical University of Denmark",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "DTU"
     },
     {
         "fullName": "Saarland University",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Saarland"
     },
     {
         "fullName": "Aarhus University",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Aarhus"
     },
     {
         "fullName": "CISPA Helmholtz Center",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "CISPA"
     },
     {
         "fullName": "City University of Hong Kong",
-        "region": ["hk"],
+        "region": ["HK"],
         "abbr": "CityU"
     },
     {
         "fullName": "Monash University",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "Monash"
     },
     {
         "fullName": "University of Central Florida",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UCF"
     },
     {
         "fullName": "National Institute of Informatics",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "NII"
     },
     {
         "fullName": "UNSW",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "UNSW"
     },
     {
         "fullName": "Universidade de Lisboa",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "ULisboa"
     },
     {
         "fullName": "University of Melbourne",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "UniMelb"
     },
     {
         "fullName": "University of Rochester",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Rochester"
     },
     {
         "fullName": "Bar-Ilan University",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "BIU"
     },
     {
         "fullName": "TU Wien",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "TU Wien"
     },
     {
         "fullName": "University of Copenhagen",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "UCPH"
     },
     {
         "fullName": "University of Texas at Dallas",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UT-Dallas"
     },
     {
         "fullName": "Yonsei University",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "YU"
     },
     {
         "fullName": "MBZUAI",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "MBZUAI"
     },
     {
         "fullName": "Michigan State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "MSU"
     },
     {
         "fullName": "POSTECH",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "POSTECH"
     },
     {
         "fullName": "Rochester Institute of Technology",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "RIT"
     },
     {
         "fullName": "Sapienza University of Rome",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Sapienza"
     },
     {
         "fullName": "University of Amsterdam",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "UAmsterdam"
     },
     {
         "fullName": "University of Warwick",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Warwick"
     },
     {
         "fullName": "Aalto University",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Aalto"
     },
     {
         "fullName": "IST Austria",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "IST Austria"
     },
     {
         "fullName": "King's College London",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "KCL"
     },
     {
         "fullName": "LMU Munich",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "LMU Munich"
     },
     {
         "fullName": "McGill University",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "McGill"
     },
     {
         "fullName": "University of Notre Dame",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Notre Dame"
     },
     {
         "fullName": "University of Pittsburgh",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UPitt"
     },
     {
         "fullName": "University of Stuttgart",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Uni Stuttgart"
     },
     {
         "fullName": "University of Texas at Arlington",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UT-Arlington"
     },
     {
         "fullName": "Australian National University",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "ANU"
     },
     {
         "fullName": "Graz University of Technology",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "TU Graz"
     },
     {
         "fullName": "Sungkyunkwan University",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "SKKU"
     },
     {
         "fullName": "University of Bristol",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Bristol"
     },
     {
         "fullName": "University of Delaware",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UD"
     },
     {
         "fullName": "University of Liverpool",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Liverpool"
     },
     {
         "fullName": "CRIStAL",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "CRIStAL"
     },
     {
         "fullName": "The Hong Kong Polytechnic University",
-        "region": ["hk"],
+        "region": ["HK"],
         "abbr": "PolyU"
     },
     {
         "fullName": "University of California - Merced",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UCM"
     },
     {
         "fullName": "University of Adelaide",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "Adelaide"
     },
     {
         "fullName": "University of Alberta",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "Alberta"
     },
     {
         "fullName": "University of Birmingham",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Birmingham"
     },
     {
         "fullName": "University of Connecticut",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UConn"
     },
     {
         "fullName": "University of Florida",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UF"
     },
     {
         "fullName": "Binghamton University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Binghamton"
     },
     {
         "fullName": "Ecole Normale Superieure",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "ENS Paris"
     },
     {
         "fullName": "IT University of Copenhagen",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "ITU Copenhagen"
     },
     {
         "fullName": "KTH Royal Institute of Technology",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "KTH"
     },
     {
         "fullName": "SUTD",
-        "region": ["sg"],
+        "region": ["SG"],
         "abbr": "SUTD"
     },
     {
         "fullName": "TU Dresden",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "TU Dresden"
     },
     {
         "fullName": "University of Tübingen",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Tübingen"
     },
     {
         "fullName": "Weizmann Institute of Science",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "Weizmann"
     },
     {
         "fullName": "Karlsruhe Institute of Technology",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "KIT"
     },
     {
         "fullName": "Osaka University",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "UOsaka"
     },
     {
         "fullName": "Ruhr-University Bochum",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "RUB"
     },
     {
         "fullName": "UNIST",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "UNIST"
     },
     {
         "fullName": "University of Bonn",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Bonn"
     },
     {
         "fullName": "University of Montreal",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "UMontreal"
     },
     {
         "fullName": "University of Surrey",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Surrey"
     },
     {
         "fullName": "University of Trento",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Trento"
     },
     {
         "fullName": "University of Tsukuba",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "Tsukuba"
     },
     {
         "fullName": "University of Warsaw",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "UWarsaw"
     },
     {
         "fullName": "University of Zurich",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "UZH"
     },
     {
         "fullName": "Worcester Polytechnic Institute",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "WPI"
     },
     {
         "fullName": "Chalmers/GU",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Chalmers/GU"
     },
     {
         "fullName": "College of William and Mary",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "William and Mary"
     },
     {
         "fullName": "Florida State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "FSU"
     },
     {
         "fullName": "Hasso Plattner Institute",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "HPI"
     },
     {
         "fullName": "Iowa State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "ISU"
     },
     {
         "fullName": "Queen Mary University of London",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "QMUL"
     },
     {
         "fullName": "Radboud University",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Radboud"
     },
     {
         "fullName": "Royal Holloway University of London",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Royal Holloway"
     },
     {
         "fullName": "Stevens Institute of Technology",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Stevens"
     },
     {
         "fullName": "University of Freiburg",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Freiburg"
     },
     {
         "fullName": "University of Macau",
-        "region": ["hk"],
+        "region": ["HK"],
         "abbr": "UMacau"
     },
     {
         "fullName": "VU Amsterdam",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "VU Amsterdam"
     },
     {
         "fullName": "Washington State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "WSU"
     },
     {
         "fullName": "Cardiff University",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Cardiff"
     },
     {
         "fullName": "Georgetown University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Georgetown"
     },
     {
         "fullName": "Hong Kong Baptist University",
-        "region": ["hk"],
+        "region": ["HK"],
         "abbr": "HKBU"
     },
     {
         "fullName": "Kyoto University",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "Kyoto U"
     },
     {
         "fullName": "NJIT",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "NJIT"
     },
     {
         "fullName": "TU Dortmund",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "TU Dortmund"
     },
     {
         "fullName": "TU Kaiserslautern",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "TU KL"
     },
     {
         "fullName": "Tufts University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Tufts"
     },
     {
         "fullName": "Tulane University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Tulane"
     },
     {
         "fullName": "University of Arizona",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UArizona"
     },
     {
         "fullName": "University of Georgia",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UGA"
     },
     {
         "fullName": "University of Glasgow",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Glasgow"
     },
     {
         "fullName": "University of Hamburg",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "UHH"
     },
     {
         "fullName": "University of Hannover",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Leibniz U Hannover"
     },
     {
         "fullName": "University of Southampton",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Southampton"
     },
     {
         "fullName": "Uppsala University",
-        "region": ["eu"],
+        "region": ["EU"],
         "abbr": "Uppsala"
     },
     {
         "fullName": "Illinois Institute of Technology",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "IIT"
     },
     {
         "fullName": "Rensselaer Polytechnic Institute",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "RPI"
     },
     {
         "fullName": "Tokyo Institute of Technology",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "Tokyo Tech"
     },
     {
         "fullName": "UNC - Charlotte",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UNC Charlotte"
     },
     {
         "fullName": "University of Bath",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Bath"
     },
     {
         "fullName": "University of Nebraska",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UNL"
     },
     {
         "fullName": "University of Oregon",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UOregon"
     },
     {
         "fullName": "University of Sheffield",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Sheffield"
     },
     {
         "fullName": "University of Tennessee",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UT Knoxville"
     },
     {
         "fullName": "University of Victoria",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "UVic"
     },
     {
         "fullName": "York University",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "YorkU"
     },
     {
         "fullName": "Brigham Young University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "BYU"
     },
     {
         "fullName": "Drexel University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Drexel"
     },
     {
         "fullName": "George Washington University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "GWU"
     },
     {
         "fullName": "Hanyang University",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "Hanyang U"
     },
     {
         "fullName": "Lehigh University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Lehigh"
     },
     {
         "fullName": "Queen's University Belfast",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "QUB"
     },
     {
         "fullName": "University of Calgary",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "UCalgary"
     },
     {
         "fullName": "University of Houston",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UH"
     },
     {
         "fullName": "University of Leeds",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Leeds"
     },
     {
         "fullName": "University of Massachusetts Lowell",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UMass Lowell"
     },
     {
         "fullName": "University of Queensland",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "UQ"
     },
     {
         "fullName": "University of South Carolina",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UofSC"
     },
     {
         "fullName": "University of York",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "York"
     },
     {
         "fullName": "Boston College",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "BC"
     },
     {
         "fullName": "Brandeis University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Brandeis"
     },
     {
         "fullName": "Durham University",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Durham"
     },
     {
         "fullName": "Lancaster University",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Lancaster"
     },
     {
         "fullName": "Open University UK",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "OU UK"
     },
     {
         "fullName": "Syracuse University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Syracuse"
     },
     {
         "fullName": "University of Iowa",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UIowa"
     },
     {
         "fullName": "University of Manchester",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Manchester"
     },
     {
         "fullName": "University of New Hampshire",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UNH"
     },
     {
         "fullName": "University of Nottingham",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Nottingham"
     },
     {
         "fullName": "University of Ottawa",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "uOttawa"
     },
     {
         "fullName": "University of Strathclyde",
-        "region": ["uk"],
+        "region": ["UK"],
         "abbr": "Strathclyde"
     },
     {
         "fullName": "Waseda University",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "Waseda"
     },
     {
         "fullName": "Auburn University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Auburn"
     },
     {
         "fullName": "Case Western Reserve University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "CWRU"
     },
     {
         "fullName": "Colorado State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "CSU"
     },
     {
         "fullName": "Michigan Technological University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Michigan Tech"
     },
     {
         "fullName": "NAIST",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "NAIST"
     },
     {
         "fullName": "Qatar Computing Research Institute",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "QCRI"
     },
     {
         "fullName": "Texas State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "TSU"
     },
     {
         "fullName": "UCCS",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UCCS"
     },
     {
         "fullName": "University of Kansas",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UKansas"
     },
     {
         "fullName": "University of Kentucky",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UKentucky"
     },
     {
         "fullName": "University of South Florida",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "USF"
     },
     {
         "fullName": "University of Texas at San Antonio",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UTSA"
     },
     {
         "fullName": "University of Western Australia",
-        "region": ["others"],
+        "region": ["Others"],
         "abbr": "UWA"
     },
     {
         "fullName": "Georgia State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "GSU"
     },
     {
         "fullName": "Kansas State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "KSU"
     },
     {
         "fullName": "Louisiana State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "LSU"
     },
     {
         "fullName": "New Mexico State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "NMSU"
     },
     {
         "fullName": "Polytechnique Montreal",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "Poly Montreal"
     },
     {
         "fullName": "Queen's University",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "Queen's U"
     },
     {
         "fullName": "Texas Tech University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Texas Tech"
     },
     {
         "fullName": "The University of Alabama",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UA"
     },
     {
         "fullName": "University of Arkansas",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UArk"
     },
     {
         "fullName": "University of Massachusetts Boston",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UMass-Boston"
     },
     {
         "fullName": "University of Nevada",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UNLV"
     },
     {
         "fullName": "University of New Mexico",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UNM"
     },
     {
         "fullName": "University of Vermont",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UVM"
     },
     {
         "fullName": "Utah State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "USU"
     },
     {
         "fullName": "West Virginia University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "WVU"
     },
     {
         "fullName": "McMaster University",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "McMaster"
     },
     {
         "fullName": "Mississippi State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Mississippi State"
     },
     {
         "fullName": "Oklahoma State University",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Oklahoma State"
     },
     {
         "fullName": "University of Missouri",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "Mizzou"
     },
     {
         "fullName": "University of New Orleans",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "UNO"
     },
     {
         "fullName": "University of Oklahoma",
-        "region": ["us"],
+        "region": ["US"],
         "abbr": "OU"
     },
     {
         "fullName": "Western University",
-        "region": "ca",
+        "region": ["CA"],
         "abbr": "Western Ontario"
     }
 ]
