@@ -25,7 +25,7 @@ import Agreement from "./Components/Agreement/Agreement";
 import ErrorPage from "./Components/Errors/ErrorPage";
 import Profile from "./Components/Profile/Profile";
 import {createTheme, ThemeProvider} from "@mui/material";
-import AdminPage from "./Components/Admin/AdminPage";
+import AdminPage, {AdminIndex} from "./Components/Admin/AdminPage";
 import AdminProgramPage, {
     loader as AdminProgramLoader,
     action as AdminProgramAction
@@ -71,6 +71,10 @@ const router = createBrowserRouter([
                         path: '/admin',
                         element: <AdminPage/>,
                         children: [
+                            {
+                                index: true,
+                                element: <AdminIndex/>,
+                            },
                             {
                                 path: '/admin/programs',
                                 element: <AdminProgramPage/>,

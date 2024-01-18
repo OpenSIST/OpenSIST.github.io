@@ -1,13 +1,11 @@
-import {Form, Link, redirect, useLoaderData} from "react-router-dom";
+import {Form, redirect, useLoaderData} from "react-router-dom";
 import {getQuery, UnivProgramList} from "../../SideBar/SideBar";
 import {
     Box, Button,
     Dialog, DialogActions,
-    DialogContentText,
     DialogTitle,
     IconButton,
     ListItem,
-    ListItemButton,
     ListItemText
 } from "@mui/material";
 import SearchBar from "../../SideBar/SearchBar/SearchBar";
@@ -19,7 +17,7 @@ export default function AdminProgramPage() {
     const loaderData = useLoaderData();
     const univProgramList = loaderData.programs;
     return (
-        <Box sx={{m: '10px'}}>
+        <Box sx={{m: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', width:"80%"}}>
             <SearchBar query={getQuery(loaderData)}/>
             <UnivProgramList univProgramList={univProgramList} ButtonComponent={AdminProgramButton}/>
         </Box>
