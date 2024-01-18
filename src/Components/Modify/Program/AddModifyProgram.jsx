@@ -9,8 +9,6 @@ import {
 import MarkDownEditor from "./MarkDownEditor/MarkDownEditor";
 import {useLoaderData, useNavigate, redirect, Form} from "react-router-dom";
 import {setProgramContent} from "../../../Data/ProgramData";
-import {faMarkdown} from "@fortawesome/free-brands-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     Button,
     ButtonGroup,
@@ -27,7 +25,6 @@ export async function action({request}) {
     const Program = formData.get('Program');
     const ProgramID = `${Program}@${University}`;
     const targetApplicantMajor = formData.get('TargetApplicantMajor')?.split(',');
-    console.log(formData.get('TargetApplicantMajor'))
     const Region = formData.get('Region')?.split(',');
     const Degree = formData.get('Degree');
     const Description = formData.get('Description');
@@ -64,7 +61,6 @@ export default function AddModifyProgram() {
             <Typography variant="h5" sx={{mb: "10px"}}>项目信息</Typography>
             <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "15px"}} fullWidth>
                 <Autocomplete
-                    autoSelect
                     autoHighlight
                     options={univOptions}
                     value={univ}
@@ -90,13 +86,15 @@ export default function AddModifyProgram() {
                     InputProps={{readOnly: !AddMode}}
                     variant="standard"
                     name="Program"
-                    label={"项目名称" + (AddMode ? "" : "(不可修改)")}
+                    label={"项目名称" + (AddMode ? "" : " (不可修改)")}
                     defaultValue={programContent?.Program}
-                    placeholder="请使用缩写，例如 MSCS, EECS PhD 等"
+                    placeholder="硕士写简称 (e.g. MSCS)，博士要加院系 (e.g. EECS PhD)"
                     sx={AddMode ? {} : {color: 'gray', cursor: 'not-allowed', pointerEvents: 'none'}}
                     fullWidth
                     required
                 />
+            </FormControl>
+            <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "15px"}} fullWidth>
                 <Autocomplete
                     autoSelect
                     autoHighlight
@@ -117,8 +115,6 @@ export default function AddModifyProgram() {
                     fullWidth
                     required
                 />
-            </FormControl>
-            <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "15px"}} fullWidth>
                 <Autocomplete
                     autoSelect
                     autoHighlight

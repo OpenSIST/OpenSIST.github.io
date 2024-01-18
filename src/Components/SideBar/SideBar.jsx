@@ -31,11 +31,12 @@ export default function SideBar({twoLevelList}) {
                     component='nav'
                     sx={{
                         width: '100%',
+                        maxWidth: 360,
                         bgcolor: 'background.paper',
                         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
                         borderRadius: "5px",
                         overflowY: 'auto',
-                        maxHeight: 'calc(100vh - 500px)',
+                        maxHeight: 'calc(100vh - 450px)',
                     }}
                 >
                     {Object.entries(twoLevelList).map(([firstLevel, secondLevelList]) => (

@@ -4,6 +4,7 @@ import "../../../github.css";
 import './ProgramContent.css'
 import {Form, Link, useLoaderData} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
+import {regionFlagMapping} from "../../../Data/Common";
 import {IconButton} from "@mui/material";
 import {Edit, Refresh} from "@mui/icons-material";
 import {CountryFlag} from "../../common";
