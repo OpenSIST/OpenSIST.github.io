@@ -8,15 +8,14 @@ import {CountryFlag, useClickOutSideRef, useSmallPage} from "../common";
 import {univAbbrFullNameMapping} from "../../Data/Common";
 import {Button, ButtonGroup, Collapse, Divider, List, ListItemButton, ListItemText} from "@mui/material";
 import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
-
-export default function SideBar({twoLevelList}) {
+export default function SideBar({loaderData}) {
+    const univProgramList = loaderData.programs;
     const SideBarHidden = useSmallPage();
     const [SideBarOpen, setSideBarOpen, SideBarRef] = useClickOutSideRef();
-    const [selectProgram, setSelectProgram] = React.useState(null);
     return (
         <div style={{display: "flex"}} ref={SideBarRef}>
             <div className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}>
-                <SearchBar/>
+                <SearchBar query={getQuery(loaderData)}/>
                 <ButtonGroup fullWidth sx={{mb: "10px"}}>
                     <Button fullWidth title='add new program' component={Link} to='/programs/new'>
                         <Add/>
@@ -27,28 +26,7 @@ export default function SideBar({twoLevelList}) {
                         </Button>
                     </Form>
                 </ButtonGroup>
-                <List
-                    component='nav'
-                    sx={{
-                        width: '100%',
-                        bgcolor: 'background.paper',
-                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                        borderRadius: "5px",
-                        overflowY: 'auto',
-                        maxHeight: 'calc(100vh - 450px)',
-                    }}
-                >
-                    {Object.entries(twoLevelList).map(([firstLevel, secondLevelList]) => (
-                        <React.Fragment key={firstLevel}>
-                            <NestedList
-                                firstLevel={firstLevel}
-                                secondLevelList={secondLevelList}
-                                selectProgram={selectProgram}
-                                setSelectProgram={setSelectProgram}
-                            />
-                        </React.Fragment>
-                    ))}
-                </List>
+                <UnivProgramList univProgramList={univProgramList}/>
                 <div style={{textAlign: 'center', paddingTop: '5px'}}>
                     对列表有问题可以<a href='https://github.com/OpenSIST/OpenSIST.github.io/issues'>联系我们</a>
                 </div>
@@ -63,33 +41,59 @@ export default function SideBar({twoLevelList}) {
     )
 }
 
-function NestedList({firstLevel, secondLevelList, selectProgram, setSelectProgram}) {
+export function UnivProgramList({univProgramList, ButtonComponent=ProgramButton}) {
+    const [selectProgram, setSelectProgram] = React.useState(null);
+    return (
+        <>
+            <List
+                component='nav'
+                sx={{
+                    width: '100%',
+                    bgcolor: 'background.paper',
+                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                    borderRadius: "5px",
+                    overflowY: 'auto',
+                    maxHeight: 'calc(100vh - 460px)',
+                }}
+            >
+                {Object.entries(univProgramList).map((univProgram) => (
+                    <React.Fragment key={univProgram[0]}>
+                        <ProgramList
+                            univProgram={univProgram}
+                            selectProgram={selectProgram}
+                            setSelectProgram={setSelectProgram}
+                            ButtonComponent={ButtonComponent}
+                        />
+                    </React.Fragment>
+                ))}
+            </List>
+        </>
+    )
+}
+
+export function ProgramList({univProgram, selectProgram, setSelectProgram, ButtonComponent}) {
     const [isFolded, setIsFolded] = React.useState(false);
-    const flags = secondLevelList[0].Region.map((r) => (<CountryFlag key={r} country={r}/>))
+    const univName = univProgram[0];
+    const programList = univProgram[1];
+    const flags = programList[0].Region.map((r) => (<CountryFlag key={r} country={r}/>))
     return (
         <>
             <ListItemButton onClick={() => setIsFolded(!isFolded)}>
                 {isFolded ? <ExpandMore/> : <NavigateNext/>}
-                <ListItemText primary={firstLevel} secondary={univAbbrFullNameMapping[firstLevel]}/>
+                <ListItemText primary={univName} secondary={univAbbrFullNameMapping[univName]}/>
                 {flags}
             </ListItemButton>
-            <Divider component="li" light />
+            <Divider component="li" light/>
             <Collapse in={isFolded} timeout='auto' unmountOnExit>
                 <List component="div" disablePadding>
                     {
-                        secondLevelList.map((secondLevel) => (
-                            <React.Fragment key={secondLevel.ProgramID}>
-                                <ListItemButton
-                                    className='SecondLevelItem'
-                                    selected={secondLevel.ProgramID === selectProgram}
-                                    component={Link}
-                                    onClick={() => setSelectProgram(secondLevel.ProgramID)}
-                                    to={`/programs/${secondLevel.ProgramID}${window.location.search}`}
-                                    sx={{pl: "3rem"}}
-                                >
-                                    <ListItemText primary={secondLevel.Program} secondary={MajorString(secondLevel.TargetApplicantMajor)}/>
-                                </ListItemButton>
-                            </React.Fragment>
+                        programList.map((program) => (
+                            <ButtonComponent
+                                program={program}
+                                selectProgram={selectProgram}
+                                setSelectProgram={setSelectProgram}
+                                key={program.ProgramID}
+                            />
                         ))
                     }
                 </List>
@@ -98,7 +102,28 @@ function NestedList({firstLevel, secondLevelList, selectProgram, setSelectProgra
     )
 }
 
-function MajorString(majorList) {
-    const major_string = majorList.reduce((prev, curr) => prev + '/' + curr, '');
-    return major_string.slice(1);
+export function ProgramButton({program, selectProgram, setSelectProgram}) {
+    return (
+        <ListItemButton
+            className='ProgramItem'
+            selected={program.ProgramID === selectProgram}
+            component={Link}
+            onClick={() => setSelectProgram(program.ProgramID)}
+            to={`/programs/${program.ProgramID}${window.location.search}`}
+            sx={{pl: "3rem"}}
+            key={program.ProgramID}
+        >
+            <ListItemText primary={program.Program}
+                          secondary={program.TargetApplicantMajor.join('/')}/>
+        </ListItemButton>
+    )
+}
+
+export function getQuery(loaderData) {
+    return {
+        u: loaderData.u,
+        d: loaderData.d,
+        m: loaderData.m,
+        r: loaderData.r
+    }
 }
