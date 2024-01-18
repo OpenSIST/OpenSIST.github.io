@@ -144,7 +144,7 @@ export default function RegisterAndReset() {
             });
 
             if (response.status === 200) {
-                navigate("/");
+                navigate("/login");
                 if (status === 'reset') {
                     alert("Password reset successful.");
                 } else if (status === 'register') {

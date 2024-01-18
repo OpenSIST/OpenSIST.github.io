@@ -82,18 +82,23 @@ const router = createBrowserRouter([
                         element: <AdminPage/>,
                         children: [
                             {
-                                index: true,
-                                element: <AdminIndex/>,
-                            },
-                            {
-                                path: '/admin/programs',
-                                element: <AdminProgramPage/>,
-                                loader: AdminProgramLoader,
-                                action: AdminProgramAction
-                            }, {
-                                path: '/admin/applicants',
-                            }, {
-                                path: '/admin/records',
+                                errorElement: <ErrorPage/>,
+                                children: [
+                                    {
+                                        index: true,
+                                        element: <AdminIndex/>,
+                                    },
+                                    {
+                                        path: '/admin/programs',
+                                        element: <AdminProgramPage/>,
+                                        loader: AdminProgramLoader,
+                                        action: AdminProgramAction
+                                    }, {
+                                        path: '/admin/applicants',
+                                    }, {
+                                        path: '/admin/records',
+                                    }
+                                ]
                             }
                         ]
                     }, {

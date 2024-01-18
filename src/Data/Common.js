@@ -26,12 +26,13 @@ export async function handleErrors(response) {
      */
     if (response.status === 401) {
         window.location.href = "/login";
+        return;
     }
     if (response.status !== 200) {
         const content = await response.json();
         throw new Response('', {
             status: response.status,
-            statusText: content.message,
+            statusText: content.error,
         })
     }
     return response;

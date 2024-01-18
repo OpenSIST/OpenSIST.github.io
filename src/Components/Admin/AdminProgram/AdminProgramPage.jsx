@@ -45,11 +45,6 @@ export function AdminProgramButton({program}) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const handleRemove = async () => {
-        await removeProgram(program.ProgramID);
-        handleClose();
-        window.location.reload();
-    }
     return (
         <>
             <ListItem
