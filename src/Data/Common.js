@@ -1,7 +1,7 @@
 import univList from "./univ_list.json";
 import localforage from "localforage";
 
-export async function headerGenerator(auth=false) {
+export async function headerGenerator(auth = false) {
     /*
     * Generate the header for fetch
     * @param auth [boolean]: whether the request is authenticated
@@ -29,7 +29,10 @@ export async function handleErrors(response) {
     }
     if (response.status !== 200) {
         const content = await response.json();
-        throw new Error(`${content.error}, Error code: ${response.status}`)
+        throw new Response('', {
+            status: response.status,
+            statusText: content.message,
+        })
     }
     return response;
 }

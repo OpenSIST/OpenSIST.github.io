@@ -54,19 +54,24 @@ const router = createBrowserRouter([
                         ),
                         children: [
                             {
-                                path: '/programs/:programId',
-                                element: <ProgramContent/>,
-                                loader: programContentLoader,
-                                action: programContentAction
-                            }, {
-                                path: '/programs/:programId/edit',
-                                element: <AddModifyProgram key='edit'/>,
-                                loader: programContentLoader,
-                                action: addModifyProgramAction
-                            }, {
-                                path: '/programs/new',
-                                element: <AddModifyProgram key='new'/>,
-                                action: addModifyProgramAction
+                                errorElement: <ErrorPage/>,
+                                children: [
+                                    {
+                                        path: '/programs/:programId',
+                                        element: <ProgramContent/>,
+                                        loader: programContentLoader,
+                                        action: programContentAction
+                                    }, {
+                                        path: '/programs/:programId/edit',
+                                        element: <AddModifyProgram key='edit'/>,
+                                        loader: programContentLoader,
+                                        action: addModifyProgramAction
+                                    }, {
+                                        path: '/programs/new',
+                                        element: <AddModifyProgram key='new'/>,
+                                        action: addModifyProgramAction
+                                    }
+                                ]
                             }
                         ]
                     }, {

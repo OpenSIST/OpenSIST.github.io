@@ -6,11 +6,11 @@ import {LoadingBackdrop} from "./common";
 function Home() {
 
     return (
-        <div>
+        <>
             <TopBar/>
             <Outlet/>
             <LoadingBackdrop/>
-        </div>
+        </>
     );
 }
 
