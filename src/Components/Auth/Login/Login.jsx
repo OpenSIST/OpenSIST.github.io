@@ -1,8 +1,9 @@
-import {useState} from "react";
-import {Form} from 'react-router-dom';
+import React, {useState} from "react";
+import {Form, Link} from 'react-router-dom';
 import "./Login.css"
 import {login} from "../../../Data/UserData";
-import {Link, Button, TextField, Typography, Box} from "@mui/material";
+import {Button, TextField, Typography, Box} from "@mui/material";
+
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -42,8 +43,8 @@ function Login() {
                 required
             />
             <Box sx={{display: 'flex', justifyContent: "space-between", width: "100%"}}>
-                <Link href="/register" underline='hover'>注册账号</Link>
-                <Link href="/reset" underline='hover'>忘记密码?</Link>
+                <Link to="/register">注册账号</Link>
+                <Link to="/reset">忘记密码?</Link>
             </Box>
             <Button fullWidth variant='contained' type='submit'>Login</Button>
         </Form>
