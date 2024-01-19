@@ -8,7 +8,7 @@ import {
 } from "../../../Data/Schemas";
 import MarkDownEditor from "./MarkDownEditor/MarkDownEditor";
 import {useLoaderData, useNavigate, redirect, Form} from "react-router-dom";
-import {setProgramContent} from "../../../Data/ProgramData";
+import {addModifyProgram} from "../../../Data/ProgramData";
 import {
     Button,
     ButtonGroup, Checkbox,
@@ -41,7 +41,7 @@ export async function action({request}) {
         }
     };
     // console.log(requestBody)
-    await setProgramContent(requestBody)
+    await addModifyProgram(requestBody)
     return redirect(`/programs/${ProgramID}`)
 }
 
@@ -61,6 +61,7 @@ export default function AddModifyProgram() {
             <Typography variant="h5" sx={{mb: "10px"}}>项目信息</Typography>
             <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "15px"}} fullWidth>
                 <Autocomplete
+                    autoSelect
                     autoHighlight
                     options={univOptions}
                     value={univ}
@@ -96,7 +97,8 @@ export default function AddModifyProgram() {
             </FormControl>
             <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "15px"}} fullWidth>
                 <Autocomplete
-                    autoHighlight
+                    // autoSelect
+                    // autoHighlight
                     options={degreeOptions}
                     defaultValue={programContent?.Degree ? degreeOptions.find((degree) => {
                         return degree.value === programContent?.Degree;
@@ -115,7 +117,8 @@ export default function AddModifyProgram() {
                     required
                 />
                 <Autocomplete
-                    autoHighlight
+                    // autoSelect
+                    // autoHighlight
                     multiple
                     disableCloseOnSelect
                     onChange={(event, value) => {

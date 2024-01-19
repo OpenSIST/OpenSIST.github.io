@@ -1,7 +1,14 @@
 import localforage from "localforage";
-import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST, REMOVE_PROGRAM} from "../APIs/APIs";
+import {ADD_MODIFY_PROGRAM, MODIFY_PROGRAM_ID, PROGRAM_DESC, PROGRAM_LIST, REMOVE_PROGRAM} from "../APIs/APIs";
 import {handleErrors, headerGenerator, univAbbrFullNameMapping} from "./Common";
 import univListOrder from "./univ_list.json";
+
+/*
+* All functions started with 'set' -> Offline operation to set items to local cache
+* All functions started with 'get' -> Optionally online operation to get data
+* All functions started with 'delete' -> Offline operation to remove items from local cache
+* All functions starred with other words -> Online operation to corresponding backend APIs
+*/
 
 export async function getPrograms(isRefresh = false, query = {}) {
     /*
@@ -15,7 +22,7 @@ export async function getPrograms(isRefresh = false, query = {}) {
     *   'r': [String]: region,
     * }
     * @return: list of programs (without description)
-     */
+    */
     query.r = query.r?.split(',') || query.r;
     query.d = query.d?.split(',') || query.d;
     query.m = query.m?.split(',') || query.m;
@@ -77,7 +84,7 @@ export async function getProgram(programId, isRefresh = false) {
     * @param programId [String]: programId
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: program (without description)
-     */
+    */
     const programs = await getPrograms(isRefresh);
     const univName = programId.split('@')[1]
     // To prevent user's meaningless query
@@ -97,7 +104,7 @@ export async function getProgramDesc(programId, isRefresh = false) {
     * @param programId [String]: programId
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: description of the program
-     */
+    */
     // await localforage.removeItem(`${programId}-Desc`) //TODO: remove this line
     let programDesc = await localforage.getItem(`${programId}-Desc`);
     if (isRefresh || programDesc === null || (Date.now() - programDesc.Date) > 24 * 60 * 60 * 1000) {
@@ -127,7 +134,7 @@ export async function getProgramContent(programId, isRefresh = false) {
     * @param programId [String]: programId
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: program (with description)
-     */
+    */
     const program = await getProgram(programId, isRefresh);
     const programDesc = await getProgramDesc(programId, isRefresh);
     return {...program, 'description': programDesc};
@@ -137,7 +144,7 @@ export async function setPrograms(programs) {
     /*
     * Set the list of programs (without description) to the local storage (i.e. localforage.getItem('programs'))
     * @param programs [Array]: list of programs (without description)
-     */
+    */
     programs = {'data': programs, 'Date': Date.now()}
     await localforage.setItem('programs', programs);
 }
@@ -146,14 +153,12 @@ export async function setProgram(program) {
     /*
     * Set the program (without description) to the local storage (i.e. localforage.getItem('programs'))
     * @param program [Object]: program (without description)
-     */
+    */
     const programs = await getPrograms();
-    // const univName = program.ProgramID.split('@')[1]
     const univName = program.University;
     if (programs[univName] === undefined) {
         programs[univName] = []
     }
-    // programs[univName] = programs[univName].filter(p => p.ProgramID !== program.ProgramID);
     if (programs[univName].find(p => p.ProgramID === program.ProgramID) !== undefined) {
         programs[univName][programs[univName].indexOf(program)] = program;
     } else {
@@ -167,16 +172,33 @@ export async function setProgramDesc(programId, programDesc) {
     * Set the description of the program to the local storage (i.e. localforage.getItem(`${programId}-Desc`))
     * @param programId [String]: programId
     * @param programDesc [String]: description of the program
-     */
+    */
     programDesc = {'description': programDesc, 'Date': Date.now()}
     await localforage.setItem(`${programId}-Desc`, programDesc);
 }
 
-export async function setProgramContent(requestBody) {
+export async function setProgramContent(program) {
+    /*
+    * Set the program (with description) to the local storage (i.e. localforage.getItem('programs') and localforage.getItem(`${programId}-Desc`))
+    * @param program [Object]: program (with description)
+    */
+    await setProgram(program);
+    await setProgramDesc(program.ProgramID, program.Description);
+}
+
+export async function deleteProgramDesc(programId) {
+    /*
+    * Remove the description of the program from the local storage (i.e. localforage.getItem(`${programId}-Desc`))
+    * @param programId [String]: programId
+    */
+    await localforage.removeItem(`${programId}-Desc`);
+}
+
+export async function addModifyProgram(requestBody) {
     /*
     * Set the program (with description) to the local storage (i.e. localforage.getItem('programs') and localforage.getItem(`${programId}-Desc`), and post to the server.
     * @param program [Object]: program (with description)
-     */
+    */
 
     const response = await fetch(ADD_MODIFY_PROGRAM, {
         method: 'POST',
@@ -187,18 +209,15 @@ export async function setProgramContent(requestBody) {
             content: {...(requestBody.content), Applicants: []},
         }),
     });
-
     await handleErrors(response)
-    const program = requestBody.content;
-    await setProgram(program);
-    await setProgramDesc(program.ProgramID, program.Description);
+    await setProgramContent(requestBody.content);
 }
 
 export async function removeProgram(programId) {
     /*
-    * Delete the program (with description) from the local storage (i.e. localforage.getItem('programs') and localforage.getItem(`${programId}-Desc`), and post to the server.
+    * Remove the program from the local storage and the server.
     * @param programId [String]: programId
-     */
+    */
     const response = await fetch(REMOVE_PROGRAM, {
         method: 'POST',
         credentials: 'include',
@@ -209,9 +228,29 @@ export async function removeProgram(programId) {
     });
 
     await handleErrors(response)
-    await localforage.removeItem(`${programId}-Desc`);
+    await deleteProgramDesc(programId);
     const programs = await getPrograms();
     const univName = programId.split('@')[1]
     programs[univName] = programs[univName].filter(p => p.ProgramID !== programId);
     await setPrograms(programs);
+}
+
+export async function modifyProgramID(requestBody) {
+    /*
+    * Modify the programId of the program from the local storage and the server.
+    * @param requestBody [Object]: {
+    *   'ProgramID': [String]: old programId,
+    *   'NewProgramID': [String]: new programId,
+    * }
+    */
+    const response = await fetch(MODIFY_PROGRAM_ID, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
+        body: JSON.stringify(requestBody),
+    });
+    await handleErrors(response)
+    const oldProgramID = requestBody.ProgramID;
+    await deleteProgramDesc(oldProgramID);
+    await getPrograms(true);
 }

@@ -10,3 +10,4 @@ export const LOGIN = ROOT + "api/auth/login";
 export const LOGOUT = ROOT + "api/my/logout";
 export const IS_LOGIN = ROOT + "api/my/is_login";
 export const REMOVE_PROGRAM = ROOT + "api/admin/remove_program";
+export const MODIFY_PROGRAM_ID = ROOT + "api/admin/modify_program_id";
