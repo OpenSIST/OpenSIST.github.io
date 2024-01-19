@@ -6,7 +6,7 @@ import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
 import {useClickOutSideRef, useSmallPage} from "../common";
 import {regionFlagMapping, univAbbrFullNameMapping} from "../../Data/Common";
-import {Button, ButtonGroup, Collapse, Divider, Grid, List, ListItemButton, ListItemText} from "@mui/material";
+import {Button, ButtonGroup, Collapse, Divider, Grid, List, ListItemButton, ListItemText, Paper} from "@mui/material";
 import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
 export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
@@ -14,7 +14,7 @@ export default function SideBar({loaderData}) {
     const [SideBarOpen, setSideBarOpen, SideBarRef] = useClickOutSideRef();
     return (
         <div style={{display: "flex"}} ref={SideBarRef}>
-            <div className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}>
+            <Paper className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}>
                 <SearchBar query={getQuery(loaderData)}/>
                 <ButtonGroup fullWidth sx={{mb: "10px"}}>
                     <Grid container spacing={1}>
@@ -32,11 +32,12 @@ export default function SideBar({loaderData}) {
                         </Grid>
                     </Grid>
                 </ButtonGroup>
+
                 <UnivProgramList univProgramList={univProgramList}/>
                 <div style={{textAlign: 'center', paddingTop: '5px'}}>
                     对列表有问题可以<a href='https://github.com/OpenSIST/OpenSIST.github.io/issues'>联系我们</a>
                 </div>
-            </div>
+            </Paper>
             <button
                 className={'Button ShowUpButton ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open ' : '')}
                 onClick={() => setSideBarOpen(!SideBarOpen)}

@@ -35,6 +35,7 @@ import OpenSansRegular from "./Assets/fonts/open-sans-v17-latin-ext_latin-regula
 import OpenSansBold from "./Assets/fonts/open-sans-v17-latin-ext_latin-700.woff2";
 import OpenSansItalic from "./Assets/fonts/open-sans-v17-latin-ext_latin-italic.woff2";
 import OpenSansBoldItalic from "./Assets/fonts/open-sans-v17-latin-ext_latin-700italic.woff2";
+import {getPalette} from "./Components/common";
 
 const router = createBrowserRouter([
     {
@@ -131,6 +132,7 @@ const router = createBrowserRouter([
 ])
 
 const theme = createTheme({
+    palette: getPalette('dark'),
     components: {
         MuiButtonBase: {
             defaultProps: {

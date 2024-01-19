@@ -16,7 +16,6 @@
 
 .RegisterAndReset input {
     padding: 0.5rem;
-    border: solid 1px var(--border-color);
     border-radius: 5px;
 }
 

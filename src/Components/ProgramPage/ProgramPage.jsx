@@ -2,6 +2,7 @@ import SideBar from "../SideBar/SideBar";
 import {Outlet, useLoaderData} from "react-router-dom";
 import {getPrograms} from "../../Data/ProgramData";
 import './ProgramPage.css';
+import {Container, Paper} from "@mui/material";
 
 export async function loader({ request }) {
     const url = new URL(request.url);
@@ -16,9 +17,9 @@ export async function loader({ request }) {
 export default function ProgramPage() {
     const loaderData = useLoaderData();
     return (
-        <div className='ContentBlock'>
+        <Paper className='ContentBlock'>
             <SideBar loaderData={loaderData}/>
             <Outlet/>
-        </div>
+        </Paper>
     )
 }
