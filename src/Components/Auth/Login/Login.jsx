@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Form, useNavigate} from 'react-router-dom';
+import {Form} from 'react-router-dom';
 import "./Login.css"
 import {login} from "../../../Data/UserData";
 import {Link, Button, TextField, Typography, Box} from "@mui/material";
@@ -14,7 +14,6 @@ export async function action({request}) {
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
 
     return (
         <Form method='post' className="login">

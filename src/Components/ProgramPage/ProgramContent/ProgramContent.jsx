@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import './ProgramContent.css'
-import {Form, Link, redirect, useLoaderData, useRevalidator} from "react-router-dom";
+import {Form, Link, useLoaderData} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
-import {IconButton} from "@mui/material";
+import {IconButton, Typography} from "@mui/material";
 import {Edit, Refresh} from "@mui/icons-material";
 
 export async function loader({params}) {
@@ -26,9 +26,9 @@ function ProgramContent() {
     return (
         <div className="ProgramContent" key={programContent.ProgramID}>
             <div className="ProgramHeader">
-                <h1 style={{display: 'flex', position: 'relative'}}>
+                <Typography variant='h3' sx={{display: 'flex', position: 'relative'}}>
                     {programContent.ProgramID}
-                </h1>
+                </Typography>
                 <div className='ReviseRefreshButtonGroup'>
                     <IconButton component={Link} to={`edit${window.location.search}`}>
                         <Edit/>
