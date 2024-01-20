@@ -1,8 +1,8 @@
 import {Form, redirect, useLoaderData} from "react-router-dom";
 import {getQuery, UnivProgramList} from "../../SideBar/SideBar";
 import {
-    Box, Button,
-    Dialog, DialogActions, DialogContent, DialogContentText,
+    Button,
+    Dialog, DialogActions, DialogContent,
     DialogTitle,
     IconButton,
     ListItem,
@@ -13,25 +13,7 @@ import React, {useState} from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {getPrograms, modifyProgramID, removeProgram} from "../../../Data/ProgramData";
 import {Edit} from "@mui/icons-material";
-import {blue, grey} from "@mui/material/colors";
-
-export default function AdminProgramPage() {
-    const loaderData = useLoaderData();
-    const univProgramList = loaderData.programs;
-    console.log(univProgramList)
-    return (
-        <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            width: "80%",
-            height: "calc(100vh - 60px)"
-        }}>
-            <SearchBar query={getQuery(loaderData)}/>
-            <UnivProgramList univProgramList={univProgramList} ButtonComponent={AdminProgramButton}/>
-        </Box>
-    )
-}
+import {grey} from "@mui/material/colors";
 
 export async function loader({request}) {
     const url = new URL(request.url);
@@ -61,6 +43,18 @@ export async function action({request}) {
 
     return redirect('/admin/programs');
 }
+
+export default function AdminProgramPage() {
+    const loaderData = useLoaderData();
+    const univProgramList = loaderData.programs;
+    return (
+        <>
+            <SearchBar query={getQuery(loaderData)}/>
+            <UnivProgramList univProgramList={univProgramList} ButtonComponent={AdminProgramButton}/>
+        </>
+    )
+}
+
 
 export function AdminProgramButton({program}) {
     const theme = useTheme();

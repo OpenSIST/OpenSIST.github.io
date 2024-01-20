@@ -1,19 +1,21 @@
 import {Box, Drawer, List, ListItem, ListItemButton, Toolbar, Typography} from "@mui/material";
 import {Link, Outlet} from "react-router-dom";
+
 export default function AdminPage() {
     const routerList = [
         {
             name: 'Program',
             path: '/admin/programs'
-        },
-        {
+        }, {
             name: 'Applicant',
             path: '/admin/applicants'
-        },
-        {
+        }, {
             name: 'Record',
             path: '/admin/records'
-        }
+        }, {
+            name: 'Email',
+            path: '/admin/emails'
+        },
     ]
 
     return (
@@ -23,11 +25,11 @@ export default function AdminPage() {
                 sx={{
                     width: 240,
                     flexShrink: 0,
-                    [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' },
+                    [`& .MuiDrawer-paper`]: {width: 240, boxSizing: 'border-box'},
                 }}
             >
-                <Toolbar />
-                <Box sx={{ overflow: 'auto'}}>
+                <Toolbar/>
+                <Box sx={{overflow: 'auto'}}>
                     <List>
                         {routerList.map((item, index) => (
                             <ListItem key={item.name}>
@@ -39,7 +41,17 @@ export default function AdminPage() {
                     </List>
                 </Box>
             </Drawer>
-            <Outlet/>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    width: "80%",
+                    height: "calc(100vh - 60px)"
+                }}
+            >
+                <Outlet/>
+            </Box>
         </Box>
     )
 }

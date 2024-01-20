@@ -36,6 +36,10 @@ import OpenSansBold from "./Assets/fonts/open-sans-v17-latin-ext_latin-700.woff2
 import OpenSansItalic from "./Assets/fonts/open-sans-v17-latin-ext_latin-italic.woff2";
 import OpenSansBoldItalic from "./Assets/fonts/open-sans-v17-latin-ext_latin-700italic.woff2";
 import {getPalette} from "./Components/common";
+import AdminEmailPage, {
+    loader as AdminEmailPageLoader,
+    action as AdminEmailPageAction
+} from "./Components/Admin/AdminEmail/AdminEmailPage";
 
 const router = createBrowserRouter([
     {
@@ -98,6 +102,11 @@ const router = createBrowserRouter([
                                         path: '/admin/applicants',
                                     }, {
                                         path: '/admin/records',
+                                    }, {
+                                        path: '/admin/emails',
+                                        element: <AdminEmailPage/>,
+                                        loader: AdminEmailPageLoader,
+                                        action: AdminEmailPageAction
                                     }
                                 ]
                             }
