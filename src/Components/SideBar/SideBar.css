@@ -53,6 +53,16 @@
     visibility: visible;
 }
 
+.UnivProgramList {
+    border-radius: 5px;
+    max-height: calc(100vh - 460px);
+    overflow-y: auto;
+}
+
+.UnivProgramList div:first-child {
+    border-radius: 5px 5px 0 0;
+}
+
 .ProgramItem::before {
     content: "";
     display: block;
@@ -62,9 +72,4 @@
     height: 100%;
     width: 1px;
     opacity: 1;
-    background: #E5EAF2;
-}
-
-.ProgramItem.Mui-selected::before {
-    background: #4776be;
 }

@@ -6,8 +6,19 @@ import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
 import {useClickOutSideRef, useSmallPage} from "../common";
 import {regionFlagMapping, univAbbrFullNameMapping} from "../../Data/Common";
-import {Button, ButtonGroup, Collapse, Divider, Grid, List, ListItemButton, ListItemText, Paper} from "@mui/material";
+import {
+    Box,
+    Button,
+    Collapse,
+    Divider,
+    List,
+    ListItemButton,
+    ListItemText,
+    Paper,
+    useTheme
+} from "@mui/material";
 import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
+import {blue, grey} from "@mui/material/colors";
 export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
     const SideBarHidden = useSmallPage();
@@ -16,22 +27,18 @@ export default function SideBar({loaderData}) {
         <div style={{display: "flex"}} ref={SideBarRef}>
             <Paper className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}>
                 <SearchBar query={getQuery(loaderData)}/>
-                <ButtonGroup fullWidth sx={{mb: "10px"}}>
-                    <Grid container spacing={1}>
-                        <Grid item xs={6}>
-                            <Button title='添加新项目' component={Link} to='/programs/new'>
-                                <Add/>
-                            </Button>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Form method='post'>
-                                <Button type='submit' title='刷新项目列表'>
-                                    <Refresh/>
-                                </Button>
-                            </Form>
-                        </Grid>
-                    </Grid>
-                </ButtonGroup>
+                <Box sx={{mb: "10px", display: 'flex', gap: "10px"}}>
+                    <Form action='/programs/new' style={{width: "100%"}}>
+                        <Button fullWidth type='submit' variant="outlined" title='添加新项目'>
+                            <Add/>
+                        </Button>
+                    </Form>
+                    <Form method='post' style={{width: "100%"}}>
+                        <Button fullWidth type='submit' variant="outlined" title='刷新项目列表'>
+                            <Refresh/>
+                        </Button>
+                    </Form>
+                </Box>
 
                 <UnivProgramList univProgramList={univProgramList}/>
                 <div style={{textAlign: 'center', paddingTop: '5px'}}>
@@ -54,14 +61,7 @@ export function UnivProgramList({univProgramList, ButtonComponent=ProgramButton}
         <>
             <List
                 component='nav'
-                sx={{
-                    width: '100%',
-                    bgcolor: 'background.paper',
-                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                    borderRadius: "5px",
-                    overflowY: 'auto',
-                    maxHeight: 'calc(100vh - 460px)',
-                }}
+                className="UnivProgramList"
             >
                 {Object.entries(univProgramList).map((univProgram) => (
                     <React.Fragment key={univProgram[0]}>
@@ -79,13 +79,18 @@ export function UnivProgramList({univProgramList, ButtonComponent=ProgramButton}
 }
 
 export function ProgramList({univProgram, selectProgram, setSelectProgram, ButtonComponent}) {
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === 'dark';
     const [isFolded, setIsFolded] = React.useState(false);
     const univName = univProgram[0];
     const programList = univProgram[1];
     const flags = programList[0].Region.map((r) => regionFlagMapping[r]).reduce((prev, curr) => prev + ' ' + curr, '');
     return (
         <>
-            <ListItemButton onClick={() => setIsFolded(!isFolded)}>
+            <ListItemButton
+                onClick={() => setIsFolded(!isFolded)}
+                sx={{bgcolor: darkMode? grey[800] : grey[50]}}
+            >
                 {isFolded ? <ExpandMore/> : <NavigateNext/>}
                 <ListItemText primary={univName} secondary={univAbbrFullNameMapping[univName]}/>
                 {flags}
@@ -110,6 +115,8 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
 }
 
 export function ProgramButton({program, selectProgram, setSelectProgram}) {
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === 'dark';
     return (
         <ListItemButton
             className='ProgramItem'
@@ -117,7 +124,18 @@ export function ProgramButton({program, selectProgram, setSelectProgram}) {
             component={Link}
             onClick={() => setSelectProgram(program.ProgramID)}
             to={`/programs/${program.ProgramID}${window.location.search}`}
-            sx={{pl: "3rem"}}
+            sx={{
+                pl: "3rem",
+                bgcolor: darkMode? grey[800] : grey[50],
+                "&::before": {
+                    background: darkMode? grey[700] : grey[300],
+                },
+                "&.Mui-selected": {
+                    "&::before": {
+                        background: darkMode? blue[800] : blue[300],
+                    }
+                }
+        }}
             key={program.ProgramID}
         >
             <ListItemText primary={program.Program}

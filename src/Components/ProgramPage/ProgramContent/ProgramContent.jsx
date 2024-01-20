@@ -3,8 +3,9 @@ import ReactMarkdown from 'react-markdown';
 import './ProgramContent.css'
 import {Form, Link, useLoaderData} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
-import {IconButton, Typography} from "@mui/material";
+import {IconButton, Paper, Typography, useTheme} from "@mui/material";
 import {Edit, Refresh} from "@mui/icons-material";
+import {grey} from "@mui/material/colors";
 
 export async function loader({params}) {
     const programId = params.programId;
@@ -22,9 +23,17 @@ export async function action({params}) {
 }
 
 function ProgramContent() {
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === 'dark';
     const {programContent} = useLoaderData();
     return (
-        <div className="ProgramContent" key={programContent.ProgramID}>
+        <Paper
+            className="ProgramContent"
+            key={programContent.ProgramID}
+            sx={{
+                bgcolor: darkMode ? grey[800] : grey[100],
+            }}
+        >
             <div className="ProgramHeader">
                 <Typography variant='h3' sx={{display: 'flex', position: 'relative'}}>
                     {programContent.ProgramID}
@@ -45,7 +54,7 @@ function ProgramContent() {
             >
                 {programContent.description}
             </ReactMarkdown>
-        </div>
+        </Paper>
     );
 }
 

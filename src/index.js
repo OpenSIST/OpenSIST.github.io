@@ -140,9 +140,15 @@ const theme = createTheme({
             }, styleOverrides: {
                 root: {
                     "&:active": {
+                        transition: "transform 0.1s ease-in-out",
                         transform: "scale(0.98)",
                     },
                 },
+            },
+        },
+        MuiButtonGroup: {
+            defaultProps: {
+                disableRipple: true,
             },
         },
         MuiCssBaseline: {

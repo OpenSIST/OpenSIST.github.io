@@ -6,20 +6,27 @@ import {
     DialogTitle,
     IconButton,
     ListItem,
-    ListItemText, TextField
+    ListItemText, TextField, useTheme
 } from "@mui/material";
 import SearchBar from "../../SideBar/SearchBar/SearchBar";
 import React, {useState} from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {getPrograms, modifyProgramID, removeProgram} from "../../../Data/ProgramData";
 import {Edit} from "@mui/icons-material";
+import {blue, grey} from "@mui/material/colors";
 
 export default function AdminProgramPage() {
     const loaderData = useLoaderData();
     const univProgramList = loaderData.programs;
     console.log(univProgramList)
     return (
-        <Box sx={{m: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', width: "80%"}}>
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            width: "80%",
+            height: "calc(100vh - 60px)"
+        }}>
             <SearchBar query={getQuery(loaderData)}/>
             <UnivProgramList univProgramList={univProgramList} ButtonComponent={AdminProgramButton}/>
         </Box>
@@ -56,6 +63,8 @@ export async function action({request}) {
 }
 
 export function AdminProgramButton({program}) {
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === 'dark';
     const [openRemoveDialog, setOpenRemoveDialog] = useState(false);
     const [openModifyDialog, setOpenModifyDialog] = useState(false);
     const [newProgramID, setNewProgramID] = useState(program.ProgramID);
@@ -67,7 +76,12 @@ export function AdminProgramButton({program}) {
         <>
             <ListItem
                 className='ProgramItem'
-                sx={{pl: "3rem"}}
+                sx={{
+                    pl: "3rem",
+                    "&::before": {
+                        background: darkMode ? grey[800] : grey[300],
+                    },
+                }}
                 key={program.ProgramID}
             >
                 <ListItemText primary={program.Program}

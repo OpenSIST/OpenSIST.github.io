@@ -7,7 +7,7 @@ import {
     Checkbox,
     Divider, FormControl,
     InputBase,
-    InputLabel, ListItemIcon,
+    InputLabel,
     ListItemText,
     MenuItem,
     OutlinedInput

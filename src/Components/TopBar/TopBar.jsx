@@ -5,7 +5,7 @@ import NavBar from "./NavBar/NavBar";
 import {Link} from "react-router-dom";
 import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import {blueGrey, grey} from "@mui/material/colors";
+import {grey} from "@mui/material/colors";
 
 function TopBar() {
     return (
