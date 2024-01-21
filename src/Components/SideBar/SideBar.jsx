@@ -14,29 +14,39 @@ import {
     List,
     ListItemButton,
     ListItemText,
-    Paper,
+    Paper, Tooltip,
     useTheme
 } from "@mui/material";
 import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
 import {blue, grey} from "@mui/material/colors";
+
 export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
     const SideBarHidden = useSmallPage();
     const [SideBarOpen, setSideBarOpen, SideBarRef] = useClickOutSideRef();
     return (
         <div style={{display: "flex"}} ref={SideBarRef}>
-            <Paper className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}>
+            <Paper
+                className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}
+                sx={{
+                    bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
+                }}
+            >
                 <SearchBar query={getQuery(loaderData)}/>
                 <Box sx={{mb: "10px", display: 'flex', gap: "10px"}}>
                     <Form action='/programs/new' style={{width: "100%"}}>
-                        <Button fullWidth type='submit' variant="outlined" title='添加新项目'>
-                            <Add/>
-                        </Button>
+                        <Tooltip title='添加新项目'>
+                            <Button fullWidth type='submit' variant="outlined">
+                                <Add/>
+                            </Button>
+                        </Tooltip>
                     </Form>
                     <Form method='post' style={{width: "100%"}}>
-                        <Button fullWidth type='submit' variant="outlined" title='刷新项目列表'>
-                            <Refresh/>
-                        </Button>
+                        <Tooltip title='刷新项目列表'>
+                            <Button fullWidth type='submit' variant="outlined">
+                                <Refresh/>
+                            </Button>
+                        </Tooltip>
                     </Form>
                 </Box>
 
@@ -55,10 +65,18 @@ export default function SideBar({loaderData}) {
     )
 }
 
-export function UnivProgramList({univProgramList, ButtonComponent=ProgramButton}) {
+export function UnivProgramList({univProgramList, ButtonComponent = ProgramButton}) {
     const [selectProgram, setSelectProgram] = React.useState(null);
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === 'dark';
     return (
-        <>
+        <Paper
+            variant={darkMode ? 'elevation' : 'outlined'}
+            elevation={0}
+            sx={{
+                bgcolor: darkMode ? grey[800] : grey[50],
+            }}
+        >
             <List
                 component='nav'
                 className="UnivProgramList"
@@ -74,13 +92,11 @@ export function UnivProgramList({univProgramList, ButtonComponent=ProgramButton}
                     </React.Fragment>
                 ))}
             </List>
-        </>
+        </Paper>
     )
 }
 
 export function ProgramList({univProgram, selectProgram, setSelectProgram, ButtonComponent}) {
-    const theme = useTheme();
-    const darkMode = theme.palette.mode === 'dark';
     const [isFolded, setIsFolded] = React.useState(false);
     const univName = univProgram[0];
     const programList = univProgram[1];
@@ -89,7 +105,6 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
         <>
             <ListItemButton
                 onClick={() => setIsFolded(!isFolded)}
-                sx={{bgcolor: darkMode? grey[800] : grey[50]}}
             >
                 {isFolded ? <ExpandMore/> : <NavigateNext/>}
                 <ListItemText primary={univName} secondary={univAbbrFullNameMapping[univName]}/>
@@ -126,16 +141,15 @@ export function ProgramButton({program, selectProgram, setSelectProgram}) {
             to={`/programs/${program.ProgramID}${window.location.search}`}
             sx={{
                 pl: "3rem",
-                bgcolor: darkMode? grey[800] : grey[50],
                 "&::before": {
-                    background: darkMode? grey[700] : grey[300],
+                    background: darkMode ? grey[700] : grey[300],
                 },
                 "&.Mui-selected": {
                     "&::before": {
-                        background: darkMode? blue[800] : blue[300],
+                        background: darkMode ? blue[800] : blue[300],
                     }
                 }
-        }}
+            }}
             key={program.ProgramID}
         >
             <ListItemText primary={program.Program}

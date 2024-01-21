@@ -20,6 +20,7 @@
     "@testing-library/user-event": "^13.5.0",
     "ajv": "^6.12.6",
     "babel-plugin-macros": "^3.1.0",
+    "cm6-theme-basic-dark": "^0.2.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "postal-mime": "^2.0.2",

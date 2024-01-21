@@ -1,9 +1,9 @@
-import {INBOX, MOVE_BACK_INBOX, MOVE_TO_TRASH, REMOVE_FROM_TRASH, TRASH} from "../APIs/APIs";
+import {GET_EMAIL_CONTENT, INBOX, MOVE_BACK_INBOX, MOVE_TO_TRASH, REMOVE_FROM_TRASH, TRASH} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
 import PostalMime from "postal-mime";
 import {redirect} from "react-router-dom";
 
-export async function getEmails(source='inbox') {
+export async function getEmailList(source) {
     const API = source === 'inbox' ? INBOX : TRASH;
     const response = await fetch(API, {
         method: 'POST',
@@ -12,18 +12,26 @@ export async function getEmails(source='inbox') {
     });
     await handleErrors(response);
     let emails = (await response.json()).data;
-    let emailObject = {};
-    for (let [id, email] of Object.entries(emails)) {
-        const parser = new PostalMime();
-        emailObject[id] = await parser.parse(email.body);
-    }
-    emailObject = Object.entries(emailObject).sort((a, b) => {
-        return new Date(b[1].date) - new Date(a[1].date);
+    emails = Object.entries(emails).sort((a, b) => {
+        return new Date(b[1].time) - new Date(a[1].time);
     }).reduce((obj, [key, value]) => {
         obj[key] = value;
         return obj;
     }, {});
-    return emailObject;
+    return emails;
+}
+
+export async function getEmailBody(emailID) {
+    const response = await fetch(GET_EMAIL_CONTENT, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
+        body: JSON.stringify({EmailID: emailID})
+    });
+    await handleErrors(response);
+    const email = (await response.json()).data;
+    const parser = new PostalMime();
+    return await parser.parse(email);
 }
 
 export async function moveEmail(emailID, action) {

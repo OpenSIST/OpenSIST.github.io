@@ -27,13 +27,7 @@ function ProgramContent() {
     const darkMode = theme.palette.mode === 'dark';
     const {programContent} = useLoaderData();
     return (
-        <Paper
-            className="ProgramContent"
-            key={programContent.ProgramID}
-            sx={{
-                bgcolor: darkMode ? grey[800] : grey[100],
-            }}
-        >
+        <>
             <div className="ProgramHeader">
                 <Typography variant='h3' sx={{display: 'flex', position: 'relative'}}>
                     {programContent.ProgramID}
@@ -54,7 +48,7 @@ function ProgramContent() {
             >
                 {programContent.description}
             </ReactMarkdown>
-        </Paper>
+        </>
     );
 }
 

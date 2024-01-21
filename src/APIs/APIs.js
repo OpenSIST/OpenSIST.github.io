@@ -13,6 +13,7 @@ export const REMOVE_PROGRAM = ROOT + "api/admin/remove_program";
 export const MODIFY_PROGRAM_ID = ROOT + "api/admin/modify_program_id";
 export const INBOX = ROOT + "api/admin/email/inbox";
 export const TRASH = ROOT + "api/admin/email/trash";
+export const GET_EMAIL_CONTENT = ROOT + "api/admin/email/fetch_one";
 export const MOVE_TO_TRASH = ROOT + "api/admin/email/move_to_trash";
 export const MOVE_BACK_INBOX = ROOT + "api/admin/email/move_back_inbox";
 export const REMOVE_FROM_TRASH = ROOT + "api/admin/email/remove_from_trash";

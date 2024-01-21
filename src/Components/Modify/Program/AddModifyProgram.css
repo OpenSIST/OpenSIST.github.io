@@ -1,6 +1,6 @@
 .MarkDownEditor {
     width: 100%;
-    height: calc(100vh - 450px);
+    height: calc(100vh - 460px);
     border-radius: 5px;
     box-sizing: border-box;
     overflow-y: scroll;

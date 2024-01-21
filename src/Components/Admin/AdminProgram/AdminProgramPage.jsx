@@ -6,7 +6,7 @@ import {
     DialogTitle,
     IconButton,
     ListItem,
-    ListItemText, TextField, useTheme
+    ListItemText, TextField, Typography, useTheme
 } from "@mui/material";
 import SearchBar from "../../SideBar/SearchBar/SearchBar";
 import React, {useState} from "react";
@@ -49,6 +49,7 @@ export default function AdminProgramPage() {
     const univProgramList = loaderData.programs;
     return (
         <>
+            <Typography variant='h4' sx={{mb:'10px', alignSelf:"center"}}>Program Admin Panel</Typography>
             <SearchBar query={getQuery(loaderData)}/>
             <UnivProgramList univProgramList={univProgramList} ButtonComponent={AdminProgramButton}/>
         </>

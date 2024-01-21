@@ -19,7 +19,7 @@ export default function AdminPage() {
     ]
 
     return (
-        <Box sx={{display: 'flex', justifyContent: 'center'}}>
+        <Box sx={{display: 'flex', justifyContent: 'center', width: '100%'}}>
             <Drawer
                 variant="permanent"
                 sx={{

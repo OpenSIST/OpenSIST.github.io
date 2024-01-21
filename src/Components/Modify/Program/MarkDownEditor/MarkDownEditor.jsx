@@ -18,14 +18,15 @@ import {
     UndoRedo,
     BoldItalicUnderlineToggles
 } from "@mdxeditor/editor";
-import {useTheme} from "@mui/material";
+import {Box, useTheme} from "@mui/material";
 import "./dark-editor.css"
+import {basicDark} from 'cm6-theme-basic-dark'
 
 export default function MarkDownEditor({OriginDesc, Description, setDescription}) {
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
     return (
-        <div
+        <Box
             className="MarkDownEditor"
         >
             <MDXEditor
@@ -44,7 +45,11 @@ export default function MarkDownEditor({OriginDesc, Description, setDescription}
                     linkDialogPlugin({}),
                     tablePlugin(),
                     markdownShortcutPlugin(),
-                    diffSourcePlugin({viewMode: 'rich-text', diffMarkdown: OriginDesc}),
+                    diffSourcePlugin({
+                        viewMode: 'rich-text',
+                        diffMarkdown: OriginDesc,
+                        codeMirrorExtensions: darkMode ? [basicDark] : null
+                    }),
                     toolbarPlugin({
                         toolbarContents: () => (
                             <div className='MarkDownToolBar'>
@@ -66,7 +71,7 @@ export default function MarkDownEditor({OriginDesc, Description, setDescription}
                     })
                 ]}
             />
-        </div>
+        </Box>
     )
 }
 

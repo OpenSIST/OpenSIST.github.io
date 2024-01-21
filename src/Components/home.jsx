@@ -7,9 +7,14 @@ import {Paper} from "@mui/material";
 
 function Home() {
     return (
-        <Paper>
+        <Paper elevation={0}>
             <TopBar/>
-            <Outlet/>
+            <Paper
+                className="ContentBlock"
+                elevation={0}
+            >
+                <Outlet/>
+            </Paper>
             <LoadingBackdrop/>
         </Paper>
     );
