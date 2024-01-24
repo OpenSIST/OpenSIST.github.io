@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Form, Link} from 'react-router-dom';
 import "./Login.css"
 import {login} from "../../../Data/UserData";
-import {Button, TextField, Typography, Box} from "@mui/material";
+import {Button, TextField, Typography, Box, FormControl, InputAdornment, Input, InputLabel} from "@mui/material";
 
 
 export async function action({request}) {
@@ -19,18 +19,19 @@ function Login() {
     return (
         <Form method='post' className="login">
             <Typography variant='h4' sx={{mb: "1rem"}}>用户登录</Typography>
-            <TextField
-                fullWidth
-                variant='standard'
-                label='用户名'
-                placeholder="请输入上科大注册邮箱的前缀"
-                type="username"
-                id='username'
-                name='username'
-                value={username}
-                onChange={(e) => setUsername(e.target.value.split('@')[0])}
-                required
-            />
+            <FormControl variant="standard" sx={{width: '100%'}}>
+                <InputLabel required>上科大邮箱前缀</InputLabel>
+                <Input
+                    fullWidth
+                    variant='standard'
+                    id='username'
+                    name='username'
+                    value={username}
+                    endAdornment={<InputAdornment position="end">@shanghaitech.edu.cn</InputAdornment>}
+                    onChange={(e) => setUsername(e.target.value.split('@')[0])}
+                    required
+                />
+            </FormControl>
             <TextField
                 fullWidth
                 variant='standard'

@@ -1,6 +1,12 @@
 import localforage from "localforage";
 import {redirect} from "react-router-dom";
-import {LOGIN, LOGOUT, IS_LOGIN} from "../APIs/APIs";
+import {
+    LOGIN,
+    LOGOUT,
+    IS_LOGIN,
+    REGISTER,
+    RESET_PASSWORD
+} from "../APIs/APIs";
 import {headerGenerator} from "./Common";
 
 export async function checkLogin() {
@@ -37,6 +43,27 @@ export async function login(username, password) {
         }
         await setUserInfo(user_info);
         return redirect("/");
+    }
+}
+
+export async function registerReset(username, password, token, status) {
+    const api = status === 'reset' ? RESET_PASSWORD : REGISTER;
+    const email = username + "@shanghaitech.edu.cn";
+    const response = await fetch(api, {
+        method: "POST",
+        mode: "cors",
+        credentials: "include",
+        headers: await headerGenerator(),
+        body: JSON.stringify({email, password, token}),
+    });
+
+    if (response.status === 200) {
+        return redirect("/");
+    } else {
+        const content = await response.json();
+        const path = status === 'reset' ? '/reset' : '/register';
+        alert(`${content.error}, Error code: ${response.status}`);
+        return redirect(path);
     }
 }
 

@@ -16,7 +16,9 @@ import ProgramContent, {
 import Login, {
     action as loginAction
 } from "./Components/Auth/Login/Login";
-import RegisterAndReset from "./Components/Auth/RegisterAndReset/RegisterAndReset";
+import RegisterAndReset, {
+    action as registerAndResetAction
+} from "./Components/Auth/RegisterAndReset/RegisterAndReset";
 import AddModifyProgram, {
     action as addModifyProgramAction
 } from "./Components/Modify/Program/AddModifyProgram";
@@ -121,9 +123,11 @@ const router = createBrowserRouter([
                     }, {
                         path: '/register',
                         element: <RegisterAndReset/>,
+                        action: registerAndResetAction
                     }, {
                         path: '/reset',
                         element: <RegisterAndReset/>,
+                        action: registerAndResetAction
                     }, {
                         path: '/agreement',
                         element: <Agreement/>,
