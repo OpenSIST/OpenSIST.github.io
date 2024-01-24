@@ -46,6 +46,7 @@ export default function RegisterAndReset() {
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [token, setToken] = useState("");
+    const [tokenSent, setTokenSent] = useState(false);
 
     // check the state for password requirements
     const [isLengthValid, setIsLengthValid] = useState(false);
@@ -106,7 +107,6 @@ export default function RegisterAndReset() {
 
     const handleVerify = async (e) => {
         e.preventDefault();
-        sendAndStartTimer();
         const api = status === 'reset' ? SEND_RESET_VERIFY_TOKEN : SEND_VERIFY_TOKEN;
         try {
             const response = await fetch(api, {
@@ -118,6 +118,8 @@ export default function RegisterAndReset() {
             });
 
             if (response.status === 200) {
+                sendAndStartTimer();
+                setTokenSent(true);
                 alert("验证码已发送到您的上科大邮箱。若未收到，请查看postmaster垃圾邮件系统。");
             } else {
                 const content = await response.json();
@@ -195,6 +197,7 @@ export default function RegisterAndReset() {
                     variant='contained'
                     disabled={sendButtonDisabled || email?.split('@')[0] === ""}
                     onClick={handleVerify}
+                    required
                 >
                     { sendButtonDisabled ? `${timeLeft} 秒后重新发送` : '发送验证码' }
                 </Button>
@@ -232,8 +235,9 @@ export default function RegisterAndReset() {
                 type='submit'
                 name='status'
                 value={status}
+                disabled={!tokenSent}
             >
-                {title}
+                {tokenSent ? title : '请先发送验证码'}
             </Button>
             {status === 'register' && <Link to="/login">已有账号？点此登录</Link>}
         </Form>

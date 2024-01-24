@@ -58,7 +58,7 @@ export async function registerReset(username, password, token, status) {
     });
 
     if (response.status === 200) {
-        return redirect("/");
+        return redirect("/login");
     } else {
         const content = await response.json();
         const path = status === 'reset' ? '/reset' : '/register';
