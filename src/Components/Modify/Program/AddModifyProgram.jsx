@@ -8,16 +8,17 @@ import {
 } from "../../../Data/Schemas";
 import MarkDownEditor from "./MarkDownEditor/MarkDownEditor";
 import {useLoaderData, useNavigate, redirect, Form} from "react-router-dom";
-import {setProgramContent} from "../../../Data/ProgramData";
+import {addModifyProgram} from "../../../Data/ProgramData";
 import {
     Button,
     ButtonGroup, Checkbox,
     FormControl, ListItemText,
-    MenuItem,
+    MenuItem, Paper,
     TextField,
-    Typography
+    Typography, useTheme
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
+import {grey} from "@mui/material/colors";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -41,11 +42,13 @@ export async function action({request}) {
         }
     };
     // console.log(requestBody)
-    await setProgramContent(requestBody)
+    await addModifyProgram(requestBody)
     return redirect(`/programs/${ProgramID}`)
 }
 
 export default function AddModifyProgram() {
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === 'dark';
     const navigate = useNavigate();
     const loaderData = useLoaderData();
     const programContent = loaderData?.programContent;
@@ -56,11 +59,14 @@ export default function AddModifyProgram() {
     const [univ, setUniv] = useState(univOptions.find((univ) => univ.value === programContent?.University) ?? null);
     const [major, setMajor] = useState(majorOptions.filter((m) => programContent?.TargetApplicantMajor.includes(m.value)) ?? []);
     return (
-        <Form method="post" className='ProgramContent'>
-            <Typography variant="h4" sx={{mb: "10px", alignSelf: 'center'}}>{`${mode}项目`}</Typography>
-            <Typography variant="h5" sx={{mb: "10px"}}>项目信息</Typography>
+        <Form method="post"
+              style={{display: 'flex', flexDirection: 'column'}}
+        >
+            <Typography variant="h4" sx={{alignSelf: 'center'}}>{`${mode}项目`}</Typography>
+            <Typography variant="h5">项目信息</Typography>
             <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "15px"}} fullWidth>
                 <Autocomplete
+                    autoSelect
                     autoHighlight
                     options={univOptions}
                     value={univ}
@@ -69,7 +75,8 @@ export default function AddModifyProgram() {
                     sx={AddMode ? {} : {color: 'gray', cursor: 'not-allowed', pointerEvents: 'none'}}
                     renderInput={(params) =>
                         <>
-                            <TextField {...params} label={"学校名称" + (AddMode ? "" : " (不可修改)")} variant="standard"
+                            <TextField {...params} label={"学校名称" + (AddMode ? "" : " (不可修改)")}
+                                       variant="standard"
                                        required/>
                             <TextField sx={{display: 'none'}} name="University" value={univ?.value || ""}/>
                         </>}
@@ -96,7 +103,6 @@ export default function AddModifyProgram() {
             </FormControl>
             <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "15px"}} fullWidth>
                 <Autocomplete
-                    autoHighlight
                     options={degreeOptions}
                     defaultValue={programContent?.Degree ? degreeOptions.find((degree) => {
                         return degree.value === programContent?.Degree;
@@ -115,7 +121,6 @@ export default function AddModifyProgram() {
                     required
                 />
                 <Autocomplete
-                    autoHighlight
                     multiple
                     disableCloseOnSelect
                     onChange={(event, value) => {
@@ -158,8 +163,8 @@ export default function AddModifyProgram() {
             <MarkDownEditor OriginDesc={OriginDesc} Description={Description} setDescription={setDescription}/>
             <textarea id='Description' name='Description' hidden={true} value={Description} readOnly/>
             <ButtonGroup>
-                <Button type="submit"> Submit </Button>
-                <Button onClick={() => navigate(-1)}> Cancel </Button>
+                <Button type="submit"> 提交 </Button>
+                <Button onClick={() => navigate(-1)}> 取消 </Button>
             </ButtonGroup>
         </Form>
     )

@@ -1,6 +1,12 @@
 import localforage from "localforage";
 import {redirect} from "react-router-dom";
-import {LOGIN, LOGOUT, IS_LOGIN} from "../APIs/APIs";
+import {
+    LOGIN,
+    LOGOUT,
+    IS_LOGIN,
+    REGISTER,
+    RESET_PASSWORD
+} from "../APIs/APIs";
 import {headerGenerator} from "./Common";
 
 export async function checkLogin() {
@@ -40,6 +46,27 @@ export async function login(username, password) {
     }
 }
 
+export async function registerReset(username, password, token, status) {
+    const api = status === 'reset' ? RESET_PASSWORD : REGISTER;
+    const email = username + "@shanghaitech.edu.cn";
+    const response = await fetch(api, {
+        method: "POST",
+        mode: "cors",
+        credentials: "include",
+        headers: await headerGenerator(),
+        body: JSON.stringify({email, password, token}),
+    });
+
+    if (response.status === 200) {
+        return redirect("/login");
+    } else {
+        const content = await response.json();
+        const path = status === 'reset' ? '/reset' : '/register';
+        alert(`${content.error}, Error code: ${response.status}`);
+        return redirect(path);
+    }
+}
+
 export async function setUserInfo(user_info) {
     Object.entries(user_info).map(async ([key, value]) => {
         await localforage.setItem(key, value)
@@ -47,8 +74,6 @@ export async function setUserInfo(user_info) {
 }
 
 export async function logout() {
-    const session = await localforage.getItem('session');
-    console.log(session)
     const response = await fetch(LOGOUT, {
         method: 'POST',
         headers: await headerGenerator(true),

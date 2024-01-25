@@ -1,28 +1,17 @@
 @import url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
 
+body,html {
+    margin: 0;
+    padding: 0;
+}
+
 :root {
     --side-bar-bg-color: #fafafa;
-    --control-text-color: #777;
-    --color: #333;
-    --bg-color: #f8f9fa;
-    --button-bg-color: #007bff;
-    --button-hover-bg-color: #0056b3;
-    --button-color: #fff;
-    --input-bg-color: #fff;
-    --input-disabled-bg-color: #ddd;
-    --input-disabled-color: #666;
-    --block-hover-bg-color: #ddd;
-    --border-color: #ddd;
-    --menu-bg-color: #fff;
     --font-body: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Twemoji', 'Segoe UI Emoji', sans-serif;
 
     user-select: none;
     font-size: clamp(10px, 1.5vw, 16px);
-    background-color: var(--bg-color);
-    color: var(--color);
 }
-
-/*@include-when-export url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);*/
 
 /* open-sans-regular - latin-ext_latin */
 @font-face {
@@ -118,7 +107,7 @@ h6 {
     position: relative;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    font-weight: bold;
+    font-weight: normal;
     line-height: 1.4;
     cursor: text;
 }
@@ -165,31 +154,14 @@ h6 code {
 h1 {
     font-size: 2.25em;
     line-height: 1.2;
-    border-bottom: 1px solid #eee;
+    /*border-bottom: 1px solid #eee;*/
 }
 
 h2 {
     font-size: 1.75em;
     line-height: 1.225;
-    border-bottom: 1px solid #eee;
+    /*border-bottom: 1px solid #eee;*/
 }
-
-/*@media print {
-    .typora-export h1,
-    .typora-export h2 {
-        border-bottom: none;
-        padding-bottom: initial;
-    }
-
-    .typora-export h1::after,
-    .typora-export h2::after {
-        content: "";
-        display: block;
-        height: 100px;
-        margin-top: -96px;
-        border-top: 1px solid #eee;
-    }
-}*/
 
 h3 {
     font-size: 1.5em;
@@ -262,45 +234,45 @@ blockquote blockquote {
     padding-right: 0;
 }
 
-table {
-    padding: 0;
-    word-break: initial;
-}
+/*table {*/
+/*    padding: 0;*/
+/*    word-break: initial;*/
+/*}*/
 
-table tr {
-    border: 1px solid #dfe2e5;
-    margin: 0;
-    padding: 0;
-}
+/*table tr {*/
+/*    border: 1px solid #dfe2e5;*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*}*/
 
-table tr:nth-child(2n),
-thead {
-    background-color: #f8f8f8;
-}
+/*table tr:nth-child(2n),*/
+/*thead {*/
+/*    background-color: #f8f8f8;*/
+/*}*/
 
-table th {
-    font-weight: bold;
-    border: 1px solid #dfe2e5;
-    border-bottom: 0;
-    margin: 0;
-    padding: 6px 13px;
-}
+/*table th {*/
+/*    font-weight: bold;*/
+/*    border: 1px solid #dfe2e5;*/
+/*    border-bottom: 0;*/
+/*    margin: 0;*/
+/*    padding: 6px 13px;*/
+/*}*/
 
-table td {
-    border: 1px solid #dfe2e5;
-    margin: 0;
-    padding: 6px 13px;
-}
+/*table td {*/
+/*    border: 1px solid #dfe2e5;*/
+/*    margin: 0;*/
+/*    padding: 6px 13px;*/
+/*}*/
 
-table th:first-child,
-table td:first-child {
-    margin-top: 0;
-}
+/*table th:first-child,*/
+/*table td:first-child {*/
+/*    margin-top: 0;*/
+/*}*/
 
-table th:last-child,
-table td:last-child {
-    margin-bottom: 0;
-}
+/*table th:last-child,*/
+/*table td:last-child {*/
+/*    margin-bottom: 0;*/
+/*}*/
 
 .CodeMirror-lines {
     padding-left: 4px;
@@ -317,8 +289,7 @@ tt {
     border: 1px solid #e7eaed;
     background-color: #f8f8f8;
     border-radius: 3px;
-    padding: 0;
-    padding: 2px 4px 0px 4px;
+    padding: 2px 4px 0 4px;
     font-size: 0.9em;
 }
 
@@ -442,17 +413,12 @@ header, .context-menu, .megamenu-content, footer {
 }
 
 .mac-seamless-mode #typora-sidebar {
-    background-color: #fafafa;
     background-color: var(--side-bar-bg-color);
 }
 
 .md-lang {
     color: #b4654d;
 }
-
-/*.html-for-mac {
-    --item-hover-bg-color: #E6F0FE;
-}*/
 
 #md-notification .btn {
     border: 0;

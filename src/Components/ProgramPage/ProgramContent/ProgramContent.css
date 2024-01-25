@@ -17,10 +17,8 @@
     margin-left: 2vw;
     margin-right: 2vw;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     user-select: text;
     overflow-y: auto;
-    background-color: var(--menu-bg-color);
     animation: slideRight 0.3s cubic-bezier(0.11, 0.88, 0.58, 1);
 }
 

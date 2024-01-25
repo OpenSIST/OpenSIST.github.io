@@ -7,17 +7,20 @@ import {
     Checkbox,
     Divider, FormControl,
     InputBase,
-    InputLabel, ListItemIcon,
+    InputLabel,
     ListItemText,
     MenuItem,
-    OutlinedInput
+    OutlinedInput, useTheme
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {majorList, degreeList, regionList} from "../../../Data/Schemas";
 import {isEmptyObject} from "../../common";
 import {regionFlagMapping} from "../../../Data/Common";
+import {grey} from "@mui/material/colors";
 
 export default function SearchBar({query}) {
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === 'dark';
     const [searchParams, setSearchParams] = useSearchParams();
     useEffect(() => {
         document.getElementById('u').value = query.u;
@@ -29,6 +32,7 @@ export default function SearchBar({query}) {
     const handleFilterChange = (e) => {
         const newSearchParams = new URLSearchParams(searchParams);
         const value = e.target.value;
+        console.log(value);
         if (isEmptyObject(value)) {
             newSearchParams.delete(e.target.name);
         } else {
@@ -43,7 +47,13 @@ export default function SearchBar({query}) {
 
     return (
         <Box>
-            <Box role='search' className='searchContainer'>
+            <Box
+                role='search'
+                className='searchContainer'
+                sx={{
+                    bgcolor: darkMode ? grey[800] : grey[50],
+                }}
+            >
                 <SearchIcon sx={{mx: "10px"}}/>
                 <Divider orientation="vertical" variant="middle" flexItem/>
                 <InputBase
@@ -58,72 +68,77 @@ export default function SearchBar({query}) {
                     size="small"
                 />
             </Box>
-            <FormControl fullWidth>
-                <InputLabel size="small">Select Degree</InputLabel>
-                <Select
-                    multiple
-                    id='d'
-                    name='d'
-                    value={defaultDegree}
-                    onChange={handleFilterChange}
-                    className='searchContainer'
-                    input={<OutlinedInput label="Select Degree" size="small"/>}
-                    renderValue={(selected) => selected.join(', ')}
-                    sx={{'.MuiOutlinedInput-notchedOutline': { border: 0 }}}
-                    size="small"
-                >
-                    {degreeList.map((d) => (
-                        <MenuItem key={d} value={d}>
-                            <Checkbox checked={defaultDegree.indexOf(d) > -1}/>
-                            <ListItemText primary={d}/>
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <FormControl fullWidth>
-                <InputLabel size="small">Select Major</InputLabel>
-                <Select
-                    multiple
-                    id='m'
-                    name='m'
-                    value={defaultMajor}
-                    onChange={handleFilterChange}
-                    className='searchContainer'
-                    input={<OutlinedInput label="Select Major" size="small"/>}
-                    renderValue={(selected) => selected.join(', ')}
-                    sx={{'.MuiOutlinedInput-notchedOutline': { border: 0 }}}
-                    size="small"
-                >
-                    {majorList.map((m) => (
-                        <MenuItem key={m} value={m}>
-                            <Checkbox checked={defaultMajor.indexOf(m) > -1}/>
-                            <ListItemText primary={m}/>
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <FormControl fullWidth>
-                <InputLabel size="small">Select Region</InputLabel>
-                <Select
-                    multiple
-                    id='r'
-                    name='r'
-                    value={defaultRegion}
-                    onChange={handleFilterChange}
-                    className='searchContainer'
-                    input={<OutlinedInput label="Select Region" size="small"/>}
-                    renderValue={(selected) => selected.join(', ')}
-                    sx={{'.MuiOutlinedInput-notchedOutline': { border: 0 }}}
-                    size="small"
-                >
-                    {regionList.map((r) => (
-                        <MenuItem key={r} value={r}>
-                            <Checkbox checked={defaultRegion.indexOf(r) > -1}/>
-                            <ListItemText primary={`${r} ${regionFlagMapping[r]}`}/>
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
+            <Filter
+                label='Select Degree'
+                id='d'
+                name='d'
+                value={defaultDegree}
+                handleFilterChange={handleFilterChange}
+                options={degreeList}
+                OptionItem={CheckBoxOptionItem}
+            />
+            <Filter
+                label='Select Major'
+                id='m'
+                name='m'
+                value={defaultMajor}
+                handleFilterChange={handleFilterChange}
+                options={majorList}
+                OptionItem={CheckBoxOptionItem}
+            />
+            <Filter
+                label='Select Region'
+                id='r'
+                name='r'
+                value={defaultRegion}
+                handleFilterChange={handleFilterChange}
+                options={regionList}
+                OptionItem={FlagOptionContent}
+            />
         </Box>
+    )
+}
+
+function Filter({label, id, name, value, handleFilterChange, options, OptionItem: OptionContent}) {
+    return (
+        <FormControl fullWidth>
+            <InputLabel size="small">{label}</InputLabel>
+            <Select
+                multiple
+                id={id}
+                name={name}
+                value={value}
+                onChange={handleFilterChange}
+                className='searchContainer'
+                input={<OutlinedInput label={label} size="small"/>}
+                renderValue={(selected) => selected.join(', ')}
+                sx={{
+                    '.MuiOutlinedInput-notchedOutline': {border: 0},
+                    bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : grey[50],
+                }}
+                size="small"
+            >
+                {options.map((opt) => (
+                        <MenuItem key={opt} value={opt}>
+                            <Checkbox checked={value.indexOf(opt) > -1}/>
+                            <OptionContent optionValue={opt}/>
+                        </MenuItem>
+                    )
+                )}
+            </Select>
+        </FormControl>
+    )
+}
+
+function CheckBoxOptionItem({optionValue}) {
+    return (
+        <ListItemText primary={optionValue}/>
+
+    )
+}
+
+function FlagOptionContent({optionValue}) {
+    return (
+        <ListItemText primary={`${optionValue} ${regionFlagMapping[optionValue]}`}/>
     )
 }

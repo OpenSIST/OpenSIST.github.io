@@ -1,6 +1,7 @@
 import {useLocation, useNavigation} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 import {Backdrop, CircularProgress} from "@mui/material";
+import {grey} from "@mui/material/colors";
 
 export function isEmptyObject(value) {
     return value === '' || value.length === 0;
@@ -9,8 +10,9 @@ export function isEmptyObject(value) {
 export function LoadingBackdrop() {
     const navigation = useNavigation()
     const loading = navigation.state !== 'idle'
+    // console.log(loading)
     return (
-        <Backdrop open={loading} sx={{zIndex:99999}}>
+        <Backdrop open={loading} sx={{zIndex: 99999}}>
             <CircularProgress color="inherit"/>
         </Backdrop>
     )
@@ -53,4 +55,13 @@ export function useClickOutSideRef() {
 export function useUnAuthorized() {
     const location = useLocation();
     return ['/login', '/register', '/reset', '/agreement'].includes(location.pathname);
+}
+
+export function getPalette(mode) {
+    return {
+        mode,
+        background: {
+            paper: mode === 'dark' ? grey[900] : grey[100],
+        }
+    }
 }
