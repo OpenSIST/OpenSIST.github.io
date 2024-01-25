@@ -26,7 +26,7 @@ import {getPrograms} from "./Data/ProgramData";
 import Agreement from "./Components/Agreement/Agreement";
 import ErrorPage from "./Components/Errors/ErrorPage";
 import Profile from "./Components/Profile/Profile";
-import {createTheme, ThemeProvider} from "@mui/material";
+import {createTheme, ThemeProvider, useMediaQuery} from "@mui/material";
 import AdminPage, {AdminIndex} from "./Components/Admin/AdminPage";
 import AdminProgramPage, {
     loader as AdminProgramLoader,
@@ -37,135 +37,139 @@ import OpenSansRegular from "./Assets/fonts/open-sans-v17-latin-ext_latin-regula
 import OpenSansBold from "./Assets/fonts/open-sans-v17-latin-ext_latin-700.woff2";
 import OpenSansItalic from "./Assets/fonts/open-sans-v17-latin-ext_latin-italic.woff2";
 import OpenSansBoldItalic from "./Assets/fonts/open-sans-v17-latin-ext_latin-700italic.woff2";
-import {getPalette} from "./Components/common";
 import AdminEmailPage, {
     loader as AdminEmailPageLoader,
     action as AdminEmailPageAction
 } from "./Components/Admin/AdminEmail/AdminEmailPage";
 
-const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <Home/>,
-        errorElement: <ErrorPage/>,
-        children: [
-            {
-                errorElement: <ErrorPage/>,
-                children: [
-                    {
-                        path: '/programs',
-                        element: <ProgramPage/>,
-                        loader: programPageLoader,
-                        action: (
-                            () => getPrograms(true)
-                        ),
-                        children: [
-                            {
-                                errorElement: <ErrorPage/>,
-                                children: [
-                                    {
-                                        path: '/programs/:programId',
-                                        element: <ProgramContent/>,
-                                        loader: programContentLoader,
-                                        action: programContentAction
-                                    }, {
-                                        path: '/programs/:programId/edit',
-                                        element: <AddModifyProgram key='edit'/>,
-                                        loader: programContentLoader,
-                                        action: addModifyProgramAction
-                                    }, {
-                                        path: '/programs/new',
-                                        element: <AddModifyProgram key='new'/>,
-                                        action: addModifyProgramAction
-                                    }
-                                ]
-                            }
-                        ]
-                    }, {
-                        path: '/applicants',
-                        element: <h1>开发组正在加班加点赶工...</h1>,
-                    }, {
-                        path: '/admin',
-                        element: <AdminPage/>,
-                        children: [
-                            {
-                                errorElement: <ErrorPage/>,
-                                children: [
-                                    {
-                                        index: true,
-                                        element: <AdminIndex/>,
-                                    },
-                                    {
-                                        path: '/admin/programs',
-                                        element: <AdminProgramPage/>,
-                                        loader: AdminProgramLoader,
-                                        action: AdminProgramAction
-                                    }, {
-                                        path: '/admin/applicants',
-                                    }, {
-                                        path: '/admin/records',
-                                    }, {
-                                        path: '/admin/emails',
-                                        element: <AdminEmailPage/>,
-                                        loader: AdminEmailPageLoader,
-                                        action: AdminEmailPageAction
-                                    }
-                                ]
-                            }
-                        ]
-                    }, {
-                        path: '/profile',
-                        element: <Profile/>,
-                    }, {
-                        path: '/login',
-                        element: <Login/>,
-                        action: loginAction
-                    }, {
-                        path: '/register',
-                        element: <RegisterAndReset/>,
-                        action: registerAndResetAction
-                    }, {
-                        path: '/reset',
-                        element: <RegisterAndReset/>,
-                        action: registerAndResetAction
-                    }, {
-                        path: '/agreement',
-                        element: <Agreement/>,
-                    }, {
-                        path: '/about-us',
-                        element: <h1>开发组正在加班加点赶工...</h1>,
-                    }, {
-                        path: '/how-to-use',
-                        element: <h1>开发组正在加班加点赶工...</h1>,
-                    }
-                ]
-            }
-        ]
-    },
-])
+function OpenSIST() {
+    const router = createBrowserRouter([
+        {
+            path: '/',
+            element: <Home/>,
+            errorElement: <ErrorPage/>,
+            children: [
+                {
+                    errorElement: <ErrorPage/>,
+                    children: [
+                        {
+                            path: '/programs',
+                            element: <ProgramPage/>,
+                            loader: programPageLoader,
+                            action: (
+                                () => getPrograms(true)
+                            ),
+                            children: [
+                                {
+                                    errorElement: <ErrorPage/>,
+                                    children: [
+                                        {
+                                            path: '/programs/:programId',
+                                            element: <ProgramContent/>,
+                                            loader: programContentLoader,
+                                            action: programContentAction
+                                        }, {
+                                            path: '/programs/:programId/edit',
+                                            element: <AddModifyProgram key='edit'/>,
+                                            loader: programContentLoader,
+                                            action: addModifyProgramAction
+                                        }, {
+                                            path: '/programs/new',
+                                            element: <AddModifyProgram key='new'/>,
+                                            action: addModifyProgramAction
+                                        }
+                                    ]
+                                }
+                            ]
+                        }, {
+                            path: '/applicants',
+                            element: <h1>开发组正在加班加点赶工...</h1>,
+                        }, {
+                            path: '/admin',
+                            element: <AdminPage/>,
+                            children: [
+                                {
+                                    errorElement: <ErrorPage/>,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <AdminIndex/>,
+                                        },
+                                        {
+                                            path: '/admin/programs',
+                                            element: <AdminProgramPage/>,
+                                            loader: AdminProgramLoader,
+                                            action: AdminProgramAction
+                                        }, {
+                                            path: '/admin/applicants',
+                                        }, {
+                                            path: '/admin/records',
+                                        }, {
+                                            path: '/admin/emails',
+                                            element: <AdminEmailPage/>,
+                                            loader: AdminEmailPageLoader,
+                                            action: AdminEmailPageAction
+                                        }
+                                    ]
+                                }
+                            ]
+                        }, {
+                            path: '/profile',
+                            element: <Profile/>,
+                        }, {
+                            path: '/login',
+                            element: <Login/>,
+                            action: loginAction
+                        }, {
+                            path: '/register',
+                            element: <RegisterAndReset/>,
+                            action: registerAndResetAction
+                        }, {
+                            path: '/reset',
+                            element: <RegisterAndReset/>,
+                            action: registerAndResetAction
+                        }, {
+                            path: '/agreement',
+                            element: <Agreement/>,
+                        }, {
+                            path: '/about-us',
+                            element: <h1>开发组正在加班加点赶工...</h1>,
+                        }, {
+                            path: '/how-to-use',
+                            element: <h1>开发组正在加班加点赶工...</h1>,
+                        }
+                    ]
+                }
+            ]
+        },
+    ]);
 
-const theme = createTheme({
-    palette: getPalette('dark'),
-    components: {
-        MuiButtonBase: {
-            defaultProps: {
-                disableRipple: true,
-            }, styleOverrides: {
-                root: {
-                    "&:active": {
-                        transition: "transform 0.1s ease-in-out",
-                        transform: "scale(0.98)",
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+    const theme = createTheme({
+        palette: {
+            mode: prefersDarkMode ? 'dark' : 'light',
+        },
+        components: {
+            MuiButtonBase: {
+                defaultProps: {
+                    disableRipple: true,
+                }, styleOverrides: {
+                    root: {
+                        "&:active": {
+                            transition: "transform 0.1s ease-in-out",
+                            transform: "scale(0.98)",
+                        },
                     },
                 },
             },
-        },
-        MuiButtonGroup: {
-            defaultProps: {
-                disableRipple: true,
+            MuiButtonGroup: {
+                defaultProps: {
+                    disableRipple: true,
+                },
             },
-        },
-        MuiCssBaseline: {
-            styleOverrides: `
+            MuiCssBaseline: {
+                styleOverrides: `
             @font-face {
                 font-family: 'Twemoji';
                 src: url(${Twemoji}) format('truetype');
@@ -199,23 +203,26 @@ const theme = createTheme({
                 unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
             }
             `,
+            },
         },
-    },
-    typography: {
-        fontFamily: [
-            "Open Sans",
-            "Clear Sans",
-            "Helvetica Neue",
-            'Helvetica, Arial',
-            'Twemoji',
-            'sans-serif',
-        ].join(','),
-    },
-})
+        typography: {
+            fontFamily: [
+                "Open Sans",
+                "Clear Sans",
+                "Helvetica Neue",
+                'Helvetica, Arial',
+                'Twemoji',
+                'sans-serif',
+            ].join(','),
+        },
+    });
+
+    return (
+        <React.StrictMode>
+            <ThemeProvider theme={theme}><RouterProvider router={router}/></ThemeProvider>
+        </React.StrictMode>
+    );
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-    <React.StrictMode>
-        <ThemeProvider theme={theme}><RouterProvider router={router}/></ThemeProvider>
-    </React.StrictMode>
-);
+root.render(<OpenSIST/>);
