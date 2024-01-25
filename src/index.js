@@ -222,7 +222,7 @@ function OpenSIST() {
             <ThemeProvider theme={theme}><RouterProvider router={router}/></ThemeProvider>
         </React.StrictMode>
     );
-};
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<OpenSIST/>);
