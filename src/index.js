@@ -150,6 +150,7 @@ function OpenSIST() {
         palette: {
             mode: prefersDarkMode ? 'dark' : 'light',
         },
+        // palette: getPalette(prefersDarkMode),
         components: {
             MuiButtonBase: {
                 defaultProps: {

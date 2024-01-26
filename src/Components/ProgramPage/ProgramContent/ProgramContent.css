@@ -1,11 +1,11 @@
-@keyframes slideRight {
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
+/*@keyframes slideRight {*/
+/*    0% {*/
+/*        transform: translateX(100%);*/
+/*    }*/
+/*    100% {*/
+/*        transform: translateX(0);*/
+/*    }*/
+/*}*/
 
 .ProgramContent {
     display: flex;
@@ -19,7 +19,7 @@
     border-radius: 5px;
     user-select: text;
     overflow-y: auto;
-    animation: slideRight 0.3s cubic-bezier(0.11, 0.88, 0.58, 1);
+    /*animation: slideRight 0.3s cubic-bezier(0.11, 0.88, 0.58, 1);*/
 }
 
 .ReviseRefreshButtonGroup {
