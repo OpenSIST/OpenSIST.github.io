@@ -2,7 +2,6 @@ import {getEmailBody, getEmailList, moveEmail} from "../../../Data/EmailData";
 import {Form, redirect, useLoaderData} from "react-router-dom";
 import {
     Accordion,
-    AccordionActions,
     AccordionDetails,
     AccordionSummary,
     Box, ButtonGroup, Checkbox, IconButton, Tooltip,

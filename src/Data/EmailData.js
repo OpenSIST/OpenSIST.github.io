@@ -1,8 +1,6 @@
 import {GET_EMAIL_CONTENT, INBOX, MOVE_BACK_INBOX, MOVE_TO_TRASH, REMOVE_FROM_TRASH, TRASH} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
 import PostalMime from "postal-mime";
-import {redirect} from "react-router-dom";
-
 export async function getEmailList(source) {
     const API = source === 'inbox' ? INBOX : TRASH;
     const response = await fetch(API, {

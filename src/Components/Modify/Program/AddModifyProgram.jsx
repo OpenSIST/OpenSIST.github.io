@@ -13,12 +13,11 @@ import {
     Button,
     ButtonGroup, Checkbox,
     FormControl, ListItemText,
-    MenuItem, Paper,
+    MenuItem,
     TextField,
-    Typography, useTheme
+    Typography
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import {grey} from "@mui/material/colors";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -41,14 +40,11 @@ export async function action({request}) {
             'Description': Description,
         }
     };
-    // console.log(requestBody)
     await addModifyProgram(requestBody)
     return redirect(`/programs/${ProgramID}`)
 }
 
 export default function AddModifyProgram() {
-    const theme = useTheme();
-    const darkMode = theme.palette.mode === 'dark';
     const navigate = useNavigate();
     const loaderData = useLoaderData();
     const programContent = loaderData?.programContent;
