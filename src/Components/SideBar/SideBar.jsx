@@ -30,6 +30,8 @@ export default function SideBar({loaderData}) {
                 className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}
                 sx={{
                     bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
+                    transition: 'transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1)',
+                    transform: 'translateX(0)',
                 }}
             >
                 <SearchBar query={getQuery(loaderData)}/>

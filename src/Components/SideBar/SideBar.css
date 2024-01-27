@@ -18,7 +18,6 @@
     top: 10px;
     transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
     transform: translateX(-100%);
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 .SideBar.hidden.open {

@@ -1,4 +1,4 @@
-import {Box, Drawer, List, ListItem, ListItemButton, Toolbar, Typography} from "@mui/material";
+import {Box, Drawer, List, ListItem, ListItemButton, Paper, Typography} from "@mui/material";
 import {Link, Outlet} from "react-router-dom";
 
 export default function AdminPage() {
@@ -19,27 +19,26 @@ export default function AdminPage() {
     ]
 
     return (
-        <Box sx={{display: 'flex', justifyContent: 'center', width: '100%'}}>
+        <>
             <Drawer
                 variant="permanent"
                 sx={{
-                    width: 240,
-                    flexShrink: 0,
-                    [`& .MuiDrawer-paper`]: {width: 240, boxSizing: 'border-box'},
+                    width: "240px",
+                    [`& .MuiDrawer-paper`]: {
+                        mr: 'auto',
+                        position: 'initial',
+                    },
                 }}
             >
-                <Toolbar/>
-                <Box sx={{overflow: 'auto'}}>
-                    <List>
-                        {routerList.map((item, index) => (
-                            <ListItem key={item.name}>
-                                <ListItemButton key={index} component={Link} to={item.path}>
-                                    {item.name}
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                </Box>
+                <List>
+                    {routerList.map((item, index): React.ReactNode => (
+                        <ListItem key={item.name}>
+                            <ListItemButton key={index} component={Link} to={item.path}>
+                                {item.name}
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
             </Drawer>
             <Box
                 sx={{
@@ -47,12 +46,13 @@ export default function AdminPage() {
                     flexDirection: 'column',
                     justifyContent: 'center',
                     width: "80%",
-                    height: "calc(100vh - 60px)"
+                    height: "calc(100vh - 60px)",
+                    mx: "20px"
                 }}
             >
                 <Outlet/>
             </Box>
-        </Box>
+        </>
     )
 }
 
