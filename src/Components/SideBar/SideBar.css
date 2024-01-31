@@ -1,9 +1,9 @@
 @keyframes jump {
     0%, 100% {
-        width: 2vw;
+        width: 20px;
     }
     50% {
-        width: 4vw; /* adjust this value as needed */
+        width: 30px; /* adjust this value as needed */
     }
 }
 

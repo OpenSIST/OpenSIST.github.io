@@ -84,12 +84,12 @@ export default function SideBar({loaderData}) {
                     visibility: smallPage ? 'visible' : 'hidden',
                     minWidth: "0",
                     px: "1vw",
-                    width: "2vw",
+                    width: "20px",
                     height: "80px",
                     borderRadius: "0 10px 10px 0",
                 }}
             >
-                {open ? <ChevronLeft/> : <ChevronRight/>}
+                <ChevronRight/>
             </Button>
         </>
     )
