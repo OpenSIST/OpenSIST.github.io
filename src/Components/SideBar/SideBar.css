@@ -15,7 +15,7 @@
 }
 
 .ShowUpButton:hover {
-    animation: jump 1s cubic-bezier(0.1, 0.7, 1.0, 0.1) infinite;
+    animation: jump 1s ease-in-out infinite;
 }
 
 .UnivProgramList {
