@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import './TopBar.css';
 import {StatusBlock} from "./StatusBlock/StatusBlock";
 import NavBar from "./NavBar/NavBar";
@@ -6,8 +6,13 @@ import {Link} from "react-router-dom";
 import {AppBar, Button, Toolbar, Typography} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {grey} from "@mui/material/colors";
+import localforage from "localforage";
 
 function TopBar() {
+    const user = useRef(null);
+    localforage.getItem('user').then((value) => {
+        user.current = value;
+    });
     return (
         <AppBar position='sticky'
                 elevation={1}
@@ -23,7 +28,7 @@ function TopBar() {
                         minHeight: '60px',
                     },
                 }}>
-                <Button component={Link} to={"/"}>
+                <Button component={Link} to={user.current ? "/" : "/login"}>
                     <MenuIcon/>
                     <Typography sx={{cursor: 'pointer'}} variant="h5">OpenSIST</Typography>
                 </Button>

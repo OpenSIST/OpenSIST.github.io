@@ -15,7 +15,7 @@ import {
     Paper, SwipeableDrawer, Tooltip,
     useTheme
 } from "@mui/material";
-import {Add, ChevronLeft, ChevronRight, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
+import {Add, ChevronRight, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
 import {blue, grey} from "@mui/material/colors";
 
 export default function SideBar({loaderData}) {
