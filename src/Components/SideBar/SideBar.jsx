@@ -1,10 +1,8 @@
-import React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
+import React, {useState} from "react";
 import {Form, Link} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
-import {useClickOutSideRef, useSmallPage} from "../common";
+import {useSmallPage} from "../common";
 import {regionFlagMapping, univAbbrFullNameMapping} from "../../Data/Common";
 import {
     Box,
@@ -14,24 +12,44 @@ import {
     List,
     ListItemButton,
     ListItemText,
-    Paper, Tooltip,
+    Paper, SwipeableDrawer, Tooltip,
     useTheme
 } from "@mui/material";
-import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
+import {Add, ChevronLeft, ChevronRight, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
 import {blue, grey} from "@mui/material/colors";
 
 export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
-    const SideBarHidden = useSmallPage();
-    const [SideBarOpen, setSideBarOpen, SideBarRef] = useClickOutSideRef();
+    const smallPage = useSmallPage();
+    const [open, setOpen] = useState(false)
     return (
-        <div style={{display: "flex"}} ref={SideBarRef}>
-            <Paper
-                className={'SideBar ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open' : '')}
+        <>
+            <SwipeableDrawer
+                variant={smallPage ? "temporary" : "persistent"}
+                open={!smallPage || (smallPage && open)}
+                onOpen={() => setOpen(true)}
+                onClose={() => setOpen(false)}
+                // open={true}
+                elevation={1}
                 sx={{
-                    bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
-                    transition: 'transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1)',
-                    transform: 'translateX(0)',
+                    display: "flex",
+                    width: 'auto',
+                    height: 'auto',
+                    // zIndex: '1300',
+                    [`& .MuiDrawer-paper`]: {
+                        border: 'none',
+                        // mr: 'auto',
+                        position: (smallPage ? 'absolute' : 'initial'),
+                        top: '60px',
+                        bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
+                        width: "250px",
+                        height: "calc(100vh - 160px)",
+                        ml: (smallPage ? '0' : '2vw'),
+                        mt: '10px',
+                        p: '20px',
+                        borderRadius: '5px',
+                        overflowY: 'auto'
+                    },
                 }}
             >
                 <SearchBar query={getQuery(loaderData)}/>
@@ -56,14 +74,24 @@ export default function SideBar({loaderData}) {
                 <div style={{textAlign: 'center', paddingTop: '5px'}}>
                     对列表有问题可以<a href='https://github.com/OpenSIST/OpenSIST.github.io/issues'>联系我们</a>
                 </div>
-            </Paper>
-            <button
-                className={'Button ShowUpButton ' + (SideBarHidden ? 'hidden ' : '') + (SideBarOpen ? 'open ' : '')}
-                onClick={() => setSideBarOpen(!SideBarOpen)}
+            </SwipeableDrawer>
+            <Button
+                className="ShowUpButton"
+                variant="contained"
+                onClick={() => setOpen(!open)}
+                sx={{
+                    position: 'absolute',
+                    visibility: smallPage ? 'visible' : 'hidden',
+                    minWidth: "0",
+                    px: "1vw",
+                    width: "2vw",
+                    height: "80px",
+                    borderRadius: "0 10px 10px 0",
+                }}
             >
-                <FontAwesomeIcon icon={solid('bars')}/>
-            </button>
-        </div>
+                {open ? <ChevronLeft/> : <ChevronRight/>}
+            </Button>
+        </>
     )
 }
 

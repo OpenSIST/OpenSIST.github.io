@@ -1,4 +1,4 @@
-import {Box, Drawer, List, ListItem, ListItemButton, Paper, Typography} from "@mui/material";
+import {Box, Drawer, List, ListItem, ListItemButton, Typography} from "@mui/material";
 import {Link, Outlet} from "react-router-dom";
 
 export default function AdminPage() {
