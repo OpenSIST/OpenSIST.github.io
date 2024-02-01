@@ -1,56 +1,21 @@
-.SideBar {
-    width: 250px;
-    height: calc(100vh - 160px);
-    margin-left: 2vw;
-    margin-top: 10px;
-    padding: 20px;
-    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
-    border-radius: 5px;
-    overflow-y: auto;
-    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
-    transform: translateX(0);
-}
-
-.SideBar.hidden {
-    position: absolute;
-    z-index: 1000;
-    margin: 0;
-    top: 10px;
-    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
-    transform: translateX(-100%);
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-}
-
-.SideBar.hidden.open {
-    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
-    transform: translateX(0);
+@keyframes jump {
+    0%, 100% {
+        width: 20px;
+    }
+    50% {
+        width: 30px; /* adjust this value as needed */
+    }
 }
 
 .ShowUpButton {
-    position: absolute;
-    width: 2em;
-    z-index: 1;
+    z-index: 1200;
     top: 10px;
+    left: 0;
     border-radius: 0 5px 5px 0;
-    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
-    transform: translateX(calc(290px + 2vw));
-    visibility: hidden;
 }
 
-.ShowUpButton.hidden {
-    position: absolute;
-    z-index: 1000;
-    border-radius: 0 5px 5px 0;
-    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
-    transform: translateX(0);
-    visibility: visible;
-}
-
-.ShowUpButton.hidden.open {
-    margin-left: 0;
-    transition: transform 0.5s cubic-bezier(0.11, 0.88, 0.58, 1);
-    transform: translateX(290px);
-    visibility: visible;
+.ShowUpButton:hover {
+    animation: jump 1s ease-in-out infinite;
 }
 
 .UnivProgramList {

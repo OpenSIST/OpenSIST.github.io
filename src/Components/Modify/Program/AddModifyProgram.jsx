@@ -62,7 +62,6 @@ export default function AddModifyProgram() {
             <Typography variant="h5">项目信息</Typography>
             <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "15px"}} fullWidth>
                 <Autocomplete
-                    autoSelect
                     autoHighlight
                     options={univOptions}
                     value={univ}

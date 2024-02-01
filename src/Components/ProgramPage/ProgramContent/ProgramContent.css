@@ -19,7 +19,6 @@
     border-radius: 5px;
     user-select: text;
     overflow-y: auto;
-    /*animation: slideRight 0.3s cubic-bezier(0.11, 0.88, 0.58, 1);*/
 }
 
 .ReviseRefreshButtonGroup {
