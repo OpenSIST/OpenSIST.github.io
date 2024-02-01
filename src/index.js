@@ -1,4 +1,4 @@
-import React from 'react';
+    import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Home from "./Components/home";
@@ -41,6 +41,7 @@ import AdminEmailPage, {
     loader as AdminEmailPageLoader,
     action as AdminEmailPageAction
 } from "./Components/Admin/AdminEmail/AdminEmailPage";
+import {ProgramIndex} from "./Components/ProgramPage/ProgramPage";
 
 function OpenSIST() {
     const router = createBrowserRouter([
@@ -77,6 +78,9 @@ function OpenSIST() {
                                             path: '/programs/new',
                                             element: <AddModifyProgram key='new'/>,
                                             action: addModifyProgramAction
+                                        }, {
+                                            index: true,
+                                            element: <ProgramIndex/>,
                                         }
                                     ]
                                 }
