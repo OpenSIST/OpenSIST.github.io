@@ -18,6 +18,8 @@ import {
     Typography
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faMarkdown} from "@fortawesome/free-brands-svg-icons";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -154,7 +156,10 @@ export default function AddModifyProgram() {
                 />
                 <TextField sx={{display: 'none'}} name="Region" value={univ?.region.join(',') ?? []}/>
             </FormControl>
-            <Typography variant="h5" sx={{mb: "10px"}}>项目描述</Typography>
+            <Typography variant="h5" sx={{mb: "10px"}}>
+                {"项目描述 "}
+                <FontAwesomeIcon icon={faMarkdown}/>
+            </Typography>
             <MarkDownEditor OriginDesc={OriginDesc} Description={Description} setDescription={setDescription}/>
             <textarea id='Description' name='Description' hidden={true} value={Description} readOnly/>
             <ButtonGroup>
