@@ -105,6 +105,16 @@
         "abbr": "Max Planck"
     },
     {
+        "fullName": "European Laboratory for Learning and Intelligent Systems",
+        "region": ["EU"],
+        "abbr": "ELLIS"
+    },
+    {
+        "fullName": "International Programme in Vision & Robotics",
+        "region": ["EU"],
+        "abbr": "VIBOT"
+    },
+    {
         "fullName": "University of Texas at Austin",
         "region": ["US"],
         "abbr": "UT-Austin"

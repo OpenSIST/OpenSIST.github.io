@@ -24,6 +24,9 @@ function HomeIndex() {
     return (
         <div style={{width: '70%'}}>
             <h1 style={{textAlign: 'center'}}>欢迎来到OpenSIST</h1>
+            <ReactMarkdown>
+                [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+            </ReactMarkdown>
             <a href="https://github.com/opensist/opensist.github.io">
                 <img alt="GitHub Repo stars"
                      src="https://img.shields.io/github/stars/opensist/opensist.github.io?style=social"/>
