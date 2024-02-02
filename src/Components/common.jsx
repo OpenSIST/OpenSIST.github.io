@@ -1,6 +1,6 @@
 import {useLocation, useNavigation} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
-import {Backdrop, CircularProgress} from "@mui/material";
+import {Backdrop, CircularProgress, Typography} from "@mui/material";
 import {grey} from "@mui/material/colors";
 
 export function isEmptyObject(value) {
@@ -65,3 +65,6 @@ export function getPalette(mode) {
         }
     }
 }
+
+export const InlineTypography = (props) => <Typography variant="body1" {...props}
+                                                sx={{display: 'flex', alignItems: 'center', flexWrap: "wrap"}}/>;
