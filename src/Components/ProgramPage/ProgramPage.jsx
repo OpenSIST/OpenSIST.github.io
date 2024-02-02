@@ -41,31 +41,32 @@ export function ProgramIndex() {
             <ul>
                 <li>左方侧边栏中提供搜索框和筛选栏，可快速筛选目标学校或项目。</li>
                 <li>
-                    <Stack direction="row" alignItems="center">
-                        <Typography variant="body1">点击侧边栏中</Typography>
+                    <InlineTypography>
+                        点击侧边栏中
                         <Add/>
-                        <Typography variant="body1">按钮可添加新项目。</Typography>
-                    </Stack>
+                        按钮可添加新项目。
+                    </InlineTypography>
                 </li>
                 <li>
-                    <Stack direction="row" alignItems="center">
-                        <Typography variant="body1">由于网站前后端数据同步的时间差，项目列表可能不是最新，可以点击</Typography>
-                        <Refresh/>
-                        <Typography variant="body1">按钮可从服务器内拉取最新项目列表。</Typography>
-                    </Stack>
+                    <InlineTypography>
+                        由于网站前后端数据同步的时间差，项目列表可能不是最新，可以点击<Refresh/>按钮可从服务器内拉取最新项目列表。
+                    </InlineTypography>
                 </li>
                 <li>每个项目卡片中CS/EE等专业名的含义是“哪些专业的学生可申请该项目”。</li>
                 <li>
-                    <Stack direction="row" alignItems="center">
-                        <Typography variant="body1">点开每个项目后，点击右上角处的</Typography>
+                    <InlineTypography>
+                        点开每个项目后，点击右上角处的
                         <Edit/>
-                        <Typography variant="body1">按钮可修改该项目的信息；点击</Typography>
+                        按钮可修改该项目的信息；点击
                         <Refresh/>
-                        <Typography variant="body1">按钮可刷新该页面。</Typography>
-                    </Stack>
+                        按钮可刷新该页面。
+                    </InlineTypography>
                 </li>
                 <li>若对项目列表有任何问题，可以点击侧边栏底部的链接前往GitHub提issue。</li>
             </ul>
         </>
     )
 }
+
+const InlineTypography = (props) => <Typography variant="body1" {...props}
+                                                sx={{display: 'flex', alignItems: 'center', flexWrap: "wrap"}}/>;
