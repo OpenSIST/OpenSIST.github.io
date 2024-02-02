@@ -3,10 +3,15 @@ import univList from "./univ_list.json";
 
 export const DescriptionTemplate = `## 项目介绍
 
-## 项目介绍
+* 待补充
+
+## 录取偏好/条件
+
+* 待补充
 
 ## 其他注意事项
 
+* 例：网申材料、套磁等
 `
 
 export function list2Options(list) {
