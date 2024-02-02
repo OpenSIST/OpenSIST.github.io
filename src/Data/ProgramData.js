@@ -3,6 +3,8 @@ import {ADD_MODIFY_PROGRAM, MODIFY_PROGRAM_ID, PROGRAM_DESC, PROGRAM_LIST, REMOV
 import {handleErrors, headerGenerator, univAbbrFullNameMapping} from "./Common";
 import univListOrder from "./univ_list.json";
 
+const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+
 /*
 * All functions started with 'set' -> Offline operation to set items to local cache
 * All functions started with 'get' -> Optionally online operation to get data
@@ -28,7 +30,7 @@ export async function getPrograms(isRefresh = false, query = {}) {
     query.m = query.m?.split(',') || query.m;
     let programs = await localforage.getItem('programs');
 
-    if (isRefresh || programs === null || (Date.now() - programs.Date) > 24 * 60 * 60 * 1000) {
+    if (isRefresh || programs === null || (Date.now() - programs.Date) > CACHE_EXPIRATION) {
         const response = await fetch(PROGRAM_LIST, {
             method: 'POST',
             credentials: 'include',
@@ -107,7 +109,7 @@ export async function getProgramDesc(programId, isRefresh = false) {
     */
     // await localforage.removeItem(`${programId}-Desc`) //TODO: remove this line
     let programDesc = await localforage.getItem(`${programId}-Desc`);
-    if (isRefresh || programDesc === null || (Date.now() - programDesc.Date) > 24 * 60 * 60 * 1000) {
+    if (isRefresh || programDesc === null || (Date.now() - programDesc.Date) > CACHE_EXPIRATION) {
         const response = await fetch(PROGRAM_DESC, {
             method: 'POST',
             credentials: 'include',
