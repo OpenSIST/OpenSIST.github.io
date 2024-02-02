@@ -5,6 +5,7 @@ import './ProgramPage.css';
 import {Paper, Typography, useTheme} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import {Add, Edit, Refresh} from "@mui/icons-material";
+import {InlineTypography} from "../common";
 
 export async function loader({request}) {
     const url = new URL(request.url);
@@ -65,6 +66,3 @@ export function ProgramIndex() {
         </>
     )
 }
-
-const InlineTypography = (props) => <Typography variant="body1" {...props}
-                                                sx={{display: 'flex', alignItems: 'center', flexWrap: "wrap"}}/>;
