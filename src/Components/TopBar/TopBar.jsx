@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import './TopBar.css';
 import {StatusBlock} from "./StatusBlock/StatusBlock";
 import NavBar from "./NavBar/NavBar";
@@ -9,10 +9,13 @@ import {grey} from "@mui/material/colors";
 import localforage from "localforage";
 
 function TopBar() {
-    const user = useRef(null);
-    localforage.getItem('user').then((value) => {
-        user.current = value;
-    });
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        localforage.getItem('user').then((value) => {
+            setUser(value);
+        });
+    }, []);
     return (
         <AppBar position='sticky'
                 elevation={1}
@@ -28,7 +31,7 @@ function TopBar() {
                         minHeight: '60px',
                     },
                 }}>
-                <Button component={Link} to={user.current ? "/" : "/login"}>
+                <Button component={Link} to={user ? "/" : "/login"}>
                     <MenuIcon/>
                     <Typography sx={{cursor: 'pointer'}} variant="h5">OpenSIST</Typography>
                 </Button>
