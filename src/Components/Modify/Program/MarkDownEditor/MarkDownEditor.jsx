@@ -26,52 +26,48 @@ export default function MarkDownEditor({OriginDesc, Description, setDescription}
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
     return (
-        <Box
-            className="MarkDownEditor"
-        >
-            <MDXEditor
-                markdown={Description}
-                onChange={(value) => {
-                    setDescription(value)
-                }}
-                className={darkMode ? "dark-theme dark-editor" : ""}
-                contentEditableClassName="MarkDownEditorContent"
-                plugins={[
-                    headingsPlugin(),
-                    listsPlugin(),
-                    quotePlugin(),
-                    thematicBreakPlugin(),
-                    linkPlugin(),
-                    linkDialogPlugin({}),
-                    tablePlugin(),
-                    markdownShortcutPlugin(),
-                    diffSourcePlugin({
-                        viewMode: 'rich-text',
-                        diffMarkdown: OriginDesc,
-                        codeMirrorExtensions: darkMode ? [basicDark] : null
-                    }),
-                    toolbarPlugin({
-                        toolbarContents: () => (
-                            <div className='MarkDownToolBar'>
-                                <DiffSourceToggleWrapper>
-                                    <UndoRedo/>
-                                    <Separator/>
-                                    <BoldItalicUnderlineToggles/>
-                                    <CodeToggle/>
-                                    <Separator/>
-                                    <ListsToggle/>
-                                    <Separator/>
-                                    <BlockTypeSelect/>
-                                    <Separator/>
-                                    <CreateLink/>
-                                    <InsertTable/>
-                                    <InsertThematicBreak/>
-                                </DiffSourceToggleWrapper>
-                            </div>)
-                    })
-                ]}
-            />
-        </Box>
+        <MDXEditor
+            markdown={Description}
+            onChange={(value) => {
+                setDescription(value)
+            }}
+            className={"MarkDownEditor " + (darkMode ? "dark-theme dark-editor" : "")}
+            contentEditableClassName="MarkDownEditorContent"
+            plugins={[
+                headingsPlugin(),
+                listsPlugin(),
+                quotePlugin(),
+                thematicBreakPlugin(),
+                linkPlugin(),
+                linkDialogPlugin({}),
+                tablePlugin(),
+                markdownShortcutPlugin(),
+                diffSourcePlugin({
+                    viewMode: 'rich-text',
+                    diffMarkdown: OriginDesc,
+                    codeMirrorExtensions: darkMode ? [basicDark] : null
+                }),
+                toolbarPlugin({
+                    toolbarContents: () => (
+                        <div className='MarkDownToolBar'>
+                            <DiffSourceToggleWrapper>
+                                <UndoRedo/>
+                                <Separator/>
+                                <BoldItalicUnderlineToggles/>
+                                <CodeToggle/>
+                                <Separator/>
+                                <ListsToggle/>
+                                <Separator/>
+                                <BlockTypeSelect/>
+                                <Separator/>
+                                <CreateLink/>
+                                <InsertTable/>
+                                <InsertThematicBreak/>
+                            </DiffSourceToggleWrapper>
+                        </div>)
+                })
+            ]}
+        />
     )
 }
 

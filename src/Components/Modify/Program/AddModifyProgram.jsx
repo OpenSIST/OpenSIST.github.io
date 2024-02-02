@@ -162,7 +162,7 @@ export default function AddModifyProgram() {
             </Typography>
             <MarkDownEditor OriginDesc={OriginDesc} Description={Description} setDescription={setDescription}/>
             <textarea id='Description' name='Description' hidden={true} value={Description} readOnly/>
-            <ButtonGroup>
+            <ButtonGroup sx={{mt: '1vh'}}>
                 <Button type="submit"> 提交 </Button>
                 <Button onClick={() => navigate(-1)}> 取消 </Button>
             </ButtonGroup>
