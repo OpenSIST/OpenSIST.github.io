@@ -1,7 +1,7 @@
     import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Home from "./Components/home";
+import Home, {HomeIndex} from "./Components/home";
 import {
     createBrowserRouter,
     RouterProvider,
@@ -51,6 +51,9 @@ function OpenSIST() {
             errorElement: <ErrorPage/>,
             children: [
                 {
+                    index: true,
+                    element: <HomeIndex/>,
+                }, {
                     errorElement: <ErrorPage/>,
                     children: [
                         {
