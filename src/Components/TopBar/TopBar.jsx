@@ -17,7 +17,6 @@ function TopBar() {
     });
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
-    console.log(user);
     return (
         <AppBar position='sticky'
                 elevation={1}

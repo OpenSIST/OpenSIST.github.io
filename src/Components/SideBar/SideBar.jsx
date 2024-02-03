@@ -29,16 +29,13 @@ export default function SideBar({loaderData}) {
                 open={!smallPage || (smallPage && open)}
                 onOpen={() => setOpen(true)}
                 onClose={() => setOpen(false)}
-                // open={true}
                 elevation={1}
                 sx={{
                     display: "flex",
                     width: 'auto',
                     height: 'auto',
-                    // zIndex: '1300',
                     [`& .MuiDrawer-paper`]: {
                         border: 'none',
-                        // mr: 'auto',
                         position: (smallPage ? 'absolute' : 'initial'),
                         top: '60px',
                         bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
@@ -48,7 +45,8 @@ export default function SideBar({loaderData}) {
                         mt: '10px',
                         p: '20px',
                         borderRadius: '5px',
-                        overflowY: 'auto'
+                        overflowY: 'auto',
+                        boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);"
                     },
                 }}
             >
@@ -101,8 +99,8 @@ export function UnivProgramList({univProgramList, ButtonComponent = ProgramButto
     const darkMode = theme.palette.mode === 'dark';
     return (
         <Paper
-            variant={darkMode ? 'elevation' : 'outlined'}
-            elevation={0}
+            variant={darkMode ? 'elevation' : 'elevation'}
+            elevation={darkMode ? 0 : 1}
             sx={{
                 bgcolor: darkMode ? grey[800] : grey[50],
             }}

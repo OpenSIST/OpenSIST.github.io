@@ -1,4 +1,4 @@
-    import React from 'react';
+import React, {createContext, useEffect, useState} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Home, {HomeIndex} from "./Components/home";
@@ -42,6 +42,12 @@ import AdminEmailPage, {
     action as AdminEmailPageAction
 } from "./Components/Admin/AdminEmail/AdminEmailPage";
 import {ProgramIndex} from "./Components/ProgramPage/ProgramPage";
+import localforage from "localforage";
+
+export const ThemeContext = createContext({
+    toggleTheme: () => {
+    },
+});
 
 function OpenSIST() {
     const router = createBrowserRouter([
@@ -152,10 +158,18 @@ function OpenSIST() {
     ]);
 
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-
+    const [mode, setMode] = useState(null);
+    useEffect(() => {
+        localforage.getItem('theme').then((theme) => {
+            setMode(theme);
+        });
+    }, []);
+    const toggleTheme = () => {
+        setMode((prevMode) => (prevMode === 'dark' ? 'light' : 'dark'));
+    };
     const theme = createTheme({
         palette: {
-            mode: prefersDarkMode ? 'dark' : 'light',
+            mode: mode ?? (prefersDarkMode ? 'dark' : 'light'),
         },
         // palette: getPalette(prefersDarkMode),
         components: {
@@ -227,7 +241,11 @@ function OpenSIST() {
 
     return (
         <React.StrictMode>
-            <ThemeProvider theme={theme}><RouterProvider router={router}/></ThemeProvider>
+            <ThemeProvider theme={theme}>
+                <ThemeContext.Provider value={{toggleTheme}}>
+                    <RouterProvider router={router}/>
+                </ThemeContext.Provider>
+            </ThemeProvider>
         </React.StrictMode>
     );
 }
