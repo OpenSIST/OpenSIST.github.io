@@ -70,6 +70,11 @@
         "abbr": "UMich"
     },
     {
+        "fullName": "University of Texas at Austin",
+        "region": ["US"],
+        "abbr": "UT-Austin"
+    },
+    {
         "fullName": "Cornell University",
         "region": ["US"],
         "abbr": "Cornell"
@@ -78,16 +83,6 @@
         "fullName": "University of Maryland - College Park",
         "region": ["US"],
         "abbr": "UMD"
-    },
-    {
-        "fullName": "University of Toronto",
-        "region": ["CA"],
-        "abbr": "UToronto"
-    },
-    {
-        "fullName": "University of British Columbia",
-        "region": ["CA"],
-        "abbr": "UBC"
     },
     {
         "fullName": "University of California - Los Angeles",
@@ -100,34 +95,9 @@
         "abbr": "Yale"
     },
     {
-        "fullName": "Max Planck Society",
-        "region": ["EU"],
-        "abbr": "Max Planck"
-    },
-    {
-        "fullName": "European Laboratory for Learning and Intelligent Systems",
-        "region": ["EU"],
-        "abbr": "ELLIS"
-    },
-    {
-        "fullName": "International Programme in Vision & Robotics",
-        "region": ["EU"],
-        "abbr": "VIBOT"
-    },
-    {
-        "fullName": "University of Texas at Austin",
-        "region": ["US"],
-        "abbr": "UT-Austin"
-    },
-    {
         "fullName": "University of Pennsylvania",
         "region": ["US"],
         "abbr": "UPenn"
-    },
-    {
-        "fullName": "Purdue University",
-        "region": ["US"],
-        "abbr": "Purdue"
     },
     {
         "fullName": "University of Wisconsin - Madison",
@@ -138,6 +108,36 @@
         "fullName": "Duke University",
         "region": ["US"],
         "abbr": "Duke"
+    },
+    {
+        "fullName": "University of Toronto",
+        "region": ["CA"],
+        "abbr": "UToronto"
+    },
+    {
+        "fullName": "University of British Columbia",
+        "region": ["CA"],
+        "abbr": "UBC"
+    },
+    {
+        "fullName": "Max Planck Society",
+        "region": ["EU"],
+        "abbr": "Max Planck"
+    },
+    {
+        "fullName": "European Laboratory for Learning and Intelligent Systems",
+        "region": ["EU"],
+        "abbr": "ELLIS"
+    },
+    {
+        "fullName": "International Programme in Vision and Robotics",
+        "region": ["EU"],
+        "abbr": "VIBOT"
+    },
+    {
+        "fullName": "Purdue University",
+        "region": ["US"],
+        "abbr": "Purdue"
     },
     {
         "fullName": "Northwestern University",
@@ -373,6 +373,16 @@
         "fullName": "Katholieke Universiteit Leuven",
         "region": ["EU"],
         "abbr": "KU Leuven"
+    },
+    {
+        "fullName": "Lund University",
+        "region": ["EU"],
+        "abbr": "Lund"
+    },
+    {
+        "fullName": "Ghent University",
+        "region": ["EU"],
+        "abbr": "Ghent"
     },
     {
         "fullName": "University at Buffalo",
