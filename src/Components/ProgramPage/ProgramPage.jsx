@@ -2,7 +2,7 @@ import SideBar from "../SideBar/SideBar";
 import {Outlet, useLoaderData} from "react-router-dom";
 import {getPrograms} from "../../Data/ProgramData";
 import './ProgramPage.css';
-import {Paper, Typography, useTheme} from "@mui/material";
+import {Paper, useTheme} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import {Add, Edit, Refresh} from "@mui/icons-material";
 import {InlineTypography} from "../common";

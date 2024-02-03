@@ -3,14 +3,16 @@ import './TopBar.css';
 import {StatusBlock} from "./StatusBlock/StatusBlock";
 import NavBar from "./NavBar/NavBar";
 import {Link} from "react-router-dom";
-import {AppBar, Button, Toolbar, Typography} from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
+import {AppBar, Button, SvgIcon, Toolbar, Typography, useTheme} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import localforage from "localforage";
+import { ReactComponent as LightIcon} from '../icons/light.svg';
+import { ReactComponent as DarkIcon} from '../icons/dark.svg';
 
 function TopBar() {
     const [user, setUser] = useState(null);
-
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === 'dark';
     useEffect(() => {
         localforage.getItem('user').then((value) => {
             setUser(value);
@@ -26,14 +28,14 @@ function TopBar() {
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}>
             <Toolbar className="TopBar" sx={{
+                minHeight: '60px',
+                '@media (min-width:600px)': {
                     minHeight: '60px',
-                    '@media (min-width:600px)': {
-                        minHeight: '60px',
-                    },
-                }}>
-                <Button component={Link} to={user ? "/" : "/login"}>
-                    <MenuIcon/>
-                    <Typography sx={{cursor: 'pointer'}} variant="h5">OpenSIST</Typography>
+                },
+            }}>
+                <Button component={Link} to={user ? "/" : "/login"} sx={{gap: "10px"}}>
+                    <SvgIcon component={darkMode ? DarkIcon : LightIcon} inheritViewBox sx={{fontSize: '2.5rem'}}/>
+                    <Typography sx={{cursor: 'pointer'}} variant="h4">OpenSIST</Typography>
                 </Button>
                 <NavBar/>
                 <StatusBlock/>
