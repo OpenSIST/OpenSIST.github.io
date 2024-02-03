@@ -1,11 +1,6 @@
 .MarkDownEditor {
-    width: 100%;
-    height: calc(100vh - 460px);
     border-radius: 5px;
-    box-sizing: border-box;
-    overflow-y: scroll;
-    margin-bottom: 1rem;
-    z-index: 0;
+    background-color: #f0f0f3;
 }
 
 .MarkDownToolBar {
@@ -16,5 +11,7 @@
 }
 
 .MarkDownEditorContent {
+    height: calc(100vh - 500px);
+    overflow-y: auto;
     font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Twemoji', 'Segoe UI Emoji', sans-serif;
 }

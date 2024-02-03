@@ -13,7 +13,6 @@ export async function checkLogin() {
     const session = await localforage.getItem('session');
     const expireAt = await localforage.getItem('expireAt');
     const now = Date.now() / 1000;
-    console.log("We are here!")
     const response = await fetch(IS_LOGIN, {
         method: 'POST',
         credentials: 'include',
@@ -22,8 +21,8 @@ export async function checkLogin() {
     return session && now < expireAt && response.status === 200;
 }
 
-export async function login(username, password) {
-    const email = username + "@shanghaitech.edu.cn";
+export async function login(email, password) {
+    const username = email.split('@')[0];
     const response = await fetch(LOGIN, {
         method: "POST",
         credentials: "include",
@@ -46,9 +45,8 @@ export async function login(username, password) {
     }
 }
 
-export async function registerReset(username, password, token, status) {
+export async function registerReset(email, password, token, status) {
     const api = status === 'reset' ? RESET_PASSWORD : REGISTER;
-    const email = username + "@shanghaitech.edu.cn";
     const response = await fetch(api, {
         method: "POST",
         mode: "cors",

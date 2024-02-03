@@ -1,18 +1,22 @@
-import React, {useRef} from 'react';
+import React, {useState} from 'react';
 import './TopBar.css';
 import {StatusBlock} from "./StatusBlock/StatusBlock";
 import NavBar from "./NavBar/NavBar";
-import {Link} from "react-router-dom";
-import {AppBar, Button, Toolbar, Typography} from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
+import {useNavigate} from "react-router-dom";
+import {AppBar, SvgIcon, Toolbar, useTheme} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import localforage from "localforage";
+import {ReactComponent as LightIcon} from '../icons/header.svg';
+import {ReactComponent as DarkIcon} from '../icons/header-dark.svg';
 
 function TopBar() {
-    const user = useRef(null);
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null);
     localforage.getItem('user').then((value) => {
-        user.current = value;
+        setUser(value);
     });
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === 'dark';
     return (
         <AppBar position='sticky'
                 elevation={1}
@@ -23,15 +27,21 @@ function TopBar() {
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}>
             <Toolbar className="TopBar" sx={{
+                minHeight: '60px',
+                '@media (min-width:600px)': {
                     minHeight: '60px',
-                    '@media (min-width:600px)': {
-                        minHeight: '60px',
-                    },
-                }}>
-                <Button component={Link} to={user.current ? "/" : "/login"}>
-                    <MenuIcon/>
-                    <Typography sx={{cursor: 'pointer'}} variant="h5">OpenSIST</Typography>
-                </Button>
+                },
+            }}>
+                <SvgIcon
+                    component={darkMode ? DarkIcon : LightIcon}
+                    inheritViewBox
+                    onClick={() => navigate(user ? "/" : "/login")}
+                    sx={{
+                        height: "40px",
+                        fontSize: '10em',
+                        cursor: 'pointer',
+                    }}
+                />
                 <NavBar/>
                 <StatusBlock/>
             </Toolbar>

@@ -7,25 +7,29 @@ import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {SEND_RESET_VERIFY_TOKEN, SEND_VERIFY_TOKEN} from "../../../APIs/APIs";
 import {headerGenerator} from "../../../Data/Common";
 import {
+    Box,
     Button,
     Checkbox,
     FormControl,
     FormControlLabel,
     Input,
     InputAdornment,
-    InputLabel,
+    InputLabel, MenuItem,
     TextField,
     Typography
 } from "@mui/material";
 import {registerReset} from "../../../Data/UserData";
+import Select from "@mui/material/Select";
 
 export async function action({request}) {
     const formData = await request.formData();
     const username = formData.get('username');
+    const suffix = formData.get('suffix');
+    const email = username + suffix;
     const password = formData.get('password');
     const token = formData.get('token');
     const status = formData.get('status');
-    return await registerReset(username, password, token, status);
+    return await registerReset(email, password, token, status);
 }
 
 const passwordSchema = z.string().min(8).max(24).refine(password => (
@@ -47,6 +51,7 @@ export default function RegisterAndReset() {
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [token, setToken] = useState("");
     const [tokenSent, setTokenSent] = useState(false);
+    const [suffix, setSuffix] = useState("@shanghaitech.edu.cn");
 
     // check the state for password requirements
     const [isLengthValid, setIsLengthValid] = useState(false);
@@ -136,21 +141,30 @@ export default function RegisterAndReset() {
     return (
         <Form method='post' className="RegisterAndReset">
             <Typography variant='h4' sx={{mb: "1rem"}}>{chineseTitle}</Typography>
-            <FormControl variant="standard" sx={{width: '100%'}}>
-                <InputLabel required>上科大邮箱前缀</InputLabel>
-                <Input
+            <Box sx={{
+                display: 'flex'
+            }}>
+                <TextField
                     fullWidth
+                    variant='standard'
+                    label='邮箱'
                     id='username'
                     name='username'
                     value={email.split("@")[0]}
-                    endAdornment={<InputAdornment position="end">@shanghaitech.edu.cn</InputAdornment>}
-                    onChange={(e) => setEmail(
-                        e.target.value.split("@")[0] + "@shanghaitech.edu.cn"
-                    )}
-                    size='small'
+                    onChange={(e) => setEmail(e.target.value.split('@')[0]+suffix)}
                     required
                 />
-            </FormControl>
+                <Select
+                    id='suffix'
+                    name='suffix'
+                    value={suffix}
+                    input={<Input/>}
+                    onChange={(e) => setSuffix(e.target.value)}
+                >
+                    <MenuItem value="@shanghaitech.edu.cn">@shanghaitech.edu.cn</MenuItem>
+                    <MenuItem value="@alumni.shanghaitech.edu.cn">@alumni.shanghaitech.edu.cn</MenuItem>
+                </Select>
+            </Box>
             <TextField
                 fullWidth
                 variant='standard'
@@ -176,7 +190,9 @@ export default function RegisterAndReset() {
                 id='confirmPassword'
                 name='confirmPassword'
                 value={passwordConfirm}
-                onChange={(e) => {setPasswordConfirm((P) => e.target.value);}}
+                onChange={(e) => {
+                    setPasswordConfirm((P) => e.target.value);
+                }}
                 size='small'
                 required
             />
@@ -199,7 +215,7 @@ export default function RegisterAndReset() {
                     onClick={handleVerify}
                     required
                 >
-                    { sendButtonDisabled ? `${timeLeft} 秒后重新发送` : '发送验证码' }
+                    {sendButtonDisabled ? `${timeLeft} 秒后重新发送` : '发送验证码'}
                 </Button>
             </div>
             <div>

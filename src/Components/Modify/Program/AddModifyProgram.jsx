@@ -52,8 +52,7 @@ export default function AddModifyProgram() {
     const programContent = loaderData?.programContent;
     const AddMode = !programContent;
     const mode = AddMode ? '添加' : '修改';
-    const OriginDesc = AddMode ? DescriptionTemplate : programContent.description;
-    const [Description, setDescription] = useState(OriginDesc);
+    const [Description, setDescription] = useState(AddMode ? DescriptionTemplate : programContent.description);
     const [univ, setUniv] = useState(univOptions.find((univ) => univ.value === programContent?.University) ?? null);
     const [major, setMajor] = useState(majorOptions.filter((m) => programContent?.TargetApplicantMajor.includes(m.value)) ?? []);
     return (
@@ -160,9 +159,9 @@ export default function AddModifyProgram() {
                 {"项目描述 "}
                 <FontAwesomeIcon icon={faMarkdown}/>
             </Typography>
-            <MarkDownEditor OriginDesc={OriginDesc} Description={Description} setDescription={setDescription}/>
+            <MarkDownEditor Description={Description} setDescription={setDescription}/>
             <textarea id='Description' name='Description' hidden={true} value={Description} readOnly/>
-            <ButtonGroup>
+            <ButtonGroup sx={{mt: '1vh'}}>
                 <Button type="submit"> 提交 </Button>
                 <Button onClick={() => navigate(-1)}> 取消 </Button>
             </ButtonGroup>
