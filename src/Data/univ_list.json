@@ -85,16 +85,6 @@
         "abbr": "UMD"
     },
     {
-        "fullName": "University of Toronto",
-        "region": ["CA"],
-        "abbr": "UToronto"
-    },
-    {
-        "fullName": "University of British Columbia",
-        "region": ["CA"],
-        "abbr": "UBC"
-    },
-    {
         "fullName": "University of California - Los Angeles",
         "region": ["US"],
         "abbr": "UCLA"
@@ -108,6 +98,26 @@
         "fullName": "University of Pennsylvania",
         "region": ["US"],
         "abbr": "UPenn"
+    },
+    {
+        "fullName": "University of Wisconsin - Madison",
+        "region": ["US"],
+        "abbr": "UW-Madison"
+    },
+    {
+        "fullName": "Duke University",
+        "region": ["US"],
+        "abbr": "Duke"
+    },
+    {
+        "fullName": "University of Toronto",
+        "region": ["CA"],
+        "abbr": "UToronto"
+    },
+    {
+        "fullName": "University of British Columbia",
+        "region": ["CA"],
+        "abbr": "UBC"
     },
     {
         "fullName": "Max Planck Society",
@@ -128,16 +138,6 @@
         "fullName": "Purdue University",
         "region": ["US"],
         "abbr": "Purdue"
-    },
-    {
-        "fullName": "University of Wisconsin - Madison",
-        "region": ["US"],
-        "abbr": "UW-Madison"
-    },
-    {
-        "fullName": "Duke University",
-        "region": ["US"],
-        "abbr": "Duke"
     },
     {
         "fullName": "Northwestern University",
