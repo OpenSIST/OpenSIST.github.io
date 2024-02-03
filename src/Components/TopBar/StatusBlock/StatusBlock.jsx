@@ -1,6 +1,6 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "./StatusBlock.css";
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import localforage from "localforage";
 import {logout} from "../../../Data/UserData";
 import {useUnAuthorized} from "../../common";
@@ -12,6 +12,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 export function StatusBlock() {
+    const navigate = useNavigate();
     const theme = useTheme();
     const {toggleTheme} = useContext(ThemeContext);
     const [user, setUser] = useState('')
@@ -30,6 +31,11 @@ export function StatusBlock() {
     };
 
     localforage.getItem('user').then((value) => setUser(value));
+    useEffect(() => {
+        if (user === '') {
+            navigate('/login');
+        }
+    }, []);
 
     localforage.setItem('theme', theme.palette.mode).then()
 
