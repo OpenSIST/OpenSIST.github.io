@@ -45,9 +45,10 @@ export async function login(email, password) {
     }
 }
 
-export async function registerReset(username, password, token, status) {
+export async function registerReset(email, password, token, status) {
     const api = status === 'reset' ? RESET_PASSWORD : REGISTER;
-    const email = username + "@shanghaitech.edu.cn";
+    // const username = email.split('@')[0];
+    // const email = username + "@shanghaitech.edu.cn";
     const response = await fetch(api, {
         method: "POST",
         mode: "cors",

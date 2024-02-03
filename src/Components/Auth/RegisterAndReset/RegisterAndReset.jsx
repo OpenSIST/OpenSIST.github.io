@@ -24,10 +24,12 @@ import Select from "@mui/material/Select";
 export async function action({request}) {
     const formData = await request.formData();
     const username = formData.get('username');
+    const suffix = formData.get('suffix');
+    const email = username + suffix;
     const password = formData.get('password');
     const token = formData.get('token');
     const status = formData.get('status');
-    return await registerReset(username, password, token, status);
+    return await registerReset(email, password, token, status);
 }
 
 const passwordSchema = z.string().min(8).max(24).refine(password => (
