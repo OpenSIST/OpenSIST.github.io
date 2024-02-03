@@ -70,6 +70,11 @@
         "abbr": "UMich"
     },
     {
+        "fullName": "University of Texas at Austin",
+        "region": ["US"],
+        "abbr": "UT-Austin"
+    },
+    {
         "fullName": "Cornell University",
         "region": ["US"],
         "abbr": "Cornell"
@@ -100,6 +105,11 @@
         "abbr": "Yale"
     },
     {
+        "fullName": "University of Pennsylvania",
+        "region": ["US"],
+        "abbr": "UPenn"
+    },
+    {
         "fullName": "Max Planck Society",
         "region": ["EU"],
         "abbr": "Max Planck"
@@ -110,19 +120,9 @@
         "abbr": "ELLIS"
     },
     {
-        "fullName": "International Programme in Vision & Robotics",
+        "fullName": "International Programme in Vision and Robotics",
         "region": ["EU"],
         "abbr": "VIBOT"
-    },
-    {
-        "fullName": "University of Texas at Austin",
-        "region": ["US"],
-        "abbr": "UT-Austin"
-    },
-    {
-        "fullName": "University of Pennsylvania",
-        "region": ["US"],
-        "abbr": "UPenn"
     },
     {
         "fullName": "Purdue University",
@@ -373,6 +373,16 @@
         "fullName": "Katholieke Universiteit Leuven",
         "region": ["EU"],
         "abbr": "KU Leuven"
+    },
+    {
+        "fullName": "Lund University",
+        "region": ["EU"],
+        "abbr": "Lund"
+    },
+    {
+        "fullName": "Ghent University",
+        "region": ["EU"],
+        "abbr": "Ghent"
     },
     {
         "fullName": "University at Buffalo",
