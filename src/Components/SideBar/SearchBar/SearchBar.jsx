@@ -32,7 +32,6 @@ export default function SearchBar({query}) {
     const handleFilterChange = (e) => {
         const newSearchParams = new URLSearchParams(searchParams);
         const value = e.target.value;
-        console.log(value);
         if (isEmptyObject(value)) {
             newSearchParams.delete(e.target.name);
         } else {
