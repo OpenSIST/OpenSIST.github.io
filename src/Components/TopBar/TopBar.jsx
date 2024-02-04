@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './TopBar.css';
 import {StatusBlock} from "./StatusBlock/StatusBlock";
 import NavBar from "./NavBar/NavBar";
@@ -8,13 +8,13 @@ import {grey} from "@mui/material/colors";
 import localforage from "localforage";
 import {ReactComponent as LightIcon} from '../icons/header.svg';
 import {ReactComponent as DarkIcon} from '../icons/header-dark.svg';
+import {useUser} from "../../Data/UserData";
 
 function TopBar() {
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
-    localforage.getItem('user').then((value) => {
-        setUser(value);
-    });
+    const user = useUser()
+    console.log(user)
+
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
     return (
@@ -35,7 +35,7 @@ function TopBar() {
                 <SvgIcon
                     component={darkMode ? DarkIcon : LightIcon}
                     inheritViewBox
-                    onClick={() => navigate(user ? "/" : "/login")}
+                    onClick={() => navigate(user === null ? "/login" : "/")}
                     sx={{
                         height: "40px",
                         fontSize: '10em',

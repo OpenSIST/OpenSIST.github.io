@@ -1,8 +1,8 @@
 import React from "react";
 import "./NavBar.css";
 import {useLocation, Link} from "react-router-dom";
-import {useUnAuthorized} from "../../common";
 import {Tabs, Tab} from "@mui/material";
+import {useUser} from "../../../Data/UserData";
 
 function useRouteMatch(patterns) {
     const {pathname} = useLocation();
@@ -39,7 +39,7 @@ export default function NavBar() {
     const routeMatch = useRouteMatch(navItems.map((item) => item.path));
     const currentTab = routeMatch ?? false;
 
-    if (useUnAuthorized()) {
+    if (!useUser()) {
         return null;
     }
     return (

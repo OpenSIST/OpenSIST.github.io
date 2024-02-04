@@ -33,38 +33,5 @@ export function useSmallPage() {
     // return windowWidth < 768;
 }
 
-export function useClickOutSideRef() {
-    const [isMenuVisible, setIsMenuVisible] = useState(false)
-    const menuRef = useRef(null)
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setIsMenuVisible(false)
-            }
-        }
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
-
-    return [isMenuVisible, setIsMenuVisible, menuRef];
-}
-
-export function useUnAuthorized() {
-    const location = useLocation();
-    return ['/login', '/register', '/reset', '/agreement'].includes(location.pathname);
-}
-
-export function getPalette(mode) {
-    return {
-        mode,
-        background: {
-            paper: mode === 'dark' ? grey[900] : grey[100],
-        }
-    }
-}
-
 export const InlineTypography = (props) => <Typography variant="body1" {...props}
                                                 sx={{display: 'flex', alignItems: 'center', flexWrap: "wrap"}}/>;
