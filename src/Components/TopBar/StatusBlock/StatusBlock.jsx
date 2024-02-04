@@ -1,6 +1,6 @@
-import {Link, useNavigate} from "react-router-dom";
+import {Form, Link, useNavigate} from "react-router-dom";
 import "./StatusBlock.css";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect} from "react";
 import localforage from "localforage";
 import {logout, useUser} from "../../../Data/UserData";
 import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, useTheme} from "@mui/material";
@@ -10,6 +10,10 @@ import {ThemeContext} from "../../../index";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
+export async function action(){
+    return await logout();
+}
+
 export function StatusBlock() {
     const navigate = useNavigate();
     const theme = useTheme();
@@ -18,11 +22,6 @@ export function StatusBlock() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
-    };
-
-    const handleLogout = async () => {
-        await logout();
-        handleClose();
     };
 
     const handleClose = () => {
@@ -88,12 +87,14 @@ export function StatusBlock() {
                     </ListItemIcon>
                     Reset Password
                 </MenuItem>
-                <MenuItem to="/login" component={Link} onClick={handleLogout}>
-                    <ListItemIcon>
-                        <Logout fontSize="small"/>
-                    </ListItemIcon>
-                    Logout
-                </MenuItem>
+                <Form method='post'>
+                    <MenuItem component='button' type='submit' sx={{width: "100%"}} onClick={handleClose}>
+                        <ListItemIcon>
+                            <Logout fontSize="small"/>
+                        </ListItemIcon>
+                        Logout
+                    </MenuItem>
+                </Form>
             </Menu>
         </> : null}
     </Box>);

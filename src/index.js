@@ -43,6 +43,7 @@ import AdminEmailPage, {
 } from "./Components/Admin/AdminEmail/AdminEmailPage";
 import {ProgramIndex} from "./Components/ProgramPage/ProgramPage";
 import localforage from "localforage";
+import {action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -54,6 +55,7 @@ function OpenSIST() {
         {
             path: '/',
             element: <Home/>,
+            action: HomeAction,
             errorElement: <ErrorPage/>,
             children: [
                 {

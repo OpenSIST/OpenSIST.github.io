@@ -84,7 +84,7 @@ export async function logout() {
     await localforage.removeItem('user')
     await localforage.removeItem('session')
     await localforage.removeItem('expireAt')
-    // return redirect("/login");
+    return redirect("/login");
 }
 
 export function useUser() {

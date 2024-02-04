@@ -13,7 +13,6 @@ import {useUser} from "../../Data/UserData";
 function TopBar() {
     const navigate = useNavigate();
     const user = useUser()
-    console.log(user)
 
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
