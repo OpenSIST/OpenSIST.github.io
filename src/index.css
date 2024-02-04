@@ -5,12 +5,32 @@ body,html {
     padding: 0;
 }
 
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-color) transparent;
+}
+
+/* Works on Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+    width: 12px;
+}
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-color);
+    border-radius: 20px;
+    border: transparent;
+}
+
 :root {
     --side-bar-bg-color: #fafafa;
     --font-body: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Twemoji', 'Segoe UI Emoji', sans-serif;
-
+    --scrollbar-color: #fff;
+    --bg-color: #fff;
     user-select: none;
     font-size: clamp(10px, 1.5vw, 16px);
+    background-color: var(--bg-color);
 }
 
 /* open-sans-regular - latin-ext_latin */

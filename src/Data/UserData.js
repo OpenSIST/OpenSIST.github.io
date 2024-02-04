@@ -8,6 +8,7 @@ import {
     RESET_PASSWORD
 } from "../APIs/APIs";
 import {headerGenerator} from "./Common";
+import {useState} from "react";
 
 export async function checkLogin() {
     const session = await localforage.getItem('session');
@@ -83,5 +84,13 @@ export async function logout() {
     await localforage.removeItem('user')
     await localforage.removeItem('session')
     await localforage.removeItem('expireAt')
-    // return redirect("/login");
+    return redirect("/login");
+}
+
+export function useUser() {
+    const [user, setUser] = useState('')
+    localforage.getItem('user').then((value) => {
+        setUser(value)
+    })
+    return user
 }

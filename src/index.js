@@ -43,6 +43,7 @@ import AdminEmailPage, {
 } from "./Components/Admin/AdminEmail/AdminEmailPage";
 import {ProgramIndex} from "./Components/ProgramPage/ProgramPage";
 import localforage from "localforage";
+import {action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -54,6 +55,7 @@ function OpenSIST() {
         {
             path: '/',
             element: <Home/>,
+            action: HomeAction,
             errorElement: <ErrorPage/>,
             children: [
                 {
@@ -164,6 +166,18 @@ function OpenSIST() {
             setMode(theme);
         });
     }, []);
+
+    useEffect(() => {
+        const root = document.documentElement;
+        if (mode === 'dark') {
+            root.style.setProperty('--scrollbar-color', 'rgba(155, 155, 155, 0.7)');
+            root.style.setProperty('--bg-color', 'rgba(0, 0, 0, 0.9)');
+        } else {
+            root.style.setProperty('--scrollbar-color', 'rgba(0, 0, 0, 0.5)');
+            root.style.setProperty('--bg-color', 'rgba(255, 255, 255, 0.9)');
+        }
+    }, [mode]);
+
     const toggleTheme = () => {
         setMode((prevMode) => (prevMode === 'dark' ? 'light' : 'dark'));
     };
