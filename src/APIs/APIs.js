@@ -17,3 +17,6 @@ export const GET_EMAIL_CONTENT = ROOT + "api/admin/email/fetch_one";
 export const MOVE_TO_TRASH = ROOT + "api/admin/email/move_to_trash";
 export const MOVE_BACK_INBOX = ROOT + "api/admin/email/move_back_inbox";
 export const REMOVE_FROM_TRASH = ROOT + "api/admin/email/remove_from_trash";
+export const ADD_MODIFY_APPLICANT = ROOT + "api/mutating/new_modify_applicant";
+export const REMOVE_APPLICANT = ROOT + "api/admin/remove_applicant";
+export const APPLICANT_LIST = ROOT + "api/list/applicants";

@@ -1,4 +1,4 @@
-import SideBar from "../SideBar/SideBar";
+import SideBar from "./SideBar/SideBar";
 import {Outlet, useLoaderData} from "react-router-dom";
 import {getPrograms} from "../../Data/ProgramData";
 import './ProgramPage.css';

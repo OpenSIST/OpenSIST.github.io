@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import {Form, Link} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
-import {useSmallPage} from "../common";
-import {regionFlagMapping, univAbbrFullNameMapping} from "../../Data/Common";
+import {useSmallPage} from "../../common";
+import {regionFlagMapping, univAbbrFullNameMapping} from "../../../Data/Common";
 import {
     Box,
     Button,

@@ -75,7 +75,7 @@ export function StatusBlock() {
                 transformOrigin={{horizontal: 'right', vertical: 'top'}}
                 anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
             >
-                <MenuItem to="/profile" component={Link} onClick={handleClose}>
+                <MenuItem to={`/profile/{user}`} component={Link} onClick={handleClose}>
                     <ListItemIcon>
                         <AccountBox fontSize="small"/>
                     </ListItemIcon>

@@ -1,5 +1,5 @@
 import {Form, redirect, useLoaderData} from "react-router-dom";
-import {getQuery, UnivProgramList} from "../../SideBar/SideBar";
+import {getQuery, UnivProgramList} from "../../ProgramPage/SideBar/SideBar";
 import {
     Button,
     Dialog, DialogActions, DialogContent,
@@ -8,7 +8,7 @@ import {
     ListItem,
     ListItemText, TextField, Typography, useTheme
 } from "@mui/material";
-import SearchBar from "../../SideBar/SearchBar/SearchBar";
+import SearchBar from "../../ProgramPage/SideBar/SearchBar/SearchBar";
 import React, {useState} from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {getPrograms, modifyProgramID, removeProgram} from "../../../Data/ProgramData";

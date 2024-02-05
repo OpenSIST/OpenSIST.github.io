@@ -25,7 +25,10 @@ import AddModifyProgram, {
 import {getPrograms} from "./Data/ProgramData";
 import Agreement from "./Components/Agreement/Agreement";
 import ErrorPage from "./Components/Errors/ErrorPage";
-import Profile from "./Components/Profile/Profile";
+import Profile, {
+    action as profileAction,
+    loader as profileLoader
+} from "./Components/Profile/Profile";
 import {createTheme, ThemeProvider, useMediaQuery} from "@mui/material";
 import AdminPage, {AdminIndex} from "./Components/Admin/AdminPage";
 import AdminProgramPage, {
@@ -44,6 +47,7 @@ import AdminEmailPage, {
 import {ProgramIndex} from "./Components/ProgramPage/ProgramPage";
 import localforage from "localforage";
 import {action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
+import {UserInfo} from "./Components/Profile/UserInfo/UserInfo";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -129,8 +133,24 @@ function OpenSIST() {
                                 }
                             ]
                         }, {
-                            path: '/profile',
+                            path: '/profile/:userId',
                             element: <Profile/>,
+                            loader: profileLoader,
+                            action: profileAction,
+                            // children: [
+                            //     {
+                            //         path: '/profile/:userId/:applicantId',
+                            //         loader: applicantLoader,
+                            //         action: applicantAction
+                            //     }, {
+                            //         path: '/profile/:userId/new',
+                            //         action: addModifyApplicantAction
+                            //     }, {
+                            //         path: '/profile/:userId/:applicantId/edit',
+                            //         loader: applicantLoader,
+                            //         action: addModifyApplicantAction
+                            //     }
+                            // ]
                         }, {
                             path: '/login',
                             element: <Login/>,
