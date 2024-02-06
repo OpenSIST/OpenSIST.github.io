@@ -43,7 +43,7 @@ export async function getApplicantByUser(userId, isRefresh = false) {
     * @param userId [String]: userId
     * @return: list of applicants
     */
-    await localforage.removeItem(`${userId}-applicants`)  //TODO: remove this line
+    // await localforage.removeItem(`${userId}-applicants`)  //TODO: remove this line
     let applicants = await localforage.getItem(`${userId}-applicants`);
     if (isRefresh || applicants === null || (Date.now() - applicants.Date) > CACHE_EXPIRATION) {
         const response = await fetch(GET_APPLICANT_BY_USER, {

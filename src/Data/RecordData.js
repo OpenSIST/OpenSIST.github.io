@@ -5,7 +5,7 @@ import localforage from "localforage";
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
 export async function getRecordByApplicant(applicantId, isRefresh = false) {
-    await localforage.removeItem(`records-${applicantId}`)  //TODO: remove this line
+    // await localforage.removeItem(`records-${applicantId}`)  //TODO: remove this line
     let records = await localforage.getItem(`records-${applicantId}`)
     if (isRefresh || records === null || (Date.now() - records.Date) > CACHE_EXPIRATION) {
         const response = await fetch(GET_RECORD_BY_APPLICANT, {

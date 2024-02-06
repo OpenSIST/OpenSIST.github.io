@@ -147,6 +147,14 @@ function OpenSIST() {
                                     path: '/profile/:applicantId',
                                     element: <ProfileApplicantPage/>,
                                     loader: ProfileApplicantLoader,
+                                }, {
+                                    path: '/profile/new-applicant',
+                                }, {
+                                    path: '/profile/:applicantId/new-program'
+                                }, {
+                                    path: '/profile/:applicantId/edit-applicant',
+                                }, {
+                                    path: '/profile/:applicantId/edit-program'
                                 }
                             ]
                             // children: [
