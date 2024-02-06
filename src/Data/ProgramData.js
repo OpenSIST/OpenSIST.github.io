@@ -147,7 +147,7 @@ export async function setPrograms(programs) {
     * Set the list of programs (without description) to the local storage (i.e. localforage.getItem('programs'))
     * @param programs [Array]: list of programs (without description)
     */
-    programs = {'data': programs, 'Date': Date.now()}
+    programs = {'data': programs, 'Date': Date.now()};
     await localforage.setItem('programs', programs);
 }
 

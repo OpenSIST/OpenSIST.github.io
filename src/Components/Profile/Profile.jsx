@@ -2,7 +2,7 @@ import {Paper, useTheme} from "@mui/material";
 import React from "react";
 import {getApplicants} from "../../Data/ApplicantData";
 import {Outlet, useLoaderData} from "react-router-dom";
-import {UserInfo} from "./UserInfo/UserInfo";
+import {ProfileHeader} from "./UserInfo/ProfileHeader";
 import {grey} from "@mui/material/colors";
 
 export async function loader({params}) {
@@ -20,13 +20,35 @@ export default function Profile() {
     const darkMode = theme.palette.mode === 'dark';
     return (
         <>
-            <h1>用户信息</h1>
-            <UserInfo loaderData={loaderData} />
+            <ProfileHeader loaderData={loaderData} />
             <Paper sx={{
                 bgcolor: darkMode ? grey[900] : grey[50],
+                width: '100%'
             }}>
                 <Outlet/>
             </Paper>
         </>
+    )
+}
+
+export function ProfileIndex() {
+    // const loaderData = useLoaderData();
+    // console.log(loaderData);
+    // const applicants = loaderData.applicants;
+    // return (
+    //     <>
+    //         {
+    //             applicants.map(applicant => {
+    //                 <div>
+    //                     {applicant.name}
+    //                 </div>
+    //             })
+    //         }
+    //     </>
+    // )
+    return (
+        <div>
+            Profile Index
+        </div>
     )
 }

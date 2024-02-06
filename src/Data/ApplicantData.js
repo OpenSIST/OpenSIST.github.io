@@ -15,24 +15,25 @@ export async function getApplicants(isRefresh = false, query = {}) {
     * @return: list of applicants
     */
     const userId = query?.userId;
-    let applicants = localforage.getItem('applicants');
+    // await localforage.removeItem('applicants')  //TODO: remove this line
+    let applicants = await localforage.getItem('applicants');
 
     if (isRefresh || applicants === null || (Date.now() - applicants.Date) > CACHE_EXPIRATION) {
         const response = await fetch(APPLICANT_LIST, {
             method: 'POST',
             credentials: 'include',
-            headers: await headerGenerator(),
+            headers: await headerGenerator(true),
         });
         await handleErrors(response)
         applicants = (await response.json());
-        if (userId) {
-            applicants = applicants['data'].filter(applicant => applicant.ApplicantID.split('@')[0] === userId);
-        } else {
-            applicants = applicants['data'];
-        }
-        await setApplicants(applicants);
+        await setApplicants(applicants['data']);
     }
-    return applicants;
+    // if (userId) {
+    //     applicants = applicants['data'].filter(applicant => applicant.ApplicantID.split('@')[0] === userId);
+    // } else {
+    //     applicants = applicants['data'];
+    // }
+    return applicants['data'];
 }
 
 export async function getApplicant(applicantID, isRefresh = false) {

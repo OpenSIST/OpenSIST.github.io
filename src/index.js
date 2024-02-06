@@ -7,7 +7,7 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import ProgramPage, {
-    loader as programPageLoader
+    loader as ProgramPageLoader
 } from "./Components/ProgramPage/ProgramPage";
 import ProgramContent, {
     loader as programContentLoader,
@@ -27,7 +27,7 @@ import Agreement from "./Components/Agreement/Agreement";
 import ErrorPage from "./Components/Errors/ErrorPage";
 import Profile, {
     action as profileAction,
-    loader as profileLoader
+    loader as profileLoader, ProfileIndex
 } from "./Components/Profile/Profile";
 import {createTheme, ThemeProvider, useMediaQuery} from "@mui/material";
 import AdminPage, {AdminIndex} from "./Components/Admin/AdminPage";
@@ -47,7 +47,9 @@ import AdminEmailPage, {
 import {ProgramIndex} from "./Components/ProgramPage/ProgramPage";
 import localforage from "localforage";
 import {action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
-import {UserInfo} from "./Components/Profile/UserInfo/UserInfo";
+import ProfileApplicantPage, {
+    loader as ProfileApplicantLoader,
+} from "./Components/Profile/ProfilApplicant/ProfileApplicantPage";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -71,7 +73,7 @@ function OpenSIST() {
                         {
                             path: '/programs',
                             element: <ProgramPage/>,
-                            loader: programPageLoader,
+                            loader: ProgramPageLoader,
                             action: (
                                 () => getPrograms(true)
                             ),
@@ -133,10 +135,20 @@ function OpenSIST() {
                                 }
                             ]
                         }, {
-                            path: '/profile/:userId',
+                            path: '/profile',
                             element: <Profile/>,
                             loader: profileLoader,
                             action: profileAction,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <ProfileIndex/>
+                                }, {
+                                    path: '/profile/:applicantId',
+                                    element: <ProfileApplicantPage/>,
+                                    loader: ProfileApplicantLoader,
+                                }
+                            ]
                             // children: [
                             //     {
                             //         path: '/profile/:userId/:applicantId',

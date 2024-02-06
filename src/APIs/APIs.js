@@ -20,3 +20,4 @@ export const REMOVE_FROM_TRASH = ROOT + "api/admin/email/remove_from_trash";
 export const ADD_MODIFY_APPLICANT = ROOT + "api/mutating/new_modify_applicant";
 export const REMOVE_APPLICANT = ROOT + "api/admin/remove_applicant";
 export const APPLICANT_LIST = ROOT + "api/list/applicants";
+export const GET_RECORD_BY_APPLICANT = ROOT + "api/query/by_applicant";
