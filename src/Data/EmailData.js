@@ -33,6 +33,7 @@ export async function getEmailBody(emailID) {
 }
 
 export async function moveEmail(emailID, action) {
+    console.log(emailID, action)
     let API = "";
     if (action === 'MoveToTrash') {
         API = MOVE_TO_TRASH;
@@ -45,7 +46,7 @@ export async function moveEmail(emailID, action) {
         method: 'POST',
         credentials: 'include',
         headers: await headerGenerator(true),
-        body: JSON.stringify({EmailID: emailID})
+        body: JSON.stringify({EmailIDs: emailID})
     });
     await handleErrors(response);
 }

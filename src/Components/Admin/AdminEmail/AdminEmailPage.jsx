@@ -23,11 +23,12 @@ export async function loader() {
 
 export async function action({request}) {
     const formData = await request.formData();
-    const emailIDs = formData.get('emailIDs');
+    const emailIDs = formData.get('emailIDs').split(',');
     const actionType = formData.get('button');
-    emailIDs.split(',').map(async (emailID) => {
-        await moveEmail(emailID, actionType);
-    })
+    await moveEmail(emailIDs, actionType);
+    // emailIDs.split(',').map(async (emailID) => {
+    //     await moveEmail(emailID, actionType);
+    // })
     return redirect('/admin/emails')
 }
 

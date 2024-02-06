@@ -37,6 +37,11 @@ export function ProfileHeader({loaderData}) {
                             </ListItem>
                         )
                     })}
+                    {/*<ListItem>*/}
+                    {/*    <ListItemButton component={Link} to="/profile">*/}
+                    {/*        Profile*/}
+                    {/*    </ListItemButton>*/}
+                    {/*</ListItem>*/}
                 </List>
             </Paper>
         </SwipeableDrawer>

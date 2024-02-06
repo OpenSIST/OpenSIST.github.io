@@ -1,7 +1,8 @@
 import localforage from "localforage";
-import {ADD_MODIFY_APPLICANT, REMOVE_APPLICANT, APPLICANT_LIST} from "../APIs/APIs";
+import {ADD_MODIFY_APPLICANT, REMOVE_APPLICANT, APPLICANT_LIST, GET_APPLICANT_BY_USER} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
 import {getPrograms, setPrograms} from "./ProgramData";
+import {json} from "react-router-dom";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
@@ -34,6 +35,38 @@ export async function getApplicants(isRefresh = false, query = {}) {
     //     applicants = applicants['data'];
     // }
     return applicants['data'];
+}
+
+export async function getApplicantByUser(userId, isRefresh = false) {
+    /*
+    * Get the list of applicants from the server or local storage by userId
+    * @param userId [String]: userId
+    * @return: list of applicants
+    */
+    await localforage.removeItem(`${userId}-applicants`)  //TODO: remove this line
+    let applicants = await localforage.getItem(`${userId}-applicants`);
+    if (isRefresh || applicants === null || (Date.now() - applicants.Date) > CACHE_EXPIRATION) {
+        const response = await fetch(GET_APPLICANT_BY_USER, {
+            method: 'POST',
+            credentials: 'include',
+            headers: await headerGenerator(true),
+            body: JSON.stringify({display_name: userId})
+        });
+        await handleErrors(response)
+        applicants = (await response.json());
+        await setApplicantByUser(userId, applicants['result']);
+    }
+    return applicants['result'];
+}
+
+export async function setApplicantByUser(userId, applicants) {
+    /*
+    * Set the list of applicants to the local storage (i.e. localforage.getItem('applicants'))
+    * @param userId [String]: userId
+    * @param applicants [Array]: list of applicants
+    */
+    applicants = {'result': applicants, 'Date': Date.now()}
+    await localforage.setItem(`${userId}-applicants`, applicants);
 }
 
 export async function getApplicant(applicantID, isRefresh = false) {

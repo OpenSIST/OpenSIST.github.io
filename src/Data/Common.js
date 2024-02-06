@@ -12,6 +12,7 @@ export async function headerGenerator(auth = false) {
         'Connection': 'close',
     }
     const session = await localforage.getItem('session');
+    // console.log(session)
     if (auth) {
         header['Authorization'] = `Bearer ${session}`;
     }
@@ -25,7 +26,7 @@ export async function handleErrors(response) {
     * @return: response
      */
     if (response.status === 401) {
-        // window.location.href = "/login";
+        window.location.href = "/login";
         return;
     }
     if (response.status !== 200) {

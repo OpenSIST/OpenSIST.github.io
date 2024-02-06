@@ -1,13 +1,16 @@
 import {Paper, useTheme} from "@mui/material";
 import React from "react";
-import {getApplicants} from "../../Data/ApplicantData";
+import {getApplicantByUser, getApplicants} from "../../Data/ApplicantData";
 import {Outlet, useLoaderData} from "react-router-dom";
 import {ProfileHeader} from "./UserInfo/ProfileHeader";
 import {grey} from "@mui/material/colors";
+import {useUser} from "../../Data/UserData";
+import localforage from "localforage";
 
 export async function loader({params}) {
-    const applicants = await getApplicants(false, {userId: params.userId});
-    return {applicants}
+    const user = await localforage.getItem('user');
+    const applicants = await getApplicantByUser(user);
+    return {applicants};
 }
 
 export async function action() {
@@ -32,20 +35,6 @@ export default function Profile() {
 }
 
 export function ProfileIndex() {
-    // const loaderData = useLoaderData();
-    // console.log(loaderData);
-    // const applicants = loaderData.applicants;
-    // return (
-    //     <>
-    //         {
-    //             applicants.map(applicant => {
-    //                 <div>
-    //                     {applicant.name}
-    //                 </div>
-    //             })
-    //         }
-    //     </>
-    // )
     return (
         <div>
             Profile Index
