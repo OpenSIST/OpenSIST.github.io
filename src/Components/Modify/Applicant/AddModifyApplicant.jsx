@@ -1,4 +1,4 @@
-import {Form, redirect} from "react-router-dom";
+import {Form, redirect, useNavigate} from "react-router-dom";
 import {addModifyApplicant} from "../../../Data/ApplicantData";
 import {Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
 import React, {useState} from "react";
@@ -45,9 +45,12 @@ export async function action({request}) {
 }
 
 export function AddModifyApplicant() {
-    const [openDialog, setOpenDialog] = useState(false);
-    const handleOpenDialog = () => setOpenDialog(true);
-    const handleCloseDialog = () => setOpenDialog(false);
+    const navigate = useNavigate();
+    const [openDialog, setOpenDialog] = useState(true);
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+        navigate('/profile')
+    };
     return (
         <Dialog
             open={openDialog}

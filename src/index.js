@@ -29,7 +29,7 @@ import Profile, {
     action as profileAction,
     loader as profileLoader, ProfileIndex
 } from "./Components/Profile/Profile";
-import {createTheme, ThemeProvider, useMediaQuery} from "@mui/material";
+import {createTheme, Dialog, ThemeProvider, useMediaQuery} from "@mui/material";
 import AdminPage, {AdminIndex} from "./Components/Admin/AdminPage";
 import AdminProgramPage, {
     loader as AdminProgramLoader,
@@ -50,6 +50,7 @@ import {action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock"
 import ProfileApplicantPage, {
     loader as ProfileApplicantLoader,
 } from "./Components/Profile/ProfilApplicant/ProfileApplicantPage";
+import {AddModifyApplicant} from "./Components/Modify/Applicant/AddModifyApplicant";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -149,6 +150,7 @@ function OpenSIST() {
                                     loader: ProfileApplicantLoader,
                                 }, {
                                     path: '/profile/new-applicant',
+                                    element: <AddModifyApplicant key='new'/>,
                                 }, {
                                     path: '/profile/:applicantId/new-program'
                                 }, {
