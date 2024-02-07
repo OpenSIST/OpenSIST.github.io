@@ -1,8 +1,7 @@
 import localforage from "localforage";
-import {ADD_MODIFY_APPLICANT, REMOVE_APPLICANT, APPLICANT_LIST, GET_APPLICANT_BY_USER} from "../APIs/APIs";
+import {ADD_MODIFY_APPLICANT, APPLICANT_LIST, GET_APPLICANT_ID_BY_USER_ID} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
-import {getPrograms, setPrograms} from "./ProgramData";
-import {json} from "react-router-dom";
+import {setPrograms} from "./ProgramData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
@@ -26,34 +25,29 @@ export async function getApplicants(isRefresh = false, query = {}) {
             headers: await headerGenerator(true),
         });
         await handleErrors(response)
-        applicants = (await response.json());
+        applicants = await response.json();
         await setApplicants(applicants['data']);
     }
-    // if (userId) {
-    //     applicants = applicants['data'].filter(applicant => applicant.ApplicantID.split('@')[0] === userId);
-    // } else {
-    //     applicants = applicants['data'];
-    // }
     return applicants['data'];
 }
 
-export async function getApplicantByUser(userId, isRefresh = false) {
+export async function getApplicantIDByUser(userId, isRefresh = false) {
     /*
-    * Get the list of applicants from the server or local storage by userId
+    * Get the list of applicantIDs from the server or local storage by userId
     * @param userId [String]: userId
     * @return: list of applicants
     */
     // await localforage.removeItem(`${userId}-applicants`)  //TODO: remove this line
     let applicants = await localforage.getItem(`${userId}-applicants`);
     if (isRefresh || applicants === null || (Date.now() - applicants.Date) > CACHE_EXPIRATION) {
-        const response = await fetch(GET_APPLICANT_BY_USER, {
+        const response = await fetch(GET_APPLICANT_ID_BY_USER_ID, {
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),
             body: JSON.stringify({display_name: userId})
         });
         await handleErrors(response)
-        applicants = (await response.json());
+        applicants = await response.json();
         await setApplicantByUser(userId, applicants['result']);
     }
     return applicants['result'];
@@ -69,15 +63,15 @@ export async function setApplicantByUser(userId, applicants) {
     await localforage.setItem(`${userId}-applicants`, applicants);
 }
 
-export async function getApplicant(applicantID, isRefresh = false) {
+export async function getApplicant(applicantId, isRefresh = false) {
     /*
-    * Get the applicant from the server or local storage by applicantID
-    * @param applicantID [String]: applicantID
+    * Get the applicant from the server or local storage by applicantId
+    * @param applicantId [String]: applicantId
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: applicant
     */
     const applicants = await getApplicants(isRefresh);
-    return applicants.find(applicant => applicant.ApplicantID === applicantID);
+    return applicants.find(p => p.ApplicantID === applicantId);
 }
 
 export async function setApplicants(applicants) {
@@ -95,7 +89,7 @@ export async function setApplicant(applicant) {
     * Set the applicant to the local storage (i.e. localforage.getItem('applicants'))
     * @param applicant [Object]: applicant
     */
-    const applicants = await getApplicants();
+    const applicants = await getApplicants(true);
     if (applicants.find(p => p.ApplicantID === applicant.ApplicantID) !== undefined) {
         applicants[applicants.indexOf(applicant)] = applicant;
     }

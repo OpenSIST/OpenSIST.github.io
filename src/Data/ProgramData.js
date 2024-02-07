@@ -156,7 +156,7 @@ export async function setProgram(program) {
     * Set the program (without description) to the local storage (i.e. localforage.getItem('programs'))
     * @param program [Object]: program (without description)
     */
-    const programs = await getPrograms();
+    const programs = await getPrograms(true);
     const univName = program.University;
     if (programs[univName] === undefined) {
         programs[univName] = []
