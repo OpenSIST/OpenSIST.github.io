@@ -1,4 +1,4 @@
-const ROOT = "https://opensist-backend.caoster.workers.dev/";
+const ROOT = "https://api.opensist.tech/";
 export const PROGRAM_LIST = ROOT + "api/static_data/programs";
 export const PROGRAM_DESC = ROOT + "api/query/program_description";
 export const ADD_MODIFY_PROGRAM = ROOT + "api/mutating/new_modify_program";
