@@ -4,3 +4,9 @@
     height: 10rem;
     width: 10rem;
 }
+
+.ProfileContent {
+    width: 100%;
+    padding: 20px;
+    overflow-y: auto;
+}

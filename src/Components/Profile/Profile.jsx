@@ -24,9 +24,8 @@ export default function Profile() {
     return (
         <>
             <ProfileHeader loaderData={loaderData} />
-            <Paper sx={{
+            <Paper className='ProfileContent' sx={{
                 bgcolor: darkMode ? grey[900] : grey[50],
-                width: '100%'
             }}>
                 <Outlet/>
             </Paper>

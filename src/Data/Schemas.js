@@ -43,3 +43,26 @@ export const univOptions = sortedUnivList.map((univ) => {
         region: univ['region'],
     }
 });
+
+export const EnglishExamMapping = {
+    GRE: {
+        'Total': 'GRE 总分',
+        'V': 'GRE 语文',
+        'Q': 'GRE 数学',
+        'W': 'GRE 写作',
+    },
+    TOEFL: {
+        'Total': 'TOEFL 总分',
+        'R': 'TOEFL 阅读',
+        'L': 'TOEFL 听力',
+        'S': 'TOEFL 口语',
+        'W': 'TOEFL 写作',
+    },
+    IELTS: {
+        'Total': 'IELTS 总分',
+        'R': 'IELTS 阅读',
+        'L': 'IELTS 听力',
+        'S': 'IELTS 口语',
+        'W': 'IELTS 写作',
+    }
+}
