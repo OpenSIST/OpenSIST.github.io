@@ -1,4 +1,5 @@
 import univList from "./univ_list.json";
+import {amber, blue, green, grey, indigo, lime, pink, purple, red, teal} from "@mui/material/colors";
 
 
 export const DescriptionTemplate = `## 项目介绍
@@ -65,4 +66,34 @@ export const EnglishExamMapping = {
         'S': 'IELTS 口语',
         'W': 'IELTS 写作',
     }
+}
+
+export const PublicationTypeChipPalette = {
+    'Conference': pink,
+    'Journal': red,
+}
+
+export const PublicationAuthorOrderChipPalette = {
+    'First': purple,
+    'Co-first': green,
+    'Second': indigo,
+    'Co-second': blue,
+    'Other': grey,
+}
+
+export const PublicationStateChipPalette = {
+    'Accepted': teal,
+    'UnderReview': amber,
+}
+
+export function PublicationTypeChipColor(dark, type) {
+    return PublicationTypeChipPalette[type][dark ? 700 : 300];
+}
+
+export function PublicationAuthorOrderChipColor(dark, order) {
+    return PublicationAuthorOrderChipPalette[order][dark ? 700 : 300];
+}
+
+export function PublicationStateChipColor(dark, state) {
+    return PublicationStateChipPalette[state][dark ? 700 : 300];
 }

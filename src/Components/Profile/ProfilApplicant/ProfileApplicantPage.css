@@ -10,3 +10,24 @@
     padding: 20px;
     overflow-y: auto;
 }
+
+.PublicationCard,
+.ResearchInternshipCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 15rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.PublicationCard:hover,
+.ResearchInternshipCard:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+}
+

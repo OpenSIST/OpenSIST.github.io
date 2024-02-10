@@ -3,20 +3,41 @@ import {useLoaderData} from "react-router-dom";
 import {
     Box,
     Card,
-    CardActionArea,
-    Divider, IconButton,
+    CardActionArea, Chip,
+    Divider,
     InputLabel,
-    OutlinedInput,
+    OutlinedInput, styled,
     Tooltip,
-    Typography
+    Typography, useTheme
 } from "@mui/material";
-import {Add} from "@mui/icons-material";
+import {Add, Label} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
 import {Link} from 'react-router-dom';
 import {getApplicant} from "../../../Data/ApplicantData";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import HelpIcon from '@mui/icons-material/Help';
-import {EnglishExamMapping} from "../../../Data/Schemas";
+import {
+    EnglishExamMapping,
+    PublicationAuthorOrderChipColor,
+    PublicationStateChipColor,
+    PublicationTypeChipColor
+} from "../../../Data/Schemas";
+import {Fragment} from "react";
+
+const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '1rem',
+    margin: '1rem 0',
+}));
+
+const ItemBox = styled(Box)(({theme}) => ({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '1rem',
+}))
 
 export async function loader({params}) {
     const applicantId = params.applicantId;
@@ -80,10 +101,13 @@ export function ApplicantInfo({applicant}) {
                                         xs={xs_standard_grades}/>
                 <EnglishProficiencyItem title="IELTS" grade={applicant.EnglishProficiency.IELTS}
                                         xs={xs_standard_grades}/>
-
             </Grid2>
             <Divider><Typography variant='h4'>软背景</Typography></Divider>
-
+            <Grid2 container rowSpacing={1} columnSpacing={5}>
+                <PublicationItems publications={applicant.Publication} xs={4}/>
+                <ResearchInternshipItems experiences={applicant.Research} title="科研经历"/>
+                <ResearchInternshipItems experiences={applicant.Internship} title="实习经历"/>
+            </Grid2>
         </>
     )
 }
@@ -93,16 +117,7 @@ function ApplicantInfoItem({itemLabel, itemValue, help, xs = 4}) {
         return null;
     }
     return (
-        <Grid2
-            xs={xs}
-            sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                m: '1rem 0',
-                '& > *': {mr: '1rem'}
-            }}
-        >
+        <ContentCenteredGrid xs={xs}>
             <InputLabel sx={{width: '6rem', display: 'flex', alignItems: 'center'}}>
                 {itemLabel}
                 {help && <Tooltip title={help} arrow>
@@ -110,7 +125,7 @@ function ApplicantInfoItem({itemLabel, itemValue, help, xs = 4}) {
                 </Tooltip>}
             </InputLabel>
             <OutlinedInput readOnly defaultValue={itemValue}/>
-        </Grid2>
+        </ContentCenteredGrid>
     )
 }
 
@@ -127,6 +142,93 @@ function EnglishProficiencyItem({title, grade, xs}) {
     )
 }
 
+function PublicationItems({publications, xs}) {
+    if (!publications || publications.length === 0) {
+        return null;
+    }
+    return (
+        <Grid2 container xs={xs}>
+            <ContentCenteredGrid xs={12} sx={{alignItems: "flex-start"}}><Typography variant='h5'>论文发表</Typography></ContentCenteredGrid>
+            {publications.map((publication, index) => (
+                <PublicationCard key={index} publication={publication}/>
+            ))}
+        </Grid2>
+    )
+}
+
+function PublicationCard({publication}) {
+    return (
+        <ContentCenteredGrid xs={12}>
+            <Card className='PublicationCard' sx={{borderRadius: '20px'}}>
+                <PublicationCardChipItem label="类型:" value={publication.Type} palette={PublicationTypeChipColor}/>
+                <PublicationCardTextItem label="名称:" value={publication.Name}/>
+                <PublicationCardChipItem label="作者顺序:" value={publication.AuthorOrder}
+                                         palette={PublicationAuthorOrderChipColor}/>
+                <PublicationCardChipItem label="状态:" value={publication.Status} palette={PublicationStateChipColor}/>
+                <PublicationCardTextItem label="详情:" value={publication.Detail}/>
+            </Card>
+        </ContentCenteredGrid>
+    )
+}
+
+function PublicationCardTextItem({label, value}) {
+    if (!value || value === '') {
+        return null;
+    }
+    return (
+        <ItemBox>
+            <InputLabel>
+                {label}
+            </InputLabel>
+            <Typography>{value}</Typography>
+        </ItemBox>
+    )
+}
+
+function PublicationCardChipItem({label, value, palette}) {
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === 'dark';
+    if (!value || value === '') {
+        return null;
+    }
+    return (
+        <ItemBox>
+            <InputLabel>
+                {label}
+            </InputLabel>
+            <Chip label={value} sx={{bgcolor: palette(darkMode, value)}}/>
+        </ItemBox>
+    )
+}
+
+function ResearchInternshipItems({experiences, title}) {
+    if (!experiences || (experiences.Domestic.Num + experiences.International.Num) === 0) {
+        return null;
+    }
+    return (
+        <Grid2 container xs={4}>
+            <ContentCenteredGrid xs={12} sx={{alignSelf: 'flex-start', flexDirection: 'column', gap: '0'}}>
+                <Typography variant='h5'>
+                    {title}
+                </Typography>
+                <Typography variant='subtitle1'>{experiences?.Focus}</Typography>
+            </ContentCenteredGrid>
+            <ResearchInternshipCard num={experiences?.Domestic?.Num} detail={experiences?.Domestic?.Detail}/>
+            <ResearchInternshipCard num={experiences?.International?.Num} detail={experiences?.International?.Detail}/>
+        </Grid2>
+    )
+}
+
+function ResearchInternshipCard({num, detail}) {
+    return (
+        <ContentCenteredGrid xs={12}>
+            <Card className="ResearchInternshipCard" sx={{borderRadius: '20px'}}>
+                <Typography>{`国内${num}段`}</Typography>
+                <Typography>{detail}</Typography>
+            </Card>
+        </ContentCenteredGrid>
+    )
+}
 
 const libn = {
     "ApplicantID": "libn@2024",
