@@ -12,7 +12,7 @@ import {addModifyProgram} from "../../../Data/ProgramData";
 import {
     Button,
     ButtonGroup, Checkbox,
-    FormControl, ListItemText,
+    FormControl, Input, ListItemText,
     MenuItem,
     TextField,
     Typography
@@ -23,6 +23,7 @@ import {faMarkdown} from "@fortawesome/free-brands-svg-icons";
 
 export async function action({request}) {
     const formData = await request.formData();
+    const ActionType = formData.get('ActionType');
     const University = formData.get('University');
     const Program = formData.get('Program');
     const ProgramID = `${Program}@${University}`;
@@ -31,7 +32,7 @@ export async function action({request}) {
     const Degree = formData.get('Degree');
     const Description = formData.get('Description');
     const requestBody = {
-        'newProgram': false,
+        'newProgram': ActionType === 'new',
         'content': {
             'ProgramID': ProgramID,
             'University': University,
@@ -46,7 +47,7 @@ export async function action({request}) {
     return redirect(`/programs/${ProgramID}`)
 }
 
-export default function AddModifyProgram() {
+export default function AddModifyProgram({type}) {
     const navigate = useNavigate();
     const loaderData = useLoaderData();
     const programContent = loaderData?.programContent;
@@ -59,6 +60,7 @@ export default function AddModifyProgram() {
         <Form method="post"
               style={{display: 'flex', flexDirection: 'column'}}
         >
+            <Input type='hidden' value={type} name='ActionType'></Input>
             <Typography variant="h4" sx={{alignSelf: 'center'}}>{`${mode}项目`}</Typography>
             <Typography variant="h5">项目信息</Typography>
             <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "15px"}} fullWidth>

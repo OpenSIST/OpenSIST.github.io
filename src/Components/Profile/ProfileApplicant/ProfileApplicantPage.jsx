@@ -245,7 +245,7 @@ const libn = {
         "Total": 330,
         "V": 160,
         "Q": 170,
-        "W": 4
+        "AW": 4
     },
     "EnglishProficiency": {
         "TOEFL": {

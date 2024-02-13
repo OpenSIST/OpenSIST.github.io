@@ -108,7 +108,7 @@ export async function addModifyApplicant(requestBody) {
         headers: await headerGenerator(true),
         body: JSON.stringify({
             newApplicant: requestBody.newApplicant,
-            content: {...(requestBody.content), Programs: []},
+            content: {...(requestBody.content), Programs: {}},
         }),
     });
     await handleErrors(response)

@@ -45,6 +45,56 @@ export const univOptions = sortedUnivList.map((univ) => {
     }
 });
 
+export const genderOptions = [
+    { value: 'Male', label: '男' },
+    { value: 'Female', label: '女' },
+    { value: 'Others', label: '其他' },
+]
+
+export const currentDegreeOptions = [
+    { value: 'Undergraduate', label: '本科生' },
+    { value: 'Master', label: '硕士生' }
+]
+
+export const applicationYearOptions = Array.from({length: 10}, (_, i) => {
+    const year = 2016 + i;
+    return { value: year, label: `${year}` };
+});
+
+export const englishOptions = list2Options(['TOEFL', 'IELTS']);
+
+export const exchangeDurationOptions = [
+    { value: 'Semester', label: '一学期' },
+    { value: 'Year', label: '一学年' }
+]
+
+export const publicationTypeOptions = [
+    { value: 'Journal', label: '期刊' },
+    { value: 'Conference', label: '会议' },
+    { value: 'Workshop', label: 'Workshop'}
+]
+
+export const publicationStatusOptions = [
+    { value: 'Accepted', label: '已录用' },
+    { value: 'UnderReview', label: '在投' }
+]
+
+export const authorOrderOptions = [
+    { value: 'First', label: '第一作者' },
+    { value: 'Co-first', label: '共同第一作者' },
+    { value: 'Second', label: '第二作者' },
+    { value: 'Co-second', label: '共同第二作者' },
+    { value: 'Other', label: '其他' }
+]
+
+export const recommendationTypeOptions = [
+    { value: 'Research', label: '科研推' },
+    { value: 'Course', label: '课程推' },
+    { value: 'TA', label: 'TA推' },
+    { value: 'Internship', label: '实习推' },
+    { value: 'Competition', label: '竞赛推'}
+]
+
 export const EnglishExamMapping = {
     GRE: {
         'Total': 'GRE 总分',

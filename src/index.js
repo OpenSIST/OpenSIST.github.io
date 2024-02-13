@@ -29,7 +29,7 @@ import Profile, {
     action as profileAction,
     loader as profileLoader, ProfileIndex
 } from "./Components/Profile/Profile";
-import {createTheme, Dialog, ThemeProvider, useMediaQuery} from "@mui/material";
+import {createTheme, ThemeProvider, useMediaQuery} from "@mui/material";
 import AdminPage, {AdminIndex} from "./Components/Admin/AdminPage";
 import AdminProgramPage, {
     loader as AdminProgramLoader,
@@ -49,8 +49,11 @@ import localforage from "localforage";
 import {action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
 import ProfileApplicantPage, {
     loader as ProfileApplicantLoader,
-} from "./Components/Profile/ProfilApplicant/ProfileApplicantPage";
-import {AddModifyApplicant} from "./Components/Modify/Applicant/AddModifyApplicant";
+} from "./Components/Profile/ProfileApplicant/ProfileApplicantPage";
+import AddModifyApplicant, {
+    action as addModifyApplicantAction
+} from "./Components/Modify/Applicant/AddModifyApplicant";
+import {addModifyApplicant} from "./Data/ApplicantData";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -89,12 +92,12 @@ function OpenSIST() {
                                             action: programContentAction
                                         }, {
                                             path: '/programs/:programId/edit',
-                                            element: <AddModifyProgram key='edit'/>,
+                                            element: <AddModifyProgram key='edit' type='edit'/>,
                                             loader: programContentLoader,
                                             action: addModifyProgramAction
                                         }, {
                                             path: '/programs/new',
-                                            element: <AddModifyProgram key='new'/>,
+                                            element: <AddModifyProgram key='new' type='new'/>,
                                             action: addModifyProgramAction
                                         }, {
                                             index: true,
@@ -150,29 +153,19 @@ function OpenSIST() {
                                     loader: ProfileApplicantLoader,
                                 }, {
                                     path: '/profile/new-applicant',
-                                    element: <AddModifyApplicant key='new'/>,
+                                    element: <AddModifyApplicant key='new' type='new'/>,
+                                    action: addModifyApplicantAction
                                 }, {
                                     path: '/profile/:applicantId/new-program'
                                 }, {
                                     path: '/profile/:applicantId/edit-applicant',
+                                    element: <AddModifyApplicant key='edit' type='edit'/>,
+                                    loader: ProfileApplicantLoader,
+                                    action: addModifyApplicantAction
                                 }, {
                                     path: '/profile/:applicantId/edit-program'
                                 }
                             ]
-                            // children: [
-                            //     {
-                            //         path: '/profile/:userId/:applicantId',
-                            //         loader: applicantLoader,
-                            //         action: applicantAction
-                            //     }, {
-                            //         path: '/profile/:userId/new',
-                            //         action: addModifyApplicantAction
-                            //     }, {
-                            //         path: '/profile/:userId/:applicantId/edit',
-                            //         loader: applicantLoader,
-                            //         action: addModifyApplicantAction
-                            //     }
-                            // ]
                         }, {
                             path: '/login',
                             element: <Login/>,

@@ -28,7 +28,7 @@ export function ProfileHeader({loaderData}) {
             <Paper className="ProfileHeader">
                 <Avatar sx={{height: '100px', width: '100px'}}/>
                 <Typography variant='h4'>{user}</Typography>
-                <Typography variant='h6'>{applicants.length} Applicants</Typography>
+                <Typography variant='h6'>{applicants.length} {applicants.length > 1 ? 'Applicants' : 'Applicant'}</Typography>
                 <List>
                     {applicants.map((applicant) => (
                         <ListItem key={applicant}>
