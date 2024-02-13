@@ -4,15 +4,12 @@ import {
     Divider,
     FormControl,
     Grid,
-    IconButton, Input,
     InputLabel, ListItemText,
     MenuItem,
-    OutlinedInput,
     Paper,
     TextField
 } from "@mui/material";
 import React, {useState} from "react";
-import Autocomplete from "@mui/material/Autocomplete";
 import {
     authorOrderOptions,
     exchangeDurationOptions,

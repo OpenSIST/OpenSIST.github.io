@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Box, Button, Divider, Grid, Paper, TextField} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import {applicationYearOptions, englishOptions} from "../../../Data/Schemas";
+import {englishOptions} from "../../../Data/Schemas";
 
 function Grades({formValues, handleBack, handleNext, handleChange}) {
     const [englishOption, setEnglishOption] = useState('');

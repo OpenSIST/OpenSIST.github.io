@@ -1,13 +1,9 @@
-import React, {useCallback, useContext} from "react";
-import {ApplicantContext} from "./Context";
+import React from "react";
 import {
     Box,
     Button,
-    FormControl,
     Grid,
     IconButton,
-    InputLabel,
-    MenuItem,
     Paper,
     TextField,
     Tooltip
@@ -16,12 +12,10 @@ import {HelpOutline} from "@mui/icons-material";
 import Autocomplete from "@mui/material/Autocomplete";
 import {
     applicationYearOptions,
-    currentDegreeOptions, degreeOptions,
+    currentDegreeOptions,
     genderOptions,
     majorOptions,
-    recommendationTypeOptions
 } from "../../../Data/Schemas";
-import Select from "@mui/material/Select";
 
 function BasicInfo({formValues, handleNext, handleChange}) {
     const addEndAdornment = (endAdornment) => {
