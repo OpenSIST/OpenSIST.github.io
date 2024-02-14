@@ -171,7 +171,7 @@ export default function AddModifyApplicant({type}) {
             'V': applicantContent.GRE?.V,
             'Q': applicantContent.GRE?.Q,
             'AW': applicantContent.GRE?.AW,
-            'GRETotal': applicantContent.GRE?.GRETotal,
+            'GRETotal': applicantContent.GRE?.Total,
             ...(applicantContent.EnglishProficiency?.TOEFL && {
                 'EnglishOption': 'TOEFL',
                 'EnglishTotal': applicantContent.EnglishProficiency.TOEFL.Total,

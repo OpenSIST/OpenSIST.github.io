@@ -128,7 +128,7 @@ export const EnglishExamMapping = {
         'Total': 'GRE 总分',
         'V': 'GRE 语文',
         'Q': 'GRE 数学',
-        'W': 'GRE 写作',
+        'AW': 'GRE 写作',
     },
     TOEFL: {
         'Total': 'TOEFL 总分',

@@ -20,7 +20,7 @@ import {
     EnglishExamMapping,
     PublicationAuthorOrderChipColor,
     PublicationStateChipColor,
-    PublicationTypeChipColor
+    PublicationTypeChipColor, rankPercentOptions
 } from "../../../Data/Schemas";
 import {Fragment} from "react";
 
@@ -102,7 +102,8 @@ export function ApplicantInfo({applicant}) {
                     <ApplicantInfoItem itemLabel="GPA" itemValue={applicant.GPA} xs={12}
                                        help="申请人在该申请季用于申请的最高学历的GPA"/>
                     <ApplicantInfoItem itemLabel="排名"
-                                       itemValue={`${applicant.Ranking.Rank}/${applicant.Ranking.Total}`} xs={12}
+                                       itemValue={rankPercentOptions.find((option) => option.value === applicant.Ranking).label}
+                                       xs={12}
                                        help="学院排名or专业排名"/>
                 </Grid2>
                 <EnglishProficiencyItem title="GRE" grade={applicant.GRE} xs={xs_standard_grades}/>
