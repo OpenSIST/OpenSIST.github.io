@@ -125,7 +125,7 @@ export async function action({request}) {
             'Programs': ActionType === 'new' ? {} : Programs
         }
     };
-    console.log(requestBody)
+    // console.log(requestBody)
     await addModifyApplicant(requestBody);
     return redirect(`/profile/${ApplicantID}`);
 }
@@ -212,7 +212,7 @@ export default function AddModifyApplicant({type}) {
             setFormValues(rest);
         }
     }
-    console.log(formValues)
+    // console.log(formValues)
 
     return (
         <Form method='post'>

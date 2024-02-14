@@ -149,6 +149,7 @@ export const EnglishExamMapping = {
 export const PublicationTypeChipPalette = {
     'Conference': pink,
     'Journal': red,
+    'Workshop': lime,
 }
 
 export const PublicationAuthorOrderChipPalette = {
