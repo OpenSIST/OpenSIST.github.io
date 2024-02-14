@@ -161,7 +161,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         label="研究领域"
                         variant="outlined"
                         size="small"
-                        value={formValues.ResearchFocus || ""}
+                        value={formValues.ResearchFocus ?? ""}
                         onChange={(event) => {handleChange(event)}}
                     />
                 </Grid>
@@ -184,7 +184,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         label="具体描述"
                         variant="outlined"
                         size="small"
-                        value={formValues.DomesticResearchDetail || ""}
+                        value={formValues.DomesticResearchDetail ?? ""}
                         onChange={(event) => {handleChange(event)}}
                     />
                 </Grid>
@@ -207,7 +207,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         label="具体描述"
                         variant="outlined"
                         size="small"
-                        value={formValues.InternationalResearchDetail || ""}
+                        value={formValues.InternationalResearchDetail ?? ""}
                         onChange={(event) => {handleChange(event)}}
                     />
                 </Grid>
@@ -237,7 +237,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         label="具体描述"
                         variant="outlined"
                         size="small"
-                        value={formValues.DomesticInternDetail || ""}
+                        value={formValues.DomesticInternDetail ?? ""}
                         onChange={(event) => {handleChange(event)}}
                     />
                 </Grid>
@@ -260,7 +260,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         label="具体描述"
                         variant="outlined"
                         size="small"
-                        value={formValues.InternationalInternDetail || ""}
+                        value={formValues.InternationalInternDetail ?? ""}
                         onChange={(event) => {handleChange(event)}}
                     />
                 </Grid>
@@ -421,7 +421,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                     label="竞赛经历描述"
                     variant="outlined"
                     size="small"
-                    value={formValues.Competition || ""}
+                    value={formValues.Competition ?? ""}
                     onChange={(event) => {handleChange(event)}}
                 />
             </Grid>

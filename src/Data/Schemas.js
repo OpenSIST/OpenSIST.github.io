@@ -1,6 +1,5 @@
-import univList from "./univ_list.json";
+import univList from "./UnivList.json";
 import {amber, blue, green, grey, indigo, lime, pink, purple, red, teal} from "@mui/material/colors";
-
 
 export const DescriptionTemplate = `## 项目介绍
 
@@ -48,7 +47,7 @@ export const univOptions = sortedUnivList.map((univ) => {
 export const genderOptions = [
     { value: 'Male', label: '男' },
     { value: 'Female', label: '女' },
-    { value: 'Others', label: '其他' },
+    { value: 'Others', label: 'LGBTQ+' },
 ]
 
 export const currentDegreeOptions = [

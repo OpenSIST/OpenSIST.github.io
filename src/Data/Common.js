@@ -1,4 +1,4 @@
-import univList from "./univ_list.json";
+import univList from "./UnivList.json";
 import localforage from "localforage";
 
 export async function headerGenerator(auth = false) {

@@ -27,40 +27,42 @@ export async function action({request}) {
     const Major = formValues.Major;
     const GPA = Number(formValues.GPA);
     const Ranking = formValues.Ranking;
-    const V = Number(formValues.V);
-    const Q = Number(formValues.Q);
-    const AW = Number(formValues.AW);
+    const V = formValues.V;
+    const Q = formValues.Q;
+    const AW = formValues.AW;
+    const GRETotal = formValues.GRETotal;
     const GRE = {
-        ...(!isNaN(V) && { 'V': V }),
-        ...(!isNaN(Q) && { 'Q': Q }),
-        ...(!isNaN(AW) && { 'AW': AW }),
-        ...(!isNaN(V) && !isNaN(Q) && { 'Total': V + Q })
+        'Total': GRETotal ? Number(GRETotal) : 0,
+        'V': V ? Number(V) : 0,
+        'Q': Q ? Number(Q) : 0,
+        'AW': AW ? Number(AW) : 0
     }
     const EnglishOption = formValues.EnglishOption;
     let EnglishProficiency = {};
     if (EnglishOption !== undefined) {
-        const R = Number(formValues.R);
-        const W = Number(formValues.W);
-        const L = Number(formValues.L);
-        const S = Number(formValues.S);
+        const EnglishTotal = formValues.EnglishTotal;
+        const R = formValues.R;
+        const W = formValues.W;
+        const L = formValues.L;
+        const S = formValues.S;
         if (EnglishOption === 'TOEFL') {
             EnglishProficiency = {
                 "TOEFL" : {
-                    ...(!isNaN(R) && { 'R': R }),
-                    ...(!isNaN(W) && { 'W': W }),
-                    ...(!isNaN(L) && { 'L': L }),
-                    ...(!isNaN(S) && { 'S': S }),
-                    ...(!isNaN(R) && !isNaN(W) && !isNaN(L) && !isNaN(S) && { 'Total': R + W + L + S })
+                    'Total': EnglishTotal ? Number(EnglishTotal) : 0,
+                    'R': R ? Number(R) : 0,
+                    'W': W ? Number(W) : 0,
+                    'L': L ? Number(L) : 0,
+                    'S': S ? Number(S) : 0,
                 }
             }
         } else if (EnglishOption === 'IELTS'){
             EnglishProficiency = {
                 "IELTS" : {
-                    ...(!isNaN(R) && { 'R': R }),
-                    ...(!isNaN(W) && { 'W': W }),
-                    ...(!isNaN(L) && { 'L': L }),
-                    ...(!isNaN(S) && { 'S': S }),
-                    ...(!isNaN(R) && !isNaN(W) && !isNaN(L) && !isNaN(S) && { 'Total': Math.round((R + W + L + S) / 4 * 2) / 2 })
+                    'Total': EnglishTotal ? Number(EnglishTotal) : 0,
+                    'R': R ? Number(R) : 0,
+                    'W': W ? Number(W) : 0,
+                    'L': L ? Number(L) : 0,
+                    'S': S ? Number(S) : 0,
                 }
             }
         }
@@ -74,33 +76,29 @@ export async function action({request}) {
     const InternationalResearchNum = formValues.InternationalResearchNum;
     const InternationalResearchDetail = formValues.InternationalResearchDetail;
     const Research = {
-        ...(ResearchFocus !== undefined && { 'Focus': ResearchFocus }),
-        ...((DomesticResearchNum !== undefined || DomesticResearchDetail !== undefined) && { 'Domestic': {
-                ...(DomesticResearchNum !== undefined && { 'Num': Number(DomesticResearchNum) }),
-                ...(DomesticResearchDetail !== undefined && { 'Detail': DomesticResearchDetail })
-            }
-        }),
-        ...((InternationalResearchNum !== undefined || InternationalResearchDetail !== undefined) && { 'International': {
-                ...(InternationalResearchNum !== undefined && { 'Num': Number(InternationalResearchNum) }),
-                ...(InternationalResearchDetail !== undefined && { 'Detail': InternationalResearchDetail })
-            }
-        })
+        'Focus': ResearchFocus ?? "",
+        'Domestic': {
+            'Num': DomesticResearchNum ? Number(DomesticResearchNum) : 0,
+            'Detail': DomesticResearchDetail ?? ""
+        },
+        'International': {
+            'Num': InternationalResearchNum ? Number(InternationalResearchNum) : 0,
+            'Detail': InternationalResearchDetail ?? ""
+        }
     }
     const DomesticInternNum = formValues.DomesticInternNum;
     const DomesticInternDetail = formValues.DomesticInternDetail;
     const InternationalInternNum = formValues.InternationalInternNum;
     const InternationalInternDetail = formValues.InternationalInternDetail;
     const Internship = {
-        ...((DomesticInternNum !== undefined || DomesticInternDetail !== undefined) && { 'Domestic': {
-                ...(DomesticInternNum !== undefined && { 'Num': Number(DomesticInternNum) }),
-                ...(DomesticInternDetail !== undefined && { 'Detail': DomesticInternDetail })
-            }
-        }),
-        ...((InternationalInternNum !== undefined || InternationalInternDetail !== undefined) && { 'International': {
-                ...(InternationalInternNum !== undefined && { 'Num': Number(InternationalInternNum) }),
-                ...(InternationalInternDetail !== undefined && { 'Detail': InternationalInternDetail })
-            }
-        })
+        'Domestic': {
+            'Num': DomesticInternNum ? Number(DomesticInternNum) : 0,
+            'Detail': DomesticInternDetail ?? ""
+        },
+        'International': {
+            'Num': InternationalInternNum ? Number(InternationalInternNum) : 0,
+            'Detail': InternationalInternDetail ?? ""
+        }
     }
     const Competition = formValues.Competition;
     const Programs = formValues.Programs;
@@ -116,20 +114,20 @@ export async function action({request}) {
             'Major': Major,
             'GPA': GPA,
             ...(Ranking !== undefined && { 'Ranking': Ranking }),
-            ...(Object.keys(GRE).length !== 0 && { 'GRE': GRE }),
+            ...(Object.values(GRE).some(value => value !== 0) && { 'GRE': GRE }),
             ...(Object.keys(EnglishProficiency).length !== 0 && { 'EnglishProficiency': EnglishProficiency }),
             ...(Exchange.length !== 0 && { 'Exchange': Exchange }),
             ...(Publication.length !== 0 && { 'Publication': Publication }),
-            ...(Object.keys(Research).length !== 0 && { 'Research': Research }),
-            ...(Object.keys(Internship).length !== 0 && { 'Internship': Internship }),
+            'Research': Research,
+            'Internship': Internship,
             ...(Recommendation.length !== 0 && { 'Recommendation': Recommendation }),
             ...(Competition !== undefined && { 'Competition': Competition }),
             'Programs': ActionType === 'new' ? {} : Programs
         }
     };
     console.log(requestBody)
-    // await addModifyApplicant(requestBody);
-    // return redirect(`/profile/${ApplicantID}`);
+    await addModifyApplicant(requestBody);
+    return redirect(`/profile/${ApplicantID}`);
 }
 
 const FormContent = (activeStep, formValues, handleBack, handleNext, handleChange) => {
@@ -173,8 +171,10 @@ export default function AddModifyApplicant({type}) {
             'V': applicantContent.GRE?.V,
             'Q': applicantContent.GRE?.Q,
             'AW': applicantContent.GRE?.AW,
+            'GRETotal': applicantContent.GRE?.GRETotal,
             ...(applicantContent.EnglishProficiency?.TOEFL && {
                 'EnglishOption': 'TOEFL',
+                'EnglishTotal': applicantContent.EnglishProficiency.TOEFL.Total,
                 'R': applicantContent.EnglishProficiency.TOEFL.R,
                 'W': applicantContent.EnglishProficiency.TOEFL.W,
                 'L': applicantContent.EnglishProficiency.TOEFL.L,
@@ -182,6 +182,7 @@ export default function AddModifyApplicant({type}) {
             }),
             ...(applicantContent.EnglishProficiency?.IELTS && {
                 'EnglishOption': 'IELTS',
+                'EnglishTotal': applicantContent.EnglishProficiency.IELTS.Total,
                 'R': applicantContent.EnglishProficiency.IELTS.R,
                 'W': applicantContent.EnglishProficiency.IELTS.W,
                 'L': applicantContent.EnglishProficiency.IELTS.L,
@@ -211,7 +212,7 @@ export default function AddModifyApplicant({type}) {
             setFormValues(rest);
         }
     }
-    // console.log(formValues)
+    console.log(formValues)
 
     return (
         <Form method='post'>

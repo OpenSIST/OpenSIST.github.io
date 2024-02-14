@@ -155,7 +155,7 @@ function BasicInfo({formValues, handleNext, handleChange}) {
                     sx={{ mr: 1 }}
                     variant='contained'
                     onClick={handleNext}
-                    disabled={isError()}
+                    // disabled={isError()}
                 >
                     下一步
                 </Button>
