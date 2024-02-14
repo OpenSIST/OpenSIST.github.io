@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import {Box, Button, Divider, Grid, Paper, TextField} from "@mui/material";
+import {Box, Button, Divider, Grid, InputAdornment, Paper, TextField} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import {englishOptions} from "../../../Data/Schemas";
+import {englishOptions, rankPercentOptions} from "../../../Data/Schemas";
 
 function Grades({formValues, handleBack, handleNext, handleChange}) {
     const [englishOption, setEnglishOption] = useState('');
@@ -25,7 +25,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                 spacing={2}
                 sx={{width: '70%', justifyContent: 'center', margin: 0}}
             >
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={6}>
                     <TextField
                         fullWidth
                         name="GPA"
@@ -33,36 +33,33 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                         variant="outlined"
                         size="small"
                         required
-                        value={formValues.GPA || ""}
+                        value={formValues.GPA ?? ""}
                         onChange={(event) => {handleChange(event)}}
                         type="number"
                         sx={disableNumberUpDown}
                     />
                 </Grid>
-                <Grid item xs={12} md={4}>
-                    <TextField
+                <Grid item xs={12} md={6}>
+                    <Autocomplete
                         fullWidth
-                        name="Rank"
-                        label="排名"
-                        variant="outlined"
-                        size="small"
-                        value={formValues.Rank || ""}
-                        onChange={(event) => {handleChange(event)}}
-                        type="number"
-                        sx={disableNumberUpDown}
-                    />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <TextField
-                        fullWidth
-                        name="RankTotal"
-                        label="总人数"
-                        variant="outlined"
-                        size="small"
-                        value={formValues.RankTotal || ""}
-                        onChange={(event) => {handleChange(event)}}
-                        type="number"
-                        sx={disableNumberUpDown}
+                        renderInput={(params) =>
+                            <TextField
+                                {...params}
+                                size="small"
+                                name="Ranking"
+                                label="学院或专业排名"
+                                variant="outlined"
+                            />
+                        }
+                        options={rankPercentOptions}
+                        value={formValues.Ranking ? rankPercentOptions.find((option) => {
+                            return option.value === formValues.Ranking;
+                        }) : null}
+                        onChange={
+                            (event, newInputValue) => {
+                                handleChange(event, newInputValue?.value, "Ranking")
+                            }
+                        }
                     />
                 </Grid>
             </Grid>
@@ -79,7 +76,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                         label="语文"
                         variant="outlined"
                         size="small"
-                        value={formValues.V || ""}
+                        value={formValues.V ?? ""}
                         onChange={(event) => {handleChange(event)}}
                         type="number"
                         sx={disableNumberUpDown}
@@ -92,7 +89,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                         label="数学"
                         variant="outlined"
                         size="small"
-                        value={formValues.Q || ""}
+                        value={formValues.Q ?? ""}
                         onChange={(event) => {handleChange(event)}}
                         type="number"
                         sx={disableNumberUpDown}
@@ -105,7 +102,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                         label="写作"
                         variant="outlined"
                         size="small"
-                        value={formValues.AW || ""}
+                        value={formValues.AW ?? ""}
                         onChange={(event) => {handleChange(event)}}
                         type="number"
                         sx={disableNumberUpDown}
@@ -153,7 +150,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                 label="阅读"
                                 variant="outlined"
                                 size="small"
-                                value={formValues.R || ""}
+                                value={formValues.R ?? ""}
                                 onChange={(event) => {handleChange(event)}}
                                 type="number"
                                 inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
@@ -166,7 +163,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                 label="听力"
                                 variant="outlined"
                                 size="small"
-                                value={formValues.L || ""}
+                                value={formValues.L ?? ""}
                                 onChange={(event) => {handleChange(event)}}
                                 type="number"
                                 inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
@@ -179,7 +176,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                 label="口语"
                                 variant="outlined"
                                 size="small"
-                                value={formValues.S || ""}
+                                value={formValues.S ?? ""}
                                 onChange={(event) => {handleChange(event)}}
                                 type="number"
                                 inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
@@ -192,7 +189,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                 label="写作"
                                 variant="outlined"
                                 size="small"
-                                value={formValues.W || ""}
+                                value={formValues.W ?? ""}
                                 onChange={(event) => {handleChange(event)}}
                                 type="number"
                                 inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}

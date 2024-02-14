@@ -1,7 +1,7 @@
 import {getRecordByApplicant} from "../../../Data/RecordData";
 import {useLoaderData} from "react-router-dom";
 import {
-    Box,
+    Box, Button,
     Card,
     CardActionArea, Chip,
     Divider,
@@ -10,7 +10,7 @@ import {
     Tooltip,
     Typography, useTheme
 } from "@mui/material";
-import {Add, Label} from "@mui/icons-material";
+import {Add, Edit, Label} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
 import {Link} from 'react-router-dom';
 import {getApplicant} from "../../../Data/ApplicantData";
@@ -52,6 +52,15 @@ export default function ProfileApplicantPage() {
         <>
             <Box sx={{display: 'flex', flexDirection: 'column'}}>
                 <Typography variant='h3' sx={{alignSelf: 'center'}}> 申请人信息 </Typography>
+                <Button
+                    component={Link}
+                    to={`/profile/${applicantId}/edit-applicant`}
+                    variant='contained'
+                    startIcon={<Edit/>}
+                    sx={{width: '20%'}}
+                >
+                    修改信息
+                </Button>
                 <ApplicantInfo applicant={applicant}/>
                 <Typography variant='h3'> 申请结果 </Typography>
                 {records.map(record => (

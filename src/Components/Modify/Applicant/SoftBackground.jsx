@@ -12,7 +12,7 @@ import {
 import React, {useState} from "react";
 import {
     authorOrderOptions,
-    exchangeDurationOptions,
+    exchangeDurationOptions, exchangeUnivList,
     publicationStatusOptions,
     publicationTypeOptions, recommendationTypeOptions
 } from "../../../Data/Schemas";
@@ -20,58 +20,58 @@ import {Add, Remove} from "@mui/icons-material";
 import Select from "@mui/material/Select";
 
 function SoftBackground({formValues, handleBack, handleChange}) {
-    const [exchanges, setExchanges] = useState(formValues.Exchange ? JSON.parse(formValues.Exchange) : []);
+    const [exchanges, setExchanges] = useState(formValues.Exchange ?? []);
     const handleAddExchange = () => {
         const newExchanges = [...exchanges, { University: "", Duration: "", Detail: "" }];
         setExchanges(newExchanges);
-        handleChange(undefined, JSON.stringify(newExchanges), "Exchange");
+        handleChange(undefined, newExchanges, "Exchange");
     };
     const handleRemoveExchange = (index) => {
         const newExchanges = exchanges.filter((_, i) => i !== index);
         setExchanges(newExchanges);
-        handleChange(undefined, JSON.stringify(newExchanges), "Exchange");
+        handleChange(undefined, newExchanges, "Exchange");
     };
     const handleExchangeChange = (index, event) => {
         const values = [...exchanges];
         values[index][event.target.name] = event.target.value;
         setExchanges(values);
-        handleChange(undefined, JSON.stringify(values), "Exchange");
+        handleChange(undefined, values, "Exchange");
     };
 
-    const [publications, setPublications] = useState(formValues.Publication ? JSON.parse(formValues.Publication) : []);
+    const [publications, setPublications] = useState(formValues.Publication ?? []);
     const handleAddPublication = () => {
         const newPublications = [...publications, { Type: "", Name: "", AuthorOrder: "", Status: "", Detail: "" }];
         setPublications(newPublications);
-        handleChange(undefined, JSON.stringify(newPublications), "Publication");
+        handleChange(undefined, newPublications, "Publication");
     };
     const handleRemovePublication = (index) => {
         const newPublications = publications.filter((_, i) => i !== index);
         setPublications(newPublications);
-        handleChange(undefined, JSON.stringify(newPublications), "Publication");
+        handleChange(undefined, newPublications, "Publication");
     };
     const handlePublicationChange = (index, event) => {
         const values = [...publications];
         values[index][event.target.name] = event.target.value;
         setPublications(values);
-        handleChange(undefined, JSON.stringify(values), "Publication");
+        handleChange(undefined, values, "Publication");
     };
 
-    const [recommendations, setRecommendations] = useState(formValues.Recommendation ? JSON.parse(formValues.Recommendation) : []);
+    const [recommendations, setRecommendations] = useState(formValues.Recommendation ?? []);
     const handleAddRecommendation = () => {
         const newRecommendations = [...recommendations, { Type: [], Detail: "" }];
         setRecommendations(newRecommendations);
-        handleChange(undefined, JSON.stringify(newRecommendations), "Recommendation");
+        handleChange(undefined, newRecommendations, "Recommendation");
     };
     const handleRemoveRecommendation = (index) => {
         const newRecommendations = recommendations.filter((_, i) => i !== index);
         setRecommendations(newRecommendations);
-        handleChange(undefined, JSON.stringify(newRecommendations), "Recommendation");
+        handleChange(undefined, newRecommendations, "Recommendation");
     };
     const handleRecommendationChange = (index, event) => {
         const values = [...recommendations];
         values[index][event.target.name] = event.target.value;
         setRecommendations(values);
-        handleChange(undefined, JSON.stringify(values), "Recommendation");
+        handleChange(undefined, values, "Recommendation");
     };
     const recommendationTypeOptionsMap = recommendationTypeOptions.reduce((acc, option) => {
         acc[option.value] = option.label;
@@ -79,8 +79,11 @@ function SoftBackground({formValues, handleBack, handleChange}) {
     }, {});
 
     return (
-        <Paper variant='outlined' sx={{width: '70%', margin: '10px'}}>
-            <Divider textAlign="left">交换经历</Divider>
+        <Paper
+            variant='outlined'
+            sx={{width: '80%', margin: '10px', justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column'}}
+        >
+            <Divider textAlign="left">3+1经历</Divider>
             <Button onClick={handleAddExchange} variant="contained">
                 <Add/>
             </Button>
@@ -88,18 +91,27 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 <Grid
                     container
                     spacing={2}
-                    sx={{width: '70%', justifyContent: 'center', margin: 0}}
+                    sx={{width: '80%', justifyContent: 'center', margin: 0}}
                     key={index}
+                    justifyItems='center'
                 >
                     <Grid item xs={12} md={3.5}>
-                        <TextField
-                            fullWidth
-                            name="University"
-                            label="学校"
-                            value={exchange.University}
-                            onChange={(event) => handleExchangeChange(index, event)}
-                            size="small"
-                        />
+                        <FormControl fullWidth>
+                            <InputLabel size="small">交换学校</InputLabel>
+                            <Select
+                                name="University"
+                                size="small"
+                                label="交换学校"
+                                value={exchange.University}
+                                onChange={(event) => handleExchangeChange(index, event)}
+                            >
+                                {exchangeUnivList.map((univ) => (
+                                    <MenuItem key={univ} value={univ}>
+                                        {univ}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12} md={3.5}>
                         <FormControl fullWidth>
@@ -140,7 +152,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
             <Grid
                 container
                 spacing={2}
-                sx={{width: '70%', justifyContent: 'center', margin: 0}}
+                sx={{width: '80%', justifyContent: 'center', margin: 0}}
             >
                 <Grid item xs={12}>
                     <TextField
@@ -161,7 +173,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         type="number"
                         variant="outlined"
                         size="small"
-                        value={formValues.DomesticResearchNum || ""}
+                        value={formValues.DomesticResearchNum ?? ""}
                         onChange={(event) => {handleChange(event)}}
                     />
                 </Grid>
@@ -184,7 +196,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         type="number"
                         variant="outlined"
                         size="small"
-                        value={formValues.InternationalResearchNum || ""}
+                        value={formValues.InternationalResearchNum ?? ""}
                         onChange={(event) => {handleChange(event)}}
                     />
                 </Grid>
@@ -204,7 +216,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
             <Grid
                 container
                 spacing={2}
-                sx={{width: '70%', justifyContent: 'center', margin: 0}}
+                sx={{width: '80%', justifyContent: 'center', margin: 0}}
             >
                 <Grid item xs={12} md={4}>
                     <TextField
@@ -214,7 +226,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         type="number"
                         variant="outlined"
                         size="small"
-                        value={formValues.DomesticInternNum || ""}
+                        value={formValues.DomesticInternNum ?? ""}
                         onChange={(event) => {handleChange(event)}}
                     />
                 </Grid>
@@ -237,7 +249,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         type="number"
                         variant="outlined"
                         size="small"
-                        value={formValues.InternationalInternNum || ""}
+                        value={formValues.InternationalInternNum ?? ""}
                         onChange={(event) => {handleChange(event)}}
                     />
                 </Grid>
@@ -261,7 +273,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 <Grid
                     container
                     spacing={2}
-                    sx={{width: '70%', justifyContent: 'center', margin: 0}}
+                    sx={{width: '80%', justifyContent: 'center', margin: 0}}
                     key={index}
                 >
                     <Grid item xs={12} md={3}>
@@ -353,8 +365,11 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 <Grid
                     container
                     spacing={2}
-                    sx={{width: '70%', justifyContent: 'center', margin: 0}}
+                    sx={{width: '80%', margin: 0}}
                     key={index}
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="center"
                 >
                     <Grid item xs={12} md={5}>
                         <FormControl fullWidth>
@@ -398,7 +413,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
             <Grid
                 container
                 spacing={2}
-                sx={{width: '70%', justifyContent: 'center', margin: 0}}
+                sx={{width: '80%', justifyContent: 'center', margin: 0}}
             >
                 <TextField
                     fullWidth

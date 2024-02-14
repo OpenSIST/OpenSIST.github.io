@@ -149,17 +149,6 @@ function BasicInfo({formValues, handleNext, handleChange}) {
                         }
                     />
                 </Grid>
-                {/*<Grid item xs={12}>*/}
-                {/*    <TextField*/}
-                {/*        fullWidth*/}
-                {/*        name="Contact"*/}
-                {/*        label="联系方式（个人主页、LinkedIn、微信、QQ等）"*/}
-                {/*        size="small"*/}
-                {/*        variant="outlined"*/}
-                {/*        value={formValues.Contact || ""}*/}
-                {/*        onChange={(event) => {handleChange(event)}}*/}
-                {/*    />*/}
-                {/*</Grid>*/}
             </Grid>
             <Box sx={{ display: "flex", justifyContent: "flex-end", margin: 3 }}>
                 <Button

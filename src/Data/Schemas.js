@@ -61,11 +61,40 @@ export const applicationYearOptions = Array.from({length: 10}, (_, i) => {
     return { value: year, label: `${year}` };
 });
 
+export const rankPercentOptions = [
+    { value: '1', label: 'Top 1%' },
+    { value: '3', label: 'Top 3%' },
+    { value: '5', label: 'Top 5%' },
+    { value: '10', label: 'Top 10%' },
+    { value: '15', label: 'Top 15%' },
+    { value: '20', label: 'Top 20%' },
+    { value: '30', label: 'Top 30%' },
+    { value: '40', label: 'Top 40%' },
+    { value: '50', label: 'Top 50%' },
+    { value: '50+', label: 'Top 50%+' },
+]
+
 export const englishOptions = list2Options(['TOEFL', 'IELTS']);
 
 export const exchangeDurationOptions = [
     { value: 'Semester', label: '一学期' },
     { value: 'Year', label: '一学年' }
+]
+
+export const exchangeUnivList = [
+    'MIT',
+    'UCB',
+    'UMich',
+    'Cornell',
+    'UW-Madison',
+    'UPenn',
+    'Yale',
+    'Harvard',
+    'UIUC',
+    'UChicago',
+    'Hebrew',
+    'Drexel',
+    'Padua'
 ]
 
 export const publicationTypeOptions = [

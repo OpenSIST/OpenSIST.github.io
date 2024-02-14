@@ -13,14 +13,6 @@ import localforage from "localforage";
 import BasicInfo from "./BasicInfo";
 import Grades from "./Grades";
 import SoftBackground from "./SoftBackground";
-import {Add, Remove} from "@mui/icons-material";
-import Select from "@mui/material/Select";
-import {
-    authorOrderOptions,
-    exchangeDurationOptions,
-    publicationStatusOptions,
-    publicationTypeOptions, recommendationTypeOptions
-} from "../../../Data/Schemas";
 
 export async function action({request}) {
     const removeEmptyDictInList = (list) => {
@@ -34,12 +26,7 @@ export async function action({request}) {
     const ApplicationYear = formValues.ApplicationYear;
     const Major = formValues.Major;
     const GPA = Number(formValues.GPA);
-    const Rank = Number(formValues.Rank);
-    const RankTotal = Number(formValues.RankTotal);
-    const Ranking = {
-        ...(!isNaN(Rank) && { 'Rank': Rank }),
-        ...(!isNaN(RankTotal) && { 'RankTotal': RankTotal })
-    }
+    const Ranking = formValues.Ranking;
     const V = Number(formValues.V);
     const Q = Number(formValues.Q);
     const AW = Number(formValues.AW);
@@ -78,9 +65,9 @@ export async function action({request}) {
             }
         }
     }
-    const Exchange = formValues.Exchange ? removeEmptyDictInList(JSON.parse(formValues.Exchange)) : [];
-    const Publication = formValues.Publication ? removeEmptyDictInList(JSON.parse(formValues.Publication)) : [];
-    const Recommendation = formValues.Recommendation ? removeEmptyDictInList(JSON.parse(formValues.Recommendation)) : [];
+    const Exchange = formValues.Exchange ? removeEmptyDictInList(formValues.Exchange) : [];
+    const Publication = formValues.Publication ? removeEmptyDictInList(formValues.Publication) : [];
+    const Recommendation = formValues.Recommendation ? removeEmptyDictInList(formValues.Recommendation) : [];
     const ResearchFocus = formValues.ResearchFocus;
     const DomesticResearchNum = formValues.DomesticResearchNum;
     const DomesticResearchDetail = formValues.DomesticResearchDetail;
@@ -128,7 +115,7 @@ export async function action({request}) {
             'ApplicationYear': ApplicationYear,
             'Major': Major,
             'GPA': GPA,
-            ...(Object.keys(Ranking).length !== 0 && { 'Ranking': Ranking }),
+            ...(Ranking !== undefined && { 'Ranking': Ranking }),
             ...(Object.keys(GRE).length !== 0 && { 'GRE': GRE }),
             ...(Object.keys(EnglishProficiency).length !== 0 && { 'EnglishProficiency': EnglishProficiency }),
             ...(Exchange.length !== 0 && { 'Exchange': Exchange }),
@@ -141,8 +128,8 @@ export async function action({request}) {
         }
     };
     console.log(requestBody)
-    await addModifyApplicant(requestBody);
-    return redirect(`/profile/${ApplicantID}`);
+    // await addModifyApplicant(requestBody);
+    // return redirect(`/profile/${ApplicantID}`);
 }
 
 const FormContent = (activeStep, formValues, handleBack, handleNext, handleChange) => {
@@ -171,12 +158,52 @@ export default function AddModifyApplicant({type}) {
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
-    const handleStep = (step) => () => {
-        setActiveStep(step);
-    };
 
-    const loaderData = useLoaderData();
-    const [formValues, setFormValues] = useState({});
+    let applicantContent = useLoaderData()?.applicant;
+    if (applicantContent) {
+        applicantContent = {
+            'Gender': applicantContent.Gender,
+            'CurrentDegree': applicantContent.CurrentDegree,
+            'ApplicationYear': applicantContent.ApplicationYear,
+            'Major': applicantContent.Major,
+            'GPA': applicantContent.GPA,
+            ...(applicantContent.Ranking && {
+                'Ranking': applicantContent.Ranking
+            }),
+            'V': applicantContent.GRE?.V,
+            'Q': applicantContent.GRE?.Q,
+            'AW': applicantContent.GRE?.AW,
+            ...(applicantContent.EnglishProficiency?.TOEFL && {
+                'EnglishOption': 'TOEFL',
+                'R': applicantContent.EnglishProficiency.TOEFL.R,
+                'W': applicantContent.EnglishProficiency.TOEFL.W,
+                'L': applicantContent.EnglishProficiency.TOEFL.L,
+                'S': applicantContent.EnglishProficiency.TOEFL.S
+            }),
+            ...(applicantContent.EnglishProficiency?.IELTS && {
+                'EnglishOption': 'IELTS',
+                'R': applicantContent.EnglishProficiency.IELTS.R,
+                'W': applicantContent.EnglishProficiency.IELTS.W,
+                'L': applicantContent.EnglishProficiency.IELTS.L,
+                'S': applicantContent.EnglishProficiency.IELTS.S
+            }),
+            'ResearchFocus': applicantContent.Research?.Focus,
+            'DomesticResearchNum': applicantContent.Research?.Domestic?.Num,
+            'DomesticResearchDetail': applicantContent.Research?.Domestic?.Detail,
+            'InternationalResearchNum': applicantContent.Research?.International?.Num,
+            'InternationalResearchDetail': applicantContent.Research?.International?.Detail,
+            'DomesticInternNum': applicantContent.Internship?.Domestic?.Num,
+            'DomesticInternDetail': applicantContent.Internship?.Domestic?.Detail,
+            'InternationalInternNum': applicantContent.Internship?.International?.Num,
+            'InternationalInternDetail': applicantContent.Internship?.International?.Detail,
+            'Competition': applicantContent.Competition,
+            'Programs': applicantContent.Programs,
+            'Exchange': applicantContent.Exchange,
+            'Publication': applicantContent.Publication,
+            'Recommendation': applicantContent.Recommendation
+        }
+    }
+    const [formValues, setFormValues] = useState(applicantContent ?? {});
     const handleChange = (event, value, name) => {
         setFormValues({...formValues, [event?.target.name ?? name]: value ?? event.target.value});
         if (event?.target.value === "" || (event?.target.name === undefined && (value === "" || value === undefined || value === null || value === '[]'))) {
