@@ -16,7 +16,7 @@ import SoftBackground from "./SoftBackground";
 
 export async function action({request}) {
     const removeEmptyDictInList = (list) => {
-        return list.filter(item => Object.values(item).filter(value => value !== [] && value !== "").length !== 0);
+        return list.filter(item => Object.values(item).filter(value => value.length > 0).length !== 0);
     }
     const formData = await request.formData();
     const ActionType = formData.get('ActionType');
@@ -32,9 +32,9 @@ export async function action({request}) {
     const AW = formValues.AW;
     const GRETotal = formValues.GRETotal;
     const GRE = {
-        'Total': GRETotal ? Number(GRETotal) : 0,
-        'V': V ? Number(V) : 0,
-        'Q': Q ? Number(Q) : 0,
+        'Total': GRETotal ? Number(GRETotal) : 260,
+        'V': V ? Number(V) : 130,
+        'Q': Q ? Number(Q) : 130,
         'AW': AW ? Number(AW) : 0
     }
     const EnglishOption = formValues.EnglishOption;
@@ -115,7 +115,7 @@ export async function action({request}) {
             'GPA': GPA,
             ...(Ranking !== undefined && { 'Ranking': Ranking }),
             ...(Object.values(GRE).some(value => value !== 0) && { 'GRE': GRE }),
-            ...(Object.keys(EnglishProficiency).length !== 0 && { 'EnglishProficiency': EnglishProficiency }),
+            'EnglishProficiency': EnglishProficiency,
             ...(Exchange.length !== 0 && { 'Exchange': Exchange }),
             ...(Publication.length !== 0 && { 'Publication': Publication }),
             'Research': Research,
@@ -125,7 +125,7 @@ export async function action({request}) {
             'Programs': ActionType === 'new' ? {} : Programs
         }
     };
-    // console.log(requestBody)
+    console.log(requestBody)
     await addModifyApplicant(requestBody);
     return redirect(`/profile/${ApplicantID}`);
 }

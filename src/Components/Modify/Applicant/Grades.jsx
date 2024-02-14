@@ -32,6 +32,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                         label="GPA"
                         variant="outlined"
                         size="small"
+                        helperText="注：申请人在该申请季用于申请的最高学历的GPA"
                         required
                         value={formValues.GPA ?? ""}
                         onChange={(event) => {handleChange(event)}}
@@ -76,7 +77,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                         label="V+Q总分"
                         variant="outlined"
                         size="small"
-                        value={formValues.GRETotal || ""}
+                        value={formValues.GRETotal === 260 ? "" : formValues.GRETotal}
                         onChange={(event) => {handleChange(event)}}
                         type="number"
                         sx={disableNumberUpDown}
@@ -89,7 +90,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                         label="语文"
                         variant="outlined"
                         size="small"
-                        value={formValues.V || ""}
+                        value={formValues.V === 130 ? "" : formValues.V}
                         onChange={(event) => {handleChange(event)}}
                         type="number"
                         sx={disableNumberUpDown}
@@ -102,7 +103,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                         label="数学"
                         variant="outlined"
                         size="small"
-                        value={formValues.Q || ""}
+                        value={formValues.Q === 130 ? "" : formValues.Q}
                         onChange={(event) => {handleChange(event)}}
                         type="number"
                         sx={disableNumberUpDown}
@@ -236,7 +237,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                     sx={{ mr: 1 }}
                     variant='contained'
                     onClick={handleNext}
-                    // disabled={isError()}
+                    disabled={isError()}
                 >
                     下一步
                 </Button>

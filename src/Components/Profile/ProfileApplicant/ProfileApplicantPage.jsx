@@ -17,7 +17,8 @@ import {getApplicant} from "../../../Data/ApplicantData";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import HelpIcon from '@mui/icons-material/Help';
 import {
-    EnglishExamMapping,
+    currentDegreeOptions,
+    EnglishExamMapping, genderOptions,
     PublicationAuthorOrderChipColor,
     PublicationStateChipColor,
     PublicationTypeChipColor, rankPercentOptions
@@ -52,15 +53,6 @@ export default function ProfileApplicantPage() {
         <>
             <Box sx={{display: 'flex', flexDirection: 'column'}}>
                 <Typography variant='h3' sx={{alignSelf: 'center'}}> 申请人信息 </Typography>
-                <Button
-                    component={Link}
-                    to={`/profile/${applicantId}/edit-applicant`}
-                    variant='contained'
-                    startIcon={<Edit/>}
-                    sx={{width: '20%'}}
-                >
-                    修改信息
-                </Button>
                 <ApplicantInfo applicant={applicant}/>
                 <Typography variant='h3'> 申请结果 </Typography>
                 {records.map(record => (
@@ -90,11 +82,11 @@ export function ApplicantInfo({applicant}) {
             <Divider><Typography variant='h4'>基本信息</Typography></Divider>
             <Grid2 container rowSpacing={1} columnSpacing={5}>
                 <ApplicantInfoItem itemLabel="申请人ID" itemValue={applicant.ApplicantID}/>
-                <ApplicantInfoItem itemLabel="申请人性别" itemValue={applicant.Gender}/>
-                <ApplicantInfoItem itemLabel="申请人学位" itemValue={applicant.CurrentDegree}/>
+                <ApplicantInfoItem itemLabel="申请人性别" itemValue={genderOptions.find((option) => option.value === applicant.Gender)?.label ?? null}/>
+                <ApplicantInfoItem itemLabel="申请人学位" itemValue={currentDegreeOptions.find((option) => option.value === applicant.CurrentDegree)?.label ?? null}/>
                 <ApplicantInfoItem itemLabel="申请年份" itemValue={applicant.ApplicationYear}/>
                 <ApplicantInfoItem itemLabel="申请人专业" itemValue={applicant.Major}/>
-                <ApplicantInfoItem itemLabel="联系方式" itemValue={applicant.Contact}/>
+                {/*<ApplicantInfoItem itemLabel="联系方式" itemValue={applicant.Contact}/>*/}
             </Grid2>
             <Divider><Typography variant='h4'>三维</Typography></Divider>
             <Grid2 container rowSpacing={1} columnSpacing={5}>
@@ -102,7 +94,7 @@ export function ApplicantInfo({applicant}) {
                     <ApplicantInfoItem itemLabel="GPA" itemValue={applicant.GPA} xs={12}
                                        help="申请人在该申请季用于申请的最高学历的GPA"/>
                     <ApplicantInfoItem itemLabel="排名"
-                                       itemValue={rankPercentOptions.find((option) => option.value === applicant.Ranking).label}
+                                       itemValue={rankPercentOptions.find((option) => option.value === applicant.Ranking)?.label ?? null}
                                        xs={12}
                                        help="学院排名or专业排名"/>
                 </Grid2>

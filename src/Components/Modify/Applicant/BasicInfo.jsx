@@ -107,10 +107,11 @@ function BasicInfo({formValues, handleNext, handleChange}) {
                                     size="small"
                                     variant="outlined"
                                     name="ApplicationYear"
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        endAdornment: addEndAdornment(params.InputProps.endAdornment),
-                                    }}
+                                    helperText="例：若申请2024Fall或2024Spring，则统一填2024"
+                                    // InputProps={{
+                                    //     ...params.InputProps,
+                                    //     endAdornment: addEndAdornment(params.InputProps.endAdornment),
+                                    // }}
                                     required
                                 />
                         }
@@ -155,7 +156,7 @@ function BasicInfo({formValues, handleNext, handleChange}) {
                     sx={{ mr: 1 }}
                     variant='contained'
                     onClick={handleNext}
-                    // disabled={isError()}
+                    disabled={isError()}
                 >
                     下一步
                 </Button>
