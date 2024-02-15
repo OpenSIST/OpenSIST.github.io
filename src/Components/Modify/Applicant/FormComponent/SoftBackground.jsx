@@ -89,13 +89,6 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 <b>3+1经历</b>
             </Divider>
             <Box className='AddModifyForm'>
-                <Button
-                    onClick={handleAddExchange}
-                    variant="contained"
-                    sx={{marginBottom: '15px'}}
-                >
-                    <Add/>
-                </Button>
                 {exchanges.map((exchange, index) => (
                     <Grid
                         container
@@ -158,6 +151,21 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         </Grid>
                     </Grid>
                 ))}
+                <Grid
+                    container
+                    spacing={2}
+                    sx={{width: '80%', marginBottom: '10px'}}
+                >
+                    <Grid item xs={12}>
+                        <Button
+                            onClick={handleAddExchange}
+                            variant="contained"
+                            fullWidth
+                        >
+                            <Add/>
+                        </Button>
+                    </Grid>
+                </Grid>
             </Box>
             <Divider
                 textAlign="center"
@@ -300,13 +308,6 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 <b>论文发表</b>
             </Divider>
             <Box className='AddModifyForm'>
-                <Button
-                    onClick={handleAddPublication}
-                    variant="contained"
-                    sx={{marginBottom: '15px'}}
-                >
-                    <Add/>
-                </Button>
                 {publications.map((publication, index) => (
                     <Grid
                         container
@@ -398,6 +399,21 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         </Grid>
                     </Grid>
                 ))}
+                <Grid
+                    container
+                    spacing={2}
+                    sx={{width: '80%', marginBottom: '10px'}}
+                >
+                    <Grid item xs={12}>
+                        <Button
+                            onClick={handleAddPublication}
+                            variant="contained"
+                            fullWidth
+                        >
+                            <Add/>
+                        </Button>
+                    </Grid>
+                </Grid>
             </Box>
             <Divider
                 textAlign="center"
@@ -407,13 +423,6 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 <b>推荐信</b>
             </Divider>
             <Box className='AddModifyForm'>
-                <Button
-                    onClick={handleAddRecommendation}
-                    variant="contained"
-                    sx={{marginBottom: '15px'}}
-                >
-                    <Add/>
-                </Button>
                 {recommendations.map((recommendation, index) => (
                     <Grid
                         container
@@ -460,6 +469,21 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         </Grid>
                     </Grid>
                 ))}
+                <Grid
+                    container
+                    spacing={2}
+                    sx={{width: '80%', marginBottom: '10px'}}
+                >
+                    <Grid item xs={12}>
+                        <Button
+                            onClick={handleAddRecommendation}
+                            variant="contained"
+                            fullWidth
+                        >
+                            <Add/>
+                        </Button>
+                    </Grid>
+                </Grid>
             </Box>
             <Divider
                 textAlign="center"
