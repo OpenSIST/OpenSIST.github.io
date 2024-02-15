@@ -47,13 +47,12 @@ import AdminEmailPage, {
 import {ProgramIndex} from "./Components/ProgramPage/ProgramPage";
 import localforage from "localforage";
 import {action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
-import ProfileApplicantPage, {
-    loader as ProfileApplicantLoader,
+import {
+    loader as ProfileApplicantLoader, ProfileApplicantWrapper,
 } from "./Components/Profile/ProfileApplicant/ProfileApplicantPage";
 import AddModifyApplicant, {
     action as addModifyApplicantAction
 } from "./Components/Modify/Applicant/AddModifyApplicant";
-import {addModifyApplicant} from "./Data/ApplicantData";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -149,7 +148,7 @@ function OpenSIST() {
                                     element: <ProfileIndex/>
                                 }, {
                                     path: '/profile/:applicantId',
-                                    element: <ProfileApplicantPage/>,
+                                    element: <ProfileApplicantWrapper/>,
                                     loader: ProfileApplicantLoader,
                                 }, {
                                     path: '/profile/new-applicant',

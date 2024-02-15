@@ -1,5 +1,5 @@
 import {getRecordByApplicant} from "../../../Data/RecordData";
-import {useLoaderData} from "react-router-dom";
+import {useLoaderData, useParams} from "react-router-dom";
 import {
     Box, Button,
     Card,
@@ -47,7 +47,14 @@ export async function loader({params}) {
     return {applicantId, applicant, records};
 }
 
-export default function ProfileApplicantPage() {
+export function ProfileApplicantWrapper() {
+    const { applicantId } = useParams();
+    return (
+        <ProfileApplicantPage key={applicantId}/>
+    )
+}
+
+function ProfileApplicantPage() {
     const {applicantId, applicant, records} = useLoaderData();
     return (
         <>
@@ -138,6 +145,7 @@ function EnglishProficiencyItem({title, grade, xs}) {
     return (
         <Grid2 container xs={xs}>
             {Object.entries(grade).map(([key, value]) =>
+                ((key === 'Total' && value !== 260) || (['V', 'Q'].includes(key) && value !== 130)) &&
                 <ApplicantInfoItem key={key} itemLabel={EnglishExamMapping[title][key]} itemValue={value} xs={12}/>
             )}
         </Grid2>
