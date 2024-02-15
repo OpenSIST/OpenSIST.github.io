@@ -1,7 +1,13 @@
 import localforage from "localforage";
-import {ADD_MODIFY_APPLICANT, APPLICANT_LIST, GET_APPLICANT_ID_BY_USER_ID} from "../APIs/APIs";
+import {
+    ADD_MODIFY_APPLICANT,
+    APPLICANT_LIST,
+    GET_APPLICANT_ID_BY_USER_ID,
+    REMOVE_APPLICANT,
+    REMOVE_PROGRAM
+} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
-import {setPrograms} from "./ProgramData";
+import {deleteProgramDesc, getPrograms, setPrograms} from "./ProgramData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
@@ -113,4 +119,23 @@ export async function addModifyApplicant(requestBody) {
     });
     await handleErrors(response)
     await setApplicant(requestBody.content);
+}
+
+export async function removeApplicant(applicantId) {
+    /*
+    * Remove the applicant from the local storage and the server.
+    * @param applicantId [String]: applicantId
+    */
+    const response = await fetch(REMOVE_APPLICANT, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
+        body: JSON.stringify({
+            ApplicantID: applicantId,
+        }),
+    });
+
+    await handleErrors(response);
+    const applicants = await getApplicants();
+    await setApplicants(applicants.filter(p => p.ApplicantID !== applicantId));
 }

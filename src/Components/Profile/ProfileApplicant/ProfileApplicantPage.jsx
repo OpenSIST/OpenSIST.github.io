@@ -145,7 +145,7 @@ function EnglishProficiencyItem({title, grade, xs}) {
     return (
         <Grid2 container xs={xs}>
             {Object.entries(grade).map(([key, value]) =>
-                ((key === 'Total' && value !== 260) || (['V', 'Q'].includes(key) && value !== 130)) &&
+                (title === 'GRE' ? ((key === 'Total' && value !== 260) || (['V', 'Q'].includes(key) && value !== 130) || (key === 'AW' && value > 0)) : true) &&
                 <ApplicantInfoItem key={key} itemLabel={EnglishExamMapping[title][key]} itemValue={value} xs={12}/>
             )}
         </Grid2>

@@ -10,9 +10,9 @@ import {
 } from "@mui/material";
 import React, {useState} from "react";
 import localforage from "localforage";
-import BasicInfo from "./BasicInfo";
-import Grades from "./Grades";
-import SoftBackground from "./SoftBackground";
+import BasicInfo from "./FormComponent/BasicInfo";
+import Grades from "./FormComponent/Grades";
+import SoftBackground from "./FormComponent/SoftBackground";
 
 export async function action({request}) {
     const removeEmptyDictInList = (list) => {
@@ -114,7 +114,7 @@ export async function action({request}) {
             'Major': Major,
             'GPA': GPA,
             ...(Ranking !== undefined && { 'Ranking': Ranking }),
-            ...(Object.values(GRE).some(value => value !== 0) && { 'GRE': GRE }),
+            ...((GRE.Total !== 260 || GRE.V !== 130 || GRE.Q !== 130 || GRE.AW !== 0) && { 'GRE': GRE }),
             'EnglishProficiency': EnglishProficiency,
             ...(Exchange.length !== 0 && { 'Exchange': Exchange }),
             ...(Publication.length !== 0 && { 'Publication': Publication }),
@@ -216,7 +216,7 @@ export default function AddModifyApplicant({type}) {
 
     return (
         <Form method='post'>
-            <Input type='hidden' value={type} name='ActionType'></Input>
+            <Input type='hidden' value={type} name='ActionType'/>
             <Stepper
                 nonLinear
                 alternativeLabel
@@ -235,7 +235,17 @@ export default function AddModifyApplicant({type}) {
                 ))}
             </Stepper>
             <Input type="hidden" value={JSON.stringify(formValues)} name="formValues"/>
-            {FormContent(activeStep, formValues, handleBack, handleNext, handleChange)}
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    textAlign: "center"
+                }}
+            >
+                {FormContent(activeStep, formValues, handleBack, handleNext, handleChange)}
+            </Box>
+            {/*{FormContent(activeStep, formValues, handleBack, handleNext, handleChange)}*/}
         </Form>
     )
 }
