@@ -18,7 +18,6 @@ export async function getApplicants(isRefresh = false, query = {}) {
     * }
     * @return: list of applicants
     */
-    const userId = query?.userId;
     // await localforage.removeItem('applicants')  //TODO: remove this line
     let applicants = await localforage.getItem('applicants');
 

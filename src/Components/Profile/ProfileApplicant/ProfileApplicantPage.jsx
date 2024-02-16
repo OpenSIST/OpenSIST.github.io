@@ -1,7 +1,7 @@
 import {getRecordByApplicant} from "../../../Data/RecordData";
 import {useLoaderData, useParams} from "react-router-dom";
 import {
-    Box, Button,
+    Box,
     Card,
     CardActionArea, Chip,
     Divider,
@@ -10,7 +10,7 @@ import {
     Tooltip,
     Typography, useTheme
 } from "@mui/material";
-import {Add, Edit, Label} from "@mui/icons-material";
+import {Add} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
 import {Link} from 'react-router-dom';
 import {getApplicant} from "../../../Data/ApplicantData";
@@ -240,102 +240,3 @@ function ResearchInternshipCard({num, detail}) {
     )
 }
 
-const libn = {
-    "ApplicantID": "libn@2024",
-    "Gender": "Male",
-    "CurrentDegree": "Undergraduate",
-    "ApplicationYear": "2024",
-    "Major": "CS",
-    "GPA": 3.97,
-    "Ranking": {
-        "Rank": 1,
-        "Total": 248
-    },
-    "GRE": {
-        "Total": 330,
-        "V": 160,
-        "Q": 170,
-        "AW": 4
-    },
-    "EnglishProficiency": {
-        "TOEFL": {
-            "Total": 120,
-            "S": 30,
-            "R": 30,
-            "L": 30,
-            "W": 30
-        }
-    },
-    "Exchange": [
-        {
-            "University": {
-                "list": "MIT",
-                "other": ""
-            },
-            "TimeLine": {
-                "Start": "2023-02-06T00:00:00.000Z",
-                "End": "2023-05-24T00:00:00.000Z"
-            },
-            "Detail": "交换学期内满绩"
-        }
-    ],
-    "Publication": [
-        {
-            "Type": "Conference",
-            "Name": "NeurIPS Workshop",
-            "AuthorOrder": "Co-first",
-            "Status": "Accepted",
-            "Detail": ""
-        },
-        {
-            "Type": "Conference",
-            "Name": "CVPR",
-            "AuthorOrder": "Co-first",
-            "Status": "UnderReview",
-            "Detail": ""
-        }
-    ],
-    "Research": {
-        "Focus": "Computer Vision and Medical Image Analysis",
-        "Domestic": {
-            "Num": 2,
-            "Detail": "何旭明组大三上学期划水+大四前的暑假开始爆肝三个月"
-        },
-        "International": {
-            "Num": 1,
-            "Detail": "MIT CSAIL医学影像组爆肝六个月"
-        }
-    },
-    "Internship": {
-        "Domestic": {
-            "Num": 0,
-            "Detail": ""
-        },
-        "International": {
-            "Num": 0,
-            "Detail": ""
-        }
-    },
-    "Recommendation": [
-        {
-            "Type": [
-                "Research"
-            ],
-            "Detail": "MIT实验室大老板强推"
-        },
-        {
-            "Type": [
-                "Research"
-            ],
-            "Detail": "MIT实验室postdoc强推"
-        },
-        {
-            "Type": [
-                "Research"
-            ],
-            "Detail": "何旭明老师强推"
-        }
-    ],
-    "Programs": {},
-    "Contact": "https://www.harrychi.com"
-}

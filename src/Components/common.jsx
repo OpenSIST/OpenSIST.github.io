@@ -1,7 +1,6 @@
-import {useLocation, useNavigation} from "react-router-dom";
-import React, {useEffect, useRef, useState} from "react";
+import {useNavigation} from "react-router-dom";
+import React, {useEffect, useState} from "react";
 import {Backdrop, CircularProgress, Typography} from "@mui/material";
-import {grey} from "@mui/material/colors";
 
 export function isEmptyObject(value) {
     return value === '' || value.length === 0;

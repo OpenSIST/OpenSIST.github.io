@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Box, Button, Divider, Grid, InputAdornment, Paper, TextField, Tooltip} from "@mui/material";
+import {Box, Button, Divider, Grid, Paper, TextField, Tooltip} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import {englishOptions, rankPercentOptions} from "../../../../Data/Schemas";
 import "../AddModifyApplicant.css";

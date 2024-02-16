@@ -130,7 +130,7 @@ export async function action({request}) {
 }
 
 const FormContent = (activeStep, formValues, handleBack, handleNext, handleChange) => {
-    {switch (activeStep) {
+    switch (activeStep) {
         case 0:
             return <BasicInfo formValues={formValues} handleNext={handleNext} handleChange={handleChange}/>;
         case 1:
@@ -139,7 +139,7 @@ const FormContent = (activeStep, formValues, handleBack, handleNext, handleChang
             return <SoftBackground formValues={formValues} handleBack={handleBack} handleChange={handleChange}/>;
         default:
             return null;
-    }}
+    }
 }
 
 export default function AddModifyApplicant({type}) {

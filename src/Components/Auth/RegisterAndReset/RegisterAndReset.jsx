@@ -10,11 +10,9 @@ import {
     Box,
     Button,
     Checkbox,
-    FormControl,
     FormControlLabel,
     Input,
-    InputAdornment,
-    InputLabel, MenuItem,
+    MenuItem,
     TextField,
     Typography
 } from "@mui/material";

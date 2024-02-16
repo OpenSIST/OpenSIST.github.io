@@ -4,10 +4,9 @@ import {getApplicantIDByUserID, getApplicants} from "../../Data/ApplicantData";
 import {Outlet, useLoaderData} from "react-router-dom";
 import {ProfileHeader} from "./UserInfo/ProfileHeader";
 import {grey} from "@mui/material/colors";
-import {useUser} from "../../Data/UserData";
 import localforage from "localforage";
 
-export async function loader({params}) {
+export async function loader() {
     const user = await localforage.getItem('user');
     const applicants = await getApplicantIDByUserID(user);
     return {applicants};
