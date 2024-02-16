@@ -43,7 +43,7 @@ export async function action({request}) {
             'Description': Description,
         }
     };
-    await addModifyProgram(requestBody)
+    await addModifyProgram(requestBody);
     return redirect(`/programs/${ProgramID}`)
 }
 

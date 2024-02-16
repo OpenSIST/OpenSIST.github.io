@@ -3,11 +3,9 @@ import {
     ADD_MODIFY_APPLICANT,
     APPLICANT_LIST,
     GET_APPLICANT_ID_BY_USER_ID,
-    REMOVE_APPLICANT,
-    REMOVE_PROGRAM
+    REMOVE_APPLICANT
 } from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
-import {deleteProgramDesc, getPrograms, setPrograms} from "./ProgramData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
@@ -99,10 +97,10 @@ export async function setApplicant(applicant) {
     if (applicants.find(p => p.ApplicantID === applicant.ApplicantID) !== undefined) {
         applicants[applicants.indexOf(applicant)] = applicant;
     }
-    await setPrograms(applicants);
+    await setApplicants(applicants);
 }
 
-export async function addModifyApplicant(requestBody) {
+export async function addModifyApplicant(requestBody, userId) {
     /*
     * Set the applicant to the local storage (i.e. localforage.getItem('applicants')), and post to the server.
     * @param applicant [Object]: applicant information
@@ -117,8 +115,10 @@ export async function addModifyApplicant(requestBody) {
             content: {...(requestBody.content), Programs: {}},
         }),
     });
-    await handleErrors(response)
+    await handleErrors(response);
     await setApplicant(requestBody.content);
+    const applicants = await getApplicantIDByUser(userId, true);
+    await setApplicantByUser(userId, applicants);
 }
 
 export async function removeApplicant(applicantId) {

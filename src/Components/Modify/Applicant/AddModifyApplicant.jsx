@@ -2,11 +2,10 @@ import {Form, redirect, useLoaderData} from "react-router-dom";
 import {addModifyApplicant} from "../../../Data/ApplicantData";
 import {
     Box,
-    Button,
-    Divider, FormControl, Grid, Input, InputLabel, MenuItem, Paper,
+    Input,
     Step,
     StepButton,
-    Stepper, TextField
+    Stepper
 } from "@mui/material";
 import React, {useState} from "react";
 import localforage from "localforage";
@@ -126,7 +125,7 @@ export async function action({request}) {
         }
     };
     console.log(requestBody)
-    await addModifyApplicant(requestBody);
+    await addModifyApplicant(requestBody, userName);
     return redirect(`/profile/${ApplicantID}`);
 }
 
@@ -245,7 +244,6 @@ export default function AddModifyApplicant({type}) {
             >
                 {FormContent(activeStep, formValues, handleBack, handleNext, handleChange)}
             </Box>
-            {/*{FormContent(activeStep, formValues, handleBack, handleNext, handleChange)}*/}
         </Form>
     )
 }
