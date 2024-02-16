@@ -35,7 +35,7 @@ export async function getApplicants(isRefresh = false, query = {}) {
     return applicants['data'];
 }
 
-export async function getApplicantIDByUser(userId, isRefresh = false) {
+export async function getApplicantIDByUserID(userId, isRefresh = false) {
     /*
     * Get the list of applicantIDs from the server or local storage by userId
     * @param userId [String]: userId
@@ -52,12 +52,12 @@ export async function getApplicantIDByUser(userId, isRefresh = false) {
         });
         await handleErrors(response)
         applicants = await response.json();
-        await setApplicantByUser(userId, applicants['result']);
+        await setApplicantIDByUserID(userId, applicants['result']);
     }
     return applicants['result'];
 }
 
-export async function setApplicantByUser(userId, applicants) {
+export async function setApplicantIDByUserID(userId, applicants) {
     /*
     * Set the list of applicants to the local storage (i.e. localforage.getItem('applicants'))
     * @param userId [String]: userId
@@ -96,8 +96,18 @@ export async function setApplicant(applicant) {
     const applicants = await getApplicants(true);
     if (applicants.find(p => p.ApplicantID === applicant.ApplicantID) !== undefined) {
         applicants[applicants.indexOf(applicant)] = applicant;
+    } else {
+        applicants.push(applicant);
     }
     await setApplicants(applicants);
+    const user = await localforage.getItem('user');
+    if (applicant.ApplicantID.split('@')[0] === user) {
+        const applicants = await getApplicantIDByUserID(user, true);
+        if (applicants.indexOf(applicant.ApplicantID) === -1) {
+            applicants.push(applicant.ApplicantID);
+            await setApplicantIDByUserID(user, applicants);
+        }
+    }
 }
 
 export async function addModifyApplicant(requestBody, userId) {
@@ -117,8 +127,8 @@ export async function addModifyApplicant(requestBody, userId) {
     });
     await handleErrors(response);
     await setApplicant(requestBody.content);
-    const applicants = await getApplicantIDByUser(userId, true);
-    await setApplicantByUser(userId, applicants);
+    // const applicants = await getApplicantIDByUserID(userId, true);
+    // await setApplicantIDByUserID(userId, applicants);
 }
 
 export async function removeApplicant(applicantId) {
