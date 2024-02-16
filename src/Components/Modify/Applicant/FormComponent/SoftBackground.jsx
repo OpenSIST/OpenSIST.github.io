@@ -98,7 +98,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
-                        <Grid2 xs={12} md={3.5}>
+                        <Grid2 xs={11/3}>
                             <FormControl fullWidth>
                                 <InputLabel size="small">交换学校</InputLabel>
                                 <Select
@@ -117,7 +117,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                 </Select>
                             </FormControl>
                         </Grid2>
-                        <Grid2 xs={12} md={3.5}>
+                        <Grid2 xs={11/3}>
                             <FormControl fullWidth>
                                 <InputLabel size="small">交换时长</InputLabel>
                                 <Select
@@ -136,7 +136,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                 </Select>
                             </FormControl>
                         </Grid2>
-                        <Grid2 xs={12} md={3.5}>
+                        <Grid2 xs={11/3}>
                             <TextField
                                 fullWidth
                                 name="Detail"
@@ -146,11 +146,15 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                 size="small"
                             />
                         </Grid2>
-                        <Grid2 xs={12} md={1.5}>
-                            <Button fullWidth variant="contained" color="error"
-                                    onClick={() => handleRemoveExchange(index)}>
-                                <Remove/>
-                            </Button>
+                        <Grid2 sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }} xs={1}>
+                            <IconButton variant="contained" color='error'
+                                        onClick={() => handleRemoveExchange(index)}>
+                                <DeleteIcon/>
+                            </IconButton>
                         </Grid2>
                     </Grid2>
                 ))}
@@ -415,13 +419,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                 />
                             </Grid2>
                         </Grid2>
-
                         <Grid2 sx={{
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
                         }} xs={1}>
-                            <IconButton fullWidth variant="contained"
+                            <IconButton variant="contained" color='error'
                                     onClick={() => handleRemovePublication(index)}>
                                 <DeleteIcon/>
                             </IconButton>
@@ -459,7 +462,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
-                        <Grid2 xs={12} md={4}>
+                        <Grid2 xs={4}>
                             <FormControl fullWidth>
                                 <InputLabel size="small">推荐信类型</InputLabel>
                                 <Select
@@ -481,7 +484,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                 </Select>
                             </FormControl>
                         </Grid2>
-                        <Grid2 xs={12} md={6.5}>
+                        <Grid2 xs={7}>
                             <TextField
                                 fullWidth
                                 name="Detail"
@@ -491,11 +494,15 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                 size="small"
                             />
                         </Grid2>
-                        <Grid2 xs={12} md={1.5}>
-                            <Button fullWidth variant="contained" color="error"
-                                    onClick={() => handleRemoveRecommendation(index)}>
-                                <Remove/>
-                            </Button>
+                        <Grid2 sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }} xs={1}>
+                            <IconButton variant="contained" color='error'
+                                        onClick={() => handleRemoveRecommendation(index)}>
+                                <DeleteIcon/>
+                            </IconButton>
                         </Grid2>
                     </Grid2>
                 ))}
