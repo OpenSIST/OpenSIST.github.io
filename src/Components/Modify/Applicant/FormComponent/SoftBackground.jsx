@@ -93,7 +93,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                     <Grid
                         container
                         spacing={2}
-                        sx={{width: '80%', marginBottom: '10px'}}
+                        sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
                         <Grid item xs={12} md={3.5}>
@@ -312,7 +312,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                     <Grid
                         container
                         spacing={2}
-                        sx={{width: '80%', marginBottom: '20px'}}
+                        sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
                         <Grid item xs={12} md={3}>

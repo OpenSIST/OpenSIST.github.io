@@ -251,9 +251,9 @@ export default function RegisterAndReset() {
                 type='submit'
                 name='status'
                 value={status}
-                disabled={!tokenSent}
+                disabled={!tokenSent || !isValidPassword(password)}
             >
-                {tokenSent ? title : '请先发送验证码'}
+                {!tokenSent ? '请先发送验证码' : !isValidPassword(password) ? '密码不符合要求' : title}
             </Button>
             {status === 'register' && <Link to="/login">已有账号？点此登录</Link>}
         </Form>
