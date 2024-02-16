@@ -2,13 +2,14 @@ import {
     Box,
     Button, Checkbox,
     Divider,
-    FormControl,
-    Grid,
+    // Grid,
+    FormControl, IconButton,
     InputLabel, ListItemText,
     MenuItem,
     Paper,
     TextField
 } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2";
 import React, {useState} from "react";
 import {
     authorOrderOptions,
@@ -19,11 +20,12 @@ import {
 import {Add, Remove} from "@mui/icons-material";
 import Select from "@mui/material/Select";
 import "../AddModifyApplicant.css";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function SoftBackground({formValues, handleBack, handleChange}) {
     const [exchanges, setExchanges] = useState(formValues.Exchange ?? []);
     const handleAddExchange = () => {
-        const newExchanges = [...exchanges, { University: "", Duration: "", Detail: "" }];
+        const newExchanges = [...exchanges, {University: "", Duration: "", Detail: ""}];
         setExchanges(newExchanges);
         handleChange(undefined, newExchanges, "Exchange");
     };
@@ -41,7 +43,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
 
     const [publications, setPublications] = useState(formValues.Publication ?? []);
     const handleAddPublication = () => {
-        const newPublications = [...publications, { Type: "", Name: "", AuthorOrder: "", Status: "", Detail: "" }];
+        const newPublications = [...publications, {Type: "", Name: "", AuthorOrder: "", Status: "", Detail: ""}];
         setPublications(newPublications);
         handleChange(undefined, newPublications, "Publication");
     };
@@ -59,7 +61,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
 
     const [recommendations, setRecommendations] = useState(formValues.Recommendation ?? []);
     const handleAddRecommendation = () => {
-        const newRecommendations = [...recommendations, { Type: [], Detail: "" }];
+        const newRecommendations = [...recommendations, {Type: [], Detail: ""}];
         setRecommendations(newRecommendations);
         handleChange(undefined, newRecommendations, "Recommendation");
     };
@@ -90,13 +92,13 @@ function SoftBackground({formValues, handleBack, handleChange}) {
             </Divider>
             <Box className='AddModifyForm'>
                 {exchanges.map((exchange, index) => (
-                    <Grid
+                    <Grid2
                         container
                         spacing={2}
                         sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
-                        <Grid item xs={12} md={3.5}>
+                        <Grid2 xs={12} md={3.5}>
                             <FormControl fullWidth>
                                 <InputLabel size="small">交换学校</InputLabel>
                                 <Select
@@ -114,8 +116,8 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     ))}
                                 </Select>
                             </FormControl>
-                        </Grid>
-                        <Grid item xs={12} md={3.5}>
+                        </Grid2>
+                        <Grid2 xs={12} md={3.5}>
                             <FormControl fullWidth>
                                 <InputLabel size="small">交换时长</InputLabel>
                                 <Select
@@ -133,8 +135,8 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     ))}
                                 </Select>
                             </FormControl>
-                        </Grid>
-                        <Grid item xs={12} md={3.5}>
+                        </Grid2>
+                        <Grid2 xs={12} md={3.5}>
                             <TextField
                                 fullWidth
                                 name="Detail"
@@ -143,20 +145,21 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                 onChange={(event) => handleExchangeChange(index, event)}
                                 size="small"
                             />
-                        </Grid>
-                        <Grid item xs={12} md={1.5}>
-                            <Button fullWidth variant="contained" color="error" onClick={() => handleRemoveExchange(index)}>
+                        </Grid2>
+                        <Grid2 xs={12} md={1.5}>
+                            <Button fullWidth variant="contained" color="error"
+                                    onClick={() => handleRemoveExchange(index)}>
                                 <Remove/>
                             </Button>
-                        </Grid>
-                    </Grid>
+                        </Grid2>
+                    </Grid2>
                 ))}
-                <Grid
+                <Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    <Grid item xs={12}>
+                    <Grid2 xs={12}>
                         <Button
                             onClick={handleAddExchange}
                             variant="contained"
@@ -164,8 +167,8 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         >
                             <Add/>
                         </Button>
-                    </Grid>
-                </Grid>
+                    </Grid2>
+                </Grid2>
             </Box>
             <Divider
                 textAlign="center"
@@ -175,12 +178,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 <b>科研经历</b>
             </Divider>
             <Box className='AddModifyForm'>
-                <Grid
+                <Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    <Grid item xs={12}>
+                    <Grid2 xs={12}>
                         <TextField
                             fullWidth
                             name="ResearchFocus"
@@ -188,10 +191,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.ResearchFocus ?? ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event)
+                            }}
                         />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
+                    </Grid2>
+                    <Grid2 xs={12} md={4}>
                         <TextField
                             fullWidth
                             name="DomesticResearchNum"
@@ -200,10 +205,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.DomesticResearchNum ?? ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event)
+                            }}
                         />
-                    </Grid>
-                    <Grid item xs={12} md={8}>
+                    </Grid2>
+                    <Grid2 xs={12} md={8}>
                         <TextField
                             fullWidth
                             name="DomesticResearchDetail"
@@ -211,10 +218,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.DomesticResearchDetail ?? ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event)
+                            }}
                         />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
+                    </Grid2>
+                    <Grid2 xs={12} md={4}>
                         <TextField
                             fullWidth
                             name="InternationalResearchNum"
@@ -223,10 +232,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.InternationalResearchNum ?? ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event)
+                            }}
                         />
-                    </Grid>
-                    <Grid item xs={12} md={8}>
+                    </Grid2>
+                    <Grid2 xs={12} md={8}>
                         <TextField
                             fullWidth
                             name="InternationalResearchDetail"
@@ -234,10 +245,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.InternationalResearchDetail ?? ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event)
+                            }}
                         />
-                    </Grid>
-                </Grid>
+                    </Grid2>
+                </Grid2>
             </Box>
             <Divider
                 textAlign="center"
@@ -247,12 +260,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 <b>实习经历</b>
             </Divider>
             <Box className='AddModifyForm'>
-                <Grid
+                <Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    <Grid item xs={12} md={4}>
+                    <Grid2 xs={12} md={4}>
                         <TextField
                             fullWidth
                             name="DomesticInternNum"
@@ -261,10 +274,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.DomesticInternNum ?? ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event)
+                            }}
                         />
-                    </Grid>
-                    <Grid item xs={12} md={8}>
+                    </Grid2>
+                    <Grid2 xs={12} md={8}>
                         <TextField
                             fullWidth
                             name="DomesticInternDetail"
@@ -272,10 +287,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.DomesticInternDetail ?? ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event)
+                            }}
                         />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
+                    </Grid2>
+                    <Grid2 xs={12} md={4}>
                         <TextField
                             fullWidth
                             name="InternationalInternNum"
@@ -284,10 +301,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.InternationalInternNum ?? ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event)
+                            }}
                         />
-                    </Grid>
-                    <Grid item xs={12} md={8}>
+                    </Grid2>
+                    <Grid2 xs={12} md={8}>
                         <TextField
                             fullWidth
                             name="InternationalInternDetail"
@@ -295,10 +314,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.InternationalInternDetail ?? ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event)
+                            }}
                         />
-                    </Grid>
-                </Grid>
+                    </Grid2>
+                </Grid2>
             </Box>
             <Divider
                 textAlign="center"
@@ -309,102 +330,110 @@ function SoftBackground({formValues, handleBack, handleChange}) {
             </Divider>
             <Box className='AddModifyForm'>
                 {publications.map((publication, index) => (
-                    <Grid
+                    <Grid2
                         container
                         spacing={2}
                         sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
-                        <Grid item xs={12} md={3}>
-                            <FormControl fullWidth>
-                                <InputLabel size="small">发表在</InputLabel>
-                                <Select
-                                    name="Type"
-                                    size="small"
-                                    label="发表在"
-                                    value={publication.Type}
+                        <Grid2 container spacing={2} xs={11}>
+                            <Grid2 xs={3}>
+                                <FormControl fullWidth>
+                                    <InputLabel size="small">发表在</InputLabel>
+                                    <Select
+                                        name="Type"
+                                        size="small"
+                                        label="发表在"
+                                        value={publication.Type}
+                                        onChange={(event) => handlePublicationChange(index, event)}
+                                        style={{textAlign: 'left'}}
+                                    >
+                                        {publicationTypeOptions.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid2>
+                            <Grid2 xs={3}>
+                                <TextField
+                                    fullWidth
+                                    name="Name"
+                                    label="期刊/会议名称（简写）"
+                                    value={publication.Name}
                                     onChange={(event) => handlePublicationChange(index, event)}
-                                    style={{textAlign: 'left'}}
-                                >
-                                    {publicationTypeOptions.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12} md={3}>
-                            <TextField
-                                fullWidth
-                                name="Name"
-                                label="期刊/会议名称（简写）"
-                                value={publication.Name}
-                                onChange={(event) => handlePublicationChange(index, event)}
-                                size="small"
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={3}>
-                            <FormControl fullWidth>
-                                <InputLabel size="small">作者顺次</InputLabel>
-                                <Select
-                                    name="AuthorOrder"
                                     size="small"
-                                    label="作者顺次"
-                                    value={publication.AuthorOrder}
+                                />
+                            </Grid2>
+                            <Grid2 xs={3}>
+                                <FormControl fullWidth>
+                                    <InputLabel size="small">作者顺次</InputLabel>
+                                    <Select
+                                        name="AuthorOrder"
+                                        size="small"
+                                        label="作者顺次"
+                                        value={publication.AuthorOrder}
+                                        onChange={(event) => handlePublicationChange(index, event)}
+                                        style={{textAlign: 'left'}}
+                                    >
+                                        {authorOrderOptions.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid2>
+                            <Grid2 xs={3}>
+                                <FormControl fullWidth>
+                                    <InputLabel size="small">录用状态</InputLabel>
+                                    <Select
+                                        name="Status"
+                                        size="small"
+                                        label="录用状态"
+                                        value={publication.Status}
+                                        onChange={(event) => handlePublicationChange(index, event)}
+                                        style={{textAlign: 'left'}}
+                                    >
+                                        {publicationStatusOptions.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid2>
+                            <Grid2 xs={12}>
+                                <TextField
+                                    fullWidth
+                                    name="Detail"
+                                    label="具体描述"
+                                    value={publication.Detail}
                                     onChange={(event) => handlePublicationChange(index, event)}
-                                    style={{textAlign: 'left'}}
-                                >
-                                    {authorOrderOptions.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12} md={3}>
-                            <FormControl fullWidth>
-                                <InputLabel size="small">录用状态</InputLabel>
-                                <Select
-                                    name="Status"
                                     size="small"
-                                    label="录用状态"
-                                    value={publication.Status}
-                                    onChange={(event) => handlePublicationChange(index, event)}
-                                    style={{textAlign: 'left'}}
-                                >
-                                    {publicationStatusOptions.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12} md={10.5}>
-                            <TextField
-                                fullWidth
-                                name="Detail"
-                                label="具体描述"
-                                value={publication.Detail}
-                                onChange={(event) => handlePublicationChange(index, event)}
-                                size="small"
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={1.5}>
-                            <Button fullWidth variant="contained" color="error" onClick={() => handleRemovePublication(index)}>
-                                <Remove/>
-                            </Button>
-                        </Grid>
-                    </Grid>
+                                />
+                            </Grid2>
+                        </Grid2>
+
+                        <Grid2 sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }} xs={1}>
+                            <IconButton fullWidth variant="contained"
+                                    onClick={() => handleRemovePublication(index)}>
+                                <DeleteIcon/>
+                            </IconButton>
+                        </Grid2>
+                    </Grid2>
                 ))}
-                <Grid
+                <Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    <Grid item xs={12}>
+                    <Grid2 xs={12}>
                         <Button
                             onClick={handleAddPublication}
                             variant="contained"
@@ -412,8 +441,8 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         >
                             <Add/>
                         </Button>
-                    </Grid>
-                </Grid>
+                    </Grid2>
+                </Grid2>
             </Box>
             <Divider
                 textAlign="center"
@@ -424,13 +453,13 @@ function SoftBackground({formValues, handleBack, handleChange}) {
             </Divider>
             <Box className='AddModifyForm'>
                 {recommendations.map((recommendation, index) => (
-                    <Grid
+                    <Grid2
                         container
                         spacing={2}
                         sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
-                        <Grid item xs={12} md={4}>
+                        <Grid2 xs={12} md={4}>
                             <FormControl fullWidth>
                                 <InputLabel size="small">推荐信类型</InputLabel>
                                 <Select
@@ -451,8 +480,8 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     ))}
                                 </Select>
                             </FormControl>
-                        </Grid>
-                        <Grid item xs={12} md={6.5}>
+                        </Grid2>
+                        <Grid2 xs={12} md={6.5}>
                             <TextField
                                 fullWidth
                                 name="Detail"
@@ -461,20 +490,21 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                 onChange={(event) => handleRecommendationChange(index, event)}
                                 size="small"
                             />
-                        </Grid>
-                        <Grid item xs={12} md={1.5}>
-                            <Button fullWidth variant="contained" color="error" onClick={() => handleRemoveRecommendation(index)}>
+                        </Grid2>
+                        <Grid2 xs={12} md={1.5}>
+                            <Button fullWidth variant="contained" color="error"
+                                    onClick={() => handleRemoveRecommendation(index)}>
                                 <Remove/>
                             </Button>
-                        </Grid>
-                    </Grid>
+                        </Grid2>
+                    </Grid2>
                 ))}
-                <Grid
+                <Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    <Grid item xs={12}>
+                    <Grid2 xs={12}>
                         <Button
                             onClick={handleAddRecommendation}
                             variant="contained"
@@ -482,8 +512,8 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         >
                             <Add/>
                         </Button>
-                    </Grid>
-                </Grid>
+                    </Grid2>
+                </Grid2>
             </Box>
             <Divider
                 textAlign="center"
@@ -493,12 +523,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 <b>竞赛经历</b>
             </Divider>
             <Box className='AddModifyForm'>
-                <Grid
+                <Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    <Grid item xs={12}>
+                    <Grid2 xs={12}>
                         <TextField
                             fullWidth
                             name="Competition"
@@ -506,21 +536,23 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.Competition ?? ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event)
+                            }}
                         />
-                    </Grid>
-                </Grid>
+                    </Grid2>
+                </Grid2>
             </Box>
-            <Box sx={{ display: "flex", justifyContent: "flex-end", margin: 3 }}>
+            <Box sx={{display: "flex", justifyContent: "flex-end", margin: 3}}>
                 <Button
-                    sx={{ mr: 1 }}
+                    sx={{mr: 1}}
                     variant='contained'
                     onClick={handleBack}
                 >
                     上一步
                 </Button>
                 <Button
-                    sx={{ mr: 1 }}
+                    sx={{mr: 1}}
                     variant='contained'
                     type="submit"
                     color="success"
