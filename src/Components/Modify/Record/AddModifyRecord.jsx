@@ -60,6 +60,12 @@ export default function AddModifyRecord({type}) {
         });
         return acc;
     }, []);
+
+    const [programOption, setProgramOption] = useState(record ? record.ProgramID : null);
+    const [statusOption, setStatusOption] = useState(record ? record.Status : null);
+    const [yearOption, setYearOption] = useState(record ? record.ProgramYear : null);
+    const [semesterOption, setSemesterOption] = useState(record ? record.Semester : null);
+
     const mode = type === 'new' ? '添加' : '修改';
     return (
         <Form method='post'>
@@ -93,8 +99,11 @@ export default function AddModifyRecord({type}) {
                                                 required
                                             />
                                     }
-                                    defaultValue={record ? programOptions.find(option => option.value === record.ProgramID) : null}
-                                    isOptionEqualToValue={(option, value) => option.value === value.value}
+                                    value={programOption ? programOptions.find(option => option.value === programOption) : null}
+                                    // isOptionEqualToValue={(option, value) => option.value === value.value}
+                                    onChange={(event, newValue) => {
+                                        setProgramOption(newValue.value);
+                                    }}
                                 >
                                 </Autocomplete>
                             </Grid2>
@@ -112,7 +121,10 @@ export default function AddModifyRecord({type}) {
                                             />
                                     }
                                     options={recordStatusOptions}
-                                    defaultValue={record ? recordStatusOptions.find((option) => option.value === record.Status) : null}
+                                    value={statusOption ? recordStatusOptions.find((option) => option.value === statusOption) : null}
+                                    onChange={(event, newValue) => {
+                                        setStatusOption(newValue.value);
+                                    }}
                                 />
                             </Grid2>
                             <Grid2 xs={6}>
@@ -129,7 +141,10 @@ export default function AddModifyRecord({type}) {
                                             />
                                     }
                                     options={applicationYearOptions}
-                                    defaultValue={record ? applicationYearOptions.find((option) => option.value === record.ProgramYear) : null}
+                                    value={yearOption ? applicationYearOptions.find((option) => option.value === yearOption) : null}
+                                    onChange={(event, newValue) => {
+                                        setYearOption(newValue.value);
+                                    }}
                                 />
                             </Grid2>
                             <Grid2 xs={6}>
@@ -146,7 +161,10 @@ export default function AddModifyRecord({type}) {
                                             />
                                     }
                                     options={recordSemesterOptions}
-                                    defaultValue={record ? recordSemesterOptions.find((option) => option.value === record.Semester) : null}
+                                    value={semesterOption ? recordSemesterOptions.find((option) => option.value === semesterOption) : null}
+                                    onChange={(event, newValue) => {
+                                        setSemesterOption(newValue.value);
+                                    }}
                                 />
                             </Grid2>
                         </Grid2>
@@ -162,6 +180,7 @@ export default function AddModifyRecord({type}) {
                                             label="提交申请时间"
                                             name='Submit'
                                             format='YYYY-MM-DD'
+                                            sx={{width: '100%'}}
                                             slotProps={{ textField: { size: 'small', required: true, fullWidth: true } }}
                                             defaultValue={record ? record.TimeLine.Submit : null}
                                         />

@@ -85,8 +85,8 @@ function ProfileApplicantPage() {
                 <ApplicantInfo applicant={applicant}/>
                 <Typography variant='h3'> 申请结果 </Typography>
                 {records.map(record => (
-                    <Card className="RecordCard">
-                        <Typography>record.ProgramID</Typography>
+                    <Card className="RecordCard" key={record.ProgramID}>
+                        <Typography>{record.ProgramID}</Typography>
                     </Card>
                 ))}
                 <Card className="RecordCard">
