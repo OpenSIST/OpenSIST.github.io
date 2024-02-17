@@ -30,7 +30,7 @@ function BasicInfo({formValues, handleNext, handleChange}) {
                     spacing={2}
                     sx={{width: '80%', marginTop: '10px'}}
                 >
-                    <Grid2 xs={12} md={6}>
+                    <Grid2 xs={6}>
                         <Autocomplete
                             fullWidth
                             options={genderOptions}
@@ -55,7 +55,7 @@ function BasicInfo({formValues, handleNext, handleChange}) {
                             }
                         />
                     </Grid2>
-                    <Grid2 xs={12} md={6}>
+                    <Grid2 xs={6}>
                         <Autocomplete
                             fullWidth
                             options={currentDegreeOptions}
@@ -80,7 +80,7 @@ function BasicInfo({formValues, handleNext, handleChange}) {
                             }
                         />
                     </Grid2>
-                    <Grid2 xs={12} md={6}>
+                    <Grid2 xs={6}>
                         <Autocomplete
                             fullWidth
                             options={applicationYearOptions}
@@ -120,7 +120,7 @@ function BasicInfo({formValues, handleNext, handleChange}) {
                             }
                         />
                     </Grid2>
-                    <Grid2 xs={12} md={6}>
+                    <Grid2 xs={6}>
                         <Autocomplete
                             fullWidth
                             options={majorOptions}

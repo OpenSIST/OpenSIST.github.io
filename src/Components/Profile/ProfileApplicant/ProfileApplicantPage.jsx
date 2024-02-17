@@ -71,7 +71,7 @@ function ProfileApplicantPage() {
                     <Box sx={{display: 'flex', alignItems: 'center'}}>
                         <IconButton
                             component={Link}
-                            to={`/profile/${applicantId}/edit-applicant`}
+                            to={`/profile/${applicantId}/edit`}
                         >
                             <Edit/>
                         </IconButton>
@@ -90,7 +90,7 @@ function ProfileApplicantPage() {
                     </Card>
                 ))}
                 <Card className="RecordCard">
-                    <CardActionArea component={Link} to={`/profile/${applicantId}/new-program`}>
+                    <CardActionArea component={Link} to={`/profile/${applicantId}/new-record`}>
                         <Add sx={{fontSize: '10rem'}}/>
                     </CardActionArea>
                 </Card>

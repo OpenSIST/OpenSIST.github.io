@@ -30,12 +30,12 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                 <b>学业成绩</b>
             </Divider>
             <Box className='AddModifyForm'>
-                < Grid2
+                <Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    < Grid2 xs={12} md={6}>
+                    <Grid2 xs={6}>
                         <TextField
                             fullWidth
                             name="GPA"
@@ -55,8 +55,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                 ),
                             }}
                         />
-                    </ Grid2>
-                    < Grid2 xs={12} md={6}>
+                    </Grid2>
+                    <Grid2 xs={6}>
                         <Autocomplete
                             fullWidth
                             renderInput={(params) =>
@@ -78,8 +78,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                 }
                             }
                         />
-                    </ Grid2>
-                </ Grid2>
+                    </Grid2>
+                </Grid2>
             </Box>
             <Divider
                 textAlign="center"
@@ -89,12 +89,12 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                 <b>GRE成绩</b>
             </Divider>
             <Box className='AddModifyForm'>
-                < Grid2
+                <Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    < Grid2 xs={12}>
+                    <Grid2 xs={12}>
                         <TextField
                             fullWidth
                             name="GRETotal"
@@ -106,8 +106,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             type="number"
                             sx={disableNumberUpDown}
                         />
-                    </ Grid2>
-                    < Grid2 xs={12} md={4}>
+                    </Grid2>
+                    <Grid2 xs={4}>
                         <TextField
                             fullWidth
                             name="V"
@@ -119,8 +119,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             type="number"
                             sx={disableNumberUpDown}
                         />
-                    </ Grid2>
-                    < Grid2 xs={12} md={4}>
+                    </Grid2>
+                    <Grid2 xs={4}>
                         <TextField
                             fullWidth
                             name="Q"
@@ -132,8 +132,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             type="number"
                             sx={disableNumberUpDown}
                         />
-                    </ Grid2>
-                    < Grid2 xs={12} md={4}>
+                    </Grid2>
+                    <Grid2 xs={4}>
                         <TextField
                             fullWidth
                             name="AW"
@@ -145,8 +145,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             type="number"
                             sx={disableNumberUpDown}
                         />
-                    </ Grid2>
-                </ Grid2>
+                    </Grid2>
+                </Grid2>
             </Box>
             <Divider
                 textAlign="center"
@@ -156,12 +156,12 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                 <b>英语成绩</b>
             </Divider>
             <Box className='AddModifyForm'>
-                < Grid2
+                <Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    < Grid2 xs={12}>
+                    <Grid2 xs={12}>
                         <Autocomplete
                             fullWidth
                             onInputChange={(event, value) => {
@@ -186,10 +186,10 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                 }
                             }
                         />
-                    </ Grid2>
+                    </Grid2>
                     {englishOption.length > 0 ?
                         <>
-                            < Grid2 xs={12}>
+                            <Grid2 xs={12}>
                                 <TextField
                                     fullWidth
                                     name="EnglishTotal"
@@ -201,8 +201,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     type="number"
                                     sx={disableNumberUpDown}
                                 />
-                            </ Grid2>
-                            < Grid2 xs={12} md={6}>
+                            </Grid2>
+                            <Grid2 xs={6}>
                                 <TextField
                                     fullWidth
                                     name="R"
@@ -214,8 +214,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     type="number"
                                     inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
                                 />
-                            </ Grid2>
-                            < Grid2 xs={12} md={6}>
+                            </Grid2>
+                            <Grid2 xs={6}>
                                 <TextField
                                     fullWidth
                                     name="L"
@@ -227,8 +227,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     type="number"
                                     inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
                                 />
-                            </ Grid2>
-                            < Grid2 xs={12} md={6}>
+                            </Grid2>
+                            <Grid2 xs={6}>
                                 <TextField
                                     fullWidth
                                     name="S"
@@ -240,8 +240,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     type="number"
                                     inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
                                 />
-                            </ Grid2>
-                            < Grid2 xs={12} md={6}>
+                            </Grid2>
+                            <Grid2 xs={6}>
                                 <TextField
                                     fullWidth
                                     name="W"
@@ -253,10 +253,10 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     type="number"
                                     inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
                                 />
-                            </ Grid2>
+                            </Grid2>
                         </> : null
                     }
-                </ Grid2>
+                </Grid2>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "flex-end", margin: 3 }}>
                 <Button

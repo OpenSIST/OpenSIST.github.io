@@ -55,6 +55,10 @@ import {
 import AddModifyApplicant, {
     action as addModifyApplicantAction
 } from "./Components/Modify/Applicant/AddModifyApplicant";
+import AddModifyRecord, {
+    loader as addModifyRecordLoader,
+    action as addModifyRecordAction
+} from "./Components/Modify/Record/AddModifyRecord";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -158,14 +162,20 @@ function OpenSIST() {
                                     element: <AddModifyApplicant key='new' type='new'/>,
                                     action: addModifyApplicantAction
                                 }, {
-                                    path: '/profile/:applicantId/new-program'
+                                    path: '/profile/:applicantId/new-record',
+                                    element: <AddModifyRecord key='new' type='new'/>,
+                                    loader: addModifyRecordLoader,
+                                    action: addModifyRecordAction
                                 }, {
-                                    path: '/profile/:applicantId/edit-applicant',
+                                    path: '/profile/:applicantId/edit',
                                     element: <AddModifyApplicant key='edit' type='edit'/>,
                                     loader: ProfileApplicantLoader,
                                     action: addModifyApplicantAction
                                 }, {
-                                    path: '/profile/:applicantId/edit-program'
+                                    path: '/profile/:applicantId/:recordId/edit',
+                                    element: <AddModifyRecord key='edit' type='edit'/>,
+                                    loader: addModifyRecordLoader,
+                                    action: addModifyRecordAction
                                 }
                             ]
                         }, {

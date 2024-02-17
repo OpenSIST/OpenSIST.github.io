@@ -123,6 +123,12 @@ export const recommendationTypeOptions = [
     { value: 'Competition', label: '竞赛推'}
 ]
 
+export const recordStatusList = ['Admit', 'Reject', 'Waitlist', 'Defer']
+export const recordStatusOptions = list2Options(recordStatusList);
+
+export const recordSemesterList = ['Fall', 'Spring', 'Summer', 'Winter']
+export const recordSemesterOptions = list2Options(recordSemesterList);
+
 export const EnglishExamMapping = {
     GRE: {
         'Total': 'GRE 总分',
