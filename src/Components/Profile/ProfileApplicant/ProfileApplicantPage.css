@@ -31,3 +31,26 @@
     transform: scale(1.05);
 }
 
+.BasicInfoBlock {
+    width: 100%;
+    padding: 1rem 2rem;
+}
+
+.RankingSlider.MuiSlider-root {
+    height: 15px;
+}
+
+.RankingSlider > .MuiSlider-thumb {
+    box-shadow: none;
+    color: rgb(0,0,0,0%);
+}
+
+.RankingSlider > .MuiSlider-thumb::before {
+    box-shadow: none;
+}
+
+.RankingSlider {
+    pointer-events: none;
+    cursor: default;
+}
+

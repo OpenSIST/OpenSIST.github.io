@@ -23,6 +23,15 @@ export function list2Options(list) {
     })
 }
 
+export function dict2Options(dict) {
+    return Object.entries(dict).map(([key, value]) => {
+        return {
+            value: key,
+            label: value
+        }
+    })
+}
+
 export const majorList = ['CS', 'EE', 'IE'];
 export const majorOptions = list2Options(majorList);
 
@@ -44,40 +53,69 @@ export const univOptions = sortedUnivList.map((univ) => {
     }
 });
 
-export const genderOptions = [
-    { value: 'Male', label: '男' },
-    { value: 'Female', label: '女' },
-    { value: 'Others', label: 'LGBTQ+' },
-]
+export const genderMapping = {
+    'Male': '男',
+    'Female': '女',
+    'Others': 'LGBTQ+'
+}
 
-export const currentDegreeOptions = [
-    { value: 'Undergraduate', label: '本科生' },
-    { value: 'Master', label: '硕士生' }
-]
+export const genderOptions = dict2Options(genderMapping);
+
+export const currentDegreeMapping = {
+    'Undergraduate': '本科生',
+    'Master': '硕士生',
+}
+export const currentDegreeOptions = dict2Options(currentDegreeMapping);
 
 export const applicationYearOptions = Array.from({length: 10}, (_, i) => {
     const year = 2016 + i;
-    return { value: year, label: `${year}` };
+    return {value: year, label: `${year}`};
 });
 
 export const rankPercentOptions = [
-    { value: '1', label: 'Top 1%' },
-    { value: '3', label: 'Top 3%' },
-    { value: '5', label: 'Top 5%' },
-    { value: '10', label: 'Top 10%' },
-    { value: '15', label: 'Top 15%' },
-    { value: '20', label: 'Top 20%' },
-    { value: '30', label: 'Top 30%' },
-    { value: '40', label: 'Top 40%' },
-    { value: '50', label: 'Top 50%' },
-    { value: '50+', label: 'Top 50%+' },
-]
+    {value: '1', label: 'Top 1%'},
+    {value: '3', label: 'Top 3%'},
+    {value: '5', label: 'Top 5%'},
+    {value: '10', label: 'Top 10%'},
+    {value: '15', label: 'Top 15%'},
+    {value: '20', label: 'Top 20%'},
+    {value: '30', label: 'Top 30%'},
+    {value: '40', label: 'Top 40%'},
+    {value: '50', label: 'Top 50%'},
+    {value: '50+', label: 'Top 50%+'},
+];
+
+export const rankPercentSliderValueMapping = {
+    '1': 95,
+    '3': 90,
+    '5': 85,
+    '10': 80,
+    '15': 75,
+    '20': 70,
+    '30': 60,
+    '40': 50,
+    '50': 40,
+    '50+': 30,
+}
+
+export const SliderValueRankStringMapping = {
+    95: "Top 1%",
+    90: "Top 3%",
+    85: "Top 5%",
+    80: "Top 10%",
+    75: "Top 15%",
+    70: "Top 20%",
+    60: "Top 30%",
+    50: "Top 40%",
+    40: "Top 50%",
+    30: "Top 50%+",
+}
 
 export const englishOptions = list2Options(['TOEFL', 'IELTS']);
 
 export const exchangeDurationOptions = [
-    { value: 'Semester', label: '一学期' },
-    { value: 'Year', label: '一学年' }
+    {value: 'Semester', label: '一学期'},
+    {value: 'Year', label: '一学年'}
 ]
 
 export const exchangeUnivList = [
@@ -97,30 +135,30 @@ export const exchangeUnivList = [
 ]
 
 export const publicationTypeOptions = [
-    { value: 'Journal', label: '期刊' },
-    { value: 'Conference', label: '会议' },
-    { value: 'Workshop', label: 'Workshop'}
+    {value: 'Journal', label: '期刊'},
+    {value: 'Conference', label: '会议'},
+    {value: 'Workshop', label: 'Workshop'}
 ]
 
 export const publicationStatusOptions = [
-    { value: 'Accepted', label: '已录用' },
-    { value: 'UnderReview', label: '在投' }
+    {value: 'Accepted', label: '已录用'},
+    {value: 'UnderReview', label: '在投'}
 ]
 
 export const authorOrderOptions = [
-    { value: 'First', label: '第一作者' },
-    { value: 'Co-first', label: '共同第一作者' },
-    { value: 'Second', label: '第二作者' },
-    { value: 'Co-second', label: '共同第二作者' },
-    { value: 'Other', label: '其他' }
+    {value: 'First', label: '第一作者'},
+    {value: 'Co-first', label: '共同第一作者'},
+    {value: 'Second', label: '第二作者'},
+    {value: 'Co-second', label: '共同第二作者'},
+    {value: 'Other', label: '其他'}
 ]
 
 export const recommendationTypeOptions = [
-    { value: 'Research', label: '科研推' },
-    { value: 'Course', label: '课程推' },
-    { value: 'TA', label: 'TA推' },
-    { value: 'Internship', label: '实习推' },
-    { value: 'Competition', label: '竞赛推'}
+    {value: 'Research', label: '科研推'},
+    {value: 'Course', label: '课程推'},
+    {value: 'TA', label: 'TA推'},
+    {value: 'Internship', label: '实习推'},
+    {value: 'Competition', label: '竞赛推'}
 ]
 
 export const recordStatusList = ['Admit', 'Reject', 'Waitlist', 'Defer']
@@ -149,6 +187,13 @@ export const EnglishExamMapping = {
         'L': 'IELTS 听力',
         'S': 'IELTS 口语',
         'W': 'IELTS 写作',
+    },
+    EnglishProficiency: {
+        'Total': '总分',
+        'R': '阅读',
+        'L': '听力',
+        'S': '口语',
+        'W': '写作',
     }
 }
 

@@ -50,7 +50,7 @@ import {action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock"
 import {
     ProfileApplicantWrapper,
     loader as ProfileApplicantLoader,
-    action as ProfileApplicantAction
+    action as ProfileApplicantAction, ProfileApplicantPage
 } from "./Components/Profile/ProfileApplicant/ProfileApplicantPage";
 import AddModifyApplicant, {
     action as addModifyApplicantAction
@@ -154,7 +154,7 @@ function OpenSIST() {
                                     element: <ProfileIndex/>
                                 }, {
                                     path: '/profile/:applicantId',
-                                    element: <ProfileApplicantWrapper/>,
+                                    element: <ProfileApplicantPage/>,
                                     loader: ProfileApplicantLoader,
                                     action: ProfileApplicantAction,
                                 }, {

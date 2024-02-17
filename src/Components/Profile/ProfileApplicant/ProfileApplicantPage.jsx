@@ -1,36 +1,43 @@
 import {getRecordByApplicant} from "../../../Data/RecordData";
 import {Form, redirect, useLoaderData, useParams} from "react-router-dom";
 import {
+    Avatar, Badge,
     Box,
     Card,
     CardActionArea, Chip,
     Divider, IconButton,
     InputLabel,
-    OutlinedInput, styled,
+    OutlinedInput, Paper, Slider, styled,
     Tooltip,
     Typography, useTheme
 } from "@mui/material";
 import {Add, Delete, Edit} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
 import {Link} from 'react-router-dom';
-import {getApplicant, removeApplicant} from "../../../Data/ApplicantData";
+import {getApplicant, getApplicantIDByUserID, removeApplicant} from "../../../Data/ApplicantData";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import HelpIcon from '@mui/icons-material/Help';
 import {
+    currentDegreeMapping,
     currentDegreeOptions,
     EnglishExamMapping, genderOptions,
     PublicationAuthorOrderChipColor,
     PublicationStateChipColor,
-    PublicationTypeChipColor, rankPercentOptions
+    PublicationTypeChipColor, rankPercentOptions, rankPercentSliderValueMapping, SliderValueRankStringMapping
 } from "../../../Data/Schemas";
 import {Fragment} from "react";
+import localforage from "localforage";
+
+import MaleIcon from '@mui/icons-material/Male';
+import FemaleIcon from '@mui/icons-material/Female';
+import TransgenderIcon from '@mui/icons-material/Transgender';
 
 const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
     display: 'flex',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
     gap: '1rem',
-    margin: '1rem 0',
+    // margin: '0 1rem',
 }));
 
 const ItemBox = styled(Box)(({theme}) => ({
@@ -43,225 +50,212 @@ const ItemBox = styled(Box)(({theme}) => ({
 
 export async function loader({params}) {
     const applicantId = params.applicantId;
+    const user = await localforage.getItem('user');
+    const valid_applicant_list = await getApplicantIDByUserID(user);
+    if (!valid_applicant_list.includes(applicantId)) {
+        throw new Error('Unauthorized');
+    }
     const applicant = await getApplicant(applicantId);
     const records = await getRecordByApplicant(applicantId);
     return {applicantId, applicant, records};
 }
 
-export async function action({params, request}) {
+export async function action({params}) {
     const applicantId = params.applicantId;
     await removeApplicant(applicantId);
     return redirect('/profile');
 }
 
-export function ProfileApplicantWrapper() {
-    const {applicantId} = useParams();
-    return (
-        <ProfileApplicantPage key={applicantId}/>
-    )
-}
-
-function ProfileApplicantPage() {
+export function ProfileApplicantPage() {
     const {applicantId, applicant, records} = useLoaderData();
     return (
-        <>
-            <Box sx={{display: 'flex', flexDirection: 'column'}}>
-                <Box sx={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
-                    <Typography variant='h3'> 申请人信息 </Typography>
-                    <Box sx={{display: 'flex', alignItems: 'center'}}>
-                        <IconButton
-                            component={Link}
-                            to={`/profile/${applicantId}/edit`}
+        <Fragment key={applicant.ApplicantID}>
+            <Grid2 container xs={12}>
+                <BasicInfoBlock applicant={applicant}/>
+            </Grid2>
+        </Fragment>
+    )
+}
+
+function GenderIcon({gender}) {
+    switch (gender) {
+        case 'Male':
+            return <MaleIcon/>;
+        case 'Female':
+            return <FemaleIcon/>;
+        case 'Others':
+            return <TransgenderIcon/>;
+        default:
+            return null;
+    }
+}
+
+function BasicInfoBlock({applicant}) {
+    const valuetext = (value) => {
+        return SliderValueRankStringMapping[value];
+    }
+    const sliderValue = rankPercentSliderValueMapping[applicant.Ranking];
+    const marks = [
+        {
+            value: 2,
+            label: '1.7',
+        },
+        {
+            value: sliderValue,
+            label: applicant.GPA,
+        },
+    ]
+    if (sliderValue !== 95) {
+        marks.push({
+            value: 98,
+            label: '4.0',
+        })
+    }
+    return (
+        <Grid2 component={Paper} className="BasicInfoBlock" container spacing={4} xs={12}>
+            <Grid2 container xs={12} md={4}>
+                <ContentCenteredGrid>
+                    <Badge
+                        badgeContent={<GenderIcon gender={applicant.Gender}/>}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                        }}
+                        overlap='circular'
+                        color="primary"
+                    >
+                        <Avatar sx={{width: 100, height: 100}}/>
+                    </Badge>
+                </ContentCenteredGrid>
+                <Grid2 container spacing={0} xs>
+                    <ContentCenteredGrid xs={12}>
+                        <Typography
+                            variant="h4"
+                            color="primary"
+                            sx={{fontWeight: 'bold'}}
                         >
-                            <Edit/>
-                        </IconButton>
-                        <Form method='post'>
-                            <IconButton type='submit'>
-                                <Delete/>
-                            </IconButton>
-                        </Form>
-                    </Box>
-                </Box>
-                <ApplicantInfo applicant={applicant}/>
-                <Typography variant='h3'> 申请结果 </Typography>
-                {records.map(record => (
-                    <Card className="RecordCard" key={record.ProgramID}>
-                        <Typography>{record.ProgramID}</Typography>
-                    </Card>
-                ))}
-                <Card className="RecordCard">
-                    <CardActionArea component={Link} to={`/profile/${applicantId}/new-record`}>
-                        <Add sx={{fontSize: '10rem'}}/>
-                    </CardActionArea>
-                </Card>
-            </Box>
-        </>
+                            {applicant.ApplicantID}
+                        </Typography>
+                    </ContentCenteredGrid>
+                    <ContentCenteredGrid xs={12}>
+                        <Typography variant="subtitle1">
+                            {`${applicant.Major} ${currentDegreeMapping[applicant.CurrentDegree]}`}
+                        </Typography>
+                    </ContentCenteredGrid>
+                </Grid2>
+                <ContentCenteredGrid xs={12}>
+                    <Typography variant="subtitle1">申请时最高学位GPA以及对应专业排名：</Typography>
+                </ContentCenteredGrid>
+                <ContentCenteredGrid xs={12}>
+                    <Slider
+                        defaultValue={sliderValue}
+                        getAriaValueText={valuetext}
+                        valueLabelFormat={valuetext}
+                        valueLabelDisplay="on"
+                        marks={marks}
+                        className='RankingSlider'
+                    />
+                </ContentCenteredGrid>
+            </Grid2>
+            <GREBlock GRE={applicant?.GRE}/>
+            <EnglishExamBlock EnglishProficiency={applicant?.EnglishProficiency}/>
+        </Grid2>
     )
 }
 
-export function ApplicantInfo({applicant}) {
-    const xs_standard_grades = 12 / (
-        1 +
-        ('GRE' in applicant) +
-        ('TOEFL' in applicant.EnglishProficiency) +
-        ('IELTS' in applicant.EnglishProficiency)
+function GREBlock({GRE}) {
+    if (!GRE) {
+        GRE = {
+            "Total": "-",
+            "V": "-",
+            "Q": "-",
+            "AW": "-"
+        }
+    }
+    return (
+        <Grid2 container xs={12} md={4}>
+            <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', justifyContent: 'center'}}>
+                <Typography variant="h6" sx={{fontWeight: 'bold'}}>GRE</Typography>
+                <Typography>{GRE.Total}</Typography>
+            </ContentCenteredGrid>
+            {Object.entries(GRE).map(([key, value]) => {
+                return (
+                    <ContentCenteredGrid xs={6} key={key} sx={{flexDirection: 'column', justifyContent: 'center'}}>
+                        <Typography variant="subtitle1"
+                                    sx={{fontWeight: 'bold'}}>{EnglishExamMapping["GRE"][key]}</Typography>
+                        <Typography>{value}</Typography>
+                    </ContentCenteredGrid>
+                )
+            })}
+
+        </Grid2>
     )
+}
+
+function EnglishExamBlock({EnglishProficiency}) {
+    if (!EnglishProficiency || Object.keys(EnglishProficiency).length === 0) {
+        EnglishProficiency = {
+            "EnglishProficiency": {
+                "Total": "-",
+                "S": "-",
+                "R": "-",
+                "L": "-",
+                "W": "-"
+            }
+        }
+    }
     return (
         <>
-            <Divider><Typography variant='h4'>基本信息</Typography></Divider>
-            <Grid2 container rowSpacing={1} columnSpacing={5}>
-                <ApplicantInfoItem itemLabel="申请人ID" itemValue={applicant.ApplicantID}/>
-                <ApplicantInfoItem itemLabel="申请人性别"
-                                   itemValue={genderOptions.find((option) => option.value === applicant.Gender)?.label ?? null}/>
-                <ApplicantInfoItem itemLabel="申请人学位"
-                                   itemValue={currentDegreeOptions.find((option) => option.value === applicant.CurrentDegree)?.label ?? null}/>
-                <ApplicantInfoItem itemLabel="申请年份" itemValue={applicant.ApplicationYear}/>
-                <ApplicantInfoItem itemLabel="申请人专业" itemValue={applicant.Major}/>
-                {/*<ApplicantInfoItem itemLabel="联系方式" itemValue={applicant.Contact}/>*/}
-            </Grid2>
-            <Divider><Typography variant='h4'>三维</Typography></Divider>
-            <Grid2 container rowSpacing={1} columnSpacing={5}>
-                <Grid2 container xs={xs_standard_grades}>
-                    <ApplicantInfoItem itemLabel="GPA" itemValue={applicant.GPA} xs={12}
-                                       help="申请人在该申请季用于申请的最高学历的GPA"/>
-                    <ApplicantInfoItem itemLabel="排名"
-                                       itemValue={rankPercentOptions.find((option) => option.value === applicant.Ranking)?.label ?? null}
-                                       xs={12}
-                                       help="学院排名or专业排名"/>
-                </Grid2>
-                <EnglishProficiencyItem title="GRE" grade={applicant.GRE} xs={xs_standard_grades}/>
-                <EnglishProficiencyItem title="TOEFL" grade={applicant.EnglishProficiency.TOEFL}
-                                        xs={xs_standard_grades}/>
-                <EnglishProficiencyItem title="IELTS" grade={applicant.EnglishProficiency.IELTS}
-                                        xs={xs_standard_grades}/>
-            </Grid2>
-            <Divider><Typography variant='h4'>软背景</Typography></Divider>
-            <Grid2 container rowSpacing={1} columnSpacing={5}>
-                <PublicationItems publications={applicant.Publication} xs={4}/>
-                <ResearchInternshipItems experiences={applicant.Research} title="科研经历"/>
-                <ResearchInternshipItems experiences={applicant.Internship} title="实习经历"/>
-            </Grid2>
+            {Object.entries(EnglishProficiency).map(([examType, grade]) => {
+                return (
+                    <Grid2 container xs={12} md={4} key={examType}>
+                        <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', justifyContent: 'center'}}>
+                            <Typography variant="h6" sx={{fontWeight: 'bold'}}>{examType}</Typography>
+                            <Typography>{grade.Total}</Typography>
+                        </ContentCenteredGrid>
+                        {Object.entries(grade).map(([key, value]) => {
+                            if (key === 'Total') {
+                                return null;
+                            }
+                            return (
+                                <ContentCenteredGrid xs={6} key={key}
+                                                     sx={{flexDirection: 'column', justifyContent: 'center'}}>
+                                    <Typography variant="subtitle1"
+                                                sx={{fontWeight: 'bold'}}>{EnglishExamMapping[examType][key]}</Typography>
+                                    <Typography>{value}</Typography>
+                                </ContentCenteredGrid>
+                            )
+                        })}
+                    </Grid2>
+                )
+            })}
         </>
     )
+
 }
 
-function ApplicantInfoItem({itemLabel, itemValue, help, xs = 4}) {
-    if (!itemValue) {
-        return null;
-    }
-    return (
-        <ContentCenteredGrid xs={xs}>
-            <InputLabel sx={{width: '6rem', display: 'flex', alignItems: 'center'}}>
-                {itemLabel}
-                {help && <Tooltip title={help} arrow>
-                    <HelpIcon fontSize='small'/>
-                </Tooltip>}
-            </InputLabel>
-            <OutlinedInput readOnly defaultValue={itemValue}/>
-        </ContentCenteredGrid>
-    )
+function ExchangeBlock({Exchanges}) {
+
 }
 
-function EnglishProficiencyItem({title, grade, xs}) {
-    if (!grade) {
-        return null;
-    }
-    return (
-        <Grid2 container xs={xs}>
-            {Object.entries(grade).map(([key, value]) =>
-                (title === 'GRE' ? ((key === 'Total' && value !== 260) || (['V', 'Q'].includes(key) && value !== 130) || (key === 'AW' && value > 0)) : true) &&
-                <ApplicantInfoItem key={key} itemLabel={EnglishExamMapping[title][key]} itemValue={value} xs={12}/>
-            )}
-        </Grid2>
-    )
+function ResearchBlock({Researches}) {
+
 }
 
-function PublicationItems({publications, xs}) {
-    if (!publications || publications.length === 0) {
-        return null;
-    }
-    return (
-        <Grid2 container xs={xs}>
-            <ContentCenteredGrid xs={12} sx={{alignItems: "flex-start"}}><Typography variant='h5'>论文发表</Typography></ContentCenteredGrid>
-            {publications.map((publication, index) => (
-                <PublicationCard key={index} publication={publication}/>
-            ))}
-        </Grid2>
-    )
+function InternshipBlock({Internships}) {
+
 }
 
-function PublicationCard({publication}) {
-    return (
-        <ContentCenteredGrid xs={12}>
-            <Card className='PublicationCard' sx={{borderRadius: '20px'}}>
-                <PublicationCardChipItem label="类型:" value={publication.Type} palette={PublicationTypeChipColor}/>
-                <PublicationCardTextItem label="名称:" value={publication.Name}/>
-                <PublicationCardChipItem label="作者顺序:" value={publication.AuthorOrder}
-                                         palette={PublicationAuthorOrderChipColor}/>
-                <PublicationCardChipItem label="状态:" value={publication.Status} palette={PublicationStateChipColor}/>
-                <PublicationCardTextItem label="详情:" value={publication.Detail}/>
-            </Card>
-        </ContentCenteredGrid>
-    )
+function PublicationBlock({Publications}) {
+
 }
 
-function PublicationCardTextItem({label, value}) {
-    if (!value || value === '') {
-        return null;
-    }
-    return (
-        <ItemBox>
-            <InputLabel>
-                {label}
-            </InputLabel>
-            <Typography>{value}</Typography>
-        </ItemBox>
-    )
+function RecommendationBlock({Recommendations}) {
+
 }
 
-function PublicationCardChipItem({label, value, palette}) {
-    const theme = useTheme();
-    const darkMode = theme.palette.mode === 'dark';
-    if (!value || value === '') {
-        return null;
-    }
-    return (
-        <ItemBox>
-            <InputLabel>
-                {label}
-            </InputLabel>
-            <Chip label={value} sx={{bgcolor: palette(darkMode, value)}}/>
-        </ItemBox>
-    )
-}
+function CompetitionBlock({Competitions}) {
 
-function ResearchInternshipItems({experiences, title}) {
-    if (!experiences || (experiences.Domestic.Num + experiences.International.Num) === 0) {
-        return null;
-    }
-    return (
-        <Grid2 container xs={4}>
-            <ContentCenteredGrid xs={12} sx={{alignSelf: 'flex-start', flexDirection: 'column', gap: '0'}}>
-                <Typography variant='h5'>
-                    {title}
-                </Typography>
-                <Typography variant='subtitle1'>{experiences?.Focus}</Typography>
-            </ContentCenteredGrid>
-            <ResearchInternshipCard num={experiences?.Domestic?.Num} detail={experiences?.Domestic?.Detail}/>
-            <ResearchInternshipCard num={experiences?.International?.Num} detail={experiences?.International?.Detail}/>
-        </Grid2>
-    )
-}
-
-function ResearchInternshipCard({num, detail}) {
-    return (
-        <ContentCenteredGrid xs={12}>
-            <Card className="ResearchInternshipCard" sx={{borderRadius: '20px'}}>
-                <Typography>{`国内${num}段`}</Typography>
-                <Typography>{detail}</Typography>
-            </Card>
-        </ContentCenteredGrid>
-    )
 }
 
 const libn = {
