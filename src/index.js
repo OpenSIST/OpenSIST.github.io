@@ -48,7 +48,9 @@ import {ProgramIndex} from "./Components/ProgramPage/ProgramPage";
 import localforage from "localforage";
 import {action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
 import {
-    loader as ProfileApplicantLoader, ProfileApplicantWrapper,
+    ProfileApplicantWrapper,
+    loader as ProfileApplicantLoader,
+    action as ProfileApplicantAction
 } from "./Components/Profile/ProfileApplicant/ProfileApplicantPage";
 import AddModifyApplicant, {
     action as addModifyApplicantAction
@@ -150,6 +152,7 @@ function OpenSIST() {
                                     path: '/profile/:applicantId',
                                     element: <ProfileApplicantWrapper/>,
                                     loader: ProfileApplicantLoader,
+                                    action: ProfileApplicantAction,
                                 }, {
                                     path: '/profile/new-applicant',
                                     element: <AddModifyApplicant key='new' type='new'/>,

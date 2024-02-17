@@ -1,5 +1,6 @@
 import React, {useState} from "react";
-import {Box, Button, Divider, Grid, Paper, TextField, Tooltip} from "@mui/material";
+import {Box, Button, Divider, Paper, TextField, Tooltip} from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2";
 import Autocomplete from "@mui/material/Autocomplete";
 import {englishOptions, rankPercentOptions} from "../../../../Data/Schemas";
 import "../AddModifyApplicant.css";
@@ -29,12 +30,12 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                 <b>学业成绩</b>
             </Divider>
             <Box className='AddModifyForm'>
-                <Grid
+                < Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    <Grid item xs={12} md={6}>
+                    < Grid2 xs={12} md={6}>
                         <TextField
                             fullWidth
                             name="GPA"
@@ -54,8 +55,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                 ),
                             }}
                         />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
+                    </ Grid2>
+                    < Grid2 xs={12} md={6}>
                         <Autocomplete
                             fullWidth
                             renderInput={(params) =>
@@ -77,8 +78,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                 }
                             }
                         />
-                    </Grid>
-                </Grid>
+                    </ Grid2>
+                </ Grid2>
             </Box>
             <Divider
                 textAlign="center"
@@ -88,12 +89,12 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                 <b>GRE成绩</b>
             </Divider>
             <Box className='AddModifyForm'>
-                <Grid
+                < Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    <Grid item xs={12}>
+                    < Grid2 xs={12}>
                         <TextField
                             fullWidth
                             name="GRETotal"
@@ -105,8 +106,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             type="number"
                             sx={disableNumberUpDown}
                         />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
+                    </ Grid2>
+                    < Grid2 xs={12} md={4}>
                         <TextField
                             fullWidth
                             name="V"
@@ -118,8 +119,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             type="number"
                             sx={disableNumberUpDown}
                         />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
+                    </ Grid2>
+                    < Grid2 xs={12} md={4}>
                         <TextField
                             fullWidth
                             name="Q"
@@ -131,8 +132,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             type="number"
                             sx={disableNumberUpDown}
                         />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
+                    </ Grid2>
+                    < Grid2 xs={12} md={4}>
                         <TextField
                             fullWidth
                             name="AW"
@@ -144,8 +145,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             type="number"
                             sx={disableNumberUpDown}
                         />
-                    </Grid>
-                </Grid>
+                    </ Grid2>
+                </ Grid2>
             </Box>
             <Divider
                 textAlign="center"
@@ -155,12 +156,12 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                 <b>英语成绩</b>
             </Divider>
             <Box className='AddModifyForm'>
-                <Grid
+                < Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    <Grid item xs={12}>
+                    < Grid2 xs={12}>
                         <Autocomplete
                             fullWidth
                             onInputChange={(event, value) => {
@@ -185,10 +186,10 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                 }
                             }
                         />
-                    </Grid>
+                    </ Grid2>
                     {englishOption.length > 0 ?
                         <>
-                            <Grid item xs={12}>
+                            < Grid2 xs={12}>
                                 <TextField
                                     fullWidth
                                     name="EnglishTotal"
@@ -200,8 +201,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     type="number"
                                     sx={disableNumberUpDown}
                                 />
-                            </Grid>
-                            <Grid item xs={12} md={6}>
+                            </ Grid2>
+                            < Grid2 xs={12} md={6}>
                                 <TextField
                                     fullWidth
                                     name="R"
@@ -213,8 +214,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     type="number"
                                     inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
                                 />
-                            </Grid>
-                            <Grid item xs={12} md={6}>
+                            </ Grid2>
+                            < Grid2 xs={12} md={6}>
                                 <TextField
                                     fullWidth
                                     name="L"
@@ -226,8 +227,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     type="number"
                                     inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
                                 />
-                            </Grid>
-                            <Grid item xs={12} md={6}>
+                            </ Grid2>
+                            < Grid2 xs={12} md={6}>
                                 <TextField
                                     fullWidth
                                     name="S"
@@ -239,8 +240,8 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     type="number"
                                     inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
                                 />
-                            </Grid>
-                            <Grid item xs={12} md={6}>
+                            </ Grid2>
+                            < Grid2 xs={12} md={6}>
                                 <TextField
                                     fullWidth
                                     name="W"
@@ -252,10 +253,10 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     type="number"
                                     inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
                                 />
-                            </Grid>
+                            </ Grid2>
                         </> : null
                     }
-                </Grid>
+                </ Grid2>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "flex-end", margin: 3 }}>
                 <Button

@@ -1,19 +1,19 @@
 import {getRecordByApplicant} from "../../../Data/RecordData";
-import {useLoaderData, useParams} from "react-router-dom";
+import {Form, redirect, useLoaderData, useParams} from "react-router-dom";
 import {
     Box,
     Card,
     CardActionArea, Chip,
-    Divider,
+    Divider, IconButton,
     InputLabel,
     OutlinedInput, styled,
     Tooltip,
     Typography, useTheme
 } from "@mui/material";
-import {Add} from "@mui/icons-material";
+import {Add, Delete, Edit} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
 import {Link} from 'react-router-dom';
-import {getApplicant} from "../../../Data/ApplicantData";
+import {getApplicant, removeApplicant} from "../../../Data/ApplicantData";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import HelpIcon from '@mui/icons-material/Help';
 import {
@@ -40,6 +40,7 @@ const ItemBox = styled(Box)(({theme}) => ({
     gap: '1rem',
 }))
 
+
 export async function loader({params}) {
     const applicantId = params.applicantId;
     const applicant = await getApplicant(applicantId);
@@ -47,8 +48,14 @@ export async function loader({params}) {
     return {applicantId, applicant, records};
 }
 
+export async function action({params, request}) {
+    const applicantId = params.applicantId;
+    await removeApplicant(applicantId);
+    return redirect('/profile');
+}
+
 export function ProfileApplicantWrapper() {
-    const { applicantId } = useParams();
+    const {applicantId} = useParams();
     return (
         <ProfileApplicantPage key={applicantId}/>
     )
@@ -59,7 +66,22 @@ function ProfileApplicantPage() {
     return (
         <>
             <Box sx={{display: 'flex', flexDirection: 'column'}}>
-                <Typography variant='h3' sx={{alignSelf: 'center'}}> 申请人信息 </Typography>
+                <Box sx={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
+                    <Typography variant='h3'> 申请人信息 </Typography>
+                    <Box sx={{display: 'flex', alignItems: 'center'}}>
+                        <IconButton
+                            component={Link}
+                            to={`/profile/${applicantId}/edit-applicant`}
+                        >
+                            <Edit/>
+                        </IconButton>
+                        <Form method='post'>
+                            <IconButton type='submit'>
+                                <Delete/>
+                            </IconButton>
+                        </Form>
+                    </Box>
+                </Box>
                 <ApplicantInfo applicant={applicant}/>
                 <Typography variant='h3'> 申请结果 </Typography>
                 {records.map(record => (
@@ -89,8 +111,10 @@ export function ApplicantInfo({applicant}) {
             <Divider><Typography variant='h4'>基本信息</Typography></Divider>
             <Grid2 container rowSpacing={1} columnSpacing={5}>
                 <ApplicantInfoItem itemLabel="申请人ID" itemValue={applicant.ApplicantID}/>
-                <ApplicantInfoItem itemLabel="申请人性别" itemValue={genderOptions.find((option) => option.value === applicant.Gender)?.label ?? null}/>
-                <ApplicantInfoItem itemLabel="申请人学位" itemValue={currentDegreeOptions.find((option) => option.value === applicant.CurrentDegree)?.label ?? null}/>
+                <ApplicantInfoItem itemLabel="申请人性别"
+                                   itemValue={genderOptions.find((option) => option.value === applicant.Gender)?.label ?? null}/>
+                <ApplicantInfoItem itemLabel="申请人学位"
+                                   itemValue={currentDegreeOptions.find((option) => option.value === applicant.CurrentDegree)?.label ?? null}/>
                 <ApplicantInfoItem itemLabel="申请年份" itemValue={applicant.ApplicationYear}/>
                 <ApplicantInfoItem itemLabel="申请人专业" itemValue={applicant.Major}/>
                 {/*<ApplicantInfoItem itemLabel="联系方式" itemValue={applicant.Contact}/>*/}
@@ -238,5 +262,87 @@ function ResearchInternshipCard({num, detail}) {
             </Card>
         </ContentCenteredGrid>
     )
+}
+
+const libn = {
+    "ApplicantID": "libn@2024",
+    "Gender": "Male",
+    "CurrentDegree": "Undergraduate",
+    "ApplicationYear": 2024,
+    "Major": "CS",
+    "GPA": 3.89,
+    "Ranking": "3",
+    "EnglishProficiency": {
+        "TOEFL": {
+            "Total": 110,
+            "S": 25,
+            "R": 30,
+            "L": 29,
+            "W": 26
+        }
+    },
+    "Publication": [
+        {
+            "Type": "Conference",
+            "Name": "ML4H",
+            "AuthorOrder": "First",
+            "Status": "Accepted",
+            "Detail": ""
+        }
+    ],
+    "Research": {
+        "Focus": "Computer Vision and Medical Image Analysis",
+        "Domestic": {
+            "Num": 1,
+            "Detail": ""
+        },
+        "International": {
+            "Num": 0,
+            "Detail": ""
+        }
+    },
+    "Internship": {
+        "Domestic": {
+            "Num": 0,
+            "Detail": ""
+        },
+        "International": {
+            "Num": 0,
+            "Detail": ""
+        }
+    },
+    "Recommendation": [
+        {
+            "Type": [
+                "Research"
+            ],
+            "Detail": ""
+        },
+        {
+            "Type": [
+                "TA"
+            ],
+            "Detail": ""
+        },
+        {
+            "Type": [
+                "Course"
+            ],
+            "Detail": ""
+        },
+        {
+            "Type": [
+                "Course"
+            ],
+            "Detail": ""
+        },
+        {
+            "Type": [
+                "Course"
+            ],
+            "Detail": ""
+        }
+    ],
+    "Programs": {}
 }
 

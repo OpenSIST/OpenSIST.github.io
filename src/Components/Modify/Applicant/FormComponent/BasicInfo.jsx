@@ -2,11 +2,11 @@ import React from "react";
 import {
     Box,
     Button,
-    Grid,
     Paper,
     TextField,
     Tooltip
 } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2";
 import {HelpOutline} from "@mui/icons-material";
 import Autocomplete from "@mui/material/Autocomplete";
 import {
@@ -25,12 +25,12 @@ function BasicInfo({formValues, handleNext, handleChange}) {
     return (
         <Paper variant='outlined' sx={{width: '60%'}}>
             <Box className='AddModifyForm'>
-                <Grid
+                <Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginTop: '10px'}}
                 >
-                    <Grid item xs={12} md={6}>
+                    <Grid2 xs={12} md={6}>
                         <Autocomplete
                             fullWidth
                             options={genderOptions}
@@ -54,8 +54,8 @@ function BasicInfo({formValues, handleNext, handleChange}) {
                                 }
                             }
                         />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
+                    </Grid2>
+                    <Grid2 xs={12} md={6}>
                         <Autocomplete
                             fullWidth
                             options={currentDegreeOptions}
@@ -79,8 +79,8 @@ function BasicInfo({formValues, handleNext, handleChange}) {
                                 }
                             }
                         />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
+                    </Grid2>
+                    <Grid2 xs={12} md={6}>
                         <Autocomplete
                             fullWidth
                             options={applicationYearOptions}
@@ -119,8 +119,8 @@ function BasicInfo({formValues, handleNext, handleChange}) {
                                 }
                             }
                         />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
+                    </Grid2>
+                    <Grid2 xs={12} md={6}>
                         <Autocomplete
                             fullWidth
                             options={majorOptions}
@@ -144,8 +144,8 @@ function BasicInfo({formValues, handleNext, handleChange}) {
                                 }
                             }
                         />
-                    </Grid>
-                </Grid>
+                    </Grid2>
+                </Grid2>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "flex-end", margin: 3 }}>
                 <Button

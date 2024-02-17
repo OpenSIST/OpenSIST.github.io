@@ -126,8 +126,6 @@ export async function addModifyApplicant(requestBody, userId) {
     });
     await handleErrors(response);
     await setApplicant(requestBody.content);
-    // const applicants = await getApplicantIDByUserID(userId, true);
-    // await setApplicantIDByUserID(userId, applicants);
 }
 
 export async function removeApplicant(applicantId) {
@@ -147,4 +145,15 @@ export async function removeApplicant(applicantId) {
     await handleErrors(response);
     const applicants = await getApplicants();
     await setApplicants(applicants.filter(p => p.ApplicantID !== applicantId));
+    await deleteApplicantIDByUserID(applicantId);
+}
+
+export async function deleteApplicantIDByUserID(applicantId) {
+    /*
+    * Remove the applicant from the local storage.
+    * @param applicantId [String]: applicantId
+    */
+    const userId = await localforage.getItem('user');
+    const applicants = await getApplicantIDByUserID(userId, true);
+    await setApplicantIDByUserID(userId, applicants.filter(p => p !== applicantId));
 }

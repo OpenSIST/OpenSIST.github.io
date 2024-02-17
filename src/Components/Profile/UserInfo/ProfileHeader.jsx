@@ -45,18 +45,6 @@ export function ProfileHeader({loaderData}) {
                             <ListItemButton component={Link} to={`/profile/${applicant}`}>
                                 <PersonOutlineIcon/> {applicant}
                             </ListItemButton>
-                            <IconButton
-                                component={Link}
-                                to={`/profile/${applicant}/edit-applicant`}
-                                color='primary'
-                            >
-                                <Edit/>
-                            </IconButton>
-                            <IconButton
-                                color='error'
-                            >
-                                <Delete/>
-                            </IconButton>
                         </ListItem>
                     ))}
                     <ListItem>

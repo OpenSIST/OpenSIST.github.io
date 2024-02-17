@@ -341,7 +341,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         key={index}
                     >
                         <Grid2 container spacing={2} xs={11}>
-                            <Grid2 xs={3}>
+                            <Grid2 xs={12} md={3}>
                                 <FormControl fullWidth>
                                     <InputLabel size="small">发表在</InputLabel>
                                     <Select
@@ -360,7 +360,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     </Select>
                                 </FormControl>
                             </Grid2>
-                            <Grid2 xs={3}>
+                            <Grid2 xs={12} md={3}>
                                 <TextField
                                     fullWidth
                                     name="Name"
@@ -370,7 +370,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     size="small"
                                 />
                             </Grid2>
-                            <Grid2 xs={3}>
+                            <Grid2 xs={12} md={3}>
                                 <FormControl fullWidth>
                                     <InputLabel size="small">作者顺次</InputLabel>
                                     <Select
@@ -389,7 +389,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     </Select>
                                 </FormControl>
                             </Grid2>
-                            <Grid2 xs={3}>
+                            <Grid2 xs={12} md={3}>
                                 <FormControl fullWidth>
                                     <InputLabel size="small">录用状态</InputLabel>
                                     <Select
