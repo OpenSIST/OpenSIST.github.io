@@ -37,33 +37,18 @@ export async function action({request}) {
         'AW': AW ? Number(AW) : 0
     }
     const EnglishOption = formValues.EnglishOption;
-    let EnglishProficiency = {};
-    if (EnglishOption !== undefined) {
-        const EnglishTotal = formValues.EnglishTotal;
-        const R = formValues.R;
-        const W = formValues.W;
-        const L = formValues.L;
-        const S = formValues.S;
-        if (EnglishOption === 'TOEFL') {
-            EnglishProficiency = {
-                "TOEFL" : {
-                    'Total': EnglishTotal ? Number(EnglishTotal) : 0,
-                    'R': R ? Number(R) : 0,
-                    'W': W ? Number(W) : 0,
-                    'L': L ? Number(L) : 0,
-                    'S': S ? Number(S) : 0,
-                }
-            }
-        } else if (EnglishOption === 'IELTS'){
-            EnglishProficiency = {
-                "IELTS" : {
-                    'Total': EnglishTotal ? Number(EnglishTotal) : 0,
-                    'R': R ? Number(R) : 0,
-                    'W': W ? Number(W) : 0,
-                    'L': L ? Number(L) : 0,
-                    'S': S ? Number(S) : 0,
-                }
-            }
+    const EnglishTotal = formValues.EnglishTotal;
+    const R = formValues.R;
+    const W = formValues.W;
+    const L = formValues.L;
+    const S = formValues.S;
+    const EnglishProficiency = {
+        [EnglishOption === 'TOEFL' ? 'TOEFL' : 'IELTS']: {
+            'Total': Number(EnglishTotal),
+            'R': Number(R),
+            'W': Number(W),
+            'L': Number(L),
+            'S': Number(S),
         }
     }
     const Exchange = formValues.Exchange ? removeEmptyDictInList(formValues.Exchange) : [];
@@ -112,7 +97,7 @@ export async function action({request}) {
             'ApplicationYear': ApplicationYear,
             'Major': Major,
             'GPA': GPA,
-            ...(Ranking !== undefined && { 'Ranking': Ranking }),
+            'Ranking': Ranking,
             ...((GRE.Total !== 260 || GRE.V !== 130 || GRE.Q !== 130 || GRE.AW !== 0) && { 'GRE': GRE }),
             'EnglishProficiency': EnglishProficiency,
             ...(Exchange.length !== 0 && { 'Exchange': Exchange }),
@@ -164,9 +149,7 @@ export default function AddModifyApplicant({type}) {
             'ApplicationYear': applicantContent.ApplicationYear,
             'Major': applicantContent.Major,
             'GPA': applicantContent.GPA,
-            ...(applicantContent.Ranking && {
-                'Ranking': applicantContent.Ranking
-            }),
+            'Ranking': applicantContent.Ranking,
             'V': applicantContent.GRE?.V,
             'Q': applicantContent.GRE?.Q,
             'AW': applicantContent.GRE?.AW,

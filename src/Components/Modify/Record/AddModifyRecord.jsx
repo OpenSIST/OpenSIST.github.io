@@ -180,7 +180,6 @@ export default function AddModifyRecord({type}) {
                                             label="提交申请时间"
                                             name='Submit'
                                             format='YYYY-MM-DD'
-                                            sx={{width: '100%'}}
                                             slotProps={{ textField: { size: 'small', required: true, fullWidth: true } }}
                                             defaultValue={record ? record.TimeLine.Submit : null}
                                         />

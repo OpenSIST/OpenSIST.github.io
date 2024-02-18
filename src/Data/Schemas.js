@@ -56,7 +56,8 @@ export const univOptions = sortedUnivList.map((univ) => {
 export const genderMapping = {
     'Male': '男',
     'Female': '女',
-    'Others': 'LGBTQ+'
+    'Others': '非二元性别',
+    'PNTS': '不愿透露'
 }
 
 export const genderOptions = dict2Options(genderMapping);
@@ -70,7 +71,7 @@ export const currentDegreeOptions = dict2Options(currentDegreeMapping);
 export const applicationYearOptions = Array.from({length: 10}, (_, i) => {
     const year = 2016 + i;
     return {value: year, label: `${year}`};
-});
+}).reverse();
 
 export const rankPercentOptions = [
     {value: '1', label: 'Top 1%'},

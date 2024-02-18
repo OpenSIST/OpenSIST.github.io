@@ -99,7 +99,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         key={index}
                     >
                         <Grid2 xs={11/3}>
-                            <FormControl fullWidth>
+                            <FormControl fullWidth required>
                                 <InputLabel size="small">交换学校</InputLabel>
                                 <Select
                                     name="University"
@@ -118,7 +118,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             </FormControl>
                         </Grid2>
                         <Grid2 xs={11/3}>
-                            <FormControl fullWidth>
+                            <FormControl fullWidth required>
                                 <InputLabel size="small">交换时长</InputLabel>
                                 <Select
                                     name="Duration"
@@ -200,7 +200,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={12} md={4}>
+                    <Grid2 xs={4}>
                         <TextField
                             fullWidth
                             name="DomesticResearchNum"
@@ -214,7 +214,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={12} md={8}>
+                    <Grid2 xs={8}>
                         <TextField
                             fullWidth
                             name="DomesticResearchDetail"
@@ -227,7 +227,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={12} md={4}>
+                    <Grid2 xs={4}>
                         <TextField
                             fullWidth
                             name="InternationalResearchNum"
@@ -241,7 +241,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={12} md={8}>
+                    <Grid2 xs={8}>
                         <TextField
                             fullWidth
                             name="InternationalResearchDetail"
@@ -269,7 +269,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    <Grid2 xs={12} md={4}>
+                    <Grid2 xs={4}>
                         <TextField
                             fullWidth
                             name="DomesticInternNum"
@@ -283,7 +283,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={12} md={8}>
+                    <Grid2 xs={8}>
                         <TextField
                             fullWidth
                             name="DomesticInternDetail"
@@ -296,7 +296,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={12} md={4}>
+                    <Grid2 xs={4}>
                         <TextField
                             fullWidth
                             name="InternationalInternNum"
@@ -310,7 +310,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={12} md={8}>
+                    <Grid2 xs={8}>
                         <TextField
                             fullWidth
                             name="InternationalInternDetail"
@@ -341,8 +341,8 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         key={index}
                     >
                         <Grid2 container spacing={2} xs={11}>
-                            <Grid2 xs={12} md={3}>
-                                <FormControl fullWidth>
+                            <Grid2 xs={6}>
+                                <FormControl fullWidth required>
                                     <InputLabel size="small">发表在</InputLabel>
                                     <Select
                                         name="Type"
@@ -360,18 +360,19 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     </Select>
                                 </FormControl>
                             </Grid2>
-                            <Grid2 xs={12} md={3}>
+                            <Grid2 xs={6}>
                                 <TextField
                                     fullWidth
                                     name="Name"
-                                    label="期刊/会议名称（简写）"
+                                    label="期刊/会议名称简写"
                                     value={publication.Name}
                                     onChange={(event) => handlePublicationChange(index, event)}
                                     size="small"
+                                    required
                                 />
                             </Grid2>
-                            <Grid2 xs={12} md={3}>
-                                <FormControl fullWidth>
+                            <Grid2 xs={6}>
+                                <FormControl fullWidth required>
                                     <InputLabel size="small">作者顺次</InputLabel>
                                     <Select
                                         name="AuthorOrder"
@@ -389,8 +390,8 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     </Select>
                                 </FormControl>
                             </Grid2>
-                            <Grid2 xs={12} md={3}>
-                                <FormControl fullWidth>
+                            <Grid2 xs={6}>
+                                <FormControl fullWidth required>
                                     <InputLabel size="small">录用状态</InputLabel>
                                     <Select
                                         name="Status"
@@ -463,7 +464,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         key={index}
                     >
                         <Grid2 xs={4}>
-                            <FormControl fullWidth>
+                            <FormControl fullWidth required>
                                 <InputLabel size="small">推荐信类型</InputLabel>
                                 <Select
                                     multiple

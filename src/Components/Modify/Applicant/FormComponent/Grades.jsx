@@ -8,6 +8,16 @@ import {HelpOutline} from "@mui/icons-material";
 
 function Grades({formValues, handleBack, handleNext, handleChange}) {
     const [englishOption, setEnglishOption] = useState('');
+    const [isGRETotalRequired, setIsGRETotalRequired] = useState(false);
+    const [isGREVRequired, setIsGREVRequired] = useState(false);
+    const [isGREQRequired, setIsGREQRequired] = useState(false);
+    const [isGREAWRequired, setIsGREAWRequired] = useState(false);
+    const setGREStatus = (value) => {
+        setIsGRETotalRequired(value);
+        setIsGREVRequired(value);
+        setIsGREQRequired(value);
+        setIsGREAWRequired(value);
+    }
     const disableNumberUpDown = {
         "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
             display: "none",
@@ -17,7 +27,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
         },
     };
     const isError = () => {
-        return !formValues.GPA;
+        return !formValues.GPA || !formValues.Ranking || !formValues.EnglishOption || !formValues.EnglishTotal || !formValues.R || !formValues.L || !formValues.S || !formValues.W || (isGRETotalRequired && !formValues.GRETotal) || (isGREVRequired && !formValues.V) || (isGREQRequired && !formValues.Q) || (isGREAWRequired && !formValues.AW);
     }
 
     return (
@@ -66,6 +76,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     name="Ranking"
                                     label="学院或专业排名"
                                     variant="outlined"
+                                    required
                                 />
                             }
                             options={rankPercentOptions}
@@ -102,9 +113,17 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.GRETotal ?? ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event);
+                                if (event.target.value) {
+                                    setGREStatus(true);
+                                } else {
+                                    setGREStatus(false);
+                                }
+                            }}
                             type="number"
                             sx={disableNumberUpDown}
+                            required={isGRETotalRequired}
                         />
                     </Grid2>
                     <Grid2 xs={4}>
@@ -115,9 +134,17 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.V ?? ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event)
+                                if (event.target.value) {
+                                    setGREStatus(true);
+                                } else {
+                                    setGREStatus(false);
+                                }
+                            }}
                             type="number"
                             sx={disableNumberUpDown}
+                            required={isGREVRequired}
                         />
                     </Grid2>
                     <Grid2 xs={4}>
@@ -128,9 +155,17 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.Q ?? ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event);
+                                if (event.target.value) {
+                                    setGREStatus(true);
+                                } else {
+                                    setGREStatus(false);
+                                }
+                            }}
                             type="number"
                             sx={disableNumberUpDown}
+                            required={isGREQRequired}
                         />
                     </Grid2>
                     <Grid2 xs={4}>
@@ -141,9 +176,17 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             variant="outlined"
                             size="small"
                             value={formValues.AW || ""}
-                            onChange={(event) => {handleChange(event)}}
+                            onChange={(event) => {
+                                handleChange(event);
+                                if (event.target.value) {
+                                    setGREStatus(true);
+                                } else {
+                                    setGREStatus(false);
+                                }
+                            }}
                             type="number"
                             sx={disableNumberUpDown}
+                            required={isGREAWRequired}
                         />
                     </Grid2>
                 </Grid2>
@@ -175,6 +218,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     name="EnglishOption"
                                     label="选择考试"
                                     variant="outlined"
+                                    required
                                 />
                             }
                             value={formValues.EnglishOption ? englishOptions.find((option) => {
@@ -199,6 +243,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     value={formValues.EnglishTotal || ""}
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
+                                    required
                                     sx={disableNumberUpDown}
                                 />
                             </Grid2>
@@ -212,6 +257,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     value={formValues.R || ""}
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
+                                    required
                                     inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
                                 />
                             </Grid2>
@@ -225,6 +271,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     value={formValues.L || ""}
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
+                                    required
                                     inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
                                 />
                             </Grid2>
@@ -238,6 +285,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     value={formValues.S || ""}
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
+                                    required
                                     inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
                                 />
                             </Grid2>
@@ -251,6 +299,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     value={formValues.W || ""}
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
+                                    required
                                     inputProps={{ step: englishOption === "IELTS" ? ".5" : "1" }}
                                 />
                             </Grid2>
