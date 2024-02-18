@@ -6,7 +6,7 @@ import {
     Card,
     CardActionArea, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
     Divider, IconButton,
-    InputLabel, List, ListItem, ListItemIcon, ListItemText,
+    InputLabel, List, ListItem, ListItemIcon, ListItemText, ListSubheader,
     OutlinedInput, Paper, Slider, styled,
     Tooltip,
     Typography, useTheme
@@ -32,6 +32,9 @@ import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import SchoolIcon from '@mui/icons-material/School';
+import WorkIcon from '@mui/icons-material/Work';
+import BiotechIcon from '@mui/icons-material/Biotech';
+import {useMediaQuery} from '@mui/material';
 
 
 const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
@@ -61,12 +64,15 @@ export async function action({params}) {
 
 export function ProfileApplicantPage() {
     const {applicantId, applicant, records} = useLoaderData();
+    const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
     return (
-        <Grid2 key={applicant.ApplicantID} container xs={12}
-            // sx={{display: 'flex', justifyContent: 'center'}}
-        >
+        <Grid2 key={applicant.ApplicantID} container xs={12} sx={{gap: '1rem'}}>
             <BasicInfoBlock applicant={applicant}/>
-            <ExchangeBlock Exchanges={applicant?.Exchange}/>
+            <Grid2 container xs={12} sx={{gap: "1rem", flexWrap: matches ? 'nowrap' : "wrap"}}>
+                <ExchangeBlock Exchanges={applicant?.Exchange}/>
+                <ResearchBlock Researches={applicant?.Research}/>
+                <InternshipBlock Internships={applicant?.Internship}/>
+            </Grid2>
         </Grid2>
     )
 }
@@ -147,7 +153,7 @@ function BasicInfoBlock({applicant}) {
         })
     }
     return (
-        <Grid2 component={Paper} className="BasicInfoBlock" container xs={12} sx={{mb: '1rem'}}>
+        <Grid2 component={Paper} className="BasicInfoBlock" container xs={12}>
             <Grid2 container xs={12} md={4}>
                 <ContentCenteredGrid>
                     <Badge
@@ -291,25 +297,14 @@ function ExchangeBlock({Exchanges}) {
                 {Exchanges.map((exchange, index) => {
                     return (
                         <Fragment key={index}>
-                            <ListItem alignItems="flex-start">
-                                <ListItemIcon>
-                                    <SchoolIcon/>
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary={
-                                        <Typography variant='h5'
-                                                    sx={{fontWeight: 'bold'}}>{exchangeUnivFullNameMapping[exchange.University]}
-                                        </Typography>
-                                    }
-                                    secondary={
-                                        <Box component='span' sx={{display: 'flex', flexDirection: 'column'}}>
-                                            <Typography component='span'>交换时长：{exchangeDurationMapping[exchange.Duration] ?? "暂无"}</Typography>
-                                            <Typography component='span'>具体描述：{exchange.Detail === '' ? '暂无': exchange.Detail}</Typography>
-                                        </Box>
-                                    }
-                                />
-                            </ListItem>
-                            {index !== Exchanges.length - 1 ? <Divider/> :  null}
+                            <ExperienceListItem
+                                experience={exchange}
+                                Icon={SchoolIcon}
+                                primary={exchangeUnivFullNameMapping[exchange.University] ?? "暂无"}
+                                secondary={`交换时长：${exchangeDurationMapping[exchange.Duration] ?? "暂无"}`}
+                                detail={`具体描述：${exchange.Detail === '' ? '暂无' : exchange.Detail}`}
+                            />
+                            {index !== Exchanges.length - 1 ? <Divider/> : null}
                         </Fragment>
                     )
                 })}
@@ -319,11 +314,64 @@ function ExchangeBlock({Exchanges}) {
 }
 
 function ResearchBlock({Researches}) {
-
+    return (
+        <Grid2 component={Paper} className="ResearchBlock" container xs={12} md={4}>
+            <ContentCenteredGrid
+                xs={12}
+                sx={{flexDirection: 'column', alignItems: 'flex-start'}}
+            >
+                <Typography variant='h6' sx={{fontWeight: 'bold'}}>科研经历</Typography>
+                <Typography variant="subtitle1">{Researches.Focus}</Typography>
+            </ContentCenteredGrid>
+            <List sx={{width: '100%'}}>
+                <ExperienceListItem
+                    experience={Researches.Domestic}
+                    Icon={BiotechIcon}
+                    primary="国内研究经历"
+                    secondary={`数量：${Researches.Domestic.Num}`}
+                    detail={`具体描述：${Researches.Domestic.Detail === '' ? '暂无' : Researches.Domestic.Detail}`}
+                />
+                <Divider/>
+                <ExperienceListItem
+                    experience={Researches.International}
+                    Icon={BiotechIcon}
+                    primary="国外研究经历"
+                    secondary={`数量：${Researches.International.Num}`}
+                    detail={`具体描述：${Researches.International.Detail === '' ? '暂无' : Researches.International.Detail}`}
+                />
+            </List>
+        </Grid2>
+    )
 }
 
 function InternshipBlock({Internships}) {
-
+    return (
+        <Grid2 component={Paper} className="InternshipBlock" container xs={12} md={4}>
+            <ContentCenteredGrid
+                xs={12}
+                sx={{flexDirection: 'column', alignItems: 'flex-start'}}
+            >
+                <Typography variant='h6' sx={{fontWeight: 'bold'}}>实习经历</Typography>
+            </ContentCenteredGrid>
+            <List sx={{width: '100%'}}>
+                <ExperienceListItem
+                    experience={Internships.Domestic}
+                    Icon={WorkIcon}
+                    primary="国内实习经历"
+                    secondary={`数量：${Internships.Domestic.Num}`}
+                    detail={`具体描述：${Internships.Domestic.Detail === '' ? '暂无' : Internships.Domestic.Detail}`}
+                />
+                <Divider/>
+                <ExperienceListItem
+                    experience={Internships.International}
+                    Icon={WorkIcon}
+                    primary="国外实习经历"
+                    secondary={`数量：${Internships.International.Num}`}
+                    detail={`具体描述：${Internships.International.Detail === '' ? '暂无' : Internships.International.Detail}`}
+                />
+            </List>
+        </Grid2>
+    )
 }
 
 function PublicationBlock({Publications}) {
@@ -336,6 +384,33 @@ function RecommendationBlock({Recommendations}) {
 
 function CompetitionBlock({Competitions}) {
 
+}
+
+function ExperienceListItem({experience, Icon, primary, secondary, detail}) {
+    return (
+        <ListItem alignItems="flex-start">
+            <ListItemIcon>
+                <Icon/>
+            </ListItemIcon>
+            <ListItemText
+                primary={
+                    <Typography variant='h5' sx={{fontWeight: 'bold'}}>
+                        {primary}
+                    </Typography>
+                }
+                secondary={
+                    <Box component='span' sx={{display: 'flex', flexDirection: 'column'}}>
+                        <Typography component='span'>
+                            {secondary}
+                        </Typography>
+                        <Typography component='span'>
+                            {detail}
+                        </Typography>
+                    </Box>
+                }
+            />
+        </ListItem>
+    )
 }
 
 const libn = {
