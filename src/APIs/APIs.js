@@ -25,3 +25,4 @@ export const GET_APPLICANT_BY_APPLICANT_ID = ROOT + "api/query/applicant_info";
 export const GET_RECORD_BY_APPLICANT = ROOT + "api/query/by_applicant";
 export const GET_RECORD_BY_RECORD_IDs = ROOT + "api/query/by_record";
 export const ADD_MODIFY_RECORD = ROOT + "api/mutating/new_modify_record";
+export const UPLOAD_AVATAR = ROOT + "api/user/upload_avatar";

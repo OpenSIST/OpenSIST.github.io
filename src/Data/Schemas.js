@@ -1,5 +1,4 @@
 import univList from "./UnivList.json";
-import {amber, blue, green, grey, indigo, lime, pink, purple, red, teal} from "@mui/material/colors";
 
 export const DescriptionTemplate = `## 项目介绍
 

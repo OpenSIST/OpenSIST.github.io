@@ -359,9 +359,8 @@ function ResearchBlock({Researches}) {
                 <ExperienceListItem
                     experience={Researches.Domestic}
                     Icon={<BiotechIcon/>}
-                    primary="国内研究经历"
+                    primary={`国内${Researches.Domestic.Num}段研究经历`}
                     secondary={{
-                        "数量": Researches.Domestic.Num,
                         "具体描述": Researches.Domestic.Detail === '' ? '暂无' : Researches.Domestic.Detail
                     }}
                 />
@@ -369,9 +368,8 @@ function ResearchBlock({Researches}) {
                 <ExperienceListItem
                     experience={Researches.International}
                     Icon={<BiotechIcon/>}
-                    primary="国外研究经历"
+                    primary={`国外${Researches.International.Num}段研究经历`}
                     secondary={{
-                        "数量": Researches.International.Num,
                         "具体描述": Researches.International.Detail === '' ? '暂无' : Researches.International.Detail
                     }}
                 />
@@ -393,9 +391,8 @@ function InternshipBlock({Internships}) {
                 <ExperienceListItem
                     experience={Internships.Domestic}
                     Icon={<WorkIcon/>}
-                    primary="国内实习经历"
+                    primary={`国内${Internships.Domestic.Num}段实习经历`}
                     secondary={{
-                        "数量": Internships.Domestic.Num,
                         "具体描述": Internships.Domestic.Detail === '' ? '暂无' : Internships.Domestic.Detail
                     }}
                 />
@@ -403,9 +400,8 @@ function InternshipBlock({Internships}) {
                 <ExperienceListItem
                     experience={Internships.International}
                     Icon={<WorkIcon/>}
-                    primary="国外实习经历"
+                    primary={`国外${Internships.International.Num}段实习经历`}
                     secondary={{
-                        "数量": Internships.International.Num,
                         "具体描述": Internships.International.Detail === '' ? '暂无' : Internships.International.Detail
                     }}
                 />
@@ -538,12 +534,13 @@ function RecordBlock({Records, editable}) {
                         <Fragment key={index}>
                             <ExperienceListItem
                                 experience={record}
-                                Icon={<LensIcon color={RecordStatusPaltette[record.Status]}/>}
+                                Icon={<Chip label={record.Status} color={RecordStatusPaltette[record.Status]}/>}
                                 primary={record.ProgramID}
                                 secondary={{
-                                    "申请年份": record.ProgramYear,
-                                    "申请学期": record.Semester,
-                                    "申请状态": record.Status,
+                                    "申请季": record.ProgramYear+record.Semester,
+                                    "提交时间": record.TimeLine?.Submit?.split('T')[0] ?? "暂无",
+                                    "面试时间": record.TimeLine?.Interview?.split('T')[0] ?? '暂无',
+                                    "通知时间": record.TimeLine?.Decision?.split('T')[0] ?? '暂无',
                                     "具体描述": record.Detail === '' ? '暂无' : record.Detail
                                 }}
                             />

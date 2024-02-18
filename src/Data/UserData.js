@@ -5,22 +5,10 @@ import {
     LOGOUT,
     IS_LOGIN,
     REGISTER,
-    RESET_PASSWORD
+    RESET_PASSWORD, UPLOAD_AVATAR
 } from "../APIs/APIs";
 import {headerGenerator} from "./Common";
 import {useState} from "react";
-
-export async function checkLogin() {
-    const session = await localforage.getItem('session');
-    const expireAt = await localforage.getItem('expireAt');
-    const now = Date.now() / 1000;
-    const response = await fetch(IS_LOGIN, {
-        method: 'POST',
-        credentials: 'include',
-        headers: await headerGenerator(true),
-    });
-    return session && now < expireAt && response.status === 200;
-}
 
 export async function login(email, password) {
     const username = email.split('@')[0];
@@ -93,4 +81,18 @@ export function useUser() {
         setUser(value)
     })
     return user
+}
+
+export async function uploadAvatar(avatar) {
+    const response = await fetch(UPLOAD_AVATAR, {
+        method: 'POST',
+        mode: "cors",
+        credentials: "include",
+        headers: headerGenerator(true),
+        body: avatar
+    })
+    if (response.status !== 200) {
+        const content = await response.json();
+        alert(`${content.error}, Error code: ${response.status}`);
+    }
 }
