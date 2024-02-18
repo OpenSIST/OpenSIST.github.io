@@ -13,7 +13,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 export async function loader({params}) {
     const programs = await getPrograms(true);
-    const recordID = params?.id;
+    const recordID = params?.recordId;
     const record = recordID ? await getRecordByRecordIDs([recordID]) : null;
     return {programs, record};
 }

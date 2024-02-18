@@ -18,7 +18,8 @@
 .InternshipBlock,
 .PublicationBlock,
 .RecommendationBlock,
-.CompetitionBlock {
+.CompetitionBlock,
+.RecordBlock {
     width: 100%;
     padding: 1rem 2rem;
 }

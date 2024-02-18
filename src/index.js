@@ -154,7 +154,7 @@ function OpenSIST() {
                                     element: <ProfileIndex/>
                                 }, {
                                     path: '/profile/:applicantId',
-                                    element: <ProfileApplicantPage/>,
+                                    element: <ProfileApplicantPage editable={true}/>,
                                     loader: ProfileApplicantLoader,
                                     action: ProfileApplicantAction,
                                 }, {

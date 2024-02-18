@@ -30,7 +30,7 @@ import {
     PublicationTypeChipColor,
     publicationTypeMapping,
     rankPercentOptions,
-    rankPercentSliderValueMapping, recommendationTypeMapping,
+    rankPercentSliderValueMapping, recommendationTypeMapping, RecordStatusPaltette,
     SliderValueRankStringMapping
 } from "../../../Data/Schemas";
 import {Fragment, useEffect, useState} from "react";
@@ -46,6 +46,8 @@ import {useMediaQuery} from '@mui/material';
 import ArticleIcon from '@mui/icons-material/Article';
 import EmailIcon from '@mui/icons-material/Email';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
+import LensIcon from '@mui/icons-material/Lens';
+
 const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
     display: 'flex',
     // justifyContent: 'center',
@@ -71,12 +73,12 @@ export async function action({params}) {
     return redirect('/profile');
 }
 
-export function ProfileApplicantPage() {
+export function ProfileApplicantPage({editable = false}) {
     const {applicantId, applicant, records} = useLoaderData();
     const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
     return (
         <Grid2 key={applicant.ApplicantID} container xs={12} sx={{gap: '1rem'}}>
-            <BasicInfoBlock applicant={applicant}/>
+            <BasicInfoBlock applicant={applicant} editable={editable}/>
             <Grid2 container xs={12} sx={{gap: "1rem", flexWrap: matches ? 'nowrap' : "wrap"}}>
                 <ExchangeBlock Exchanges={applicant?.Exchange}/>
                 <ResearchBlock Researches={applicant?.Research}/>
@@ -87,6 +89,7 @@ export function ProfileApplicantPage() {
                 <RecommendationBlock Recommendations={applicant?.Recommendation}/>
                 <CompetitionBlock Competitions={applicant?.Competition}/>
             </Grid2>
+            <RecordBlock Records={records} editable={editable}/>
         </Grid2>
     )
 }
@@ -141,7 +144,7 @@ function EditDeleteButtonGroup({applicantId}) {
 
 }
 
-function BasicInfoBlock({applicant}) {
+function BasicInfoBlock({applicant, editable}) {
     const [isAuth, setIsAuth] = useState(false);
     useEffect(() => {
         isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
@@ -196,7 +199,7 @@ function BasicInfoBlock({applicant}) {
                         <Typography variant="subtitle1">
                             {`${applicant.Major} ${currentDegreeMapping[applicant.CurrentDegree]}`}
                         </Typography>
-                        {isAuth ?
+                        {editable && isAuth ?
                             <EditDeleteButtonGroup applicantId={applicant.ApplicantID}/> : null}
                     </ContentCenteredGrid>
                 </Grid2>
@@ -313,7 +316,7 @@ function ExchangeBlock({Exchanges}) {
                         <Fragment key={index}>
                             <ExperienceListItem
                                 experience={exchange}
-                                Icon={SchoolIcon}
+                                Icon={<SchoolIcon/>}
                                 primary={exchangeUnivFullNameMapping[exchange.University] ?? "暂无"}
                                 secondary={{
                                     "交换时长": exchangeDurationMapping[exchange.Duration] ?? "暂无",
@@ -342,7 +345,7 @@ function ResearchBlock({Researches}) {
             <List sx={{width: '100%'}}>
                 <ExperienceListItem
                     experience={Researches.Domestic}
-                    Icon={BiotechIcon}
+                    Icon={<BiotechIcon/>}
                     primary="国内研究经历"
                     secondary={{
                         "数量": Researches.Domestic.Num,
@@ -352,7 +355,7 @@ function ResearchBlock({Researches}) {
                 <Divider/>
                 <ExperienceListItem
                     experience={Researches.International}
-                    Icon={BiotechIcon}
+                    Icon={<BiotechIcon/>}
                     primary="国外研究经历"
                     secondary={{
                         "数量": Researches.International.Num,
@@ -376,7 +379,7 @@ function InternshipBlock({Internships}) {
             <List sx={{width: '100%'}}>
                 <ExperienceListItem
                     experience={Internships.Domestic}
-                    Icon={WorkIcon}
+                    Icon={<WorkIcon/>}
                     primary="国内实习经历"
                     secondary={{
                         "数量": Internships.Domestic.Num,
@@ -386,7 +389,7 @@ function InternshipBlock({Internships}) {
                 <Divider/>
                 <ExperienceListItem
                     experience={Internships.International}
-                    Icon={WorkIcon}
+                    Icon={<WorkIcon/>}
                     primary="国外实习经历"
                     secondary={{
                         "数量": Internships.International.Num,
@@ -425,7 +428,7 @@ function PublicationBlock({Publications}) {
                         <Fragment key={index}>
                             <ExperienceListItem
                                 experience={publication}
-                                Icon={ArticleIcon}
+                                Icon={<ArticleIcon/>}
                                 primary={`${publication.Name} ${publicationTypeMapping[publication.Type] ?? ""}`}
                                 secondary={{
                                     "作者顺序": authorOrderMapping[publication.AuthorOrder] ?? "暂无",
@@ -467,7 +470,7 @@ function RecommendationBlock({Recommendations}) {
                         <Fragment key={index}>
                             <ExperienceListItem
                                 experience={recommendation}
-                                Icon={EmailIcon}
+                                Icon={<EmailIcon/>}
                                 primary={primary}
                                 secondary={{
                                     "具体描述": recommendation.Detail === '' ? '暂无' : recommendation.Detail
@@ -494,26 +497,59 @@ function CompetitionBlock({Competitions}) {
             >
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>竞赛</Typography>
             </ContentCenteredGrid>
-                <List sx={{width: '100%'}}>
+            <List sx={{width: '100%'}}>
 
-                    <ExperienceListItem
-                        experience={Competitions}
-                        Icon={ShutterSpeedIcon}
-                        primary="竞赛经历"
-                        secondary={{
-                            "具体描述": Competitions === '' ? '暂无' : Competitions
-                        }}
-                    />
-                </List>
+                <ExperienceListItem
+                    experience={Competitions}
+                    Icon={<ShutterSpeedIcon/>}
+                    primary="竞赛经历"
+                    secondary={{
+                        "具体描述": Competitions === '' ? '暂无' : Competitions
+                    }}
+                />
+            </List>
         </Grid2>
     )
 }
 
-function ExperienceListItem({experience, Icon, primary, secondary, detail}) {
+function RecordBlock({Records, editable}) {
+    return (
+        <Grid2 component={Paper} className="RecordBlock" container xs={12}>
+            <ContentCenteredGrid
+                xs={12}
+                sx={{flexDirection: 'column', alignItems: 'flex-start'}}
+            >
+                <Typography variant='h6' sx={{fontWeight: 'bold'}}>申请记录</Typography>
+            </ContentCenteredGrid>
+            <List sx={{width: '100%'}}>
+                {Records.map((record, index) => {
+                    return (
+                        <Fragment key={index}>
+                            <ExperienceListItem
+                                experience={record}
+                                Icon={<LensIcon color={RecordStatusPaltette[record.Status]}/>}
+                                primary={record.ProgramID}
+                                secondary={{
+                                    "申请年份": record.ProgramYear,
+                                    "申请学期": record.Semester,
+                                    "申请状态": record.Status,
+                                    "具体描述": record.Detail === '' ? '暂无' : record.Detail
+                                }}
+                            />
+                            {index !== Records.length - 1 ? <Divider/> : null}
+                        </Fragment>
+                    )
+                })}
+            </List>
+        </Grid2>
+    )
+}
+
+function ExperienceListItem({Icon, primary, secondary}) {
     return (
         <ListItem alignItems="flex-start">
             <ListItemIcon>
-                <Icon/>
+                {Icon}
             </ListItemIcon>
             <ListItemText
                 primary={
@@ -537,105 +573,33 @@ function ExperienceListItem({experience, Icon, primary, secondary, detail}) {
     )
 }
 
-const libn = {
-    "ApplicantID": "libn@2016",
-    "Gender": "Male",
-    "CurrentDegree": "Master",
-    "ApplicationYear": 2016,
-    "Major": "EE",
-    "GPA": 3.91,
-    "Ranking": "1",
-    "GRE": {
-        "Total": 340,
-        "V": 170,
-        "Q": 170,
-        "AW": 5
+const RecordsExample = [
+    {
+        "RecordID": "libn@2021|CS75@UCSD",
+        "ApplicantID": "libn@2021",
+        "ProgramID": "CS75@UCSD",
+        "ProgramYear": 2024,
+        "Semester": "Fall",
+        "Status": "Admit",
+        "TimeLine": {
+            "Submit": "2023-12-16T00:00:00.000Z",
+            "Interview": null,
+            "Decision": "2024-02-16T00:00:00.000Z"
+        },
+        "Detail": ""
     },
-    "EnglishProficiency": {},
-    "Exchange": [
-        {
-            "University": "UCB",
-            "Duration": "Semester",
-            "Detail": ""
+    {
+        "RecordID": "libn@2021|CS General@NEU",
+        "ApplicantID": "libn@2021",
+        "ProgramID": "CS General@NEU",
+        "ProgramYear": 2024,
+        "Semester": "Fall",
+        "Status": "Admit",
+        "TimeLine": {
+            "Submit": "2023-12-06T00:00:00.000Z",
+            "Interview": null,
+            "Decision": "2024-01-12T00:00:00.000Z"
         },
-        {
-            "University": "MIT",
-            "Duration": "Year",
-            "Detail": ""
-        }
-    ],
-    "Publication": [
-        {
-            "Type": "Journal",
-            "Name": "CVPR",
-            "AuthorOrder": "First",
-            "Status": "Accepted",
-            "Detail": "This is a test paragraph This is a test paragraph "
-        },
-        {
-            "Type": "Conference",
-            "Name": "IJCV",
-            "AuthorOrder": "Co-first",
-            "Status": "Accepted",
-            "Detail": "This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph "
-        }
-    ],
-    "Research": {
-        "Focus": "Computer Vision and Computer Graphis",
-        "Domestic": {
-            "Num": 2,
-            "Detail": "This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph "
-        },
-        "International": {
-            "Num": 1,
-            "Detail": "This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph "
-        }
-    },
-    "Internship": {
-        "Domestic": {
-            "Num": 2,
-            "Detail": "This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph "
-        },
-        "International": {
-            "Num": 3,
-            "Detail": "This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph "
-        }
-    },
-    "Recommendation": [
-        {
-            "Type": [
-                "Research",
-                "TA"
-            ],
-            "Detail": "This is a test paragraph "
-        },
-        {
-            "Type": [
-                "Course",
-                "TA"
-            ],
-            "Detail": "This is a This is a test paragraph paragraph "
-        },
-        {
-            "Type": [
-                "Course"
-            ],
-            "Detail": "This is a test paragraph "
-        },
-        {
-            "Type": [
-                "Course"
-            ],
-            "Detail": ""
-        },
-        {
-            "Type": [
-                "Course"
-            ],
-            "Detail": ""
-        }
-    ],
-    "Competition": "This is a test paragraph  This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph ",
-    "Programs": {}
-}
-
+        "Detail": "Vancouver 校区"
+    }
+]
