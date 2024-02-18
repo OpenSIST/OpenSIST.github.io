@@ -18,12 +18,20 @@ import {getApplicant, getApplicantIDByUserID, isAuthApplicant, removeApplicant} 
 import Grid2 from "@mui/material/Unstable_Grid2";
 import HelpIcon from '@mui/icons-material/Help';
 import {
+    authorOrderMapping,
     currentDegreeMapping,
     currentDegreeOptions,
-    EnglishExamMapping, exchangeDurationMapping, exchangeUnivFullNameMapping, genderOptions,
+    EnglishExamMapping,
+    exchangeDurationMapping,
+    exchangeUnivFullNameMapping,
+    genderOptions,
     PublicationAuthorOrderChipColor,
-    PublicationStateChipColor,
-    PublicationTypeChipColor, rankPercentOptions, rankPercentSliderValueMapping, SliderValueRankStringMapping
+    PublicationStateChipColor, publicationStatusMapping,
+    PublicationTypeChipColor,
+    publicationTypeMapping,
+    rankPercentOptions,
+    rankPercentSliderValueMapping, recommendationTypeMapping,
+    SliderValueRankStringMapping
 } from "../../../Data/Schemas";
 import {Fragment, useEffect, useState} from "react";
 import localforage from "localforage";
@@ -35,8 +43,9 @@ import SchoolIcon from '@mui/icons-material/School';
 import WorkIcon from '@mui/icons-material/Work';
 import BiotechIcon from '@mui/icons-material/Biotech';
 import {useMediaQuery} from '@mui/material';
-
-
+import ArticleIcon from '@mui/icons-material/Article';
+import EmailIcon from '@mui/icons-material/Email';
+import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
 const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
     display: 'flex',
     // justifyContent: 'center',
@@ -72,6 +81,11 @@ export function ProfileApplicantPage() {
                 <ExchangeBlock Exchanges={applicant?.Exchange}/>
                 <ResearchBlock Researches={applicant?.Research}/>
                 <InternshipBlock Internships={applicant?.Internship}/>
+            </Grid2>
+            <Grid2 container xs={12} sx={{gap: "1rem", flexWrap: matches ? 'nowrap' : "wrap"}}>
+                <PublicationBlock Publications={applicant?.Publication}/>
+                <RecommendationBlock Recommendations={applicant?.Recommendation}/>
+                <CompetitionBlock Competitions={applicant?.Competition}/>
             </Grid2>
         </Grid2>
     )
@@ -301,8 +315,10 @@ function ExchangeBlock({Exchanges}) {
                                 experience={exchange}
                                 Icon={SchoolIcon}
                                 primary={exchangeUnivFullNameMapping[exchange.University] ?? "暂无"}
-                                secondary={`交换时长：${exchangeDurationMapping[exchange.Duration] ?? "暂无"}`}
-                                detail={`具体描述：${exchange.Detail === '' ? '暂无' : exchange.Detail}`}
+                                secondary={{
+                                    "交换时长": exchangeDurationMapping[exchange.Duration] ?? "暂无",
+                                    "具体描述": exchange.Detail === '' ? '暂无' : exchange.Detail
+                                }}
                             />
                             {index !== Exchanges.length - 1 ? <Divider/> : null}
                         </Fragment>
@@ -328,16 +344,20 @@ function ResearchBlock({Researches}) {
                     experience={Researches.Domestic}
                     Icon={BiotechIcon}
                     primary="国内研究经历"
-                    secondary={`数量：${Researches.Domestic.Num}`}
-                    detail={`具体描述：${Researches.Domestic.Detail === '' ? '暂无' : Researches.Domestic.Detail}`}
+                    secondary={{
+                        "数量": Researches.Domestic.Num,
+                        "具体描述": Researches.Domestic.Detail === '' ? '暂无' : Researches.Domestic.Detail
+                    }}
                 />
                 <Divider/>
                 <ExperienceListItem
                     experience={Researches.International}
                     Icon={BiotechIcon}
                     primary="国外研究经历"
-                    secondary={`数量：${Researches.International.Num}`}
-                    detail={`具体描述：${Researches.International.Detail === '' ? '暂无' : Researches.International.Detail}`}
+                    secondary={{
+                        "数量": Researches.International.Num,
+                        "具体描述": Researches.International.Detail === '' ? '暂无' : Researches.International.Detail
+                    }}
                 />
             </List>
         </Grid2>
@@ -358,16 +378,20 @@ function InternshipBlock({Internships}) {
                     experience={Internships.Domestic}
                     Icon={WorkIcon}
                     primary="国内实习经历"
-                    secondary={`数量：${Internships.Domestic.Num}`}
-                    detail={`具体描述：${Internships.Domestic.Detail === '' ? '暂无' : Internships.Domestic.Detail}`}
+                    secondary={{
+                        "数量": Internships.Domestic.Num,
+                        "具体描述": Internships.Domestic.Detail === '' ? '暂无' : Internships.Domestic.Detail
+                    }}
                 />
                 <Divider/>
                 <ExperienceListItem
                     experience={Internships.International}
                     Icon={WorkIcon}
                     primary="国外实习经历"
-                    secondary={`数量：${Internships.International.Num}`}
-                    detail={`具体描述：${Internships.International.Detail === '' ? '暂无' : Internships.International.Detail}`}
+                    secondary={{
+                        "数量": Internships.International.Num,
+                        "具体描述": Internships.International.Detail === '' ? '暂无' : Internships.International.Detail
+                    }}
                 />
             </List>
         </Grid2>
@@ -375,15 +399,114 @@ function InternshipBlock({Internships}) {
 }
 
 function PublicationBlock({Publications}) {
-
+    // TODO: figure out the default value for an incomplete publication
+    if (!Publications) {
+        Publications = [
+            {
+                "Type": "暂无",
+                "Name": "暂无",
+                "AuthorOrder": "暂无",
+                "Status": "暂无",
+                "Detail": "暂无"
+            }
+        ]
+    }
+    return (
+        <Grid2 component={Paper} className="PublicationBlock" container xs={12} md={4}>
+            <ContentCenteredGrid
+                xs={12}
+                sx={{flexDirection: 'column', alignItems: 'flex-start'}}
+            >
+                <Typography variant='h6' sx={{fontWeight: 'bold'}}>发表论文</Typography>
+            </ContentCenteredGrid>
+            <List sx={{width: '100%'}}>
+                {Publications.map((publication, index) => {
+                    return (
+                        <Fragment key={index}>
+                            <ExperienceListItem
+                                experience={publication}
+                                Icon={ArticleIcon}
+                                primary={`${publication.Name} ${publicationTypeMapping[publication.Type] ?? ""}`}
+                                secondary={{
+                                    "作者顺序": authorOrderMapping[publication.AuthorOrder] ?? "暂无",
+                                    "状态": publicationStatusMapping[publication.Status] ?? "暂无",
+                                    "具体描述": publication.Detail === '' ? '暂无' : publication.Detail
+                                }}
+                            />
+                            {index !== Publications.length - 1 ? <Divider/> : null}
+                        </Fragment>
+                    )
+                })}
+            </List>
+        </Grid2>
+    )
 }
 
 function RecommendationBlock({Recommendations}) {
-
+    if (!Recommendations) {
+        Recommendations = [
+            {
+                "Type": ["暂无"],
+                "Detail": "暂无"
+            }
+        ]
+    }
+    return (
+        <Grid2 component={Paper} className="RecommendationBlock" container xs={12} md={4}>
+            <ContentCenteredGrid
+                xs={12}
+                sx={{flexDirection: 'column', alignItems: 'flex-start'}}
+            >
+                <Typography variant='h6' sx={{fontWeight: 'bold'}}>推荐信</Typography>
+            </ContentCenteredGrid>
+            <List sx={{width: '100%'}}>
+                {Recommendations.map((recommendation, index) => {
+                    let primary = recommendation.Type.map((type) => recommendationTypeMapping[type]).join('+');
+                    primary = primary === '' ? '暂无' : primary;
+                    return (
+                        <Fragment key={index}>
+                            <ExperienceListItem
+                                experience={recommendation}
+                                Icon={EmailIcon}
+                                primary={primary}
+                                secondary={{
+                                    "具体描述": recommendation.Detail === '' ? '暂无' : recommendation.Detail
+                                }}
+                            />
+                            {index !== Recommendations.length - 1 ? <Divider/> : null}
+                        </Fragment>
+                    )
+                })}
+            </List>
+        </Grid2>
+    )
 }
 
 function CompetitionBlock({Competitions}) {
+    if (!Competitions) {
+        Competitions = "暂无";
+    }
+    return (
+        <Grid2 component={Paper} className="CompetitionBlock" container xs={12} md={4}>
+            <ContentCenteredGrid
+                xs={12}
+                sx={{flexDirection: 'column', alignItems: 'flex-start'}}
+            >
+                <Typography variant='h6' sx={{fontWeight: 'bold'}}>竞赛</Typography>
+            </ContentCenteredGrid>
+                <List sx={{width: '100%'}}>
 
+                    <ExperienceListItem
+                        experience={Competitions}
+                        Icon={ShutterSpeedIcon}
+                        primary="竞赛经历"
+                        secondary={{
+                            "具体描述": Competitions === '' ? '暂无' : Competitions
+                        }}
+                    />
+                </List>
+        </Grid2>
+    )
 }
 
 function ExperienceListItem({experience, Icon, primary, secondary, detail}) {
@@ -400,12 +523,13 @@ function ExperienceListItem({experience, Icon, primary, secondary, detail}) {
                 }
                 secondary={
                     <Box component='span' sx={{display: 'flex', flexDirection: 'column'}}>
-                        <Typography component='span'>
-                            {secondary}
-                        </Typography>
-                        <Typography component='span'>
-                            {detail}
-                        </Typography>
+                        {Object.entries(secondary).map(([key, value]) => {
+                            return (
+                                <Typography component='span' key={key}>
+                                    {key}: {value}
+                                </Typography>
+                            )
+                        })}
                     </Box>
                 }
             />

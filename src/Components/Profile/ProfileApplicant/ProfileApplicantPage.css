@@ -15,7 +15,10 @@
 .BasicInfoBlock,
 .ExchangeBlock,
 .ResearchBlock,
-.InternshipBlock {
+.InternshipBlock,
+.PublicationBlock,
+.RecommendationBlock,
+.CompetitionBlock {
     width: 100%;
     padding: 1rem 2rem;
 }
@@ -40,7 +43,10 @@
 
 .ExchangeBlock,
 .ResearchBlock,
-.InternshipBlock {
+.InternshipBlock,
+.PublicationBlock,
+.RecommendationBlock,
+.CompetitionBlock {
     max-height: 400px;
     overflow-y: auto;
 }

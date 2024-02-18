@@ -151,32 +151,38 @@ export const exchangeUnivList = [
     'Padua'
 ]
 
-export const publicationTypeOptions = [
-    {value: 'Journal', label: '期刊'},
-    {value: 'Conference', label: '会议'},
-    {value: 'Workshop', label: 'Workshop'}
-]
+export const publicationTypeMapping = {
+    'Journal': '期刊',
+    'Conference': '会议',
+    'Workshop': 'Workshop'
+}
 
-export const publicationStatusOptions = [
-    {value: 'Accepted', label: '已录用'},
-    {value: 'UnderReview', label: '在投'}
-]
+export const publicationTypeOptions = dict2Options(publicationTypeMapping);
 
-export const authorOrderOptions = [
-    {value: 'First', label: '第一作者'},
-    {value: 'Co-first', label: '共同第一作者'},
-    {value: 'Second', label: '第二作者'},
-    {value: 'Co-second', label: '共同第二作者'},
-    {value: 'Other', label: '其他'}
-]
+export const publicationStatusMapping = {
+    'Accepted': '已录用',
+    'UnderReview': '在投'
+}
+export const publicationStatusOptions = dict2Options(publicationStatusMapping);
 
-export const recommendationTypeOptions = [
-    {value: 'Research', label: '科研推'},
-    {value: 'Course', label: '课程推'},
-    {value: 'TA', label: 'TA推'},
-    {value: 'Internship', label: '实习推'},
-    {value: 'Competition', label: '竞赛推'}
-]
+export const authorOrderMapping = {
+    'First': '第一作者',
+    'Co-first': '共同第一作者',
+    'Second': '第二作者',
+    'Co-second': '共同第二作者',
+    'Other': '其他'
+}
+export const authorOrderOptions = dict2Options(authorOrderMapping);
+
+
+export const recommendationTypeMapping = {
+    'Research': '科研推',
+    'Course': '课程推',
+    'TA': 'TA推',
+    'Internship': '实习推',
+    'Competition': '竞赛推'
+}
+export const recommendationTypeOptions = dict2Options(recommendationTypeMapping);
 
 export const recordStatusList = ['Admit', 'Reject', 'Waitlist', 'Defer']
 export const recordStatusOptions = list2Options(recordStatusList);
