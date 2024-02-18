@@ -320,9 +320,8 @@ function ExchangeBlock({Exchanges}) {
     }
     return (
         <Grid2 component={Paper} className="ExchangeBlock" container xs={12} md={4}>
-            <ContentCenteredGrid component={Typography} variant='h6' xs={12}
-                                 sx={{justifyContent: 'flex-start', fontWeight: 'bold'}}>
-                交换经历
+            <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
+                <Typography variant='h6' sx={{fontWeight: 'bold'}}>交换经历</Typography>
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
                 {Exchanges.map((exchange, index) => {
@@ -416,7 +415,6 @@ function InternshipBlock({Internships}) {
 }
 
 function PublicationBlock({Publications}) {
-    // TODO: figure out the default value for an incomplete publication
     if (!Publications) {
         Publications = [
             {
@@ -512,7 +510,6 @@ function CompetitionBlock({Competitions}) {
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>竞赛</Typography>
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
-
                 <ExperienceListItem
                     experience={Competitions}
                     Icon={<ShutterSpeedIcon/>}
