@@ -7,7 +7,7 @@ import {
     CardActionArea, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
     Divider, IconButton,
     InputLabel, List, ListItem, ListItemIcon, ListItemText, ListSubheader,
-    OutlinedInput, Paper, Slider, styled,
+    OutlinedInput, Paper, Slider, styled, TextField,
     Tooltip,
     Typography, useTheme
 } from "@mui/material";
@@ -115,6 +115,7 @@ function EditDeleteButtonGroup({applicantId}) {
     const handleClose = () => {
         setOpen(false);
     }
+    const [confirmText, setConfirmText] = useState('');
     return (
         <>
             <IconButton component={Link} to={`/profile/${applicantId}/edit`}>
@@ -129,11 +130,24 @@ function EditDeleteButtonGroup({applicantId}) {
                     <DialogContentText color='error'>
                         您正在进行危险操作！此操作不可逆，删除后无法恢复！
                     </DialogContentText>
+                    <DialogContentText>
+                        请输入您的ApplicantID：{applicantId}以确认删除。
+                    </DialogContentText>
+                    <TextField
+                        margin="dense"
+                        id="applicantId"
+                        label="ApplicantID"
+                        type="text"
+                        size='small'
+                        fullWidth
+                        value={confirmText}
+                        onChange={(e) => setConfirmText(e.target.value)}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>取消</Button>
                     <Form method='post'>
-                        <Button color='error' type='submit' onClick={handleClose}>
+                        <Button color='error' type='submit' onClick={handleClose} disabled={confirmText !== applicantId}>
                             确认
                         </Button>
                     </Form>
@@ -204,7 +218,7 @@ function BasicInfoBlock({applicant, editable}) {
                     </ContentCenteredGrid>
                 </Grid2>
                 <ContentCenteredGrid xs={12} sx={{mb: '0.5rem'}}>
-                    <Typography variant="subtitle1">申请时最高学位GPA以及对应专业排名：</Typography>
+                    <Typography variant="subtitle1">申请时最高学位GPA以及对应学院/专业排名：</Typography>
                 </ContentCenteredGrid>
                 <ContentCenteredGrid xs={12}>
                     <Slider
@@ -217,8 +231,8 @@ function BasicInfoBlock({applicant, editable}) {
                     />
                 </ContentCenteredGrid>
             </Grid2>
-            <GREBlock GRE={applicant?.GRE}/>
             <EnglishExamBlock EnglishProficiency={applicant?.EnglishProficiency}/>
+            <GREBlock GRE={applicant?.GRE}/>
         </Grid2>
     )
 }
