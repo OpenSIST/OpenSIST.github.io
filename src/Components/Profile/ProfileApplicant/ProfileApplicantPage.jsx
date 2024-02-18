@@ -2,11 +2,11 @@ import {getRecordByApplicant} from "../../../Data/RecordData";
 import {Form, redirect, useLoaderData, useParams} from "react-router-dom";
 import {
     Avatar, Badge,
-    Box,
+    Box, Button,
     Card,
-    CardActionArea, Chip,
+    CardActionArea, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
     Divider, IconButton,
-    InputLabel,
+    InputLabel, List, ListItem, ListItemIcon, ListItemText,
     OutlinedInput, Paper, Slider, styled,
     Tooltip,
     Typography, useTheme
@@ -14,45 +14,38 @@ import {
 import {Add, Delete, Edit} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
 import {Link} from 'react-router-dom';
-import {getApplicant, getApplicantIDByUserID, removeApplicant} from "../../../Data/ApplicantData";
+import {getApplicant, getApplicantIDByUserID, isAuthApplicant, removeApplicant} from "../../../Data/ApplicantData";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import HelpIcon from '@mui/icons-material/Help';
 import {
     currentDegreeMapping,
     currentDegreeOptions,
-    EnglishExamMapping, genderOptions,
+    EnglishExamMapping, exchangeDurationMapping, genderOptions,
     PublicationAuthorOrderChipColor,
     PublicationStateChipColor,
     PublicationTypeChipColor, rankPercentOptions, rankPercentSliderValueMapping, SliderValueRankStringMapping
 } from "../../../Data/Schemas";
-import {Fragment} from "react";
+import {Fragment, useEffect, useState} from "react";
 import localforage from "localforage";
 
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
+import SchoolIcon from '@mui/icons-material/School';
+
 
 const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
     display: 'flex',
     // justifyContent: 'center',
     alignItems: 'center',
-    gap: '1rem',
-    // margin: '0 1rem',
+    padding: "0.5rem"
 }));
-
-const ItemBox = styled(Box)(({theme}) => ({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '1rem',
-}))
 
 
 export async function loader({params}) {
     const applicantId = params.applicantId;
-    const user = await localforage.getItem('user');
-    const valid_applicant_list = await getApplicantIDByUserID(user);
-    if (!valid_applicant_list.includes(applicantId)) {
+    const isAuth = await isAuthApplicant(applicantId);
+    if (!isAuth) {
         throw new Error('Unauthorized');
     }
     const applicant = await getApplicant(applicantId);
@@ -69,28 +62,70 @@ export async function action({params}) {
 export function ProfileApplicantPage() {
     const {applicantId, applicant, records} = useLoaderData();
     return (
-        <Fragment key={applicant.ApplicantID}>
-            <Grid2 container xs={12}>
-                <BasicInfoBlock applicant={applicant}/>
-            </Grid2>
-        </Fragment>
+        <Grid2 key={applicant.ApplicantID} container xs={12}
+            // sx={{display: 'flex', justifyContent: 'center'}}
+        >
+            <BasicInfoBlock applicant={applicant}/>
+            <ExchangeBlock Exchanges={applicant?.Exchange}/>
+        </Grid2>
     )
 }
 
 function GenderIcon({gender}) {
     switch (gender) {
         case 'Male':
-            return <MaleIcon/>;
+            return <MaleIcon fontSize="small"/>;
         case 'Female':
-            return <FemaleIcon/>;
+            return <FemaleIcon fontSize="small"/>;
         case 'Others':
-            return <TransgenderIcon/>;
+            return <TransgenderIcon fontSize="small"/>;
         default:
             return null;
     }
 }
 
+function EditDeleteButtonGroup({applicantId}) {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {
+        setOpen(true);
+    }
+    const handleClose = () => {
+        setOpen(false);
+    }
+    return (
+        <>
+            <IconButton component={Link} to={`/profile/${applicantId}/edit`}>
+                <Edit/>
+            </IconButton>
+            <IconButton onClick={handleOpen}>
+                <Delete/>
+            </IconButton>
+            <Dialog open={open} onClose={() => setOpen(false)}>
+                <DialogTitle>是否要删除{applicantId}？</DialogTitle>
+                <DialogContent>
+                    <DialogContentText color='error'>
+                        您正在进行危险操作！此操作不可逆，删除后无法恢复！
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>取消</Button>
+                    <Form method='post'>
+                        <Button color='error' type='submit' onClick={handleClose}>
+                            确认
+                        </Button>
+                    </Form>
+                </DialogActions>
+            </Dialog>
+        </>
+    )
+
+}
+
 function BasicInfoBlock({applicant}) {
+    const [isAuth, setIsAuth] = useState(false);
+    useEffect(() => {
+        isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
+    }, [applicant.ApplicantID]);
     const valuetext = (value) => {
         return SliderValueRankStringMapping[value];
     }
@@ -112,7 +147,7 @@ function BasicInfoBlock({applicant}) {
         })
     }
     return (
-        <Grid2 component={Paper} className="BasicInfoBlock" container spacing={4} xs={12}>
+        <Grid2 component={Paper} className="BasicInfoBlock" container xs={12} sx={{mb: '1rem'}}>
             <Grid2 container xs={12} md={4}>
                 <ContentCenteredGrid>
                     <Badge
@@ -141,9 +176,11 @@ function BasicInfoBlock({applicant}) {
                         <Typography variant="subtitle1">
                             {`${applicant.Major} ${currentDegreeMapping[applicant.CurrentDegree]}`}
                         </Typography>
+                        {isAuth ?
+                            <EditDeleteButtonGroup applicantId={applicant.ApplicantID}/> : null}
                     </ContentCenteredGrid>
                 </Grid2>
-                <ContentCenteredGrid xs={12}>
+                <ContentCenteredGrid xs={12} sx={{mb: '0.5rem'}}>
                     <Typography variant="subtitle1">申请时最高学位GPA以及对应专业排名：</Typography>
                 </ContentCenteredGrid>
                 <ContentCenteredGrid xs={12}>
@@ -235,7 +272,50 @@ function EnglishExamBlock({EnglishProficiency}) {
 }
 
 function ExchangeBlock({Exchanges}) {
-
+    if (!Exchanges || Exchanges.length === 0) {
+        Exchanges = [
+            {
+                "University": "暂无",
+                "Duration": "暂无",
+                "Detail": "暂无"
+            }
+        ]
+    }
+    return (
+        <Grid2 component={Paper} className="ExchangeBlock" container xs={12} md={4}>
+            <ContentCenteredGrid component={Typography} variant='h6' xs={12}
+                                 sx={{justifyContent: 'flex-start', fontWeight: 'bold'}}>
+                交换经历
+            </ContentCenteredGrid>
+            <List sx={{width: '100%'}}>
+                {Exchanges.map((exchange, index) => {
+                    return (
+                        <Fragment key={index}>
+                            <ListItem alignItems="flex-start">
+                                <ListItemIcon>
+                                    <SchoolIcon/>
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={
+                                        <Typography variant='h5'
+                                                    sx={{fontWeight: 'bold'}}>{exchange.University}
+                                        </Typography>
+                                    }
+                                    secondary={
+                                        <Box component='span' sx={{display: 'flex', flexDirection: 'column'}}>
+                                            <Typography component='span'>交换时长：{exchangeDurationMapping[exchange.Duration] ?? "暂无"}</Typography>
+                                            <Typography component='span'>具体描述：{exchange.Detail === '' ? '暂无': exchange.Detail}</Typography>
+                                        </Box>
+                                    }
+                                />
+                            </ListItem>
+                            {index !== Exchanges.length - 1 ? <Divider/> :  null}
+                        </Fragment>
+                    )
+                })}
+            </List>
+        </Grid2>
+    )
 }
 
 function ResearchBlock({Researches}) {
@@ -259,70 +339,89 @@ function CompetitionBlock({Competitions}) {
 }
 
 const libn = {
-    "ApplicantID": "libn@2024",
+    "ApplicantID": "libn@2016",
     "Gender": "Male",
-    "CurrentDegree": "Undergraduate",
-    "ApplicationYear": 2024,
-    "Major": "CS",
-    "GPA": 3.89,
-    "Ranking": "3",
-    "EnglishProficiency": {
-        "TOEFL": {
-            "Total": 110,
-            "S": 25,
-            "R": 30,
-            "L": 29,
-            "W": 26
-        }
+    "CurrentDegree": "Master",
+    "ApplicationYear": 2016,
+    "Major": "EE",
+    "GPA": 3.91,
+    "Ranking": "1",
+    "GRE": {
+        "Total": 340,
+        "V": 170,
+        "Q": 170,
+        "AW": 5
     },
-    "Publication": [
+    "EnglishProficiency": {},
+    "Exchange": [
         {
-            "Type": "Conference",
-            "Name": "ML4H",
-            "AuthorOrder": "First",
-            "Status": "Accepted",
+            "University": "UCB",
+            "Duration": "Semester",
+            "Detail": ""
+        },
+        {
+            "University": "MIT",
+            "Duration": "Year",
             "Detail": ""
         }
     ],
+    "Publication": [
+        {
+            "Type": "Journal",
+            "Name": "CVPR",
+            "AuthorOrder": "First",
+            "Status": "Accepted",
+            "Detail": "This is a test paragraph This is a test paragraph "
+        },
+        {
+            "Type": "Conference",
+            "Name": "IJCV",
+            "AuthorOrder": "Co-first",
+            "Status": "Accepted",
+            "Detail": "This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph "
+        }
+    ],
     "Research": {
-        "Focus": "Computer Vision and Medical Image Analysis",
+        "Focus": "Computer Vision and Computer Graphis",
         "Domestic": {
-            "Num": 1,
-            "Detail": ""
+            "Num": 2,
+            "Detail": "This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph "
         },
         "International": {
-            "Num": 0,
-            "Detail": ""
+            "Num": 1,
+            "Detail": "This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph "
         }
     },
     "Internship": {
         "Domestic": {
-            "Num": 0,
-            "Detail": ""
+            "Num": 2,
+            "Detail": "This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph "
         },
         "International": {
-            "Num": 0,
-            "Detail": ""
+            "Num": 3,
+            "Detail": "This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph "
         }
     },
     "Recommendation": [
         {
             "Type": [
-                "Research"
+                "Research",
+                "TA"
             ],
-            "Detail": ""
+            "Detail": "This is a test paragraph "
         },
         {
             "Type": [
+                "Course",
                 "TA"
             ],
-            "Detail": ""
+            "Detail": "This is a This is a test paragraph paragraph "
         },
         {
             "Type": [
                 "Course"
             ],
-            "Detail": ""
+            "Detail": "This is a test paragraph "
         },
         {
             "Type": [
@@ -337,6 +436,7 @@ const libn = {
             "Detail": ""
         }
     ],
+    "Competition": "This is a test paragraph  This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph This is a test paragraph ",
     "Programs": {}
 }
 

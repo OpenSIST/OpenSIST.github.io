@@ -113,12 +113,29 @@ export const SliderValueRankStringMapping = {
 
 export const englishOptions = list2Options(['TOEFL', 'IELTS']);
 
-export const exchangeDurationOptions = [
-    {value: 'Semester', label: '一学期'},
-    {value: 'Year', label: '一学年'}
-]
+export const exchangeDurationMapping = {
+    'Semester': '一学期',
+    'Year': '一学年'
+}
+export const exchangeDurationOptions = dict2Options(exchangeDurationMapping);
 
 export const exchangeUnivList = [
+    'Massachusetts Institute of Technology (MIT)',
+    'University of California, Berkeley (UCB)',
+    'University of Michigan, Ann Arbor (UMich)',
+    'Cornell University (Cornell)',
+    'University of Wisconsin-Madison (UW-Madison)',
+    'University of Pennsylvania (UPenn)',
+    'Yale University (Yale)',
+    'Harvard University (Harvard)',
+    'University of Illinois at Urbana-Champaign (UIUC)',
+    'University of Chicago (UChicago)',
+    'Hebrew University of Jerusalem (Hebrew)',
+    'Drexel University (Drxel)',
+    'University of Padua (Padua)'
+]
+
+export const exchangeUnivList1 = [
     'MIT',
     'UCB',
     'UMich',

@@ -99,7 +99,7 @@ export function AdminProgramButton({program}) {
                     </Button>
                     <Form method="post">
                         <input id="ProgramID" name="ProgramID" hidden defaultValue={program.ProgramID}/>
-                        <Button name='button' value='remove' type="submit" onClick={handleCloseRemoveDialog}>
+                        <Button color='error' name='button' value='remove' type="submit" onClick={handleCloseRemoveDialog}>
                             确认
                         </Button>
                     </Form>

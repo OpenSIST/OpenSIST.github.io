@@ -157,3 +157,13 @@ export async function deleteApplicantIDByUserID(applicantId) {
     const applicants = await getApplicantIDByUserID(userId, true);
     await setApplicantIDByUserID(userId, applicants.filter(p => p !== applicantId));
 }
+
+export async function isAuthApplicant(applicantId) {
+    /*
+    * Check if the user is authorized to access the applicant
+    * @param applicantId [String]: applicantId
+    * @return: [Boolean]: whether the user is authorized to access the applicant
+    */
+    const authApplicants = await getApplicantIDByUserID(await localforage.getItem('user'));
+    return authApplicants.indexOf(applicantId) !== -1;
+}
