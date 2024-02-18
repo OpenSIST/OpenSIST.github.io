@@ -119,23 +119,23 @@ export const exchangeDurationMapping = {
 }
 export const exchangeDurationOptions = dict2Options(exchangeDurationMapping);
 
-export const exchangeUnivList = [
-    'Massachusetts Institute of Technology (MIT)',
-    'University of California, Berkeley (UCB)',
-    'University of Michigan, Ann Arbor (UMich)',
-    'Cornell University (Cornell)',
-    'University of Wisconsin-Madison (UW-Madison)',
-    'University of Pennsylvania (UPenn)',
-    'Yale University (Yale)',
-    'Harvard University (Harvard)',
-    'University of Illinois at Urbana-Champaign (UIUC)',
-    'University of Chicago (UChicago)',
-    'Hebrew University of Jerusalem (Hebrew)',
-    'Drexel University (Drxel)',
-    'University of Padua (Padua)'
-]
+export const exchangeUnivFullNameMapping = {
+    MIT: 'Massachusetts Institute of Technology (MIT)',
+    UCB: 'University of California, Berkeley (UCB)',
+    UMich: 'University of Michigan, Ann Arbor (UMich)',
+    Cornell: 'Cornell University (Cornell)',
+    "UW-Madison": 'University of Wisconsin-Madison (UW-Madison)',
+    UPenn: 'University of Pennsylvania (UPenn)',
+    Yale: 'Yale University (Yale)',
+    Harvard: 'Harvard University (Harvard)',
+    UIUC: 'University of Illinois at Urbana-Champaign (UIUC)',
+    UChicago: 'University of Chicago (UChicago)',
+    Hebrew: 'Hebrew University of Jerusalem (Hebrew)',
+    Drexel: 'Drexel University (Drexel)',
+    Padua: 'University of Padua (Padua)'
+}
 
-export const exchangeUnivList1 = [
+export const exchangeUnivList = [
     'MIT',
     'UCB',
     'UMich',

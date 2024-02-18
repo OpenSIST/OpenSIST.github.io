@@ -20,7 +20,7 @@ import HelpIcon from '@mui/icons-material/Help';
 import {
     currentDegreeMapping,
     currentDegreeOptions,
-    EnglishExamMapping, exchangeDurationMapping, genderOptions,
+    EnglishExamMapping, exchangeDurationMapping, exchangeUnivFullNameMapping, genderOptions,
     PublicationAuthorOrderChipColor,
     PublicationStateChipColor,
     PublicationTypeChipColor, rankPercentOptions, rankPercentSliderValueMapping, SliderValueRankStringMapping
@@ -298,7 +298,7 @@ function ExchangeBlock({Exchanges}) {
                                 <ListItemText
                                     primary={
                                         <Typography variant='h5'
-                                                    sx={{fontWeight: 'bold'}}>{exchange.University}
+                                                    sx={{fontWeight: 'bold'}}>{exchangeUnivFullNameMapping[exchange.University]}
                                         </Typography>
                                     }
                                     secondary={
