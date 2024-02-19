@@ -28,3 +28,4 @@ export const ADD_MODIFY_RECORD = ROOT + "api/mutating/new_modify_record";
 export const UPLOAD_AVATAR = ROOT + "api/user/upload_avatar";
 export const GET_DISPLAY_NAME = ROOT + "api/my/get_display_name";
 export const GET_METADATA = ROOT + "api/user/get_metadata";
+export const GET_AVATAR = ROOT + "api/user/get_avatar";

@@ -33,7 +33,6 @@ export async function getEmailBody(emailID) {
 }
 
 export async function moveEmail(emailID, action) {
-    console.log(emailID, action)
     let API = "";
     if (action === 'MoveToTrash') {
         API = MOVE_TO_TRASH;

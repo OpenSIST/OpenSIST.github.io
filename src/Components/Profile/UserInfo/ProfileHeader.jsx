@@ -18,7 +18,8 @@ import {Edit} from "@mui/icons-material";
 import {blue} from "@mui/material/colors";
 
 export function ProfileHeader({loaderData}) {
-    const applicants = loaderData.applicants;
+    const applicants = loaderData.metaData.ApplicantIDs;
+    const avatar = loaderData.avatarUrl;
     const user = useUser();
     const [open, setOpen] = useState(true);
     return (
@@ -72,7 +73,7 @@ export function ProfileHeader({loaderData}) {
                     }}
                     overlap='circular'
                 >
-                    <Avatar sx={{height: '100px', width: '100px'}}/>
+                    <Avatar src={avatar} sx={{height: '100px', width: '100px'}}/>
                 </Badge>
                 <Typography variant='h4'>{user}</Typography>
                 <Typography

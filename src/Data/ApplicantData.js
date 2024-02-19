@@ -52,7 +52,7 @@ export async function getMetaData(displayName = null, isRefresh = false) {
     * @return: metadata
     */
     if (displayName === null) {
-        displayName = await getDisplayName();
+        displayName = await getDisplayName(isRefresh);
     }
     let metadata = await localforage.getItem(`${displayName}-metadata`);
     if (isRefresh || metadata === null || (Date.now() - metadata.Date) > CACHE_EXPIRATION) {

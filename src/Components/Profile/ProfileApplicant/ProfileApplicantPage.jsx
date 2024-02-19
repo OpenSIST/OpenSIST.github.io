@@ -14,7 +14,13 @@ import {
 import {Add, Delete, Edit} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
 import {Link} from 'react-router-dom';
-import {getApplicant, getApplicantIDByDisplayName, isAuthApplicant, removeApplicant} from "../../../Data/ApplicantData";
+import {
+    getApplicant,
+    getApplicantIDByDisplayName,
+    getMetaData,
+    isAuthApplicant,
+    removeApplicant
+} from "../../../Data/ApplicantData";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import HelpIcon from '@mui/icons-material/Help';
 import {
@@ -47,6 +53,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import EmailIcon from '@mui/icons-material/Email';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
 import LensIcon from '@mui/icons-material/Lens';
+import {getAvatar} from "../../../Data/UserData";
 
 const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
     display: 'flex',
@@ -64,7 +71,9 @@ export async function loader({params}) {
     }
     const applicant = await getApplicant(applicantId);
     const records = await getRecordByApplicant(applicantId);
-    return {applicantId, applicant, records};
+    const metaData = await getMetaData();
+    const avatarUrl = await getAvatar(metaData.Avatar);
+    return {avatarUrl, applicant, records};
 }
 
 export async function action({params}) {
@@ -74,11 +83,11 @@ export async function action({params}) {
 }
 
 export function ProfileApplicantPage({editable = false}) {
-    const {applicantId, applicant, records} = useLoaderData();
+    const {avatarUrl, applicant, records} = useLoaderData();
     const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
     return (
         <Grid2 key={applicant.ApplicantID} container xs={12} sx={{gap: '1rem'}}>
-            <BasicInfoBlock applicant={applicant} editable={editable}/>
+            <BasicInfoBlock avatarUrl={avatarUrl} applicant={applicant} editable={editable}/>
             <Grid2 container xs={12} sx={{gap: "1rem", flexWrap: matches ? 'nowrap' : "wrap"}}>
                 <ExchangeBlock Exchanges={applicant?.Exchange}/>
                 <ResearchBlock Researches={applicant?.Research}/>
@@ -147,7 +156,8 @@ function EditDeleteButtonGroup({applicantId}) {
                 <DialogActions>
                     <Button onClick={handleClose}>取消</Button>
                     <Form method='post'>
-                        <Button color='error' type='submit' onClick={handleClose} disabled={confirmText !== applicantId}>
+                        <Button color='error' type='submit' onClick={handleClose}
+                                disabled={confirmText !== applicantId}>
                             确认
                         </Button>
                     </Form>
@@ -158,7 +168,7 @@ function EditDeleteButtonGroup({applicantId}) {
 
 }
 
-function BasicInfoBlock({applicant, editable}) {
+function BasicInfoBlock({avatarUrl, applicant, editable}) {
     const [isAuth, setIsAuth] = useState(false);
     useEffect(() => {
         isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
@@ -196,7 +206,7 @@ function BasicInfoBlock({applicant, editable}) {
                         overlap='circular'
                         color="primary"
                     >
-                        <Avatar sx={{width: 100, height: 100}}/>
+                        <Avatar src={avatarUrl} sx={{width: 100, height: 100}}/>
                     </Badge>
                 </ContentCenteredGrid>
                 <Grid2 container spacing={0} xs>
@@ -367,18 +377,14 @@ function ResearchBlock({Researches}) {
                     experience={Researches.Domestic}
                     Icon={<BiotechIcon/>}
                     primary={`国内${Researches.Domestic.Num}段研究经历`}
-                    secondary={{
-                        "具体描述": Researches.Domestic.Detail === '' ? '暂无' : Researches.Domestic.Detail
-                    }}
+                    secondary={Researches.Domestic.Detail === '' ? '具体描述:暂无' : Researches.Domestic.Detail}
                 />
                 <Divider/>
                 <ExperienceListItem
                     experience={Researches.International}
                     Icon={<BiotechIcon/>}
                     primary={`国外${Researches.International.Num}段研究经历`}
-                    secondary={{
-                        "具体描述": Researches.International.Detail === '' ? '暂无' : Researches.International.Detail
-                    }}
+                    secondary={Researches.International.Detail === '' ? '具体描述:暂无' : Researches.International.Detail}
                 />
             </List>
         </Grid2>
@@ -399,18 +405,14 @@ function InternshipBlock({Internships}) {
                     experience={Internships.Domestic}
                     Icon={<WorkIcon/>}
                     primary={`国内${Internships.Domestic.Num}段实习经历`}
-                    secondary={{
-                        "具体描述": Internships.Domestic.Detail === '' ? '暂无' : Internships.Domestic.Detail
-                    }}
+                    secondary={Internships.Domestic.Detail === '' ? '具体描述:暂无' : Internships.Domestic.Detail}
                 />
                 <Divider/>
                 <ExperienceListItem
                     experience={Internships.International}
                     Icon={<WorkIcon/>}
                     primary={`国外${Internships.International.Num}段实习经历`}
-                    secondary={{
-                        "具体描述": Internships.International.Detail === '' ? '暂无' : Internships.International.Detail
-                    }}
+                    secondary={Internships.International.Detail === '' ? '具体描述:暂无' : Internships.International.Detail}
                 />
             </List>
         </Grid2>
@@ -487,9 +489,7 @@ function RecommendationBlock({Recommendations}) {
                                 experience={recommendation}
                                 Icon={<EmailIcon/>}
                                 primary={primary}
-                                secondary={{
-                                    "具体描述": recommendation.Detail === '' ? '暂无' : recommendation.Detail
-                                }}
+                                secondary={recommendation.Detail === '' ? '具体描述:暂无' : recommendation.Detail}
                             />
                             {index !== Recommendations.length - 1 ? <Divider/> : null}
                         </Fragment>
@@ -517,9 +517,7 @@ function CompetitionBlock({Competitions}) {
                     experience={Competitions}
                     Icon={<ShutterSpeedIcon/>}
                     primary="竞赛经历"
-                    secondary={{
-                        "具体描述": Competitions === '' ? '暂无' : Competitions
-                    }}
+                    secondary={Competitions === '' ? '具体描述:暂无' : Competitions}
                 />
             </List>
         </Grid2>
@@ -544,11 +542,11 @@ function RecordBlock({Records, editable}) {
                                 Icon={<Chip label={record.Status} color={RecordStatusPaltette[record.Status]}/>}
                                 primary={record.ProgramID}
                                 secondary={{
-                                    "申请季": record.ProgramYear+record.Semester,
+                                    "申请季": record.ProgramYear + record.Semester,
                                     "提交时间": record.TimeLine?.Submit?.split('T')[0] ?? "暂无",
                                     "面试时间": record.TimeLine?.Interview?.split('T')[0] ?? '暂无',
                                     "通知时间": record.TimeLine?.Decision?.split('T')[0] ?? '暂无',
-                                    "具体描述": record.Detail === '' ? '暂无' : record.Detail
+                                    "补充说明": record.Detail === '' ? '暂无' : record.Detail
                                 }}
                             />
                             {/*{index !== Records.length - 1 ? <Divider/> : null}*/}
@@ -574,13 +572,19 @@ function ExperienceListItem({Icon, primary, secondary}) {
                 }
                 secondary={
                     <Box component='span' sx={{display: 'flex', flexDirection: 'column'}}>
-                        {Object.entries(secondary).map(([key, value]) => {
-                            return (
-                                <Typography component='span' key={key}>
-                                    {key}: {value}
-                                </Typography>
-                            )
-                        })}
+                        {typeof secondary === 'string' ?
+                            <Typography component='span'>
+                                {secondary}
+                            </Typography> :
+                            Object.entries(secondary).map(([key, value]) => {
+                                return (
+                                    <Typography component='span' key={key}>
+                                        {key}: {value}
+                                    </Typography>
+                                )
+                            })
+
+                        }
                     </Box>
                 }
             />
