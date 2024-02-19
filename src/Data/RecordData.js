@@ -20,9 +20,7 @@ export async function addModifyRecord(requestBody) {
 
 export async function getRecordByApplicant(applicantId, isRefresh = false) {
     // await localforage.removeItem(`records-${applicantId}`)  //TODO: remove this line
-    console.log(applicantId)
     let records = await localforage.getItem(`records-${applicantId}`)
-    console.log(records)
     if (isRefresh || records === null || (Date.now() - records.Date) > CACHE_EXPIRATION) {
         const response = await fetch(GET_RECORD_BY_APPLICANT, {
             method: 'POST',
