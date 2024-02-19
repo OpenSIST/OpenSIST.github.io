@@ -1,14 +1,12 @@
 import {Paper, useTheme} from "@mui/material";
 import React from "react";
 import {getApplicantIDByDisplayName, getApplicants} from "../../Data/ApplicantData";
-import {Outlet, redirect, useLoaderData} from "react-router-dom";
+import {Outlet, useLoaderData} from "react-router-dom";
 import {ProfileHeader} from "./UserInfo/ProfileHeader";
 import {grey} from "@mui/material/colors";
-import localforage from "localforage";
-import {getDisplayName, uploadAvatar} from "../../Data/UserData";
+import {uploadAvatar} from "../../Data/UserData";
 
 export async function loader() {
-    // const user = await localforage.getItem('user');
     const applicants = await getApplicantIDByDisplayName();
     return {applicants};
 }

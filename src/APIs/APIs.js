@@ -27,3 +27,4 @@ export const GET_RECORD_BY_RECORD_IDs = ROOT + "api/query/by_record";
 export const ADD_MODIFY_RECORD = ROOT + "api/mutating/new_modify_record";
 export const UPLOAD_AVATAR = ROOT + "api/user/upload_avatar";
 export const GET_DISPLAY_NAME = ROOT + "api/my/get_display_name";
+export const GET_METADATA = ROOT + "api/user/get_metadata";
