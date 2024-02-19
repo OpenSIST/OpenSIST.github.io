@@ -104,6 +104,9 @@ export async function uploadAvatar(avatar) {
 }
 
 export async function getAvatar(avatarId, displayName = null, isRefresh = false) {
+    if (!avatarId) {
+        return null;
+    }
     if (!displayName) {
         displayName = await getDisplayName();
     }
