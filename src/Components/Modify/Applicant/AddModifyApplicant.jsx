@@ -12,6 +12,7 @@ import localforage from "localforage";
 import BasicInfo from "./FormComponent/BasicInfo";
 import Grades from "./FormComponent/Grades";
 import SoftBackground from "./FormComponent/SoftBackground";
+import {getDisplayName} from "../../../Data/UserData";
 
 export async function action({request}) {
     const removeEmptyDictInList = (list) => {
@@ -86,8 +87,9 @@ export async function action({request}) {
     }
     const Competition = formValues.Competition;
     const Programs = formValues.Programs;
-    const userName = await localforage.getItem('user');
-    const ApplicantID = `${userName}@${ApplicationYear}`;
+    // const userName = await localforage.getItem('user');
+    const displayName = await getDisplayName();
+    const ApplicantID = `${displayName}@${ApplicationYear}`;
     const requestBody = {
         'newApplicant': ActionType === 'new',
         'content': {
@@ -110,7 +112,7 @@ export async function action({request}) {
         }
     };
     console.log(requestBody)
-    await addModifyApplicant(requestBody, userName);
+    await addModifyApplicant(requestBody, displayName);
     return redirect(`/profile/${ApplicantID}`);
 }
 

@@ -183,7 +183,6 @@ export const recommendationTypeMapping = {
     'Competition': '竞赛推'
 }
 export const recommendationTypeOptions = dict2Options(recommendationTypeMapping);
-
 export const recordStatusList = ['Admit', 'Reject', 'Waitlist', 'Defer']
 export const recordStatusOptions = list2Options(recordStatusList);
 

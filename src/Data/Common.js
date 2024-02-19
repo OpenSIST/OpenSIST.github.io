@@ -1,18 +1,18 @@
 import univList from "./UnivList.json";
 import localforage from "localforage";
 
-export async function headerGenerator(auth = false) {
+export async function headerGenerator(auth = false, contentType = 'application/json') {
     /*
     * Generate the header for fetch
     * @param auth [boolean]: whether the request is authenticated
     * @return: header
      */
     const header = {
-        'Content-Type': 'application/json',
+        'Content-Type': contentType,
         'Connection': 'close',
     }
     const session = await localforage.getItem('session');
-    console.log(session)
+    // console.log(session)
     if (auth) {
         header['Authorization'] = `Bearer ${session}`;
     }

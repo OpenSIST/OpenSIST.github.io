@@ -14,7 +14,7 @@ import {
 import {Add, Delete, Edit} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
 import {Link} from 'react-router-dom';
-import {getApplicant, getApplicantIDByUserID, isAuthApplicant, removeApplicant} from "../../../Data/ApplicantData";
+import {getApplicant, getApplicantIDByDisplayName, isAuthApplicant, removeApplicant} from "../../../Data/ApplicantData";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import HelpIcon from '@mui/icons-material/Help';
 import {
@@ -528,10 +528,10 @@ function RecordBlock({Records, editable}) {
             >
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>申请记录</Typography>
             </ContentCenteredGrid>
-            <List sx={{width: '100%'}}>
+            <Grid2 container component={List} xs={12} sx={{width: '100%'}}>
                 {Records.map((record, index) => {
                     return (
-                        <Fragment key={index}>
+                        <Grid2 component={Card} xs={12} md={4} key={index}>
                             <ExperienceListItem
                                 experience={record}
                                 Icon={<Chip label={record.Status} color={RecordStatusPaltette[record.Status]}/>}
@@ -544,11 +544,11 @@ function RecordBlock({Records, editable}) {
                                     "具体描述": record.Detail === '' ? '暂无' : record.Detail
                                 }}
                             />
-                            {index !== Records.length - 1 ? <Divider/> : null}
-                        </Fragment>
+                            {/*{index !== Records.length - 1 ? <Divider/> : null}*/}
+                        </Grid2>
                     )
                 })}
-            </List>
+            </Grid2>
         </Grid2>
     )
 }

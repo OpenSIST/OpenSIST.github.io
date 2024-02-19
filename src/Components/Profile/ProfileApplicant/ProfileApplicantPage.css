@@ -48,8 +48,8 @@
 .PublicationBlock,
 .RecommendationBlock,
 .CompetitionBlock {
-    max-height: 400px;
-    overflow-y: auto;
+    /*max-height: 400px;*/
+    /*overflow-y: auto;*/
 }
 
 

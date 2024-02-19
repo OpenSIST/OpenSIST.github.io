@@ -1,25 +1,23 @@
 import {Paper, useTheme} from "@mui/material";
 import React from "react";
-import {getApplicantIDByUserID, getApplicants} from "../../Data/ApplicantData";
+import {getApplicantIDByDisplayName, getApplicants} from "../../Data/ApplicantData";
 import {Outlet, redirect, useLoaderData} from "react-router-dom";
 import {ProfileHeader} from "./UserInfo/ProfileHeader";
 import {grey} from "@mui/material/colors";
 import localforage from "localforage";
-import {uploadAvatar} from "../../Data/UserData";
+import {getDisplayName, uploadAvatar} from "../../Data/UserData";
 
 export async function loader() {
-    const user = await localforage.getItem('user');
-    const applicants = await getApplicantIDByUserID(user);
+    // const user = await localforage.getItem('user');
+    const applicants = await getApplicantIDByDisplayName();
     return {applicants};
 }
 
 export async function action({request}) {
-    console.log("we are in action");
     const formData = await request.formData();
     const actionType = formData.get('button');
     if (actionType === 'EditAvatar') {
         const avatar = formData.get('avatar');
-        console.log(avatar);
         await uploadAvatar(avatar);
     }
     return getApplicants(true);

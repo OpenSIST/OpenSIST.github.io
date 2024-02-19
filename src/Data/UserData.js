@@ -1,13 +1,13 @@
 import localforage from "localforage";
 import {redirect} from "react-router-dom";
 import {
+    GET_DISPLAY_NAME,
     LOGIN,
     LOGOUT,
-    IS_LOGIN,
     REGISTER,
     RESET_PASSWORD, UPLOAD_AVATAR
 } from "../APIs/APIs";
-import {headerGenerator} from "./Common";
+import {handleErrors, headerGenerator} from "./Common";
 import {useState} from "react";
 
 export async function login(email, password) {
@@ -30,6 +30,7 @@ export async function login(email, password) {
             expireAt: data.expireAt,
         }
         await setUserInfo(user_info);
+        await getDisplayName();
         return redirect("/");
     }
 }
@@ -88,11 +89,30 @@ export async function uploadAvatar(avatar) {
         method: 'POST',
         mode: "cors",
         credentials: "include",
-        headers: headerGenerator(true),
+        headers: await headerGenerator(true, "image/jpeg"),
         body: avatar
     })
     if (response.status !== 200) {
         const content = await response.json();
         alert(`${content.error}, Error code: ${response.status}`);
     }
+}
+
+export async function getDisplayName() {
+    let displayName = await localforage.getItem('displayName');
+    if (!displayName) {
+        const response = await fetch(GET_DISPLAY_NAME, {
+            method: 'POST',
+            headers: await headerGenerator(true),
+        })
+        await handleErrors(response);
+        const data = await response.json();
+        displayName = data.name;
+    }
+    await setDisplayName(displayName);
+    return displayName;
+}
+
+export async function setDisplayName(displayName) {
+    await localforage.setItem('displayName', displayName);
 }

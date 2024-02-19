@@ -2,10 +2,11 @@ import localforage from "localforage";
 import {
     ADD_MODIFY_APPLICANT,
     APPLICANT_LIST,
-    GET_APPLICANT_ID_BY_USER_ID,
+    GET_APPLICANT_ID_BY_DISPLAY_NAME,
     REMOVE_APPLICANT
 } from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
+import {getDisplayName} from "./UserData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
@@ -34,36 +35,38 @@ export async function getApplicants(isRefresh = false, query = {}) {
     return applicants['data'];
 }
 
-export async function getApplicantIDByUserID(userId, isRefresh = false) {
+export async function getApplicantIDByDisplayName(isRefresh = false) {
     /*
-    * Get the list of applicantIDs from the server or local storage by userId
-    * @param userId [String]: userId
+    * Get the list of applicantIDs from the server or local storage by displayName
     * @return: list of applicants
     */
-    // await localforage.removeItem(`${userId}-applicants`)  //TODO: remove this line
-    let applicants = await localforage.getItem(`${userId}-applicants`);
+    // TODO: Change to use getMetadata
+    // await localforage.removeItem(`${displayName}-applicants`)  //TODO: remove this line
+    const displayName = await getDisplayName();
+    let applicants = await localforage.getItem(`${displayName}-applicants`);
     if (isRefresh || applicants === null || (Date.now() - applicants.Date) > CACHE_EXPIRATION) {
-        const response = await fetch(GET_APPLICANT_ID_BY_USER_ID, {
+        const response = await fetch(GET_APPLICANT_ID_BY_DISPLAY_NAME, {
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),
-            body: JSON.stringify({display_name: userId})
+            body: JSON.stringify({display_name: displayName})
         });
         await handleErrors(response)
         applicants = await response.json();
-        await setApplicantIDByUserID(userId, applicants['result']);
+        await setApplicantIDByDisplayName(applicants['result']);
     }
     return applicants['result'];
 }
 
-export async function setApplicantIDByUserID(userId, applicants) {
+export async function setApplicantIDByDisplayName(applicants) {
     /*
     * Set the list of applicants to the local storage (i.e. localforage.getItem('applicants'))
-    * @param userId [String]: userId
     * @param applicants [Array]: list of applicants
     */
+    // TODO: remove displayName parameter
+    const displayName = await getDisplayName();
     applicants = {'result': applicants, 'Date': Date.now()}
-    await localforage.setItem(`${userId}-applicants`, applicants);
+    await localforage.setItem(`${displayName}-applicants`, applicants);
 }
 
 export async function getApplicant(applicantId, isRefresh = false) {
@@ -99,12 +102,13 @@ export async function setApplicant(applicant) {
         applicants.push(applicant);
     }
     await setApplicants(applicants);
-    const user = await localforage.getItem('user');
-    if (applicant.ApplicantID.split('@')[0] === user) {
-        const applicants = await getApplicantIDByUserID(user, true);
+    // const user = await localforage.getItem('user');
+    const displayName = await getDisplayName();
+    if (applicant.ApplicantID.split('@')[0] === displayName) {
+        const applicants = await getApplicantIDByDisplayName(true);
         if (applicants.indexOf(applicant.ApplicantID) === -1) {
             applicants.push(applicant.ApplicantID);
-            await setApplicantIDByUserID(user, applicants);
+            await setApplicantIDByDisplayName(applicants);
         }
     }
 }
@@ -145,17 +149,18 @@ export async function removeApplicant(applicantId) {
     await handleErrors(response);
     const applicants = await getApplicants();
     await setApplicants(applicants.filter(p => p.ApplicantID !== applicantId));
-    await deleteApplicantIDByUserID(applicantId);
+    await deleteApplicantIDByDisplayName(applicantId);
 }
 
-export async function deleteApplicantIDByUserID(applicantId) {
+export async function deleteApplicantIDByDisplayName(applicantId) {
     /*
     * Remove the applicant from the local storage.
     * @param applicantId [String]: applicantId
     */
-    const userId = await localforage.getItem('user');
-    const applicants = await getApplicantIDByUserID(userId, true);
-    await setApplicantIDByUserID(userId, applicants.filter(p => p !== applicantId));
+    // const userId = await localforage.getItem('user');
+    // const displayName = getDisplayName();
+    const applicants = await getApplicantIDByDisplayName(true);
+    await setApplicantIDByDisplayName(applicants.filter(p => p !== applicantId));
 }
 
 export async function isAuthApplicant(applicantId) {
@@ -164,6 +169,6 @@ export async function isAuthApplicant(applicantId) {
     * @param applicantId [String]: applicantId
     * @return: [Boolean]: whether the user is authorized to access the applicant
     */
-    const authApplicants = await getApplicantIDByUserID(await localforage.getItem('user'));
+    const authApplicants = await getApplicantIDByDisplayName();
     return authApplicants.indexOf(applicantId) !== -1;
 }
