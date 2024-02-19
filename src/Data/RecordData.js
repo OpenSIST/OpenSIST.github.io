@@ -58,24 +58,32 @@ export async function getRecordByRecordIDs(recordIDs, isRefresh = false) {
         return !expiredIDs.includes(recordId)
     });
 
+    // const unexpiredRecords = {};
+    // unexpiredIDs.forEach((recordId) => {
+    //     unexpiredRecords[recordId] = cacheRecords[recordIDs.indexOf(recordId)]['data'];
+    // })
     const unexpiredRecords = {};
     unexpiredIDs.forEach((recordId) => {
         unexpiredRecords[recordId] = cacheRecords[recordIDs.indexOf(recordId)]['data'];
     })
 
-    const response = await fetch(GET_RECORD_BY_RECORD_IDs, {
-        method: 'POST',
-        credentials: 'include',
-        headers: await headerGenerator(true),
-        body: JSON.stringify({IDs: expiredIDs}),
-    });
-    await handleErrors(response);
-    let records = await response.json()
-    await Promise.all(expiredIDs.map(async (recordId) => {
-        await setRecordByRecordID(recordId, records['data'][recordId])
-    }));
-    records = {
-        ...records['data'],
+    console.log(expiredIDs, unexpiredIDs)
+    let expiredRecords = {data: {}};
+    if (expiredIDs.length > 0) {
+        const response = await fetch(GET_RECORD_BY_RECORD_IDs, {
+            method: 'POST',
+            credentials: 'include',
+            headers: await headerGenerator(true),
+            body: JSON.stringify({IDs: expiredIDs}),
+        });
+        await handleErrors(response);
+        expiredRecords = await response.json()
+        await Promise.all(expiredIDs.map(async (recordId) => {
+            await setRecordByRecordID(recordId, expiredRecords['data'][recordId])
+        }));
+    }
+    const records = {
+        ...expiredRecords['data'],
         ...unexpiredRecords
     }
     return records;
