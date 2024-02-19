@@ -246,6 +246,13 @@ function GREBlock({GRE}) {
             "AW": "-"
         }
     }
+    const handlePlaceholder = (key, value) => {
+        if ((key === 'Total' && value === 260) || (['V', 'Q'].includes(key) && value === 130) || (key === 'AW' && value === 0)) {
+            return '-';
+        } else {
+            return value;
+        }
+    };
     return (
         <Grid2 container xs={12} md={4}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', justifyContent: 'center'}}>
@@ -257,7 +264,7 @@ function GREBlock({GRE}) {
                     <ContentCenteredGrid xs={6} key={key} sx={{flexDirection: 'column', justifyContent: 'center'}}>
                         <Typography variant="subtitle1"
                                     sx={{fontWeight: 'bold'}}>{EnglishExamMapping["GRE"][key]}</Typography>
-                        <Typography>{value}</Typography>
+                        <Typography>{handlePlaceholder(key, value)}</Typography>
                     </ContentCenteredGrid>
                 )
             })}
@@ -296,7 +303,7 @@ function EnglishExamBlock({EnglishProficiency}) {
                                                      sx={{flexDirection: 'column', justifyContent: 'center'}}>
                                     <Typography variant="subtitle1"
                                                 sx={{fontWeight: 'bold'}}>{EnglishExamMapping[examType][key]}</Typography>
-                                    <Typography>{value}</Typography>
+                                    <Typography>{value > 0 ? value : "-"}</Typography>
                                 </ContentCenteredGrid>
                             )
                         })}

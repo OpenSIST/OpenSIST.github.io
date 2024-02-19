@@ -46,10 +46,10 @@ export async function action({request}) {
     const EnglishProficiency = {
         [EnglishOption === 'TOEFL' ? 'TOEFL' : 'IELTS']: {
             'Total': Number(EnglishTotal),
-            'R': Number(R),
-            'W': Number(W),
-            'L': Number(L),
-            'S': Number(S),
+            'R': R ? Number(R) : 0,
+            'W': W ? Number(W) : 0,
+            'L': L ? Number(L) : 0,
+            'S': S ? Number(S) : 0,
         }
     }
     const Exchange = formValues.Exchange ? removeEmptyDictInList(formValues.Exchange) : [];
@@ -116,10 +116,10 @@ export async function action({request}) {
     return redirect(`/profile/${ApplicantID}`);
 }
 
-const FormContent = (activeStep, formValues, handleBack, handleNext, handleChange) => {
+const FormContent = (activeStep, formValues, handleBack, handleNext, handleChange, type) => {
     switch (activeStep) {
         case 0:
-            return <BasicInfo formValues={formValues} handleNext={handleNext} handleChange={handleChange}/>;
+            return <BasicInfo formValues={formValues} handleNext={handleNext} handleChange={handleChange} actionType={type}/>;
         case 1:
             return <Grades formValues={formValues} handleBack={handleBack} handleNext={handleNext} handleChange={handleChange}/>;
         case 2:
@@ -227,7 +227,7 @@ export default function AddModifyApplicant({type}) {
                     textAlign: "center"
                 }}
             >
-                {FormContent(activeStep, formValues, handleBack, handleNext, handleChange)}
+                {FormContent(activeStep, formValues, handleBack, handleNext, handleChange, type)}
             </Box>
         </Form>
     )
