@@ -10,12 +10,13 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from "dayjs";
 
 export async function loader({params}) {
     const programs = await getPrograms(true);
-    const recordID = params?.recordId;
-    const record = recordID ? await getRecordByRecordIDs([recordID]) : null;
-    return {programs, record};
+    const recordID = `${params.applicantId}|${params.programId}`;
+    const recordsDict = recordID ? await getRecordByRecordIDs([recordID]) : null;
+    return {programs, recordsDict};
 }
 export async function action({params, request}) {
     const formData = await request.formData();
@@ -53,13 +54,14 @@ export async function action({params, request}) {
 }
 
 export default function AddModifyRecord({type}) {
-    const {programs, record} = useLoaderData();
+    const {programs, recordsDict} = useLoaderData();
     const programOptions = Object.values(programs).reduce((acc, programArray) => {
         programArray.forEach(program => {
             acc.push({label: program.ProgramID, value: program.ProgramID})
         });
         return acc;
     }, []);
+    const record = recordsDict ? recordsDict[Object.keys(recordsDict)[0]] : null;
 
     const [programOption, setProgramOption] = useState(record ? record.ProgramID : null);
     const [statusOption, setStatusOption] = useState(record ? record.Status : null);
@@ -88,11 +90,12 @@ export default function AddModifyRecord({type}) {
                                 <Autocomplete
                                     fullWidth
                                     options={programOptions}
+                                    readOnly={type === 'edit'}
                                     renderInput={
                                         (params) =>
                                             <TextField
                                                 {...params}
-                                                label='选择项目'
+                                                label={`选择项目 ${type === 'edit' ? ' (不可修改)' : ''}`}
                                                 name='ProgramID'
                                                 size='small'
                                                 helperText='未找到项目？请先前往项目信息表添加项目'
@@ -100,7 +103,6 @@ export default function AddModifyRecord({type}) {
                                             />
                                     }
                                     value={programOption ? programOptions.find(option => option.value === programOption) : null}
-                                    // isOptionEqualToValue={(option, value) => option.value === value.value}
                                     onChange={(event, newValue) => {
                                         setProgramOption(newValue.value);
                                     }}
@@ -181,7 +183,7 @@ export default function AddModifyRecord({type}) {
                                             name='Submit'
                                             format='YYYY-MM-DD'
                                             slotProps={{ textField: { size: 'small', required: true, fullWidth: true } }}
-                                            defaultValue={record ? record.TimeLine.Submit : null}
+                                            defaultValue={record ? dayjs(record.TimeLine.Submit.split('T')[0]) : null}
                                         />
                                     </DemoContainer>
                                 </LocalizationProvider>
@@ -194,7 +196,7 @@ export default function AddModifyRecord({type}) {
                                             name='Interview'
                                             format='YYYY-MM-DD'
                                             slotProps={{ textField: { size: 'small', fullWidth: true } }}
-                                            defaultValue={record ? record.TimeLine.Interview : null}
+                                            defaultValue={record ? record.TimeLine.Interview ? dayjs(record.TimeLine.Interview.split('T')[0]) : null : null}
                                         />
                                     </DemoContainer>
                                 </LocalizationProvider>
@@ -207,7 +209,7 @@ export default function AddModifyRecord({type}) {
                                             name='Decision'
                                             format='YYYY-MM-DD'
                                             slotProps={{ textField: { size: 'small', fullWidth: true } }}
-                                            defaultValue={record ? record.TimeLine.Decision : null}
+                                            defaultValue={record ? record.TimeLine.Decision ? dayjs(record.TimeLine.Decision.split('T')[0]) : null : null}
                                         />
                                     </DemoContainer>
                                 </LocalizationProvider>
@@ -225,6 +227,7 @@ export default function AddModifyRecord({type}) {
                                     name='Detail'
                                     variant='outlined'
                                     size='small'
+                                    defaultValue={record ? record.Detail : null}
                                 />
                             </Grid2>
                         </Grid2>

@@ -16,11 +16,18 @@ export async function addModifyRecord(requestBody) {
     });
     await handleErrors(response);
     await setRecordByRecordID(requestBody.content.RecordID, requestBody.content);
+    let records = await getRecordByApplicant(requestBody.content.ApplicantID, true);
+    if (records.find(record => record.RecordID === requestBody.content.RecordID) !== undefined) {
+        records[records.indexOf(requestBody.content)] = requestBody.content;
+    } else {
+        records.push(requestBody.content);
+    }
+    await setRecordByApplicant(requestBody.content.ApplicantID, records);
 }
 
 export async function getRecordByApplicant(applicantId, isRefresh = false) {
     // await localforage.removeItem(`records-${applicantId}`)  //TODO: remove this line
-    let records = await localforage.getItem(`records-${applicantId}`)
+    let records = await localforage.getItem(`records-${applicantId}`);
     if (isRefresh || records === null || (Date.now() - records.Date) > CACHE_EXPIRATION) {
         const response = await fetch(GET_RECORD_BY_APPLICANT, {
             method: 'POST',
@@ -42,8 +49,8 @@ export async function setRecordByApplicant(applicantId, records) {
 
 export async function getRecordByRecordIDs(recordIDs, isRefresh = false) {
     const expiredIDs = recordIDs.filter(async (recordId) => {
-        const record = await localforage.getItem(`record-${recordId}`)
-        return isRefresh || record === null || (Date.now() - record.Date) > CACHE_EXPIRATION
+        const record = await localforage.getItem(`record-${recordId}`);
+        return isRefresh || record === null || (Date.now() - record.Date) > CACHE_EXPIRATION;
     })
     const unexpiredIDs = recordIDs.filter((recordId) => {
         return !expiredIDs.includes(recordId)

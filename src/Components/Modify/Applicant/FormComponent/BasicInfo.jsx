@@ -84,12 +84,12 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                         <Autocomplete
                             fullWidth
                             options={applicationYearOptions}
-                            disabled={actionType === "edit"}
+                            readOnly={actionType === 'edit'}
                             renderInput={
                                 (params) =>
                                     <TextField
                                         {...params}
-                                        label="申请年份"
+                                        label={`申请年份 ${actionType === 'edit' ? ' (不可修改)' : ''}`}
                                         size="small"
                                         variant="outlined"
                                         name="ApplicationYear"
