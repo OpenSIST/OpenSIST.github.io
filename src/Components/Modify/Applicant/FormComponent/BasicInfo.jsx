@@ -17,7 +17,7 @@ import {
 } from "../../../../Data/Schemas";
 import "../AddModifyApplicant.css";
 
-function BasicInfo({formValues, handleNext, handleChange}) {
+function BasicInfo({formValues, handleNext, handleChange, actionType}) {
     const isError = () => {
         return !formValues.Gender || !formValues.CurrentDegree || !formValues.ApplicationYear || !formValues.Major;
     }
@@ -84,6 +84,7 @@ function BasicInfo({formValues, handleNext, handleChange}) {
                         <Autocomplete
                             fullWidth
                             options={applicationYearOptions}
+                            disabled={actionType === "edit"}
                             renderInput={
                                 (params) =>
                                     <TextField
