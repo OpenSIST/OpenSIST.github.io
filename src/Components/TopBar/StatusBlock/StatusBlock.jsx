@@ -15,10 +15,10 @@ export async function loader() {
     let avatarUrl = null;
     const session = await localforage.getItem('session');
     const expireAt = await localforage.getItem('expireAt');
-    if (session && expireAt > Date.now()) {
+    if (session && expireAt > Date.now() / 1000) {
         displayName = await getDisplayName();
         const metaData = await getMetaData();
-        avatarUrl = await getAvatar(metaData.Avatar);
+        avatarUrl = await getAvatar(metaData?.Avatar);
     }
     return {displayName, avatarUrl};
 

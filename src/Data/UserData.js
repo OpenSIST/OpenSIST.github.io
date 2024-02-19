@@ -118,7 +118,7 @@ export async function setAvatarID(avatarId) {
 }
 
 export async function getAvatar(avatarId, displayName = null, isRefresh = false) {
-    if (!avatarId) {
+    if (!avatarId || avatarId === '') {
         return null;
     }
     if (!displayName) {

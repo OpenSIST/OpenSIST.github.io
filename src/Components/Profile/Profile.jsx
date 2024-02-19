@@ -8,7 +8,7 @@ import {getAvatar, getMetaData, uploadAvatar} from "../../Data/UserData";
 
 export async function loader() {
     const metaData = await getMetaData();
-    const avatarUrl = await getAvatar(metaData.Avatar, )
+    const avatarUrl = await getAvatar(metaData?.Avatar)
     return {metaData, avatarUrl};
 }
 

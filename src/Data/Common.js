@@ -26,7 +26,10 @@ export async function handleErrors(response) {
     * @return: response
      */
     if (response.status === 401) {
-        window.location.href = "/login";
+        console.log(window.location.pathname)
+        if (!["/login", "/register", "/reset"].includes(window.location.pathname)) {
+            window.location.href = "/login";
+        }
         return;
     }
     if (response.status !== 200) {
