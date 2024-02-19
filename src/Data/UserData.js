@@ -176,6 +176,9 @@ export async function setMetaData(metadata, displayName = null) {
     * Set the user metadata to the local storage
     * @param metadata [Object]: metadata
     */
+    if (!metadata) {
+        return;
+    }
     if (displayName === null) {
         displayName = await getDisplayName();
     }
