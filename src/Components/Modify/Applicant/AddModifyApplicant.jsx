@@ -46,10 +46,10 @@ export async function action({request}) {
     const EnglishProficiency = {
         [EnglishOption === 'TOEFL' ? 'TOEFL' : 'IELTS']: {
             'Total': Number(EnglishTotal),
-            'R': R ? Number(R) : 0,
-            'W': W ? Number(W) : 0,
-            'L': L ? Number(L) : 0,
-            'S': S ? Number(S) : 0,
+            'R': Number(R),
+            'W': Number(W),
+            'L': Number(L),
+            'S': Number(S),
         }
     }
     const Exchange = formValues.Exchange ? removeEmptyDictInList(formValues.Exchange) : [];
