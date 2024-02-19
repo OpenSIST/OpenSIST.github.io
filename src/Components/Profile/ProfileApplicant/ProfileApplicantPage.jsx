@@ -71,7 +71,7 @@ export async function loader({params}) {
     const applicant = await getApplicant(applicantId);
     const records = await getRecordByApplicant(applicantId);
     const metaData = await getMetaData();
-    const avatarUrl = await getAvatar(metaData.Avatar);
+    const avatarUrl = await getAvatar(metaData?.Avatar);
     return {avatarUrl, applicant, records};
 }
 
