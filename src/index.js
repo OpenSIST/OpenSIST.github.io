@@ -46,7 +46,7 @@ import AdminEmailPage, {
 } from "./Components/Admin/AdminEmail/AdminEmailPage";
 import {ProgramIndex} from "./Components/ProgramPage/ProgramPage";
 import localforage from "localforage";
-import {action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
+import {loader as HomeLoader, action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
 import {
     ProfileApplicantWrapper,
     loader as ProfileApplicantLoader,
@@ -70,6 +70,7 @@ function OpenSIST() {
         {
             path: '/',
             element: <Home/>,
+            loader: HomeLoader,
             action: HomeAction,
             errorElement: <ErrorPage/>,
             children: [

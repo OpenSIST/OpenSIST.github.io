@@ -1,20 +1,35 @@
-import {Form, Link, useNavigate} from "react-router-dom";
+import {Form, Link, useLoaderData, useNavigate} from "react-router-dom";
 import "./StatusBlock.css";
 import React, {useContext, useEffect} from "react";
 import localforage from "localforage";
-import {logout, useUser} from "../../../Data/UserData";
+import {getAvatar, getDisplayName, logout, useUser} from "../../../Data/UserData";
 import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, useTheme} from "@mui/material";
 import {AccountBox, LockReset, Logout} from "@mui/icons-material";
 import {blue} from "@mui/material/colors";
 import {ThemeContext} from "../../../index";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import {getMetaData} from "../../../Data/ApplicantData";
 
-export async function action(){
+export async function loader() {
+    let displayName = null;
+    let avatarUrl = null;
+    const session = await localforage.getItem('session');
+    if (session) {
+        displayName = await getDisplayName();
+        const metaData = await getMetaData();
+        avatarUrl = await getAvatar(metaData.Avatar);
+    }
+    return {displayName, avatarUrl};
+
+}
+
+export async function action() {
     return await logout();
 }
 
 export function StatusBlock() {
+    const {displayName, avatarUrl} = useLoaderData();
     const navigate = useNavigate();
     const theme = useTheme();
     const {toggleTheme} = useContext(ThemeContext);
@@ -43,7 +58,7 @@ export function StatusBlock() {
         {user ? <>
             <Tooltip title="Account settings">
                 <IconButton onClick={handleMenu}>
-                    <Avatar sx={{bgcolor: blue[500]}}>{user?.slice(0, 1).toUpperCase()}</Avatar>
+                    <Avatar src={avatarUrl} sx={{bgcolor: blue[500]}}>{displayName?.slice(0, 1).toUpperCase()}</Avatar>
                 </IconButton>
             </Tooltip>
             <Menu
