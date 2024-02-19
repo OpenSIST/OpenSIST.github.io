@@ -63,6 +63,7 @@ const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
 
 
 export async function loader({params}) {
+    console.time("loader function");
     const applicantId = params.applicantId;
     const isAuth = await isAuthApplicant(applicantId);
     if (!isAuth) {
@@ -72,6 +73,7 @@ export async function loader({params}) {
     const records = await getRecordByApplicant(applicantId);
     const metaData = await getMetaData();
     const avatarUrl = await getAvatar(metaData?.Avatar);
+    console.timeEnd("loader function");
     return {avatarUrl, applicant, records};
 }
 
