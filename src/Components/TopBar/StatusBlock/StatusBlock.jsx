@@ -2,14 +2,13 @@ import {Form, Link, useLoaderData, useNavigate} from "react-router-dom";
 import "./StatusBlock.css";
 import React, {useContext, useEffect} from "react";
 import localforage from "localforage";
-import {getAvatar, getDisplayName, logout, useUser} from "../../../Data/UserData";
+import {getAvatar, getDisplayName, getMetaData, logout, useUser} from "../../../Data/UserData";
 import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, useTheme} from "@mui/material";
 import {AccountBox, LockReset, Logout} from "@mui/icons-material";
 import {blue} from "@mui/material/colors";
 import {ThemeContext} from "../../../index";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import {getMetaData} from "../../../Data/ApplicantData";
 
 export async function loader() {
     let displayName = null;

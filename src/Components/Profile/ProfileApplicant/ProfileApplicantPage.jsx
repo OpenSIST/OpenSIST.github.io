@@ -17,7 +17,6 @@ import {Link} from 'react-router-dom';
 import {
     getApplicant,
     getApplicantIDByDisplayName,
-    getMetaData,
     isAuthApplicant,
     removeApplicant
 } from "../../../Data/ApplicantData";
@@ -53,7 +52,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import EmailIcon from '@mui/icons-material/Email';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
 import LensIcon from '@mui/icons-material/Lens';
-import {getAvatar} from "../../../Data/UserData";
+import {getAvatar, getMetaData} from "../../../Data/UserData";
 
 const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
     display: 'flex',

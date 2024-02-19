@@ -1,12 +1,7 @@
 import localforage from "localforage";
-import {
-    ADD_MODIFY_APPLICANT,
-    APPLICANT_LIST,
-    GET_APPLICANT_ID_BY_DISPLAY_NAME, GET_METADATA,
-    REMOVE_APPLICANT
-} from "../APIs/APIs";
+import {ADD_MODIFY_APPLICANT, APPLICANT_LIST, REMOVE_APPLICANT} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
-import {getDisplayName} from "./UserData";
+import {getDisplayName, getMetaData, setMetaData} from "./UserData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
@@ -45,31 +40,6 @@ export async function getApplicantIDByDisplayName(isRefresh = false) {
     return metaData.ApplicantIDs;
 }
 
-export async function getMetaData(displayName = null, isRefresh = false) {
-    /*
-    * Get the user metadata from the server or local storage
-    * @param isRefresh [Boolean]: whether to refresh the data
-    * @return: metadata
-    */
-    if (!displayName) {
-        displayName = await getDisplayName(isRefresh);
-    }
-    let metadata = await localforage.getItem(`${displayName}-metadata`);
-    if (isRefresh || metadata === null || (Date.now() - metadata.Date) > CACHE_EXPIRATION) {
-        const response = await fetch(GET_METADATA, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-            body: JSON.stringify({display_name: displayName})
-        });
-        await handleErrors(response)
-        metadata = await response.json();
-        await setMetaData(metadata['result'], displayName);
-    }
-    return metadata['result'];
-}
-
-
 export async function setApplicantIDByDisplayName(applicants) {
     /*
     * Set the list of applicants to the local storage (i.e. localforage.getItem('applicants'))
@@ -81,18 +51,6 @@ export async function setApplicantIDByDisplayName(applicants) {
     await setMetaData(metaData, displayName);
     // applicants = {'result': applicants, 'Date': Date.now()}
     // await localforage.setItem(`${displayName}-applicants`, applicants);
-}
-
-export async function setMetaData(metadata, displayName = null) {
-    /*
-    * Set the user metadata to the local storage
-    * @param metadata [Object]: metadata
-    */
-    if (displayName === null) {
-        displayName = await getDisplayName();
-    }
-    metadata = {'result': metadata, 'Date': Date.now()}
-    await localforage.setItem(`${displayName}-metadata`, metadata);
 }
 
 export async function deleteApplicantIDByDisplayName(applicantId) {

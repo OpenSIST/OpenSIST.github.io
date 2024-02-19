@@ -1,10 +1,10 @@
 import {Paper, useTheme} from "@mui/material";
 import React from "react";
-import {getApplicants, getMetaData} from "../../Data/ApplicantData";
+import {getApplicants} from "../../Data/ApplicantData";
 import {Outlet, redirect, useLoaderData} from "react-router-dom";
 import {ProfileHeader} from "./UserInfo/ProfileHeader";
 import {grey} from "@mui/material/colors";
-import {getAvatar, uploadAvatar} from "../../Data/UserData";
+import {getAvatar, getMetaData, uploadAvatar} from "../../Data/UserData";
 
 export async function loader() {
     const metaData = await getMetaData();
