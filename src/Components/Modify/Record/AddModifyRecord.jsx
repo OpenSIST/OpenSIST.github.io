@@ -62,7 +62,6 @@ export default function AddModifyRecord({type}) {
         return acc;
     }, []);
     const record = recordsDict ? recordsDict[Object.keys(recordsDict)[0]] : null;
-    console.log(recordsDict)
     const [programOption, setProgramOption] = useState(record ? record.ProgramID : null);
     const [statusOption, setStatusOption] = useState(record ? record.Status : null);
     const [yearOption, setYearOption] = useState(record ? record.ProgramYear : null);
