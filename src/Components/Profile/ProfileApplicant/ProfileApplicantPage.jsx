@@ -541,6 +541,7 @@ function RecordBlock({Records, editable}) {
                                     "补充说明": record.Detail === '' ? '暂无' : record.Detail
                                 }}
                             />
+                            <Button component={Link} to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}><Edit/></Button>
                             {/*{index !== Records.length - 1 ? <Divider/> : null}*/}
                         </Grid2>
                     )

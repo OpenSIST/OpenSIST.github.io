@@ -13,7 +13,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from "dayjs";
 
 export async function loader({params}) {
-    const programs = await getPrograms(true);
+    const programs = await getPrograms();
     const recordID = `${params.applicantId}|${params.programId}`;
     const recordsDict = recordID ? await getRecordByRecordIDs([recordID]) : null;
     return {programs, recordsDict};
@@ -62,7 +62,7 @@ export default function AddModifyRecord({type}) {
         return acc;
     }, []);
     const record = recordsDict ? recordsDict[Object.keys(recordsDict)[0]] : null;
-
+    console.log(recordsDict)
     const [programOption, setProgramOption] = useState(record ? record.ProgramID : null);
     const [statusOption, setStatusOption] = useState(record ? record.Status : null);
     const [yearOption, setYearOption] = useState(record ? record.ProgramYear : null);
