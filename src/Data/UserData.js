@@ -97,7 +97,9 @@ export async function uploadAvatar(avatar) {
         method: 'POST',
         mode: "cors",
         credentials: "include",
-        headers: await headerGenerator(true, `image/${fileSuffix}`),
+        headers: await headerGenerator(true,
+            `image/${fileSuffix}`
+        ),
         body: avatar
     })
     await handleErrors(response);
