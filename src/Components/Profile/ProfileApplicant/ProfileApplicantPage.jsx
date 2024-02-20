@@ -52,8 +52,9 @@ export async function loader({params}) {
     const applicant = await getApplicant(applicantId);
     const records = await getRecordByApplicant(applicantId);
     const metaData = await getMetaData();
+    const contact = metaData?.Contact;
     const avatarUrl = await getAvatar(metaData?.Avatar);
-    return {avatarUrl, applicant, records};
+    return {avatarUrl, contact, applicant, records};
 }
 
 export async function action({params, request}) {
@@ -124,7 +125,7 @@ function BaseListItem({Icon, primary, secondary}) {
 }
 
 export function ProfileApplicantPage({editable = false}) {
-    const {avatarUrl, applicant, records} = useLoaderData();
+    const {avatarUrl, contact, applicant, records} = useLoaderData();
     return (
         <Grid2
             component={Paper}
@@ -136,7 +137,7 @@ export function ProfileApplicantPage({editable = false}) {
                 bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
             }}
         >
-            <BasicInfoBlock avatarUrl={avatarUrl} applicant={applicant} editable={editable}/>
+            <BasicInfoBlock avatarUrl={avatarUrl} contact={contact} applicant={applicant} editable={editable}/>
             <ExchangeBlock Exchanges={applicant?.Exchange}/>
             <ResearchBlock Researches={applicant?.Research}/>
             <InternshipBlock Internships={applicant?.Internship}/>
@@ -218,7 +219,7 @@ function EditDeleteButtonGroup({applicantId}) {
 
 }
 
-function BasicInfoBlock({avatarUrl, applicant, editable}) {
+function BasicInfoBlock({avatarUrl, contact, applicant, editable}) {
     const [isAuth, setIsAuth] = useState(false);
     useEffect(() => {
         isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
@@ -253,6 +254,14 @@ function BasicInfoBlock({avatarUrl, applicant, editable}) {
                             <EditDeleteButtonGroup applicantId={applicant.ApplicantID}/> : null}
                     </ContentCenteredGrid>
                 </Grid2>
+                <ContentCenteredGrid xs={12} sx={{gap: "1rem"}}>
+                    <Typography variant="h6" sx={{fontWeight: 'bold'}}>
+                        联系方式:
+                    </Typography>
+                    <Typography variant="subtitle1">
+                        {(!contact || contact === '') ? "暂无" : contact}
+                    </Typography>
+                </ContentCenteredGrid>
                 <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
                     <Typography variant="h6" sx={{fontWeight: 'bold'}}>
                         最终去向:
