@@ -25,6 +25,7 @@ export function ProfileHeader({loaderData}) {
                 width: '300px',
                 '& .MuiDrawer-paper': {
                     width: '300px',
+                    boxShadow: 'none'
                 },
             }}
         >

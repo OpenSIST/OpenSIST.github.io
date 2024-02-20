@@ -1,11 +1,11 @@
 import {getRecordByApplicant, removeRecord} from "../../../Data/RecordData";
-import {Form, redirect, useLoaderData, useParams} from "react-router-dom";
+import {Form, redirect, useLoaderData} from "react-router-dom";
 import {
     Avatar, Badge, Box, Button, Card, Chip, IconButton,
     Dialog, DialogActions, DialogContent,
     DialogContentText, DialogTitle, List, ListItem,
     ListItemIcon, ListItemText, TextField,
-    Paper, Slider, styled, Typography, Divider, Tooltip, useMediaQuery, Input
+    Paper, Slider, styled, Typography, Divider, Tooltip, Input, ButtonGroup
 } from "@mui/material";
 import {Add, Delete, Edit} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
@@ -118,6 +118,7 @@ function BaseListItem({Icon, primary, secondary}) {
                     </Box>
                 }
             />
+
         </ListItem>
     )
 }
@@ -219,7 +220,6 @@ function EditDeleteButtonGroup({applicantId}) {
 
 function BasicInfoBlock({avatarUrl, applicant, editable}) {
     const [isAuth, setIsAuth] = useState(false);
-    const downMD = useMediaQuery((theme) => theme.breakpoints.down('md'));
     useEffect(() => {
         isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
     }, [applicant.ApplicantID]);
@@ -321,8 +321,8 @@ function GREBlock({GRE}) {
         }
     }
     return (
-        <Grid2 container xs={12} xl={12}>
-            <ContentCenteredGrid xs={3} xl={3} sx={{flexDirection: 'column', justifyContent: 'center'}}>
+        <Grid2 container xs={12}>
+            <ContentCenteredGrid xs={3} sx={{flexDirection: 'column', justifyContent: 'center'}}>
                 <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>GRE</Typography>
                 <Typography>{GRE.Total}</Typography>
             </ContentCenteredGrid>
@@ -331,7 +331,7 @@ function GREBlock({GRE}) {
                     return null;
                 }
                 return (
-                    <ContentCenteredGrid xs={3} xl={3} key={key}
+                    <ContentCenteredGrid xs={3} key={key}
                                          sx={{flexDirection: 'column', justifyContent: 'center'}}>
                         <Typography variant="subtitle1"
                                     sx={{fontWeight: 'bold'}}>{EnglishExamMapping["GRE"][key]}</Typography>
@@ -360,8 +360,8 @@ function EnglishExamBlock({EnglishProficiency}) {
         <>
             {Object.entries(EnglishProficiency).map(([examType, grade]) => {
                 return (
-                    <Grid2 container xs={12} xl={12} key={examType}>
-                        <ContentCenteredGrid xs={12 / 5} xl={12 / 5}
+                    <Grid2 container xs={12} key={examType}>
+                        <ContentCenteredGrid xs={12 / 5}
                                              sx={{flexDirection: 'column', justifyContent: 'center'}}>
                             <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>{examType}</Typography>
                             <Typography>{grade.Total}</Typography>
@@ -371,7 +371,7 @@ function EnglishExamBlock({EnglishProficiency}) {
                                 return null;
                             }
                             return (
-                                <ContentCenteredGrid xs={12 / 5} xl={12 / 5} key={key}
+                                <ContentCenteredGrid xs={12 / 5} key={key}
                                                      sx={{flexDirection: 'column', justifyContent: 'center'}}>
                                     <Typography variant="subtitle1"
                                                 sx={{fontWeight: 'bold'}}>{EnglishExamMapping[examType][key]}</Typography>
@@ -589,7 +589,12 @@ function RecordBlock({Records, ApplicantID, editable}) {
             {Records.map((record, index) => {
                 return (
                     <Grid2 sx={{display: 'flex'}} xs={12} md={6} xl={4} key={index}>
-                        <Card elevation={3} sx={{width: "100%"}}>
+                        <Card elevation={3} sx={{
+                            width: "100%",
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between'
+                        }}>
                             <BaseListItem
                                 experience={record}
                                 Icon={<Chip label={record.Status} color={RecordStatusPaltette[record.Status]}/>}
@@ -602,21 +607,26 @@ function RecordBlock({Records, ApplicantID, editable}) {
                                     "补充说明": record.Detail === '' ? '暂无' : record.Detail
                                 }}
                             />
-                            {editable ? <>
-                                <Tooltip title='编辑申请记录' arrow>
-                                    <Button component={Link}
-                                            to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}>
-                                        <Edit/>
-                                    </Button>
-                                </Tooltip>
-                                <Tooltip title='删除申请记录' arrow>
-                                    <Button onClick={() => {
-                                        handleOpen(record.RecordID)
-                                    }} color='error'>
-                                        <Delete/>
-                                    </Button>
-                                </Tooltip>
-                            </> : null}
+                            {editable ?
+                                <ButtonGroup sx={{
+                                    p: '1rem',
+                                    alignSelf: 'flex-end'
+                                }}>
+                                    <Tooltip title='编辑申请记录' arrow>
+                                        <IconButton component={Link}
+                                                    to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}>
+                                            <Edit/>
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title='删除申请记录' arrow>
+                                        <IconButton onClick={() => {
+                                            handleOpen(record.RecordID)
+                                        }} color='error'>
+                                            <Delete/>
+                                        </IconButton>
+                                    </Tooltip>
+                                </ButtonGroup> : null
+                            }
                         </Card>
                     </Grid2>
                 )
