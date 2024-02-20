@@ -15,7 +15,7 @@ import dayjs from "dayjs";
 export async function loader({params}) {
     const programs = await getPrograms();
     const recordID = `${params.applicantId}|${params.programId}`;
-    const recordsDict = recordID ? await getRecordByRecordIDs([recordID]) : null;
+    const recordsDict = params.programId ? await getRecordByRecordIDs([recordID]) : null;
     return {programs, recordsDict};
 }
 export async function action({params, request}) {
@@ -103,7 +103,7 @@ export default function AddModifyRecord({type}) {
                                     }
                                     value={programOption ? programOptions.find(option => option.value === programOption) : null}
                                     onChange={(event, newValue) => {
-                                        setProgramOption(newValue.value);
+                                        setProgramOption(newValue?.value);
                                     }}
                                 >
                                 </Autocomplete>
@@ -124,7 +124,7 @@ export default function AddModifyRecord({type}) {
                                     options={recordStatusOptions}
                                     value={statusOption ? recordStatusOptions.find((option) => option.value === statusOption) : null}
                                     onChange={(event, newValue) => {
-                                        setStatusOption(newValue.value);
+                                        setStatusOption(newValue?.value);
                                     }}
                                 />
                             </Grid2>
@@ -144,7 +144,7 @@ export default function AddModifyRecord({type}) {
                                     options={applicationYearOptions}
                                     value={yearOption ? applicationYearOptions.find((option) => option.value === yearOption) : null}
                                     onChange={(event, newValue) => {
-                                        setYearOption(newValue.value);
+                                        setYearOption(newValue?.value);
                                     }}
                                 />
                             </Grid2>
@@ -164,7 +164,7 @@ export default function AddModifyRecord({type}) {
                                     options={recordSemesterOptions}
                                     value={semesterOption ? recordSemesterOptions.find((option) => option.value === semesterOption) : null}
                                     onChange={(event, newValue) => {
-                                        setSemesterOption(newValue.value);
+                                        setSemesterOption(newValue?.value);
                                     }}
                                 />
                             </Grid2>

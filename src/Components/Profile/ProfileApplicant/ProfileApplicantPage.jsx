@@ -1,13 +1,13 @@
-import {getRecordByApplicant} from "../../../Data/RecordData";
-import {Form, redirect, useLoaderData} from "react-router-dom";
+import {getRecordByApplicant, removeRecord} from "../../../Data/RecordData";
+import {Form, redirect, useLoaderData, useParams} from "react-router-dom";
 import {
     Avatar, Badge,
     Box, Button,
     Card,
     Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
-    Divider, IconButton,
+    Divider, IconButton, Input,
     List, ListItem, ListItemIcon, ListItemText,
-    Paper, Slider, styled, TextField,
+    Paper, Slider, styled, TextField, Tooltip,
     Typography
 } from "@mui/material";
 import {Add, Delete, Edit} from "@mui/icons-material";
@@ -31,7 +31,7 @@ import {
     rankPercentSliderValueMapping, recommendationTypeMapping, RecordStatusPaltette,
     SliderValueRankStringMapping
 } from "../../../Data/Schemas";
-import {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
@@ -65,10 +65,18 @@ export async function loader({params}) {
     return {avatarUrl, applicant, records};
 }
 
-export async function action({params}) {
+export async function action({params, request}) {
+    const formData = await request.formData();
+    const actionType = formData.get('ActionType');
     const applicantId = params.applicantId;
-    await removeApplicant(applicantId);
-    return redirect('/profile');
+    if (actionType === 'DeleteApplicant') {
+        await removeApplicant(applicantId);
+        return redirect('/profile');
+    } else if (actionType === 'DeleteRecord') {
+        const recordId = formData.get('RecordID');
+        await removeRecord(recordId);
+        return redirect(`/profile/${applicantId}`);
+    }
 }
 
 export function ProfileApplicantPage({editable = false}) {
@@ -143,12 +151,16 @@ function EditDeleteButtonGroup({applicantId}) {
     const [confirmText, setConfirmText] = useState('');
     return (
         <>
-            <IconButton component={Link} to={`/profile/${applicantId}/edit`}>
-                <Edit/>
-            </IconButton>
-            <IconButton onClick={handleOpen}>
-                <Delete/>
-            </IconButton>
+            <Tooltip title='更改申请人信息' arrow>
+                <IconButton component={Link} to={`/profile/${applicantId}/edit`} color='primary'>
+                    <Edit/>
+                </IconButton>
+            </Tooltip>
+            <Tooltip title='删除申请人' arrow>
+                <IconButton onClick={handleOpen} color='error'>
+                    <Delete/>
+                </IconButton>
+            </Tooltip>
             <Dialog open={open} onClose={() => setOpen(false)}>
                 <DialogTitle>是否要删除{applicantId}？</DialogTitle>
                 <DialogContent>
@@ -172,7 +184,7 @@ function EditDeleteButtonGroup({applicantId}) {
                 <DialogActions>
                     <Button onClick={handleClose}>取消</Button>
                     <Form method='post'>
-                        <Button color='error' type='submit' onClick={handleClose}
+                        <Button color='error' type='submit' name='ActionType' value='DeleteApplicant' onClick={handleClose}
                                 disabled={confirmText !== applicantId}>
                             确认
                         </Button>
@@ -518,7 +530,17 @@ function CompetitionBlock({Competitions}) {
     )
 }
 
-function RecordBlock({Records, editable}) {
+function RecordBlock({Records, ApplicantID, editable}) {
+    const [open, setOpen] = useState(false);
+    const [deleteRecordID, setDeleteRecordID] = useState('');
+    const handleOpen = (recordID) => {
+        setOpen(true);
+        setDeleteRecordID(recordID);
+    }
+    const handleClose = () => {
+        setOpen(false);
+        setDeleteRecordID('');
+    }
     return (
         <BaseItemBlock className="RecordBlock" checkpointProps={{xs: 12}}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
@@ -540,12 +562,34 @@ function RecordBlock({Records, editable}) {
                                     "补充说明": record.Detail === '' ? '暂无' : record.Detail
                                 }}
                             />
-                            <Button component={Link}
-                                    to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}><Edit/></Button>
+                            { editable ? <>
+                                <Tooltip title='编辑申请记录' arrow>
+                                    <Button component={Link} to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}>
+                                        <Edit/>
+                                    </Button>
+                                </Tooltip>
+                                <Tooltip title='删除申请记录' arrow>
+                                    <Button onClick={() => {handleOpen(record.RecordID)}} color='error'>
+                                        <Delete/>
+                                    </Button>
+                                </Tooltip>
+                            </> : null}
                             {/*{index !== Records.length - 1 ? <Divider/> : null}*/}
                         </Grid2>
                     )
                 })}
+                <Dialog open={open} onClose={() => setOpen(false)}>
+                    <DialogTitle>是否要删除{deleteRecordID.split('|')[1]}项目的申请记录？</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={handleClose}>取消</Button>
+                        <Form method='post'>
+                            <Input type='hidden' name='RecordID' value={deleteRecordID}/>
+                            <Button color='error' type='submit' name='ActionType' value='DeleteRecord' onClick={handleClose}>
+                                确认
+                            </Button>
+                        </Form>
+                    </DialogActions>
+                </Dialog>
             </Grid2>
         </BaseItemBlock>
     )

@@ -1,4 +1,9 @@
-import {ADD_MODIFY_RECORD, GET_RECORD_BY_APPLICANT, GET_RECORD_BY_RECORD_IDs} from "../APIs/APIs";
+import {
+    ADD_MODIFY_RECORD,
+    GET_RECORD_BY_APPLICANT,
+    GET_RECORD_BY_RECORD_IDs,
+    REMOVE_RECORD
+} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
 import localforage from "localforage";
 
@@ -58,16 +63,11 @@ export async function getRecordByRecordIDs(recordIDs, isRefresh = false) {
         return !expiredIDs.includes(recordId)
     });
 
-    // const unexpiredRecords = {};
-    // unexpiredIDs.forEach((recordId) => {
-    //     unexpiredRecords[recordId] = cacheRecords[recordIDs.indexOf(recordId)]['data'];
-    // })
     const unexpiredRecords = {};
     unexpiredIDs.forEach((recordId) => {
         unexpiredRecords[recordId] = cacheRecords[recordIDs.indexOf(recordId)]['data'];
     })
 
-    console.log(expiredIDs, unexpiredIDs)
     let expiredRecords = {data: {}};
     if (expiredIDs.length > 0) {
         const response = await fetch(GET_RECORD_BY_RECORD_IDs, {
@@ -82,14 +82,30 @@ export async function getRecordByRecordIDs(recordIDs, isRefresh = false) {
             await setRecordByRecordID(recordId, expiredRecords['data'][recordId])
         }));
     }
-    const records = {
+    return {
         ...expiredRecords['data'],
         ...unexpiredRecords
-    }
-    return records;
+    };
 }
 
 export async function setRecordByRecordID(recordId, record) {
     record = {data: record, Date: Date.now()};
     await localforage.setItem(`record-${recordId}`, record)
+}
+
+export async function removeRecord(recordId) {
+    const response = await fetch(REMOVE_RECORD, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
+        body: JSON.stringify({
+            RecordID: recordId,
+        }),
+    });
+    await handleErrors(response);
+
+    await localforage.removeItem(`record-${recordId}`);
+    const applicantID = recordId.split('|')[0];
+    const records = await getRecordByApplicant(applicantID);
+    await setRecordByApplicant(applicantID, records.filter(record => record.RecordID !== recordId));
 }
