@@ -560,7 +560,6 @@ function RecordBlock({Records, ApplicantID, editable}) {
     }
     const handleClose = () => {
         setOpen(false);
-        setDeleteRecordID('');
     }
     return (
         <BaseItemBlock className="RecordBlock" checkpointProps={{xs: 12}} spacing={2}>

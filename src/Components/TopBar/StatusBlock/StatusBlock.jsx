@@ -47,7 +47,7 @@ export function StatusBlock() {
         if (user === null) {
             navigate('/login');
         }
-    }, [user]);
+    }, [user, navigate]);
 
     localforage.setItem('theme', theme.palette.mode).then()
 
