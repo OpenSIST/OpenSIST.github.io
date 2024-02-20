@@ -52,11 +52,13 @@ export function StatusBlock() {
     localforage.setItem('theme', theme.palette.mode).then()
 
     return (<Box sx={{display: 'flex', mr: '1vw'}}>
-        <IconButton onClick={toggleTheme} sx={{m: 'auto'}}>
-            {theme.palette.mode === 'dark' ? <Brightness7Icon/> : <Brightness4Icon/>}
-        </IconButton>
+        <Tooltip title={`${theme.palette.mode === 'dark' ? '关闭' : '打开'}夜间模式`} arrow>
+            <IconButton onClick={toggleTheme} sx={{m: 'auto'}}>
+                {theme.palette.mode === 'dark' ? <Brightness7Icon/> : <Brightness4Icon/>}
+            </IconButton>
+        </Tooltip>
         {user ? <>
-            <Tooltip title="Account settings">
+            <Tooltip title="Account settings" arrow>
                 <IconButton onClick={handleMenu}>
                     <Avatar src={avatarUrl} sx={{bgcolor: blue[500]}}>{displayName?.slice(0, 1).toUpperCase()}</Avatar>
                 </IconButton>

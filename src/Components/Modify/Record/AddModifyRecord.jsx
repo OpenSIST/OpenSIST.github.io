@@ -2,7 +2,7 @@ import {getPrograms} from "../../../Data/ProgramData";
 import React, {useState} from "react";
 import {addModifyRecord, getRecordByRecordIDs} from "../../../Data/RecordData";
 import {Box, Button, Input, Paper, TextField, Typography} from "@mui/material";
-import {Form, redirect, useLoaderData} from "react-router-dom";
+import {Form, redirect, useLoaderData, useNavigate} from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import Autocomplete from "@mui/material/Autocomplete";
 import {applicationYearOptions, recordSemesterOptions, recordStatusOptions} from "../../../Data/Schemas";
@@ -55,6 +55,7 @@ export async function action({params, request}) {
 
 export default function AddModifyRecord({type}) {
     const {programs, recordsDict} = useLoaderData();
+    const navigate = useNavigate();
     const programOptions = Object.values(programs).reduce((acc, programArray) => {
         programArray.forEach(program => {
             acc.push({label: program.ProgramID, value: program.ProgramID})
@@ -233,9 +234,17 @@ export default function AddModifyRecord({type}) {
                     </Box>
                     <Box sx={{display: "flex", justifyContent: "flex-end", margin: 3}}>
                         <Button
-                            sx={{mr: 1}}
+                            sx={{ mr: 1 }}
+                            variant='contained'
+                            onClick={() => navigate(-1)}
+                        >
+                            取消
+                        </Button>
+                        <Button
+                            sx={{ mr: 2 }}
                             variant='contained'
                             type="submit"
+                            color='success'
                         >
                             提交
                         </Button>

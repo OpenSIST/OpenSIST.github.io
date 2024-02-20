@@ -36,14 +36,14 @@ export default function SideBar({loaderData}) {
                 <SearchBar query={getQuery(loaderData)}/>
                 <Box sx={{mb: "10px", display: 'flex', gap: "10px"}}>
                     <Form action='/programs/new' style={{width: "100%"}}>
-                        <Tooltip title='添加新项目'>
+                        <Tooltip title='添加新项目' arrow>
                             <Button fullWidth type='submit' variant="outlined">
                                 <Add/>
                             </Button>
                         </Tooltip>
                     </Form>
                     <Form method='post' style={{width: "100%"}}>
-                        <Tooltip title='刷新项目列表'>
+                        <Tooltip title='刷新项目列表' arrow>
                             <Button fullWidth type='submit' variant="outlined">
                                 <Refresh/>
                             </Button>

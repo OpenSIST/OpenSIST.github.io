@@ -16,8 +16,10 @@ import {
     majorOptions,
 } from "../../../../Data/Schemas";
 import "../AddModifyApplicant.css";
+import {useNavigate} from "react-router-dom";
 
 function BasicInfo({formValues, handleNext, handleChange, actionType}) {
+    const navigate = useNavigate();
     const isError = () => {
         return !formValues.Gender || !formValues.CurrentDegree || !formValues.ApplicationYear || !formValues.Major;
     }
@@ -149,6 +151,13 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                 </Grid2>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "flex-end", margin: 3 }}>
+                <Button
+                    sx={{ mr: 1 }}
+                    variant='contained'
+                    onClick={() => navigate(-1)}
+                >
+                    取消
+                </Button>
                 <Button
                     sx={{ mr: 2 }}
                     variant='contained'
