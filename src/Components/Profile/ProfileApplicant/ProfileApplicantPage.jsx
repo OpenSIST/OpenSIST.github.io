@@ -1,22 +1,20 @@
 import {getRecordByApplicant} from "../../../Data/RecordData";
-import {Form, redirect, useLoaderData, useParams} from "react-router-dom";
+import {Form, redirect, useLoaderData} from "react-router-dom";
 import {
     Avatar, Badge,
     Box, Button,
     Card,
-    CardActionArea, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+    Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
     Divider, IconButton,
-    InputLabel, List, ListItem, ListItemIcon, ListItemText, ListSubheader,
-    OutlinedInput, Paper, Slider, styled, TextField,
-    Tooltip,
-    Typography, useTheme
+    List, ListItem, ListItemIcon, ListItemText,
+    Paper, Slider, styled, TextField,
+    Typography
 } from "@mui/material";
 import {Add, Delete, Edit} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
 import {Link} from 'react-router-dom';
 import {
     getApplicant,
-    getApplicantIDByDisplayName,
     isAuthApplicant,
     removeApplicant
 } from "../../../Data/ApplicantData";
@@ -25,21 +23,15 @@ import HelpIcon from '@mui/icons-material/Help';
 import {
     authorOrderMapping,
     currentDegreeMapping,
-    currentDegreeOptions,
     EnglishExamMapping,
     exchangeDurationMapping,
     exchangeUnivFullNameMapping,
-    genderOptions,
-    PublicationAuthorOrderChipColor,
-    PublicationStateChipColor, publicationStatusMapping,
-    PublicationTypeChipColor,
+    publicationStatusMapping,
     publicationTypeMapping,
-    rankPercentOptions,
     rankPercentSliderValueMapping, recommendationTypeMapping, RecordStatusPaltette,
     SliderValueRankStringMapping
 } from "../../../Data/Schemas";
 import {Fragment, useEffect, useState} from "react";
-import localforage from "localforage";
 
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
@@ -47,20 +39,18 @@ import TransgenderIcon from '@mui/icons-material/Transgender';
 import SchoolIcon from '@mui/icons-material/School';
 import WorkIcon from '@mui/icons-material/Work';
 import BiotechIcon from '@mui/icons-material/Biotech';
-import {useMediaQuery} from '@mui/material';
 import ArticleIcon from '@mui/icons-material/Article';
 import EmailIcon from '@mui/icons-material/Email';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
-import LensIcon from '@mui/icons-material/Lens';
+import {useMediaQuery} from '@mui/material';
 import {getAvatar, getMetaData} from "../../../Data/UserData";
 
 const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
     display: 'flex',
     // justifyContent: 'center',
     alignItems: 'center',
-    padding: "0.5rem"
+    // padding: "0.5rem"
 }));
-
 
 export async function loader({params}) {
     const applicantId = params.applicantId;
@@ -85,18 +75,45 @@ export function ProfileApplicantPage({editable = false}) {
     const {avatarUrl, applicant, records} = useLoaderData();
     const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
     return (
-        <Grid2 key={applicant.ApplicantID} container xs={12} sx={{gap: '1rem'}}>
+        <Grid2
+            component={Paper}
+            key={applicant.ApplicantID}
+            container
+            spacing={2}
+        >
             <BasicInfoBlock avatarUrl={avatarUrl} applicant={applicant} editable={editable}/>
-            <Grid2 container xs={12} sx={{gap: "1rem", flexWrap: matches ? 'nowrap' : "wrap"}}>
-                <ExchangeBlock Exchanges={applicant?.Exchange}/>
-                <ResearchBlock Researches={applicant?.Research}/>
-                <InternshipBlock Internships={applicant?.Internship}/>
-            </Grid2>
-            <Grid2 container xs={12} sx={{gap: "1rem", flexWrap: matches ? 'nowrap' : "wrap"}}>
-                <PublicationBlock Publications={applicant?.Publication}/>
-                <RecommendationBlock Recommendations={applicant?.Recommendation}/>
-                <CompetitionBlock Competitions={applicant?.Competition}/>
-            </Grid2>
+            <ExchangeBlock Exchanges={applicant?.Exchange}/>
+            <ResearchBlock Researches={applicant?.Research}/>
+            <InternshipBlock Internships={applicant?.Internship}/>
+            <PublicationBlock Publications={applicant?.Publication}/>
+            <RecommendationBlock Recommendations={applicant?.Recommendation}/>
+            <CompetitionBlock Competitions={applicant?.Competition}/>
+            <RecordBlock Records={records} editable={editable}/>
+
+        </Grid2>
+    )
+}
+
+export function ProfileApplicantPage1({editable = false}) {
+    const {avatarUrl, applicant, records} = useLoaderData();
+    const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
+    return (
+        <Grid2 key={applicant.ApplicantID} container
+            // xs={12}
+               spacing={12}
+            // sx={{gap: '1rem'}}
+        >
+            <BasicInfoBlock avatarUrl={avatarUrl} applicant={applicant} editable={editable}/>
+            <ExchangeBlock Exchanges={applicant?.Exchange}/>
+            <ResearchBlock Researches={applicant?.Research}/>
+            <InternshipBlock Internships={applicant?.Internship}/>
+            {/*<Grid2 container xs={12} sx={{gap: "1rem", flexWrap: matches ? 'nowrap' : "wrap"}}>*/}
+            {/*</Grid2>*/}
+            <PublicationBlock Publications={applicant?.Publication}/>
+            <RecommendationBlock Recommendations={applicant?.Recommendation}/>
+            <CompetitionBlock Competitions={applicant?.Competition}/>
+            {/*<Grid2 container xs={12} sx={{gap: "1rem", flexWrap: matches ? 'nowrap' : "wrap"}}>*/}
+            {/*</Grid2>*/}
             <RecordBlock Records={records} editable={editable}/>
         </Grid2>
     )
@@ -193,8 +210,8 @@ function BasicInfoBlock({avatarUrl, applicant, editable}) {
         })
     }
     return (
-        <Grid2 component={Paper} className="BasicInfoBlock" container xs={12}>
-            <Grid2 container xs={12} md={4}>
+        <BaseItemBlock className="BasicInfoBlock" checkpointProps={{xs: 12}} spacing={2}>
+            <Grid2 container xs={12} lg={4}>
                 <ContentCenteredGrid>
                     <Badge
                         badgeContent={<GenderIcon gender={applicant.Gender}/>}
@@ -242,7 +259,7 @@ function BasicInfoBlock({avatarUrl, applicant, editable}) {
             </Grid2>
             <EnglishExamBlock EnglishProficiency={applicant?.EnglishProficiency}/>
             <GREBlock GRE={applicant?.GRE}/>
-        </Grid2>
+        </BaseItemBlock>
     )
 }
 
@@ -256,7 +273,7 @@ function GREBlock({GRE}) {
         }
     }
     return (
-        <Grid2 container xs={12} md={4}>
+        <Grid2 container xs={12} lg={4}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', justifyContent: 'center'}}>
                 <Typography variant="h6" sx={{fontWeight: 'bold'}}>GRE</Typography>
                 <Typography>{GRE.Total}</Typography>
@@ -291,7 +308,7 @@ function EnglishExamBlock({EnglishProficiency}) {
         <>
             {Object.entries(EnglishProficiency).map(([examType, grade]) => {
                 return (
-                    <Grid2 container xs={12} md={4} key={examType}>
+                    <Grid2 container xs={12} lg={4} key={examType}>
                         <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', justifyContent: 'center'}}>
                             <Typography variant="h6" sx={{fontWeight: 'bold'}}>{examType}</Typography>
                             <Typography>{grade.Total}</Typography>
@@ -328,7 +345,7 @@ function ExchangeBlock({Exchanges}) {
         ]
     }
     return (
-        <Grid2 component={Paper} className="ExchangeBlock" container xs={12} md={4}>
+        <BaseItemBlock className="ExchangeBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>交换经历</Typography>
             </ContentCenteredGrid>
@@ -336,7 +353,7 @@ function ExchangeBlock({Exchanges}) {
                 {Exchanges.map((exchange, index) => {
                     return (
                         <Fragment key={index}>
-                            <ExperienceListItem
+                            <BaseListItem
                                 experience={exchange}
                                 Icon={<SchoolIcon/>}
                                 primary={exchangeUnivFullNameMapping[exchange.University] ?? "暂无"}
@@ -350,64 +367,58 @@ function ExchangeBlock({Exchanges}) {
                     )
                 })}
             </List>
-        </Grid2>
+        </BaseItemBlock>
     )
 }
 
 function ResearchBlock({Researches}) {
     return (
-        <Grid2 component={Paper} className="ResearchBlock" container xs={12} md={4}>
-            <ContentCenteredGrid
-                xs={12}
-                sx={{flexDirection: 'column', alignItems: 'flex-start'}}
-            >
+        <BaseItemBlock className="ResearchBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
+            <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>科研经历</Typography>
                 <Typography variant="subtitle1">{Researches.Focus}</Typography>
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
-                <ExperienceListItem
+                <BaseListItem
                     experience={Researches.Domestic}
                     Icon={<BiotechIcon/>}
                     primary={`国内${Researches.Domestic.Num}段研究经历`}
                     secondary={Researches.Domestic.Detail === '' ? '具体描述:暂无' : Researches.Domestic.Detail}
                 />
                 <Divider/>
-                <ExperienceListItem
+                <BaseListItem
                     experience={Researches.International}
                     Icon={<BiotechIcon/>}
                     primary={`国外${Researches.International.Num}段研究经历`}
                     secondary={Researches.International.Detail === '' ? '具体描述:暂无' : Researches.International.Detail}
                 />
             </List>
-        </Grid2>
+        </BaseItemBlock>
     )
 }
 
 function InternshipBlock({Internships}) {
     return (
-        <Grid2 component={Paper} className="InternshipBlock" container xs={12} md={4}>
-            <ContentCenteredGrid
-                xs={12}
-                sx={{flexDirection: 'column', alignItems: 'flex-start'}}
-            >
+        <BaseItemBlock className="InternshipBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
+            <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>实习经历</Typography>
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
-                <ExperienceListItem
+                <BaseListItem
                     experience={Internships.Domestic}
                     Icon={<WorkIcon/>}
                     primary={`国内${Internships.Domestic.Num}段实习经历`}
                     secondary={Internships.Domestic.Detail === '' ? '具体描述:暂无' : Internships.Domestic.Detail}
                 />
                 <Divider/>
-                <ExperienceListItem
+                <BaseListItem
                     experience={Internships.International}
                     Icon={<WorkIcon/>}
                     primary={`国外${Internships.International.Num}段实习经历`}
                     secondary={Internships.International.Detail === '' ? '具体描述:暂无' : Internships.International.Detail}
                 />
             </List>
-        </Grid2>
+        </BaseItemBlock>
     )
 }
 
@@ -424,18 +435,15 @@ function PublicationBlock({Publications}) {
         ]
     }
     return (
-        <Grid2 component={Paper} className="PublicationBlock" container xs={12} md={4}>
-            <ContentCenteredGrid
-                xs={12}
-                sx={{flexDirection: 'column', alignItems: 'flex-start'}}
-            >
+        <BaseItemBlock className="PublicationBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
+            <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>发表论文</Typography>
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
                 {Publications.map((publication, index) => {
                     return (
                         <Fragment key={index}>
-                            <ExperienceListItem
+                            <BaseListItem
                                 experience={publication}
                                 Icon={<ArticleIcon/>}
                                 primary={`${publication.Name} ${publicationTypeMapping[publication.Type] ?? ""}`}
@@ -450,7 +458,7 @@ function PublicationBlock({Publications}) {
                     )
                 })}
             </List>
-        </Grid2>
+        </BaseItemBlock>
     )
 }
 
@@ -464,11 +472,8 @@ function RecommendationBlock({Recommendations}) {
         ]
     }
     return (
-        <Grid2 component={Paper} className="RecommendationBlock" container xs={12} md={4}>
-            <ContentCenteredGrid
-                xs={12}
-                sx={{flexDirection: 'column', alignItems: 'flex-start'}}
-            >
+        <BaseItemBlock className="RecommendationBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
+            <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>推荐信</Typography>
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
@@ -477,7 +482,7 @@ function RecommendationBlock({Recommendations}) {
                     primary = primary === '' ? '暂无' : primary;
                     return (
                         <Fragment key={index}>
-                            <ExperienceListItem
+                            <BaseListItem
                                 experience={recommendation}
                                 Icon={<EmailIcon/>}
                                 primary={primary}
@@ -488,7 +493,7 @@ function RecommendationBlock({Recommendations}) {
                     )
                 })}
             </List>
-        </Grid2>
+        </BaseItemBlock>
     )
 }
 
@@ -497,39 +502,33 @@ function CompetitionBlock({Competitions}) {
         Competitions = "暂无";
     }
     return (
-        <Grid2 component={Paper} className="CompetitionBlock" container xs={12} md={4}>
-            <ContentCenteredGrid
-                xs={12}
-                sx={{flexDirection: 'column', alignItems: 'flex-start'}}
-            >
+        <BaseItemBlock className="CompetitionBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
+            <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>竞赛</Typography>
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
-                <ExperienceListItem
+                <BaseListItem
                     experience={Competitions}
                     Icon={<ShutterSpeedIcon/>}
                     primary="竞赛经历"
                     secondary={Competitions === '' ? '具体描述:暂无' : Competitions}
                 />
             </List>
-        </Grid2>
+        </BaseItemBlock>
     )
 }
 
 function RecordBlock({Records, editable}) {
     return (
-        <Grid2 component={Paper} className="RecordBlock" container xs={12}>
-            <ContentCenteredGrid
-                xs={12}
-                sx={{flexDirection: 'column', alignItems: 'flex-start'}}
-            >
+        <BaseItemBlock className="RecordBlock" checkpointProps={{xs: 12}}>
+            <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>申请记录</Typography>
             </ContentCenteredGrid>
-            <Grid2 container component={List} xs={12} sx={{width: '100%'}}>
+            <Grid2 container component={List} xs={12} spacing={2} sx={{width: '100%'}}>
                 {Records.map((record, index) => {
                     return (
-                        <Grid2 component={Card} xs={12} md={4} key={index}>
-                            <ExperienceListItem
+                        <Grid2 component={Card} elevation={2} xs={12} md={4} key={index}>
+                            <BaseListItem
                                 experience={record}
                                 Icon={<Chip label={record.Status} color={RecordStatusPaltette[record.Status]}/>}
                                 primary={record.ProgramID}
@@ -541,17 +540,30 @@ function RecordBlock({Records, editable}) {
                                     "补充说明": record.Detail === '' ? '暂无' : record.Detail
                                 }}
                             />
-                            <Button component={Link} to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}><Edit/></Button>
+                            <Button component={Link}
+                                    to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}><Edit/></Button>
                             {/*{index !== Records.length - 1 ? <Divider/> : null}*/}
                         </Grid2>
                     )
                 })}
             </Grid2>
+        </BaseItemBlock>
+    )
+}
+
+function BaseItemBlock({children, className, checkpointProps, spacing = 0}) {
+    return (
+        <Grid2 {...checkpointProps}>
+            <Paper className={className}>
+                <Grid2 container spacing={spacing}>
+                    {children}
+                </Grid2>
+            </Paper>
         </Grid2>
     )
 }
 
-function ExperienceListItem({Icon, primary, secondary}) {
+function BaseListItem({Icon, primary, secondary}) {
     return (
         <ListItem alignItems="flex-start">
             <ListItemIcon>
@@ -585,33 +597,4 @@ function ExperienceListItem({Icon, primary, secondary}) {
     )
 }
 
-const RecordsExample = [
-    {
-        "RecordID": "libn@2021|CS75@UCSD",
-        "ApplicantID": "libn@2021",
-        "ProgramID": "CS75@UCSD",
-        "ProgramYear": 2024,
-        "Semester": "Fall",
-        "Status": "Admit",
-        "TimeLine": {
-            "Submit": "2023-12-16T00:00:00.000Z",
-            "Interview": null,
-            "Decision": "2024-02-16T00:00:00.000Z"
-        },
-        "Detail": ""
-    },
-    {
-        "RecordID": "libn@2021|CS General@NEU",
-        "ApplicantID": "libn@2021",
-        "ProgramID": "CS General@NEU",
-        "ProgramYear": 2024,
-        "Semester": "Fall",
-        "Status": "Admit",
-        "TimeLine": {
-            "Submit": "2023-12-06T00:00:00.000Z",
-            "Interview": null,
-            "Decision": "2024-01-12T00:00:00.000Z"
-        },
-        "Detail": "Vancouver 校区"
-    }
-]
+

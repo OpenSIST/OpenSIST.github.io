@@ -35,7 +35,7 @@ export async function getApplicantIDByDisplayName(isRefresh = false) {
     * Get the list of applicantIDs from the server or local storage by displayName
     * @return: list of applicants
     */
-    const displayName = await getDisplayName();
+    const displayName = await getDisplayName(isRefresh);
     const metaData = await getMetaData(displayName, isRefresh);
     return metaData.ApplicantIDs;
 }

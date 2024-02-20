@@ -118,11 +118,21 @@ export async function setAvatarID(avatarId) {
 }
 
 export async function getAvatar(avatarId, displayName = null, isRefresh = false) {
+    // TODO: handle cross-device displayName synchronization
+    // Problem: if a user logged in device A and B simultaneously
+    // and he/she/them toggled the anonymous mode in device A and instantly switched to device B
+    // then the displayName in device A will be different from device B
+    // it will cause getMetaData to return 404
+    // the problem will last until the cache expired in device B (10min)
+
     if (!avatarId || avatarId === '') {
         return null;
     }
     if (!displayName) {
-        displayName = await getDisplayName();
+        displayName = await getDisplayName(isRefresh);
+    }
+    if (!displayName) {
+        return null;
     }
     let avatar = await localforage.getItem(`${displayName}-avatar`);
     if (isRefresh || !avatar || (Date.now() - avatar['Date']) > CACHE_EXPIRATION) {
@@ -155,6 +165,9 @@ export async function getMetaData(displayName = null, isRefresh = false) {
     */
     if (!displayName) {
         displayName = await getDisplayName(isRefresh);
+    }
+    if (!displayName) {
+        return null;
     }
     let metadata = await localforage.getItem(`${displayName}-metadata`);
     if (isRefresh || metadata === null || (Date.now() - metadata.Date) > CACHE_EXPIRATION) {

@@ -1,16 +1,8 @@
-.RecordCard {
-    display: flex;
-    flex-direction: column;
-    height: 10rem;
-    width: 10rem;
-}
-
 .ProfileContent {
     width: 100%;
     padding: 20px;
     overflow-y: auto;
 }
-
 
 .BasicInfoBlock,
 .ExchangeBlock,
@@ -20,7 +12,7 @@
 .RecommendationBlock,
 .CompetitionBlock,
 .RecordBlock {
-    width: 100%;
+    /*width: 100%;*/
     padding: 1rem 2rem;
 }
 
@@ -48,8 +40,8 @@
 .PublicationBlock,
 .RecommendationBlock,
 .CompetitionBlock {
-    /*max-height: 400px;*/
-    /*overflow-y: auto;*/
+    height: 400px;
+    overflow-y: auto;
 }
 
 

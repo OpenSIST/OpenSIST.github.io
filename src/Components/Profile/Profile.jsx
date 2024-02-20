@@ -4,12 +4,13 @@ import {getApplicants} from "../../Data/ApplicantData";
 import {Outlet, redirect, useLoaderData} from "react-router-dom";
 import {ProfileHeader} from "./UserInfo/ProfileHeader";
 import {grey} from "@mui/material/colors";
-import {getAvatar, getMetaData, uploadAvatar} from "../../Data/UserData";
+import {getAvatar, getDisplayName, getMetaData, uploadAvatar} from "../../Data/UserData";
 
 export async function loader() {
+    const displayName = await getDisplayName();
     const metaData = await getMetaData();
     const avatarUrl = await getAvatar(metaData?.Avatar)
-    return {metaData, avatarUrl};
+    return {displayName, metaData, avatarUrl};
 }
 
 export async function action({request}) {

@@ -20,7 +20,7 @@ import {blue} from "@mui/material/colors";
 export function ProfileHeader({loaderData}) {
     const applicants = loaderData.metaData.ApplicantIDs;
     const avatar = loaderData.avatarUrl;
-    const user = useUser();
+    const displayName = loaderData.displayName;
     const [open, setOpen] = useState(true);
     return (
         <SwipeableDrawer
@@ -75,7 +75,7 @@ export function ProfileHeader({loaderData}) {
                 >
                     <Avatar src={avatar} sx={{height: '100px', width: '100px'}}/>
                 </Badge>
-                <Typography variant='h4'>{user}</Typography>
+                <Typography variant='h4'>{displayName}</Typography>
                 <Typography
                     variant='h6'>{applicants.length} {applicants.length > 1 ? 'Applicants' : 'Applicant'}</Typography>
                 <List>
