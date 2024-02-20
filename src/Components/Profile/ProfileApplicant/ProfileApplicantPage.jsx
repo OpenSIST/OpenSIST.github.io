@@ -19,7 +19,6 @@ import {
     removeApplicant
 } from "../../../Data/ApplicantData";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import HelpIcon from '@mui/icons-material/Help';
 import {
     authorOrderMapping,
     currentDegreeMapping,
@@ -42,7 +41,6 @@ import BiotechIcon from '@mui/icons-material/Biotech';
 import ArticleIcon from '@mui/icons-material/Article';
 import EmailIcon from '@mui/icons-material/Email';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
-import {useMediaQuery} from '@mui/material';
 import {getAvatar, getMetaData} from "../../../Data/UserData";
 
 const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
@@ -73,7 +71,6 @@ export async function action({params}) {
 
 export function ProfileApplicantPage({editable = false}) {
     const {avatarUrl, applicant, records} = useLoaderData();
-    const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
     return (
         <Grid2
             component={Paper}
@@ -88,32 +85,6 @@ export function ProfileApplicantPage({editable = false}) {
             <PublicationBlock Publications={applicant?.Publication}/>
             <RecommendationBlock Recommendations={applicant?.Recommendation}/>
             <CompetitionBlock Competitions={applicant?.Competition}/>
-            <RecordBlock Records={records} editable={editable}/>
-
-        </Grid2>
-    )
-}
-
-export function ProfileApplicantPage1({editable = false}) {
-    const {avatarUrl, applicant, records} = useLoaderData();
-    const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
-    return (
-        <Grid2 key={applicant.ApplicantID} container
-            // xs={12}
-               spacing={12}
-            // sx={{gap: '1rem'}}
-        >
-            <BasicInfoBlock avatarUrl={avatarUrl} applicant={applicant} editable={editable}/>
-            <ExchangeBlock Exchanges={applicant?.Exchange}/>
-            <ResearchBlock Researches={applicant?.Research}/>
-            <InternshipBlock Internships={applicant?.Internship}/>
-            {/*<Grid2 container xs={12} sx={{gap: "1rem", flexWrap: matches ? 'nowrap' : "wrap"}}>*/}
-            {/*</Grid2>*/}
-            <PublicationBlock Publications={applicant?.Publication}/>
-            <RecommendationBlock Recommendations={applicant?.Recommendation}/>
-            <CompetitionBlock Competitions={applicant?.Competition}/>
-            {/*<Grid2 container xs={12} sx={{gap: "1rem", flexWrap: matches ? 'nowrap' : "wrap"}}>*/}
-            {/*</Grid2>*/}
             <RecordBlock Records={records} editable={editable}/>
         </Grid2>
     )
@@ -520,14 +491,14 @@ function CompetitionBlock({Competitions}) {
 
 function RecordBlock({Records, editable}) {
     return (
-        <BaseItemBlock className="RecordBlock" checkpointProps={{xs: 12}}>
+        <BaseItemBlock className="RecordBlock" checkpointProps={{xs: 12}} spacing={2}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>申请记录</Typography>
             </ContentCenteredGrid>
-            <Grid2 container component={List} xs={12} spacing={2} sx={{width: '100%'}}>
-                {Records.map((record, index) => {
-                    return (
-                        <Grid2 component={Card} elevation={2} xs={12} md={4} key={index}>
+            {Records.map((record, index) => {
+                return (
+                    <Grid2 xs={12} lg={6} xl={4} key={index}>
+                        <Card elevation={3}>
                             <BaseListItem
                                 experience={record}
                                 Icon={<Chip label={record.Status} color={RecordStatusPaltette[record.Status]}/>}
@@ -542,19 +513,18 @@ function RecordBlock({Records, editable}) {
                             />
                             <Button component={Link}
                                     to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}><Edit/></Button>
-                            {/*{index !== Records.length - 1 ? <Divider/> : null}*/}
-                        </Grid2>
-                    )
-                })}
-            </Grid2>
+                        </Card>
+                    </Grid2>
+                )
+            })}
         </BaseItemBlock>
     )
 }
 
-function BaseItemBlock({children, className, checkpointProps, spacing = 0}) {
+function BaseItemBlock({children, className, checkpointProps, spacing = 0, elevation = 2}) {
     return (
-        <Grid2 {...checkpointProps}>
-            <Paper className={className}>
+        <Grid2 sx={{display: "flex"}} {...checkpointProps}>
+            <Paper className={className} elevation={elevation}>
                 <Grid2 container spacing={spacing}>
                     {children}
                 </Grid2>
