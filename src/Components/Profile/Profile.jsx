@@ -30,10 +30,12 @@ export default function Profile() {
     const darkMode = theme.palette.mode === 'dark';
     return (
         <>
-            <ProfileHeader loaderData={loaderData} />
-            <Paper className='ProfileContent' sx={{
-                bgcolor: darkMode ? grey[900] : grey[50],
-            }}>
+            <ProfileHeader loaderData={loaderData}/>
+            <Paper
+                className='ProfileContent'
+                sx={{
+                    bgcolor: darkMode ? grey[900] : grey[50],
+                }}>
                 <Outlet/>
             </Paper>
         </>

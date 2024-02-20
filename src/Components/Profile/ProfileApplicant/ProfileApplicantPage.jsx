@@ -1,14 +1,11 @@
 import {getRecordByApplicant} from "../../../Data/RecordData";
 import {Form, redirect, useLoaderData} from "react-router-dom";
 import {
-    Avatar, Badge,
-    Box, Button,
-    Card,
-    Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
-    Divider, IconButton,
-    List, ListItem, ListItemIcon, ListItemText,
-    Paper, Slider, styled, TextField,
-    Typography
+    Avatar, Badge, Box, Button, Card, Chip, IconButton,
+    Dialog, DialogActions, DialogContent,
+    DialogContentText, DialogTitle, List, ListItem,
+    ListItemIcon, ListItemText, TextField,
+    Paper, Slider, styled, Typography, Divider
 } from "@mui/material";
 import {Add, Delete, Edit} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
@@ -27,7 +24,9 @@ import {
     exchangeUnivFullNameMapping,
     publicationStatusMapping,
     publicationTypeMapping,
-    rankPercentSliderValueMapping, recommendationTypeMapping, RecordStatusPaltette,
+    rankPercentSliderValueMapping,
+    recommendationTypeMapping,
+    RecordStatusPaltette,
     SliderValueRankStringMapping
 } from "../../../Data/Schemas";
 import {Fragment, useEffect, useState} from "react";
@@ -42,13 +41,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import EmailIcon from '@mui/icons-material/Email';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
 import {getAvatar, getMetaData} from "../../../Data/UserData";
-
-const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
-    display: 'flex',
-    // justifyContent: 'center',
-    alignItems: 'center',
-    // padding: "0.5rem"
-}));
+import {grey} from "@mui/material/colors";
 
 export async function loader({params}) {
     const applicantId = params.applicantId;
@@ -69,6 +62,59 @@ export async function action({params}) {
     return redirect('/profile');
 }
 
+const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
+    display: 'flex',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    // padding: "0.5rem"
+}));
+
+function BaseItemBlock({children, className, checkpointProps, spacing = 0, elevation = 2}) {
+    return (
+        <Grid2 sx={{display: "flex"}} {...checkpointProps}>
+            <Paper className={className} elevation={elevation}>
+                <Grid2 container spacing={spacing}>
+                    {children}
+                </Grid2>
+            </Paper>
+        </Grid2>
+    )
+}
+
+function BaseListItem({Icon, primary, secondary}) {
+    return (
+        <ListItem alignItems="flex-start" sx={{gap: '1rem'}}>
+            <ListItemIcon>
+                {Icon}
+            </ListItemIcon>
+            <ListItemText
+                primary={
+                    <Typography variant='h5' sx={{fontWeight: 'bold'}}>
+                        {primary}
+                    </Typography>
+                }
+                secondary={
+                    <Box component='span' sx={{display: 'flex', flexDirection: 'column'}}>
+                        {typeof secondary === 'string' ?
+                            <Typography component='span'>
+                                {secondary}
+                            </Typography> :
+                            Object.entries(secondary).map(([key, value]) => {
+                                return (
+                                    <Typography component='span' key={key}>
+                                        {key}: {value}
+                                    </Typography>
+                                )
+                            })
+
+                        }
+                    </Box>
+                }
+            />
+        </ListItem>
+    )
+}
+
 export function ProfileApplicantPage({editable = false}) {
     const {avatarUrl, applicant, records} = useLoaderData();
     return (
@@ -77,6 +123,10 @@ export function ProfileApplicantPage({editable = false}) {
             key={applicant.ApplicantID}
             container
             spacing={2}
+            sx={{
+                boxShadow: "none",
+                bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
+            }}
         >
             <BasicInfoBlock avatarUrl={avatarUrl} applicant={applicant} editable={editable}/>
             <ExchangeBlock Exchanges={applicant?.Exchange}/>
@@ -497,8 +547,8 @@ function RecordBlock({Records, editable}) {
             </ContentCenteredGrid>
             {Records.map((record, index) => {
                 return (
-                    <Grid2 xs={12} lg={6} xl={4} key={index}>
-                        <Card elevation={3}>
+                    <Grid2 sx={{display: 'flex'}} xs={12} md={6} xl={4} key={index}>
+                        <Card elevation={3} sx={{width: "100%"}}>
                             <BaseListItem
                                 experience={record}
                                 Icon={<Chip label={record.Status} color={RecordStatusPaltette[record.Status]}/>}
@@ -511,8 +561,9 @@ function RecordBlock({Records, editable}) {
                                     "补充说明": record.Detail === '' ? '暂无' : record.Detail
                                 }}
                             />
-                            <Button component={Link}
-                                    to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}><Edit/></Button>
+                            <Button component={Link} to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}>
+                                <Edit/>
+                            </Button>
                         </Card>
                     </Grid2>
                 )
@@ -521,50 +572,5 @@ function RecordBlock({Records, editable}) {
     )
 }
 
-function BaseItemBlock({children, className, checkpointProps, spacing = 0, elevation = 2}) {
-    return (
-        <Grid2 sx={{display: "flex"}} {...checkpointProps}>
-            <Paper className={className} elevation={elevation}>
-                <Grid2 container spacing={spacing}>
-                    {children}
-                </Grid2>
-            </Paper>
-        </Grid2>
-    )
-}
-
-function BaseListItem({Icon, primary, secondary}) {
-    return (
-        <ListItem alignItems="flex-start">
-            <ListItemIcon>
-                {Icon}
-            </ListItemIcon>
-            <ListItemText
-                primary={
-                    <Typography variant='h5' sx={{fontWeight: 'bold'}}>
-                        {primary}
-                    </Typography>
-                }
-                secondary={
-                    <Box component='span' sx={{display: 'flex', flexDirection: 'column'}}>
-                        {typeof secondary === 'string' ?
-                            <Typography component='span'>
-                                {secondary}
-                            </Typography> :
-                            Object.entries(secondary).map(([key, value]) => {
-                                return (
-                                    <Typography component='span' key={key}>
-                                        {key}: {value}
-                                    </Typography>
-                                )
-                            })
-
-                        }
-                    </Box>
-                }
-            />
-        </ListItem>
-    )
-}
 
 
