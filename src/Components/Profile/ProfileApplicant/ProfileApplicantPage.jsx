@@ -5,7 +5,7 @@ import {
     Dialog, DialogActions, DialogContent,
     DialogContentText, DialogTitle, List, ListItem,
     ListItemIcon, ListItemText, TextField,
-    Paper, Slider, styled, Typography, Divider, Tooltip, Input
+    Paper, Slider, styled, Typography, Divider, Tooltip, useMediaQuery, Input
 } from "@mui/material";
 import {Add, Delete, Edit} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
@@ -114,7 +114,6 @@ function BaseListItem({Icon, primary, secondary}) {
                                     </Typography>
                                 )
                             })
-
                         }
                     </Box>
                 }
@@ -205,7 +204,8 @@ function EditDeleteButtonGroup({applicantId}) {
                 <DialogActions>
                     <Button onClick={handleClose}>取消</Button>
                     <Form method='post'>
-                        <Button color='error' type='submit' name='ActionType' value='DeleteApplicant' onClick={handleClose}
+                        <Button color='error' type='submit' name='ActionType' value='DeleteApplicant'
+                                onClick={handleClose}
                                 disabled={confirmText !== applicantId}>
                             确认
                         </Button>
@@ -219,32 +219,13 @@ function EditDeleteButtonGroup({applicantId}) {
 
 function BasicInfoBlock({avatarUrl, applicant, editable}) {
     const [isAuth, setIsAuth] = useState(false);
+    const downMD = useMediaQuery((theme) => theme.breakpoints.down('md'));
     useEffect(() => {
         isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
     }, [applicant.ApplicantID]);
-    const valuetext = (value) => {
-        return SliderValueRankStringMapping[value];
-    }
-    const sliderValue = rankPercentSliderValueMapping[applicant.Ranking];
-    const marks = [
-        {
-            value: 2,
-            label: '1.7',
-        },
-        {
-            value: sliderValue,
-            label: applicant.GPA,
-        },
-    ]
-    if (sliderValue !== 95) {
-        marks.push({
-            value: 98,
-            label: '4.0',
-        })
-    }
     return (
         <BaseItemBlock className="BasicInfoBlock" checkpointProps={{xs: 12}} spacing={2}>
-            <Grid2 container xs={12} lg={4}>
+            <Grid2 container xs={12} sm={5} md={6} lg={5} xl={3}>
                 <ContentCenteredGrid>
                     <Badge
                         badgeContent={<GenderIcon gender={applicant.Gender}/>}
@@ -258,13 +239,9 @@ function BasicInfoBlock({avatarUrl, applicant, editable}) {
                         <Avatar src={avatarUrl} sx={{width: 100, height: 100}}/>
                     </Badge>
                 </ContentCenteredGrid>
-                <Grid2 container spacing={0} xs>
+                <Grid2 container xs spacing={0}>
                     <ContentCenteredGrid xs={12}>
-                        <Typography
-                            variant="h4"
-                            color="primary"
-                            sx={{fontWeight: 'bold'}}
-                        >
+                        <Typography variant="h4" color="primary" sx={{fontWeight: 'bold'}}>
                             {applicant.ApplicantID}
                         </Typography>
                     </ContentCenteredGrid>
@@ -276,23 +253,61 @@ function BasicInfoBlock({avatarUrl, applicant, editable}) {
                             <EditDeleteButtonGroup applicantId={applicant.ApplicantID}/> : null}
                     </ContentCenteredGrid>
                 </Grid2>
-                <ContentCenteredGrid xs={12} sx={{mb: '0.5rem'}}>
-                    <Typography variant="subtitle1">申请时最高学位GPA以及对应学院/专业排名：</Typography>
-                </ContentCenteredGrid>
-                <ContentCenteredGrid xs={12}>
-                    <Slider
-                        defaultValue={sliderValue}
-                        getAriaValueText={valuetext}
-                        valueLabelFormat={valuetext}
-                        valueLabelDisplay="on"
-                        marks={marks}
-                        className='RankingSlider'
-                    />
+                <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
+                    <Typography variant="h6" sx={{fontWeight: 'bold'}}>
+                        最终去向:
+                    </Typography>
+                    <Chip label={applicant.Final ?? "暂无"}/>
                 </ContentCenteredGrid>
             </Grid2>
-            <EnglishExamBlock EnglishProficiency={applicant?.EnglishProficiency}/>
-            <GREBlock GRE={applicant?.GRE}/>
+            <Grid2 container xs={12} sm={7} md={6} lg={7} xl={9}>
+                <EnglishExamBlock EnglishProficiency={applicant?.EnglishProficiency}/>
+                <GREBlock GRE={applicant?.GRE}/>
+            </Grid2>
+            <Grid2 xs={12}>
+                <GradeBar GPA={applicant.GPA} ranking={applicant.Ranking}/>
+            </Grid2>
         </BaseItemBlock>
+    )
+}
+
+function GradeBar({ranking, GPA}) {
+    const valuetext = (value) => {
+        return SliderValueRankStringMapping[value];
+    }
+    const sliderValue = rankPercentSliderValueMapping[ranking];
+    const marks = [
+        {
+            value: 2,
+            label: '1.7',
+        },
+        {
+            value: sliderValue,
+            label: GPA,
+        },
+    ]
+    if (sliderValue !== 95) {
+        marks.push({
+            value: 98,
+            label: '4.0',
+        })
+    }
+    return (
+        <Grid2 container xs={12} spacing={2}>
+            <ContentCenteredGrid xs={12} sx={{mb: '0.5rem'}}>
+                <Typography variant="subtitle1">申请时最高学位GPA以及对应学院/专业排名：</Typography>
+            </ContentCenteredGrid>
+            <ContentCenteredGrid xs={12}>
+                <Slider
+                    defaultValue={sliderValue}
+                    getAriaValueText={valuetext}
+                    valueLabelFormat={valuetext}
+                    valueLabelDisplay="on"
+                    marks={marks}
+                    className='RankingSlider'
+                />
+            </ContentCenteredGrid>
+        </Grid2>
     )
 }
 
@@ -306,14 +321,18 @@ function GREBlock({GRE}) {
         }
     }
     return (
-        <Grid2 container xs={12} lg={4}>
-            <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', justifyContent: 'center'}}>
-                <Typography variant="h6" sx={{fontWeight: 'bold'}}>GRE</Typography>
+        <Grid2 container xs={12} xl={12}>
+            <ContentCenteredGrid xs={3} xl={3} sx={{flexDirection: 'column', justifyContent: 'center'}}>
+                <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>GRE</Typography>
                 <Typography>{GRE.Total}</Typography>
             </ContentCenteredGrid>
             {Object.entries(GRE).map(([key, value]) => {
+                if (key === 'Total') {
+                    return null;
+                }
                 return (
-                    <ContentCenteredGrid xs={6} key={key} sx={{flexDirection: 'column', justifyContent: 'center'}}>
+                    <ContentCenteredGrid xs={3} xl={3} key={key}
+                                         sx={{flexDirection: 'column', justifyContent: 'center'}}>
                         <Typography variant="subtitle1"
                                     sx={{fontWeight: 'bold'}}>{EnglishExamMapping["GRE"][key]}</Typography>
                         <Typography>{value}</Typography>
@@ -328,7 +347,7 @@ function GREBlock({GRE}) {
 function EnglishExamBlock({EnglishProficiency}) {
     if (!EnglishProficiency || Object.keys(EnglishProficiency).length === 0) {
         EnglishProficiency = {
-            "EnglishProficiency": {
+            "语言成绩": {
                 "Total": "-",
                 "S": "-",
                 "R": "-",
@@ -341,9 +360,10 @@ function EnglishExamBlock({EnglishProficiency}) {
         <>
             {Object.entries(EnglishProficiency).map(([examType, grade]) => {
                 return (
-                    <Grid2 container xs={12} lg={4} key={examType}>
-                        <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', justifyContent: 'center'}}>
-                            <Typography variant="h6" sx={{fontWeight: 'bold'}}>{examType}</Typography>
+                    <Grid2 container xs={12} xl={12} key={examType}>
+                        <ContentCenteredGrid xs={12 / 5} xl={12 / 5}
+                                             sx={{flexDirection: 'column', justifyContent: 'center'}}>
+                            <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>{examType}</Typography>
                             <Typography>{grade.Total}</Typography>
                         </ContentCenteredGrid>
                         {Object.entries(grade).map(([key, value]) => {
@@ -351,7 +371,7 @@ function EnglishExamBlock({EnglishProficiency}) {
                                 return null;
                             }
                             return (
-                                <ContentCenteredGrid xs={6} key={key}
+                                <ContentCenteredGrid xs={12 / 5} xl={12 / 5} key={key}
                                                      sx={{flexDirection: 'column', justifyContent: 'center'}}>
                                     <Typography variant="subtitle1"
                                                 sx={{fontWeight: 'bold'}}>{EnglishExamMapping[examType][key]}</Typography>
@@ -582,35 +602,38 @@ function RecordBlock({Records, ApplicantID, editable}) {
                                     "补充说明": record.Detail === '' ? '暂无' : record.Detail
                                 }}
                             />
-                            { editable ? <>
+                            {editable ? <>
                                 <Tooltip title='编辑申请记录' arrow>
-                                    <Button component={Link} to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}>
+                                    <Button component={Link}
+                                            to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}>
                                         <Edit/>
                                     </Button>
                                 </Tooltip>
                                 <Tooltip title='删除申请记录' arrow>
-                                    <Button onClick={() => {handleOpen(record.RecordID)}} color='error'>
+                                    <Button onClick={() => {
+                                        handleOpen(record.RecordID)
+                                    }} color='error'>
                                         <Delete/>
                                     </Button>
                                 </Tooltip>
                             </> : null}
-                            {/*{index !== Records.length - 1 ? <Divider/> : null}*/}
                         </Card>
                     </Grid2>
-                    )
-                })}
-                <Dialog open={open} onClose={() => setOpen(false)}>
-                    <DialogTitle>是否要删除{deleteRecordID.split('|')[1]}项目的申请记录？</DialogTitle>
-                    <DialogActions>
-                        <Button onClick={handleClose}>取消</Button>
-                        <Form method='post'>
-                            <Input type='hidden' name='RecordID' value={deleteRecordID}/>
-                            <Button color='error' type='submit' name='ActionType' value='DeleteRecord' onClick={handleClose}>
-                                确认
-                            </Button>
-                        </Form>
-                    </DialogActions>
-                </Dialog>
+                )
+            })}
+            <Dialog open={open} onClose={() => setOpen(false)}>
+                <DialogTitle>是否要删除{deleteRecordID.split('|')[1]}项目的申请记录？</DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleClose}>取消</Button>
+                    <Form method='post'>
+                        <Input type='hidden' name='RecordID' value={deleteRecordID}/>
+                        <Button color='error' type='submit' name='ActionType' value='DeleteRecord'
+                                onClick={handleClose}>
+                            确认
+                        </Button>
+                    </Form>
+                </DialogActions>
+            </Dialog>
         </BaseItemBlock>
     )
 }

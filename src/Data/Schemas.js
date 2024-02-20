@@ -210,7 +210,7 @@ export const EnglishExamMapping = {
         'S': '口语',
         'W': '写作',
     },
-    EnglishProficiency: {
+    "语言成绩": {
         'Total': '总分',
         'R': '阅读',
         'L': '听力',
