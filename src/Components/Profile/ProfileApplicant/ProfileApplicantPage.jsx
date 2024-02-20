@@ -416,7 +416,6 @@ function ExchangeBlock({Exchanges}) {
                     return (
                         <Fragment key={index}>
                             <BaseListItem
-                                experience={exchange}
                                 Icon={<SchoolIcon/>}
                                 primary={exchangeUnivFullNameMapping[exchange.University] ?? "暂无"}
                                 secondary={{
@@ -442,14 +441,12 @@ function ResearchBlock({Researches}) {
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
                 <BaseListItem
-                    experience={Researches.Domestic}
                     Icon={<BiotechIcon/>}
                     primary={`国内${Researches.Domestic.Num}段研究经历`}
                     secondary={Researches.Domestic.Detail === '' ? '具体描述:暂无' : Researches.Domestic.Detail}
                 />
                 <Divider/>
                 <BaseListItem
-                    experience={Researches.International}
                     Icon={<BiotechIcon/>}
                     primary={`国外${Researches.International.Num}段研究经历`}
                     secondary={Researches.International.Detail === '' ? '具体描述:暂无' : Researches.International.Detail}
@@ -467,14 +464,12 @@ function InternshipBlock({Internships}) {
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
                 <BaseListItem
-                    experience={Internships.Domestic}
                     Icon={<WorkIcon/>}
                     primary={`国内${Internships.Domestic.Num}段实习经历`}
                     secondary={Internships.Domestic.Detail === '' ? '具体描述:暂无' : Internships.Domestic.Detail}
                 />
                 <Divider/>
                 <BaseListItem
-                    experience={Internships.International}
                     Icon={<WorkIcon/>}
                     primary={`国外${Internships.International.Num}段实习经历`}
                     secondary={Internships.International.Detail === '' ? '具体描述:暂无' : Internships.International.Detail}
@@ -506,7 +501,6 @@ function PublicationBlock({Publications}) {
                     return (
                         <Fragment key={index}>
                             <BaseListItem
-                                experience={publication}
                                 Icon={<ArticleIcon/>}
                                 primary={`${publication.Name} ${publicationTypeMapping[publication.Type] ?? ""}`}
                                 secondary={{
@@ -545,7 +539,6 @@ function RecommendationBlock({Recommendations}) {
                     return (
                         <Fragment key={index}>
                             <BaseListItem
-                                experience={recommendation}
                                 Icon={<EmailIcon/>}
                                 primary={primary}
                                 secondary={recommendation.Detail === '' ? '具体描述:暂无' : recommendation.Detail}
@@ -570,7 +563,6 @@ function CompetitionBlock({Competitions}) {
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
                 <BaseListItem
-                    experience={Competitions}
                     Icon={<ShutterSpeedIcon/>}
                     primary="竞赛经历"
                     secondary={Competitions === '' ? '具体描述:暂无' : Competitions}
@@ -610,9 +602,8 @@ function RecordBlock({Records, ApplicantID, editable}) {
                             justifyContent: 'space-between'
                         }}>
                             <BaseListItem
-                                experience={record}
                                 Icon={<Chip label={record.Status} color={RecordStatusPaltette[record.Status]}/>}
-                                primary={record.ProgramID}
+                                primary={<Link to={`/programs/${record.ProgramID}`}>{record.ProgramID}</Link>}
                                 secondary={{
                                     "申请季": record.ProgramYear + record.Semester,
                                     "提交时间": record.TimeLine?.Submit?.split('T')[0] ?? "暂无",
