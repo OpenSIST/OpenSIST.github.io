@@ -5,7 +5,7 @@ import {
     Dialog, DialogActions, DialogContent,
     DialogContentText, DialogTitle, List, ListItem,
     ListItemIcon, ListItemText, TextField,
-    Paper, Slider, styled, Typography, Divider, Tooltip
+    Paper, Slider, styled, Typography, Divider, Tooltip, Input
 } from "@mui/material";
 import {Add, Delete, Edit} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
