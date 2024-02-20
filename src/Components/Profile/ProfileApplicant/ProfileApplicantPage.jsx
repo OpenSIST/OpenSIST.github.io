@@ -143,7 +143,7 @@ export function ProfileApplicantPage({editable = false}) {
             <PublicationBlock Publications={applicant?.Publication}/>
             <RecommendationBlock Recommendations={applicant?.Recommendation}/>
             <CompetitionBlock Competitions={applicant?.Competition}/>
-            <RecordBlock Records={records} editable={editable}/>
+            <RecordBlock Records={records} ApplicantID={applicant.ApplicantID} editable={editable}/>
         </Grid2>
     )
 }
@@ -186,7 +186,7 @@ function EditDeleteButtonGroup({applicantId}) {
                 <DialogTitle>是否要删除{applicantId}？</DialogTitle>
                 <DialogContent>
                     <DialogContentText color='error'>
-                        您正在进行危险操作！此操作不可逆，删除后无法恢复！
+                        此操作会将申请人信息及其附属申请记录一并删除，且无法恢复，请谨慎！
                     </DialogContentText>
                     <DialogContentText>
                         请输入您的Applicant ID: {applicantId}以确认删除。
@@ -583,8 +583,13 @@ function RecordBlock({Records, ApplicantID, editable}) {
     }
     return (
         <BaseItemBlock className="RecordBlock" checkpointProps={{xs: 12}} spacing={2}>
-            <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
+            <ContentCenteredGrid xs={12} sx={{flexDirection: 'row', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>申请记录</Typography>
+                <Tooltip title='添加记录' arrow sx={{marginLeft: '10px'}}>
+                    <Button component={Link} to={`/profile/${ApplicantID}/new-record`} variant='outlined'>
+                        <Add/>
+                    </Button>
+                </Tooltip>
             </ContentCenteredGrid>
             {Records.map((record, index) => {
                 return (
@@ -612,13 +617,13 @@ function RecordBlock({Records, ApplicantID, editable}) {
                                     p: '1rem',
                                     alignSelf: 'flex-end'
                                 }}>
-                                    <Tooltip title='编辑申请记录' arrow>
+                                    <Tooltip title='编辑此记录' arrow>
                                         <IconButton component={Link}
                                                     to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}>
                                             <Edit/>
                                         </IconButton>
                                     </Tooltip>
-                                    <Tooltip title='删除申请记录' arrow>
+                                    <Tooltip title='删除此记录' arrow>
                                         <IconButton onClick={() => {
                                             handleOpen(record.RecordID)
                                         }} color='error'>
