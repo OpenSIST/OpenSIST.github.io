@@ -9,8 +9,8 @@ import {applicationYearOptions, recordSemesterOptions, recordStatusOptions} from
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from "dayjs";
+import {DateField} from "@mui/x-date-pickers";
 
 export async function loader({params}) {
     const programs = await getPrograms();
@@ -173,16 +173,22 @@ export default function AddModifyRecord({type}) {
                         <Grid2
                             container
                             spacing={2}
-                            sx={{width: '80%', marginTop: '10px'}}
+                            sx={{width: '80%', marginTop: '10px',
+                                '& .MuiStack-root>.MuiTextField-root': {
+                                    minWidth: 'unset',
+                                },
+                            }}
                         >
                             <Grid2 xs={4}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DemoContainer components={['DatePicker']}>
-                                        <DatePicker
+                                    <DemoContainer components={['DateField']}>
+                                        <DateField
                                             label="提交申请时间"
                                             name='Submit'
                                             format='YYYY-MM-DD'
-                                            slotProps={{ textField: { size: 'small', required: true, fullWidth: true } }}
+                                            required
+                                            size='small'
+                                            fullWidth
                                             defaultValue={record ? dayjs(record.TimeLine.Submit.split('T')[0]) : null}
                                         />
                                     </DemoContainer>
@@ -190,12 +196,13 @@ export default function AddModifyRecord({type}) {
                             </Grid2>
                             <Grid2 xs={4}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DemoContainer components={['DatePicker']}>
-                                        <DatePicker
+                                    <DemoContainer components={['DateField']}>
+                                        <DateField
                                             label="面试时间"
                                             name='Interview'
                                             format='YYYY-MM-DD'
-                                            slotProps={{ textField: { size: 'small', fullWidth: true } }}
+                                            size='small'
+                                            fullWidth
                                             defaultValue={record ? record.TimeLine.Interview ? dayjs(record.TimeLine.Interview.split('T')[0]) : null : null}
                                         />
                                     </DemoContainer>
@@ -203,12 +210,13 @@ export default function AddModifyRecord({type}) {
                             </Grid2>
                             <Grid2 xs={4}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DemoContainer components={['DatePicker']}>
-                                        <DatePicker
+                                    <DemoContainer components={['DateField']}>
+                                        <DateField
                                             label="结果通知时间"
                                             name='Decision'
                                             format='YYYY-MM-DD'
-                                            slotProps={{ textField: { size: 'small', fullWidth: true } }}
+                                            fullWidth
+                                            size='small'
                                             defaultValue={record ? record.TimeLine.Decision ? dayjs(record.TimeLine.Decision.split('T')[0]) : null : null}
                                         />
                                     </DemoContainer>
