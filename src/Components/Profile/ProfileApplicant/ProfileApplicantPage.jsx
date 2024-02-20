@@ -1,14 +1,11 @@
 import {getRecordByApplicant, removeRecord} from "../../../Data/RecordData";
 import {Form, redirect, useLoaderData, useParams} from "react-router-dom";
 import {
-    Avatar, Badge,
-    Box, Button,
-    Card,
-    Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
-    Divider, IconButton, Input,
-    List, ListItem, ListItemIcon, ListItemText,
-    Paper, Slider, styled, TextField, Tooltip,
-    Typography
+    Avatar, Badge, Box, Button, Card, Chip, IconButton,
+    Dialog, DialogActions, DialogContent,
+    DialogContentText, DialogTitle, List, ListItem,
+    ListItemIcon, ListItemText, TextField,
+    Paper, Slider, styled, Typography, Divider, Tooltip
 } from "@mui/material";
 import {Add, Delete, Edit} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
@@ -19,7 +16,6 @@ import {
     removeApplicant
 } from "../../../Data/ApplicantData";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import HelpIcon from '@mui/icons-material/Help';
 import {
     authorOrderMapping,
     currentDegreeMapping,
@@ -28,10 +24,12 @@ import {
     exchangeUnivFullNameMapping,
     publicationStatusMapping,
     publicationTypeMapping,
-    rankPercentSliderValueMapping, recommendationTypeMapping, RecordStatusPaltette,
+    rankPercentSliderValueMapping,
+    recommendationTypeMapping,
+    RecordStatusPaltette,
     SliderValueRankStringMapping
 } from "../../../Data/Schemas";
-import React, {Fragment, useEffect, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
@@ -42,15 +40,8 @@ import BiotechIcon from '@mui/icons-material/Biotech';
 import ArticleIcon from '@mui/icons-material/Article';
 import EmailIcon from '@mui/icons-material/Email';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
-import {useMediaQuery} from '@mui/material';
 import {getAvatar, getMetaData} from "../../../Data/UserData";
-
-const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
-    display: 'flex',
-    // justifyContent: 'center',
-    alignItems: 'center',
-    // padding: "0.5rem"
-}));
+import {grey} from "@mui/material/colors";
 
 export async function loader({params}) {
     const applicantId = params.applicantId;
@@ -79,15 +70,71 @@ export async function action({params, request}) {
     }
 }
 
+const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
+    display: 'flex',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    // padding: "0.5rem"
+}));
+
+function BaseItemBlock({children, className, checkpointProps, spacing = 0, elevation = 2}) {
+    return (
+        <Grid2 sx={{display: "flex"}} {...checkpointProps}>
+            <Paper className={className} elevation={elevation}>
+                <Grid2 container spacing={spacing}>
+                    {children}
+                </Grid2>
+            </Paper>
+        </Grid2>
+    )
+}
+
+function BaseListItem({Icon, primary, secondary}) {
+    return (
+        <ListItem alignItems="flex-start" sx={{gap: '1rem'}}>
+            <ListItemIcon>
+                {Icon}
+            </ListItemIcon>
+            <ListItemText
+                primary={
+                    <Typography variant='h5' sx={{fontWeight: 'bold'}}>
+                        {primary}
+                    </Typography>
+                }
+                secondary={
+                    <Box component='span' sx={{display: 'flex', flexDirection: 'column'}}>
+                        {typeof secondary === 'string' ?
+                            <Typography component='span'>
+                                {secondary}
+                            </Typography> :
+                            Object.entries(secondary).map(([key, value]) => {
+                                return (
+                                    <Typography component='span' key={key}>
+                                        {key}: {value}
+                                    </Typography>
+                                )
+                            })
+
+                        }
+                    </Box>
+                }
+            />
+        </ListItem>
+    )
+}
+
 export function ProfileApplicantPage({editable = false}) {
     const {avatarUrl, applicant, records} = useLoaderData();
-    const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
     return (
         <Grid2
             component={Paper}
             key={applicant.ApplicantID}
             container
             spacing={2}
+            sx={{
+                boxShadow: "none",
+                bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
+            }}
         >
             <BasicInfoBlock avatarUrl={avatarUrl} applicant={applicant} editable={editable}/>
             <ExchangeBlock Exchanges={applicant?.Exchange}/>
@@ -96,32 +143,6 @@ export function ProfileApplicantPage({editable = false}) {
             <PublicationBlock Publications={applicant?.Publication}/>
             <RecommendationBlock Recommendations={applicant?.Recommendation}/>
             <CompetitionBlock Competitions={applicant?.Competition}/>
-            <RecordBlock Records={records} editable={editable}/>
-
-        </Grid2>
-    )
-}
-
-export function ProfileApplicantPage1({editable = false}) {
-    const {avatarUrl, applicant, records} = useLoaderData();
-    const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
-    return (
-        <Grid2 key={applicant.ApplicantID} container
-            // xs={12}
-               spacing={12}
-            // sx={{gap: '1rem'}}
-        >
-            <BasicInfoBlock avatarUrl={avatarUrl} applicant={applicant} editable={editable}/>
-            <ExchangeBlock Exchanges={applicant?.Exchange}/>
-            <ResearchBlock Researches={applicant?.Research}/>
-            <InternshipBlock Internships={applicant?.Internship}/>
-            {/*<Grid2 container xs={12} sx={{gap: "1rem", flexWrap: matches ? 'nowrap' : "wrap"}}>*/}
-            {/*</Grid2>*/}
-            <PublicationBlock Publications={applicant?.Publication}/>
-            <RecommendationBlock Recommendations={applicant?.Recommendation}/>
-            <CompetitionBlock Competitions={applicant?.Competition}/>
-            {/*<Grid2 container xs={12} sx={{gap: "1rem", flexWrap: matches ? 'nowrap' : "wrap"}}>*/}
-            {/*</Grid2>*/}
             <RecordBlock Records={records} editable={editable}/>
         </Grid2>
     )
@@ -542,14 +563,14 @@ function RecordBlock({Records, ApplicantID, editable}) {
         setDeleteRecordID('');
     }
     return (
-        <BaseItemBlock className="RecordBlock" checkpointProps={{xs: 12}}>
+        <BaseItemBlock className="RecordBlock" checkpointProps={{xs: 12}} spacing={2}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>申请记录</Typography>
             </ContentCenteredGrid>
-            <Grid2 container component={List} xs={12} spacing={2} sx={{width: '100%'}}>
-                {Records.map((record, index) => {
-                    return (
-                        <Grid2 component={Card} elevation={2} xs={12} md={4} key={index}>
+            {Records.map((record, index) => {
+                return (
+                    <Grid2 sx={{display: 'flex'}} xs={12} md={6} xl={4} key={index}>
+                        <Card elevation={3} sx={{width: "100%"}}>
                             <BaseListItem
                                 experience={record}
                                 Icon={<Chip label={record.Status} color={RecordStatusPaltette[record.Status]}/>}
@@ -575,7 +596,8 @@ function RecordBlock({Records, ApplicantID, editable}) {
                                 </Tooltip>
                             </> : null}
                             {/*{index !== Records.length - 1 ? <Divider/> : null}*/}
-                        </Grid2>
+                        </Card>
+                    </Grid2>
                     )
                 })}
                 <Dialog open={open} onClose={() => setOpen(false)}>
@@ -590,55 +612,9 @@ function RecordBlock({Records, ApplicantID, editable}) {
                         </Form>
                     </DialogActions>
                 </Dialog>
-            </Grid2>
         </BaseItemBlock>
     )
 }
 
-function BaseItemBlock({children, className, checkpointProps, spacing = 0}) {
-    return (
-        <Grid2 {...checkpointProps}>
-            <Paper className={className}>
-                <Grid2 container spacing={spacing}>
-                    {children}
-                </Grid2>
-            </Paper>
-        </Grid2>
-    )
-}
-
-function BaseListItem({Icon, primary, secondary}) {
-    return (
-        <ListItem alignItems="flex-start">
-            <ListItemIcon>
-                {Icon}
-            </ListItemIcon>
-            <ListItemText
-                primary={
-                    <Typography variant='h5' sx={{fontWeight: 'bold'}}>
-                        {primary}
-                    </Typography>
-                }
-                secondary={
-                    <Box component='span' sx={{display: 'flex', flexDirection: 'column'}}>
-                        {typeof secondary === 'string' ?
-                            <Typography component='span'>
-                                {secondary}
-                            </Typography> :
-                            Object.entries(secondary).map(([key, value]) => {
-                                return (
-                                    <Typography component='span' key={key}>
-                                        {key}: {value}
-                                    </Typography>
-                                )
-                            })
-
-                        }
-                    </Box>
-                }
-            />
-        </ListItem>
-    )
-}
 
 

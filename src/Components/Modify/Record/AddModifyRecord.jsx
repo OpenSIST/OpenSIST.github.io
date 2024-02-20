@@ -1,8 +1,8 @@
 import {getPrograms} from "../../../Data/ProgramData";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {addModifyRecord, getRecordByRecordIDs} from "../../../Data/RecordData";
-import {Box, Button, Divider, Input, Paper, TextField, Typography} from "@mui/material";
-import {Form, Link, redirect, useLoaderData} from "react-router-dom";
+import {Box, Button, Input, Paper, TextField, Typography} from "@mui/material";
+import {Form, redirect, useLoaderData} from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import Autocomplete from "@mui/material/Autocomplete";
 import {applicationYearOptions, recordSemesterOptions, recordStatusOptions} from "../../../Data/Schemas";

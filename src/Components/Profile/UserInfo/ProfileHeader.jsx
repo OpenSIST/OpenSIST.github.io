@@ -1,42 +1,33 @@
 import {
-    Avatar, Badge, Button,
-    IconButton, Input,
+    Avatar, Badge,
+    IconButton,
     List,
     ListItem,
     ListItemButton,
     Paper,
-    SwipeableDrawer,
-    Typography
+    Typography,
 } from "@mui/material";
-import {useUser} from "../../../Data/UserData";
 import "./ProfileHeader.css";
 import {Form, Link} from "react-router-dom";
-import {useState} from "react";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import {Edit} from "@mui/icons-material";
 import {blue} from "@mui/material/colors";
+import {CollapseSideBar} from "../../common";
 
 export function ProfileHeader({loaderData}) {
     const applicants = loaderData.metaData.ApplicantIDs;
     const avatar = loaderData.avatarUrl;
     const displayName = loaderData.displayName;
-    const [open, setOpen] = useState(true);
     return (
-        <SwipeableDrawer
-            variant="persistent"
-            open={open}
-            onOpen={() => setOpen(true)}
-            onClose={() => setOpen(false)}
+        <CollapseSideBar
             sx={{
                 width: '300px',
-                flexShrink: 0,
                 '& .MuiDrawer-paper': {
-                    position: 'absolute',
                     width: '300px',
-                    boxSizing: 'border-box',
                 },
-            }}>
+            }}
+        >
             <Paper className="ProfileHeader">
                 <Badge
                     className="ProfileHeaderAvatarBadge"
@@ -93,6 +84,6 @@ export function ProfileHeader({loaderData}) {
                     </ListItem>
                 </List>
             </Paper>
-        </SwipeableDrawer>
+        </CollapseSideBar>
     )
 }

@@ -12,7 +12,7 @@
 .RecommendationBlock,
 .CompetitionBlock,
 .RecordBlock {
-    /*width: 100%;*/
+    width: 100%;
     padding: 1rem 2rem;
 }
 
@@ -29,6 +29,11 @@
     box-shadow: none;
 }
 
+.RankingSlider > .MuiSlider-mark {
+    display: none;
+
+}
+
 .RankingSlider {
     pointer-events: none;
     cursor: default;
@@ -40,7 +45,6 @@
 .PublicationBlock,
 .RecommendationBlock,
 .CompetitionBlock {
-    height: 400px;
     overflow-y: auto;
 }
 
