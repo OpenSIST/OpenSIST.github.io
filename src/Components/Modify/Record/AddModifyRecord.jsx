@@ -48,7 +48,6 @@ export async function action({params, request}) {
             'Detail': detail
         }
     }
-    console.log(requestBody)
     await addModifyRecord(requestBody);
     return redirect(`/profile/${applicantID}`);
 }

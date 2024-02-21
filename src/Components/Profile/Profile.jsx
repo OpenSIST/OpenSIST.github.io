@@ -4,13 +4,15 @@ import {getApplicants} from "../../Data/ApplicantData";
 import {Outlet, redirect, useLoaderData} from "react-router-dom";
 import {ProfileHeader} from "./UserInfo/ProfileHeader";
 import {grey} from "@mui/material/colors";
-import {getAvatar, getDisplayName, getMetaData, uploadAvatar} from "../../Data/UserData";
+import {getAvatar, getDisplayName, getMetaData, toggleAnonymous, uploadAvatar} from "../../Data/UserData";
+import localforage from "localforage";
 
 export async function loader() {
     const displayName = await getDisplayName();
     const metaData = await getMetaData();
     const avatarUrl = await getAvatar(metaData?.Avatar)
-    return {displayName, metaData, avatarUrl};
+    const user = await localforage.getItem('user');
+    return {displayName, metaData, avatarUrl, user};
 }
 
 export async function action({request}) {
@@ -20,8 +22,12 @@ export async function action({request}) {
         const avatar = formData.get('avatar');
         await uploadAvatar(avatar);
         return redirect(window.location.href);
+    } else if (actionType === 'ToggleAnonymous') {
+        await toggleAnonymous()
+            // .then((r => setTimeout(r, 1000)));
+        return redirect('/profile');
     }
-    return getApplicants(true);
+    // return getApplicants(true);
 }
 
 export default function Profile() {

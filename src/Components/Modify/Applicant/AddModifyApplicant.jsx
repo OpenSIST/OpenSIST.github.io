@@ -111,7 +111,6 @@ export async function action({request}) {
             'Programs': ActionType === 'new' ? {} : Programs
         }
     };
-    console.log(requestBody)
     await addModifyApplicant(requestBody, displayName);
     return redirect(`/profile/${ApplicantID}`);
 }
@@ -196,8 +195,6 @@ export default function AddModifyApplicant({type}) {
             setFormValues(rest);
         }
     }
-    // console.log(formValues)
-
     return (
         <Form method='post'>
             <Input type='hidden' value={type} name='ActionType'/>

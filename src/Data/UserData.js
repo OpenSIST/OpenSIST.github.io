@@ -7,13 +7,16 @@ import {
     LOGIN,
     LOGOUT,
     REGISTER,
-    RESET_PASSWORD,
+    RESET_PASSWORD, TOGGLE_NICKNAME,
     UPLOAD_AVATAR
 } from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
 import {useState} from "react";
+import {getApplicants, setApplicants} from "./ApplicantData";
+import {getRecordByApplicant, setRecordByRecordID} from "./RecordData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+// const CACHE_EXPIRATION = 1; // 10 min
 
 export async function login(email, password) {
     const username = email.split('@')[0];
@@ -117,14 +120,7 @@ export async function setAvatarID(avatarId) {
 
 }
 
-export async function getAvatar(avatarId, displayName = null, isRefresh = false) {
-    // TODO: handle cross-device displayName synchronization
-    // Problem: if a user logged in device A and B simultaneously
-    // and he/she/them toggled the anonymous mode in device A and instantly switched to device B
-    // then the displayName in device A will be different from device B
-    // it will cause getMetaData to return 404
-    // the problem will last until the cache expired in device B (10min)
-
+export async function getAvatar(avatarId, displayName = null, isRefresh = false, raw = false) {
     if (!avatarId || avatarId === '') {
         return null;
     }
@@ -145,6 +141,9 @@ export async function getAvatar(avatarId, displayName = null, isRefresh = false)
         avatar = await response.blob();
         await setAvatar(avatar, displayName);
         avatar = {avatar: avatar}
+    }
+    if (raw) {
+        return avatar["avatar"];
     }
     return URL.createObjectURL(avatar["avatar"]);
 }
@@ -219,4 +218,54 @@ export async function setDisplayName(displayName) {
     }
     displayName = {name: displayName, Date: Date.now()}
     await localforage.setItem('displayName', displayName);
+}
+
+export async function toggleAnonymous() {
+    let ori_displayName = await getDisplayName();
+    console.log("ori_displayName", ori_displayName);
+    let ori_metaData = await getMetaData(ori_displayName);
+    console.log("ori_metaData", ori_metaData);
+    let ori_avatar = await getAvatar(ori_metaData.Avatar, ori_displayName, false, true);
+    let ori_applicants = ori_metaData.ApplicantIDs;
+    console.log("ori_applicants", ori_applicants)
+    let ori_all_applicants = await getApplicants();
+    console.log("ori_all_applicants", ori_all_applicants)
+    let ori_applicant_records = await Promise.all(ori_applicants.map(async (applicant) => {
+        return await getRecordByApplicant(applicant, ori_displayName);
+    }))
+    const response = await fetch(TOGGLE_NICKNAME, {
+        method: 'POST',
+        headers: await headerGenerator(true),
+    });
+    await handleErrors(response);
+    let displayName = (await response.json())['name'];
+    await setDisplayName(displayName);
+
+    await localforage.removeItem(`${ori_displayName}-metaData`);
+    ori_metaData.ApplicantIDs = ori_metaData.ApplicantIDs.map((applicant) => {
+        console.log(`change ori_metaData.ApplicantIDs: ${applicant} to ${displayName}@${applicant.split('@')[1]}`)
+        return `${displayName}@${applicant.split('@')[1]}`;
+    })
+
+    await setMetaData(ori_metaData, displayName);
+    await localforage.removeItem(`${ori_displayName}-avatar`);
+
+    await setAvatar(ori_avatar, ori_metaData.Avatar, displayName);
+
+    await setApplicants(ori_all_applicants.map((applicant) => {
+        if (ori_applicants.includes(applicant.ApplicantID)) {
+            applicant.ApplicantID = `${displayName}@${applicant.ApplicantID.split('@')[1]}`;
+        }
+        return applicant;
+    }))
+    console.log("new applicants:", await getApplicants());
+    await Promise.all(ori_applicant_records.map(async (records) => {
+        await Promise.all(Object.entries(records).map(async ([recordId, content]) => {
+            await localforage.removeItem(`record-${recordId}`);
+            content.ApplicantID = `${displayName}@${content.ApplicantID.split('@')[1]}`;
+            content.RecordID = `${content.ApplicantID}|${content.ProgramID}`;
+            await setRecordByRecordID(content.RecordID, content);
+        }))
+    }))
+
 }

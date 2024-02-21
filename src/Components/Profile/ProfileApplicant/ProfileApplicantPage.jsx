@@ -594,7 +594,7 @@ function RecordBlock({Records, ApplicantID, editable}) {
             </ContentCenteredGrid>
             {Object.values(Records).map((record, index) => {
                 return (
-                    <Grid2 sx={{display: 'flex'}} xs={12} md={6} xl={4} key={index}>
+                    <Grid2 sx={{display: 'flex'}} xs={12} sm={6} md={12} lg={6} xl={4} key={index}>
                         <Card elevation={3} sx={{
                             width: "100%",
                             display: 'flex',
@@ -603,7 +603,29 @@ function RecordBlock({Records, ApplicantID, editable}) {
                         }}>
                             <BaseListItem
                                 Icon={<Chip label={record.Status} color={RecordStatusPaltette[record.Status]}/>}
-                                primary={<Link to={`/programs/${record.ProgramID}`}>{record.ProgramID}</Link>}
+                                primary={
+                                    <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                                        <Link to={`/programs/${record.ProgramID}`}>{record.ProgramID}</Link>
+                                        {
+                                            editable ?
+                                                <ButtonGroup>
+                                                    <Tooltip title='编辑此记录' arrow>
+                                                        <IconButton component={Link}
+                                                                    to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}>
+                                                            <Edit/>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <Tooltip title='删除此记录' arrow>
+                                                        <IconButton onClick={() => {
+                                                            handleOpen(record.RecordID)
+                                                        }} color='error'>
+                                                            <Delete/>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </ButtonGroup> : null
+                                        }
+                                    </Box>
+                                }
                                 secondary={{
                                     "申请季": record.ProgramYear + record.Semester,
                                     "提交时间": record.TimeLine?.Submit?.split('T')[0] ?? "暂无",
@@ -612,26 +634,6 @@ function RecordBlock({Records, ApplicantID, editable}) {
                                     "补充说明": record.Detail === '' ? '暂无' : record.Detail
                                 }}
                             />
-                            {editable ?
-                                <ButtonGroup sx={{
-                                    p: '1rem',
-                                    alignSelf: 'flex-end'
-                                }}>
-                                    <Tooltip title='编辑此记录' arrow>
-                                        <IconButton component={Link}
-                                                    to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}>
-                                            <Edit/>
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip title='删除此记录' arrow>
-                                        <IconButton onClick={() => {
-                                            handleOpen(record.RecordID)
-                                        }} color='error'>
-                                            <Delete/>
-                                        </IconButton>
-                                    </Tooltip>
-                                </ButtonGroup> : null
-                            }
                         </Card>
                     </Grid2>
                 )
