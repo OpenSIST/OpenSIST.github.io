@@ -34,7 +34,7 @@ export async function getPrograms(isRefresh = false, query = {}) {
         const response = await fetch(PROGRAM_LIST, {
             method: 'POST',
             credentials: 'include',
-            headers: await headerGenerator(),
+            headers: await headerGenerator(true),
         });
         await handleErrors(response)
         programs = (await response.json());
