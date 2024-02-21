@@ -147,6 +147,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     value={exchange.Detail}
                                     onChange={(event) => handleExchangeChange(index, event)}
                                     size="small"
+                                    multiline
                                 />
                             </Grid2>
                         </Grid2>
@@ -198,6 +199,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             label="研究领域"
                             variant="outlined"
                             size="small"
+                            multiline
                             value={formValues.ResearchFocus ?? ""}
                             onChange={(event) => {
                                 handleChange(event)
@@ -225,6 +227,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             label="具体描述"
                             variant="outlined"
                             size="small"
+                            multiline
                             value={formValues.DomesticResearchDetail ?? ""}
                             onChange={(event) => {
                                 handleChange(event)
@@ -252,6 +255,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             label="具体描述"
                             variant="outlined"
                             size="small"
+                            multiline
                             value={formValues.InternationalResearchDetail ?? ""}
                             onChange={(event) => {
                                 handleChange(event)
@@ -294,6 +298,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             label="具体描述"
                             variant="outlined"
                             size="small"
+                            multiline
                             value={formValues.DomesticInternDetail ?? ""}
                             onChange={(event) => {
                                 handleChange(event)
@@ -321,6 +326,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             label="具体描述"
                             variant="outlined"
                             size="small"
+                            multiline
                             value={formValues.InternationalInternDetail ?? ""}
                             onChange={(event) => {
                                 handleChange(event)
@@ -369,6 +375,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     fullWidth
                                     name="Name"
                                     label="期刊/会议名称简写"
+                                    multiline
                                     value={publication.Name}
                                     onChange={(event) => handlePublicationChange(index, event)}
                                     size="small"
@@ -418,6 +425,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     fullWidth
                                     name="Detail"
                                     label="具体描述"
+                                    multiline
                                     value={publication.Detail}
                                     onChange={(event) => handlePublicationChange(index, event)}
                                     size="small"
@@ -495,6 +503,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     fullWidth
                                     name="Detail"
                                     label="具体描述"
+                                    multiline
                                     value={recommendation.Detail}
                                     onChange={(event) => handleRecommendationChange(index, event)}
                                     size="small"
@@ -549,6 +558,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             label="竞赛经历描述"
                             variant="outlined"
                             size="small"
+                            multiline
                             value={formValues.Competition ?? ""}
                             onChange={(event) => {
                                 handleChange(event)

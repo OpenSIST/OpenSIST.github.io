@@ -48,7 +48,7 @@ export async function action({params, request}) {
                 'Decision': decision.length > 0 ? decision : null,
             },
             'Detail': detail,
-            'Final': Boolean(final)
+            'Final': final === 'false' ? false : final === 'true',
         }
     }
     await addModifyRecord(requestBody);
@@ -71,12 +71,12 @@ export default function AddModifyRecord({type}) {
     const [statusOption, setStatusOption] = useState(record ? record.Status : null);
     const [yearOption, setYearOption] = useState(record ? record.ProgramYear : null);
     const [semesterOption, setSemesterOption] = useState(record ? record.Semester : null);
-    const [isFinal, setIsFinal] = useState(record ? record.Final : false);
     const mode = type === 'new' ? '添加' : '修改';
 
     return (
         <Form method='post'>
             <Input type='hidden' value={type} name='ActionType'/>
+            <Input type='hidden' value={record ? record.Final : false} name='Final'/>
             <Box sx={{
                 display: "flex",
                 justifyContent: "center",
@@ -237,22 +237,6 @@ export default function AddModifyRecord({type}) {
                                     variant='outlined'
                                     size='small'
                                     defaultValue={record ? record.Detail : null}
-                                />
-                            </Grid2>
-                            <Grid2 xs={12}>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            checked={isFinal}
-                                            onChange={(event) => {
-                                                setIsFinal(event.target.checked);
-                                            }}
-                                            color='primary'
-                                            name="Final"
-                                            value={isFinal}
-                                        />
-                                    }
-                                    label="这是我的最终去向"
                                 />
                             </Grid2>
                         </Grid2>

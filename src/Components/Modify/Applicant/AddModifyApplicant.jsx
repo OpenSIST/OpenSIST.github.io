@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import React, {useState} from "react";
 import BasicInfo from "./FormComponent/BasicInfo";
-import Grades from "./FormComponent/Grades";
 import SoftBackground from "./FormComponent/SoftBackground";
 import {getDisplayName} from "../../../Data/UserData";
 
@@ -85,6 +84,7 @@ export async function action({request}) {
         }
     }
     const Competition = formValues.Competition;
+    const Final = formValues.Final;
     const Programs = formValues.Programs;
     const displayName = await getDisplayName();
     const ApplicantID = `${displayName}@${ApplicationYear}`;
@@ -106,7 +106,8 @@ export async function action({request}) {
             'Internship': Internship,
             ...(Recommendation.length !== 0 && { 'Recommendation': Recommendation }),
             ...(Competition !== undefined && { 'Competition': Competition }),
-            'Programs': ActionType === 'new' ? {} : Programs
+            'Programs': ActionType === 'new' ? {} : Programs,
+            'Final': Final === undefined ? "" : Final,
         }
     };
     await addModifyApplicant(requestBody, displayName);
@@ -118,8 +119,6 @@ const FormContent = (activeStep, formValues, handleBack, handleNext, handleChang
         case 0:
             return <BasicInfo formValues={formValues} handleNext={handleNext} handleChange={handleChange} actionType={type}/>;
         case 1:
-            return <Grades formValues={formValues} handleBack={handleBack} handleNext={handleNext} handleChange={handleChange}/>;
-        case 2:
             return <SoftBackground formValues={formValues} handleBack={handleBack} handleChange={handleChange}/>;
         default:
             return null;
@@ -129,7 +128,6 @@ const FormContent = (activeStep, formValues, handleBack, handleNext, handleChang
 export default function AddModifyApplicant({type}) {
     const steps = [
         '基本信息',
-        '三维',
         '软背景'
     ];
     const [activeStep, setActiveStep] = useState(0);
@@ -182,7 +180,8 @@ export default function AddModifyApplicant({type}) {
             'Programs': applicantContent.Programs,
             'Exchange': applicantContent.Exchange,
             'Publication': applicantContent.Publication,
-            'Recommendation': applicantContent.Recommendation
+            'Recommendation': applicantContent.Recommendation,
+            'Final': applicantContent.Final
         }
     }
     const [formValues, setFormValues] = useState(applicantContent ?? {});
