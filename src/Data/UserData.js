@@ -13,7 +13,7 @@ import {
 import {handleErrors, headerGenerator} from "./Common";
 import {useState} from "react";
 import {getApplicants, setApplicants} from "./ApplicantData";
-import {getRecordByApplicant, setRecordByRecordID} from "./RecordData";
+import {getRecordByApplicant, setRecord} from "./RecordData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 // const CACHE_EXPIRATION = 1; // 10 min
@@ -268,7 +268,7 @@ export async function toggleAnonymous() {
             await localforage.removeItem(`record-${recordId}`);
             content.ApplicantID = `${displayName}@${content.ApplicantID.split('@')[1]}`;
             content.RecordID = `${content.ApplicantID}|${content.ProgramID}`;
-            await setRecordByRecordID(content.RecordID, content);
+            await setRecord(content);
         }))
     }))
 

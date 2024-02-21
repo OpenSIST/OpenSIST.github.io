@@ -2,6 +2,7 @@ import localforage from "localforage";
 import {ADD_MODIFY_APPLICANT, APPLICANT_LIST, REMOVE_APPLICANT} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
 import {getDisplayName, getMetaData, setMetaData} from "./UserData";
+import {getRecordByApplicant} from "./RecordData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 // const CACHE_EXPIRATION = 1; // 10 min

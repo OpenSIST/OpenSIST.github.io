@@ -266,7 +266,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, editable}) {
                     <Typography variant="h6" sx={{fontWeight: 'bold'}}>
                         最终去向:
                     </Typography>
-                    <Chip label={applicant.Final ?? "暂无"}/>
+                    <Chip label={applicant.Final === "" ? "暂无" : applicant.Final}/>
                 </ContentCenteredGrid>
             </Grid2>
             <Grid2 container xs={12} sm={7} md={6} lg={7} xl={9}>
