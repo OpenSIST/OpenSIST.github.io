@@ -4,14 +4,14 @@ import {
     List,
     ListItem,
     ListItemButton,
-    Paper, Switch,
+    Paper, Switch, TextField,
     Typography,
 } from "@mui/material";
 import "./ProfileHeader.css";
 import {Form, Link} from "react-router-dom";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import {Edit} from "@mui/icons-material";
+import {ConnectWithoutContact, Edit} from "@mui/icons-material";
 import {blue} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
 import {useState} from "react";
@@ -20,9 +20,12 @@ export function ProfileHeader({loaderData}) {
     const applicants = loaderData.metaData.ApplicantIDs;
     const avatar = loaderData.avatarUrl;
     const displayName = loaderData.displayName;
-    const user = loaderData.user
+    const user = loaderData.user;
+    const userContact = loaderData.metaData.Contact;
     const [anonymous, setAnonymous] = useState(displayName !== user);
-    const [open, setOpen] = useState(false);
+    const [anonymousOpen, setAnonymousOpen] = useState(false);
+    const [editContactOpen, setEditContactOpen] = useState(false);
+    const [contact, setContact] = useState(userContact);
     return (
         <CollapseSideBar
             sx={{
@@ -76,11 +79,11 @@ export function ProfileHeader({loaderData}) {
                     <InputLabel>匿名:</InputLabel>
                     <Switch checked={anonymous} onClick={() => {
                         setAnonymous(!anonymous);
-                        setOpen(true);
+                        setAnonymousOpen(true);
                     }}/>
-                    <Dialog open={open} onClose={() => {
+                    <Dialog open={anonymousOpen} onClose={() => {
                         setAnonymous(!anonymous);
-                        setOpen(false)
+                        setAnonymousOpen(false)
                     }}>
                         <DialogTitle>是否要更改申请人为{anonymous ? "匿名" : "实名"}状态？</DialogTitle>
                         <DialogContent>
@@ -98,14 +101,14 @@ export function ProfileHeader({loaderData}) {
                         <DialogActions>
                             <Button onClick={() => {
                                 setAnonymous(!anonymous);
-                                setOpen(false);
+                                setAnonymousOpen(false);
                             }}>
                                 取消
                             </Button>
                             <Form method='post'>
                                 <Button color='error' type='submit' name='button' value='ToggleAnonymous'
                                         onClick={() => {
-                                            setOpen(false);
+                                            setAnonymousOpen(false);
                                         }}
                                 >
                                     确定
@@ -119,17 +122,56 @@ export function ProfileHeader({loaderData}) {
                 <List>
                     {applicants.map((applicant) => (
                         <ListItem key={applicant}>
-                            <ListItemButton component={Link} to={`/profile/${applicant}`}>
+                            <ListItemButton component={Link} to={`/profile/${applicant}`} sx={{justifyContent: 'center'}}>
                                 <PersonOutlineIcon/> {applicant}
                             </ListItemButton>
                         </ListItem>
                     ))}
+                    <ListItem>
+                        <ListItemButton onClick={() => setEditContactOpen(true)} sx={{justifyContent: 'center'}}>
+                            <ConnectWithoutContact/> 编辑个人联系方式
+                        </ListItemButton>
+                    </ListItem>
                     <ListItem>
                         <ListItemButton component={Link} to="/profile/new-applicant" sx={{justifyContent: 'center'}}>
                             <PersonAddAltIcon/> 添加申请人
                         </ListItemButton>
                     </ListItem>
                 </List>
+                <Dialog open={editContactOpen} onClose={() => {
+                    setEditContactOpen(false)
+                }}>
+                    <DialogTitle>编辑个人联系方式</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            可以输入您的个人主页、LinkedIn、QQ、微信等。
+                        </DialogContentText>
+                        <TextField
+                            margin="dense"
+                            label="联系方式"
+                            size='small'
+                            fullWidth
+                            value={contact}
+                            onChange={(e) => setContact(e.target.value)}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            setEditContactOpen(false);
+                        }}>
+                            取消
+                        </Button>
+                        <Form method='post'>
+                            <Button color='success' type='submit' name='contact' value={contact}
+                                    onClick={() => {
+                                        setEditContactOpen(false);
+                                    }}
+                            >
+                                确定
+                            </Button>
+                        </Form>
+                    </DialogActions>
+                </Dialog>
             </Paper>
         </CollapseSideBar>
     )

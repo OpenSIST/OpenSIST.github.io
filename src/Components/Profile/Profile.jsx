@@ -4,7 +4,14 @@ import {getApplicants} from "../../Data/ApplicantData";
 import {Outlet, redirect, useLoaderData} from "react-router-dom";
 import {ProfileHeader} from "./UserInfo/ProfileHeader";
 import {grey} from "@mui/material/colors";
-import {getAvatar, getDisplayName, getMetaData, toggleAnonymous, uploadAvatar} from "../../Data/UserData";
+import {
+    getAvatar,
+    getDisplayName,
+    getMetaData,
+    toggleAnonymous,
+    updateContact,
+    uploadAvatar
+} from "../../Data/UserData";
 import localforage from "localforage";
 
 export async function loader() {
@@ -18,6 +25,8 @@ export async function loader() {
 export async function action({request}) {
     const formData = await request.formData();
     const actionType = formData.get('button');
+    const contact = formData.get('contact');
+    await updateContact(contact);
     if (actionType === 'EditAvatar') {
         const avatar = formData.get('avatar');
         await uploadAvatar(avatar);

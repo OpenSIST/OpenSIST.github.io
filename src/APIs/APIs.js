@@ -27,3 +27,4 @@ export const GET_DISPLAY_NAME = ROOT + "api/my/get_display_name";
 export const GET_METADATA = ROOT + "api/user/get_metadata";
 export const GET_AVATAR = ROOT + "api/user/get_avatar";
 export const TOGGLE_NICKNAME = ROOT + "api/my/toggle_nickname";
+export const UPDATE_CONTACT = ROOT + "/api/user/update_contact";

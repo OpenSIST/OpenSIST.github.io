@@ -111,7 +111,7 @@ function BaseListItem({Icon, primary, secondary}) {
                             Object.entries(secondary).map(([key, value]) => {
                                 return (
                                     <Typography component='span' key={key}>
-                                        {key}: {value}
+                                        {`${key}：${value}`}
                                     </Typography>
                                 )
                             })
@@ -266,7 +266,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, editable}) {
                     <Typography variant="h6" sx={{fontWeight: 'bold'}}>
                         最终去向:
                     </Typography>
-                    <Chip label={applicant.Final === "" ? "暂无" : applicant.Final}/>
+                    <Chip label={applicant.Final === "" ? "暂无/未知" : applicant.Final}/>
                 </ContentCenteredGrid>
             </Grid2>
             <Grid2 container xs={12} sm={7} md={6} lg={7} xl={9}>
@@ -443,13 +443,13 @@ function ResearchBlock({Researches}) {
                 <BaseListItem
                     Icon={<BiotechIcon/>}
                     primary={`国内${Researches.Domestic.Num}段研究经历`}
-                    secondary={Researches.Domestic.Detail === '' ? '具体描述:暂无' : Researches.Domestic.Detail}
+                    secondary={Researches.Domestic.Detail === '' ? '具体描述：暂无' : Researches.Domestic.Detail}
                 />
                 <Divider/>
                 <BaseListItem
                     Icon={<BiotechIcon/>}
                     primary={`国外${Researches.International.Num}段研究经历`}
-                    secondary={Researches.International.Detail === '' ? '具体描述:暂无' : Researches.International.Detail}
+                    secondary={Researches.International.Detail === '' ? '具体描述：暂无' : Researches.International.Detail}
                 />
             </List>
         </BaseItemBlock>
@@ -466,13 +466,13 @@ function InternshipBlock({Internships}) {
                 <BaseListItem
                     Icon={<WorkIcon/>}
                     primary={`国内${Internships.Domestic.Num}段实习经历`}
-                    secondary={Internships.Domestic.Detail === '' ? '具体描述:暂无' : Internships.Domestic.Detail}
+                    secondary={Internships.Domestic.Detail === '' ? '具体描述：暂无' : Internships.Domestic.Detail}
                 />
                 <Divider/>
                 <BaseListItem
                     Icon={<WorkIcon/>}
                     primary={`国外${Internships.International.Num}段实习经历`}
-                    secondary={Internships.International.Detail === '' ? '具体描述:暂无' : Internships.International.Detail}
+                    secondary={Internships.International.Detail === '' ? '具体描述：暂无' : Internships.International.Detail}
                 />
             </List>
         </BaseItemBlock>
@@ -541,7 +541,7 @@ function RecommendationBlock({Recommendations}) {
                             <BaseListItem
                                 Icon={<EmailIcon/>}
                                 primary={primary}
-                                secondary={recommendation.Detail === '' ? '具体描述:暂无' : recommendation.Detail}
+                                secondary={recommendation.Detail === '' ? '具体描述：暂无' : recommendation.Detail}
                             />
                             {index !== Recommendations.length - 1 ? <Divider/> : null}
                         </Fragment>
@@ -554,7 +554,7 @@ function RecommendationBlock({Recommendations}) {
 
 function CompetitionBlock({Competitions}) {
     if (!Competitions) {
-        Competitions = "暂无";
+        Competitions = "具体描述：暂无";
     }
     return (
         <BaseItemBlock className="CompetitionBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
@@ -565,7 +565,7 @@ function CompetitionBlock({Competitions}) {
                 <BaseListItem
                     Icon={<ShutterSpeedIcon/>}
                     primary="竞赛经历"
-                    secondary={Competitions === '' ? '具体描述:暂无' : Competitions}
+                    secondary={Competitions === '' ? '具体描述：暂无' : Competitions}
                 />
             </List>
         </BaseItemBlock>

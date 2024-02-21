@@ -7,7 +7,7 @@ import {
     LOGIN,
     LOGOUT,
     REGISTER,
-    RESET_PASSWORD, TOGGLE_NICKNAME,
+    RESET_PASSWORD, TOGGLE_NICKNAME, UPDATE_CONTACT,
     UPLOAD_AVATAR
 } from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
@@ -264,5 +264,19 @@ export async function toggleAnonymous() {
             await setRecord(content);
         }))
     }))
+}
 
+export async function updateContact(contact) {
+    const response = await fetch(UPDATE_CONTACT, {
+        method: 'POST',
+        mode: "cors",
+        credentials: "include",
+        headers: await headerGenerator(true),
+        body: JSON.stringify({newContact: contact})
+    });
+    await handleErrors(response);
+
+    let metadata = await getMetaData();
+    metadata['Contact'] = contact;
+    await setMetaData(metadata);
 }
