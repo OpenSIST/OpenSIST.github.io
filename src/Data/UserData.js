@@ -222,14 +222,10 @@ export async function setDisplayName(displayName) {
 
 export async function toggleAnonymous() {
     let ori_displayName = await getDisplayName();
-    console.log("ori_displayName", ori_displayName);
     let ori_metaData = await getMetaData(ori_displayName);
-    console.log("ori_metaData", JSON.parse(JSON.stringify(ori_metaData)));
     let ori_avatar = await getAvatar(ori_metaData.Avatar, ori_displayName, false, true);
     let ori_applicants = ori_metaData.ApplicantIDs;
-    console.log("ori_applicants", ori_applicants)
     let ori_all_applicants = await getApplicants();
-    console.log("ori_all_applicants", JSON.parse(JSON.stringify(ori_all_applicants)));
     let ori_applicant_records = await Promise.all(ori_applicants.map(async (applicant) => {
         return await getRecordByApplicant(applicant);
     }))
@@ -240,7 +236,6 @@ export async function toggleAnonymous() {
     });
     await handleErrors(response);
     let displayName = (await response.json())['name'];
-    console.log("new displayName", displayName);
     await setDisplayName(displayName);
 
     await localforage.removeItem(`${ori_displayName}-metaData`);
@@ -255,14 +250,12 @@ export async function toggleAnonymous() {
 
     ori_all_applicants = ori_all_applicants.map((applicant) => {
         if (ori_applicants.includes(applicant.ApplicantID)) {
-            console.log(`change applicant ${applicant.ApplicantID} to ${displayName}@${applicant.ApplicantID.split('@')[1]}`);
             applicant.ApplicantID = `${displayName}@${applicant.ApplicantID.split('@')[1]}`;
         }
         return applicant;
     })
     // TODO: the new display name may equal to some deprecated display name in cache
     await setApplicants(ori_all_applicants);
-    console.log("new applicants:", await getApplicants());
     await Promise.all(ori_applicant_records.map(async (records) => {
         await Promise.all(Object.entries(records).map(async ([recordId, content]) => {
             await localforage.removeItem(`record-${recordId}`);

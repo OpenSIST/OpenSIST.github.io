@@ -52,8 +52,6 @@ export async function setApplicantIDByDisplayName(applicants) {
     let metaData = await getMetaData(displayName, true);
     metaData.ApplicantIDs = applicants;
     await setMetaData(metaData, displayName);
-    // applicants = {'result': applicants, 'Date': Date.now()}
-    // await localforage.setItem(`${displayName}-applicants`, applicants);
 }
 
 export async function deleteApplicantIDByDisplayName(applicantId) {
@@ -61,8 +59,6 @@ export async function deleteApplicantIDByDisplayName(applicantId) {
     * Remove the applicant from the local storage.
     * @param applicantId [String]: applicantId
     */
-    // const userId = await localforage.getItem('user');
-    // const displayName = getDisplayName();
     const applicants = await getApplicantIDByDisplayName(true);
     await setApplicantIDByDisplayName(applicants.filter(p => p !== applicantId));
 }
@@ -75,7 +71,6 @@ export async function getApplicant(applicantId, isRefresh = false) {
     * @return: applicant
     */
     const applicants = await getApplicants(isRefresh);
-    // console.log("getApplicant", applicants, applicantId)
     return applicants.find(p => p.ApplicantID === applicantId);
 }
 
