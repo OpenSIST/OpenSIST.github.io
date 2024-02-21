@@ -25,14 +25,14 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
     }
 
     return (
-        <Paper variant='outlined' sx={{width: '60%'}}>
+        <Paper variant='outlined' sx={{width: '70%'}}>
             <Box className='AddModifyForm'>
                 <Grid2
                     container
                     spacing={2}
                     sx={{width: '80%', marginTop: '10px'}}
                 >
-                    <Grid2 xs={6}>
+                    <Grid2 xs={12} md={6}>
                         <Autocomplete
                             fullWidth
                             options={genderOptions}
@@ -57,7 +57,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                             }
                         />
                     </Grid2>
-                    <Grid2 xs={6}>
+                    <Grid2 xs={12} md={6}>
                         <Autocomplete
                             fullWidth
                             options={currentDegreeOptions}
@@ -82,7 +82,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                             }
                         />
                     </Grid2>
-                    <Grid2 xs={6}>
+                    <Grid2 xs={12} md={6}>
                         <Autocomplete
                             fullWidth
                             options={applicationYearOptions}
@@ -123,7 +123,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                             }
                         />
                     </Grid2>
-                    <Grid2 xs={6}>
+                    <Grid2 xs={12} md={6}>
                         <Autocomplete
                             fullWidth
                             options={majorOptions}

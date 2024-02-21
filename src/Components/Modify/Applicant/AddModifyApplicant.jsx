@@ -8,7 +8,6 @@ import {
     Stepper
 } from "@mui/material";
 import React, {useState} from "react";
-import localforage from "localforage";
 import BasicInfo from "./FormComponent/BasicInfo";
 import Grades from "./FormComponent/Grades";
 import SoftBackground from "./FormComponent/SoftBackground";
@@ -87,7 +86,6 @@ export async function action({request}) {
     }
     const Competition = formValues.Competition;
     const Programs = formValues.Programs;
-    // const userName = await localforage.getItem('user');
     const displayName = await getDisplayName();
     const ApplicantID = `${displayName}@${ApplicationYear}`;
     const requestBody = {

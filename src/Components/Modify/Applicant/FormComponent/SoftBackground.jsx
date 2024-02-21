@@ -2,7 +2,6 @@ import {
     Box,
     Button, Checkbox,
     Divider,
-    // Grid,
     FormControl, IconButton,
     InputLabel, ListItemText,
     MenuItem,
@@ -17,12 +16,15 @@ import {
     publicationStatusOptions,
     publicationTypeOptions, recommendationTypeOptions
 } from "../../../../Data/Schemas";
-import {Add, Remove} from "@mui/icons-material";
+import {Add} from "@mui/icons-material";
 import Select from "@mui/material/Select";
 import "../AddModifyApplicant.css";
 import DeleteIcon from "@mui/icons-material/Delete";
+import {useNavigate} from "react-router-dom";
 
 function SoftBackground({formValues, handleBack, handleChange}) {
+    const navigate = useNavigate();
+
     const [exchanges, setExchanges] = useState(formValues.Exchange ?? []);
     const handleAddExchange = () => {
         const newExchanges = [...exchanges, {University: "", Duration: "", Detail: ""}];
@@ -82,7 +84,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
     }, {});
 
     return (
-        <Paper variant='outlined' sx={{width: '70%'}}>
+        <Paper variant='outlined' sx={{width: '80%'}}>
             <Divider
                 textAlign="center"
                 variant='middle'
@@ -98,53 +100,55 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
-                        <Grid2 xs={11/3}>
-                            <FormControl fullWidth required>
-                                <InputLabel size="small">交换学校</InputLabel>
-                                <Select
-                                    name="University"
-                                    size="small"
-                                    label="交换学校"
-                                    value={exchange.University}
+                        <Grid2 container xs={11}>
+                            <Grid2 xs={12} lg={4}>
+                                <FormControl fullWidth required>
+                                    <InputLabel size="small">交换学校</InputLabel>
+                                    <Select
+                                        name="University"
+                                        size="small"
+                                        label="交换学校"
+                                        value={exchange.University}
+                                        onChange={(event) => handleExchangeChange(index, event)}
+                                        style={{textAlign: 'left'}}
+                                    >
+                                        {exchangeUnivList.map((univ) => (
+                                            <MenuItem key={univ} value={univ}>
+                                                {univ}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid2>
+                            <Grid2 xs={12} lg={4}>
+                                <FormControl fullWidth required>
+                                    <InputLabel size="small">交换时长</InputLabel>
+                                    <Select
+                                        name="Duration"
+                                        size="small"
+                                        label="交换时长"
+                                        value={exchange.Duration}
+                                        onChange={(event) => handleExchangeChange(index, event)}
+                                        style={{textAlign: 'left'}}
+                                    >
+                                        {exchangeDurationOptions.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid2>
+                            <Grid2 xs={12} lg={4}>
+                                <TextField
+                                    fullWidth
+                                    name="Detail"
+                                    label="具体描述"
+                                    value={exchange.Detail}
                                     onChange={(event) => handleExchangeChange(index, event)}
-                                    style={{textAlign: 'left'}}
-                                >
-                                    {exchangeUnivList.map((univ) => (
-                                        <MenuItem key={univ} value={univ}>
-                                            {univ}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid2>
-                        <Grid2 xs={11/3}>
-                            <FormControl fullWidth required>
-                                <InputLabel size="small">交换时长</InputLabel>
-                                <Select
-                                    name="Duration"
                                     size="small"
-                                    label="交换时长"
-                                    value={exchange.Duration}
-                                    onChange={(event) => handleExchangeChange(index, event)}
-                                    style={{textAlign: 'left'}}
-                                >
-                                    {exchangeDurationOptions.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid2>
-                        <Grid2 xs={11/3}>
-                            <TextField
-                                fullWidth
-                                name="Detail"
-                                label="具体描述"
-                                value={exchange.Detail}
-                                onChange={(event) => handleExchangeChange(index, event)}
-                                size="small"
-                            />
+                                />
+                            </Grid2>
                         </Grid2>
                         <Grid2 sx={{
                             display: 'flex',
@@ -200,7 +204,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={4}>
+                    <Grid2 xs={12} sm={4}>
                         <TextField
                             fullWidth
                             name="DomesticResearchNum"
@@ -214,7 +218,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={8}>
+                    <Grid2 xs={12} sm={8}>
                         <TextField
                             fullWidth
                             name="DomesticResearchDetail"
@@ -227,7 +231,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={4}>
+                    <Grid2 xs={12} sm={4}>
                         <TextField
                             fullWidth
                             name="InternationalResearchNum"
@@ -241,7 +245,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={8}>
+                    <Grid2 xs={12} sm={8}>
                         <TextField
                             fullWidth
                             name="InternationalResearchDetail"
@@ -269,7 +273,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    <Grid2 xs={4}>
+                    <Grid2 xs={12} sm={4}>
                         <TextField
                             fullWidth
                             name="DomesticInternNum"
@@ -283,7 +287,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={8}>
+                    <Grid2 xs={12} sm={8}>
                         <TextField
                             fullWidth
                             name="DomesticInternDetail"
@@ -296,7 +300,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={4}>
+                    <Grid2 xs={12} sm={4}>
                         <TextField
                             fullWidth
                             name="InternationalInternNum"
@@ -310,7 +314,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={8}>
+                    <Grid2 xs={12} sm={8}>
                         <TextField
                             fullWidth
                             name="InternationalInternDetail"
@@ -341,7 +345,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         key={index}
                     >
                         <Grid2 container spacing={2} xs={11}>
-                            <Grid2 xs={6}>
+                            <Grid2 xs={12} sm={6}>
                                 <FormControl fullWidth required>
                                     <InputLabel size="small">发表在</InputLabel>
                                     <Select
@@ -360,7 +364,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     </Select>
                                 </FormControl>
                             </Grid2>
-                            <Grid2 xs={6}>
+                            <Grid2 xs={12} sm={6}>
                                 <TextField
                                     fullWidth
                                     name="Name"
@@ -371,7 +375,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     required
                                 />
                             </Grid2>
-                            <Grid2 xs={6}>
+                            <Grid2 xs={12} sm={6}>
                                 <FormControl fullWidth required>
                                     <InputLabel size="small">作者顺次</InputLabel>
                                     <Select
@@ -390,7 +394,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     </Select>
                                 </FormControl>
                             </Grid2>
-                            <Grid2 xs={6}>
+                            <Grid2 xs={12} sm={6}>
                                 <FormControl fullWidth required>
                                     <InputLabel size="small">录用状态</InputLabel>
                                     <Select
@@ -463,37 +467,39 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
-                        <Grid2 xs={4}>
-                            <FormControl fullWidth required>
-                                <InputLabel size="small">推荐信类型</InputLabel>
-                                <Select
-                                    multiple
-                                    name="Type"
-                                    size="small"
-                                    label="推荐信类型"
-                                    value={recommendation.Type}
+                        <Grid2 container spacing={2} xs={11}>
+                            <Grid2 xs={12} sm={4}>
+                                <FormControl fullWidth required>
+                                    <InputLabel size="small">推荐信类型</InputLabel>
+                                    <Select
+                                        multiple
+                                        name="Type"
+                                        size="small"
+                                        label="推荐信类型"
+                                        value={recommendation.Type}
+                                        onChange={(event) => handleRecommendationChange(index, event)}
+                                        renderValue={(selected) => selected.map(value => recommendationTypeOptionsMap[value]).join(' + ')}
+                                        style={{textAlign: 'left'}}
+                                    >
+                                        {recommendationTypeOptions.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                <Checkbox checked={recommendation.Type.indexOf(option.value) > -1}/>
+                                                <ListItemText primary={option.label}/>
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid2>
+                            <Grid2 xs={12} sm={8}>
+                                <TextField
+                                    fullWidth
+                                    name="Detail"
+                                    label="具体描述"
+                                    value={recommendation.Detail}
                                     onChange={(event) => handleRecommendationChange(index, event)}
-                                    renderValue={(selected) => selected.map(value => recommendationTypeOptionsMap[value]).join(' + ')}
-                                    style={{textAlign: 'left'}}
-                                >
-                                    {recommendationTypeOptions.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            <Checkbox checked={recommendation.Type.indexOf(option.value) > -1}/>
-                                            <ListItemText primary={option.label}/>
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid2>
-                        <Grid2 xs={7}>
-                            <TextField
-                                fullWidth
-                                name="Detail"
-                                label="具体描述"
-                                value={recommendation.Detail}
-                                onChange={(event) => handleRecommendationChange(index, event)}
-                                size="small"
-                            />
+                                    size="small"
+                                />
+                            </Grid2>
                         </Grid2>
                         <Grid2 sx={{
                             display: 'flex',
@@ -553,14 +559,21 @@ function SoftBackground({formValues, handleBack, handleChange}) {
             </Box>
             <Box sx={{display: "flex", justifyContent: "flex-end", margin: 3}}>
                 <Button
-                    sx={{mr: 1}}
+                    sx={{ mr: 1 }}
+                    variant='contained'
+                    onClick={() => navigate(-1)}
+                >
+                    取消
+                </Button>
+                <Button
+                    sx={{ mr: 1 }}
                     variant='contained'
                     onClick={handleBack}
                 >
                     上一步
                 </Button>
                 <Button
-                    sx={{mr: 1}}
+                    sx={{ mr: 2 }}
                     variant='contained'
                     type="submit"
                     color="success"
