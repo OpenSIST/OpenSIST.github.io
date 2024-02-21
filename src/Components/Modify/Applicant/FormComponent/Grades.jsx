@@ -5,6 +5,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import {englishOptions, rankPercentOptions} from "../../../../Data/Schemas";
 import "../AddModifyApplicant.css";
 import {HelpOutline} from "@mui/icons-material";
+import {useNavigate} from "react-router-dom";
 
 function Grades({formValues, handleBack, handleNext, handleChange}) {
     const [englishOption, setEnglishOption] = useState('');
@@ -26,12 +27,13 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
             MozAppearance: "textfield",
         },
     };
+    const navigate = useNavigate();
     const isError = () => {
         return !formValues.GPA || !formValues.Ranking || !formValues.EnglishOption || !formValues.EnglishTotal || !formValues.R || !formValues.L || !formValues.S || !formValues.W || (isGRETotalRequired && !formValues.GRETotal) || (isGREVRequired && !formValues.V) || (isGREQRequired && !formValues.Q) || (isGREAWRequired && !formValues.AW);
     }
 
     return (
-        <Paper variant='outlined' sx={{width: '60%'}}>
+        <Paper variant='outlined' sx={{width: '70%'}}>
             <Divider
                 textAlign="center"
                 variant='middle'
@@ -45,7 +47,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                     spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
-                    <Grid2 xs={6}>
+                    <Grid2 xs={12} md={6}>
                         <TextField
                             fullWidth
                             name="GPA"
@@ -66,7 +68,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             }}
                         />
                     </Grid2>
-                    <Grid2 xs={6}>
+                    <Grid2 xs={12} md={6}>
                         <Autocomplete
                             fullWidth
                             renderInput={(params) =>
@@ -126,7 +128,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             required={isGRETotalRequired}
                         />
                     </Grid2>
-                    <Grid2 xs={4}>
+                    <Grid2 xs={12} md={4}>
                         <TextField
                             fullWidth
                             name="V"
@@ -147,7 +149,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             required={isGREVRequired}
                         />
                     </Grid2>
-                    <Grid2 xs={4}>
+                    <Grid2 xs={12} md={4}>
                         <TextField
                             fullWidth
                             name="Q"
@@ -168,7 +170,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                             required={isGREQRequired}
                         />
                     </Grid2>
-                    <Grid2 xs={4}>
+                    <Grid2 xs={12} md={4}>
                         <TextField
                             fullWidth
                             name="AW"
@@ -247,7 +249,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     sx={disableNumberUpDown}
                                 />
                             </Grid2>
-                            <Grid2 xs={3}>
+                            <Grid2 xs={12} md={3}>
                                 <TextField
                                     fullWidth
                                     name="R"
@@ -261,7 +263,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     sx={disableNumberUpDown}
                                 />
                             </Grid2>
-                            <Grid2 xs={3}>
+                            <Grid2 xs={12} md={3}>
                                 <TextField
                                     fullWidth
                                     name="L"
@@ -275,7 +277,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     sx={disableNumberUpDown}
                                 />
                             </Grid2>
-                            <Grid2 xs={3}>
+                            <Grid2 xs={12} md={3}>
                                 <TextField
                                     fullWidth
                                     name="S"
@@ -288,7 +290,7 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                                     sx={disableNumberUpDown}
                                 />
                             </Grid2>
-                            <Grid2 xs={3}>
+                            <Grid2 xs={12} md={3}>
                                 <TextField
                                     fullWidth
                                     name="W"
@@ -310,12 +312,19 @@ function Grades({formValues, handleBack, handleNext, handleChange}) {
                 <Button
                     sx={{ mr: 1 }}
                     variant='contained'
+                    onClick={() => navigate(-1)}
+                >
+                    取消
+                </Button>
+                <Button
+                    sx={{ mr: 1 }}
+                    variant='contained'
                     onClick={handleBack}
                 >
                     上一步
                 </Button>
                 <Button
-                    sx={{ mr: 1 }}
+                    sx={{ mr: 2 }}
                     variant='contained'
                     onClick={handleNext}
                     disabled={isError()}

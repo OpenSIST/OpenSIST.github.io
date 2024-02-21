@@ -1,7 +1,7 @@
 import {getPrograms} from "../../../Data/ProgramData";
 import React, {useState} from "react";
 import {addModifyRecord, getRecordByRecordIDs} from "../../../Data/RecordData";
-import {Box, Button, Input, Paper, TextField, Typography} from "@mui/material";
+import {Box, Button, Checkbox, FormControlLabel, Input, Paper, TextField, Typography} from "@mui/material";
 import {Form, redirect, useLoaderData, useNavigate} from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -10,13 +10,14 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from "dayjs";
-import {DateField} from "@mui/x-date-pickers";
+import {DatePicker} from "@mui/x-date-pickers";
 
 export async function loader({params}) {
     const programs = await getPrograms();
-    const recordID = `${params.applicantId}|${params.programId}`;
+    const applicantID = params.applicantId;
+    const recordID = `${applicantID}|${params.programId}`;
     const recordsDict = params.programId ? await getRecordByRecordIDs([recordID]) : null;
-    return {programs, recordsDict};
+    return {programs, recordsDict, applicantID};
 }
 export async function action({params, request}) {
     const formData = await request.formData();
@@ -31,6 +32,7 @@ export async function action({params, request}) {
     const interview = formData.get('Interview');
     const decision = formData.get('Decision');
     const detail = formData.get('Detail');
+    const final = formData.get('Final');
     const requestBody = {
         'newRecord': actionType === 'new',
         'content': {
@@ -45,7 +47,8 @@ export async function action({params, request}) {
                 'Interview': interview.length > 0 ? interview : null,
                 'Decision': decision.length > 0 ? decision : null,
             },
-            'Detail': detail
+            'Detail': detail,
+            'Final': Boolean(final)
         }
     }
     console.log(requestBody)
@@ -54,21 +57,24 @@ export async function action({params, request}) {
 }
 
 export default function AddModifyRecord({type}) {
-    const {programs, recordsDict} = useLoaderData();
+    const {programs, recordsDict, applicantID} = useLoaderData();
     const navigate = useNavigate();
+
     const programOptions = Object.values(programs).reduce((acc, programArray) => {
         programArray.forEach(program => {
             acc.push({label: program.ProgramID, value: program.ProgramID})
         });
         return acc;
     }, []);
+
     const record = recordsDict ? recordsDict[Object.keys(recordsDict)[0]] : null;
     const [programOption, setProgramOption] = useState(record ? record.ProgramID : null);
     const [statusOption, setStatusOption] = useState(record ? record.Status : null);
     const [yearOption, setYearOption] = useState(record ? record.ProgramYear : null);
     const [semesterOption, setSemesterOption] = useState(record ? record.Semester : null);
-
+    const [isFinal, setIsFinal] = useState(record ? record.Final : false);
     const mode = type === 'new' ? '添加' : '修改';
+
     return (
         <Form method='post'>
             <Input type='hidden' value={type} name='ActionType'/>
@@ -86,7 +92,7 @@ export default function AddModifyRecord({type}) {
                             spacing={2}
                             sx={{width: '80%', marginTop: '10px'}}
                         >
-                            <Grid2 xs={6}>
+                            <Grid2 xs={12} md={6}>
                                 <Autocomplete
                                     fullWidth
                                     options={programOptions}
@@ -109,7 +115,7 @@ export default function AddModifyRecord({type}) {
                                 >
                                 </Autocomplete>
                             </Grid2>
-                            <Grid2 xs={6}>
+                            <Grid2 xs={12} md={6}>
                                 <Autocomplete
                                     fullWidth
                                     renderInput={
@@ -129,7 +135,7 @@ export default function AddModifyRecord({type}) {
                                     }}
                                 />
                             </Grid2>
-                            <Grid2 xs={6}>
+                            <Grid2 xs={12} md={6}>
                                 <Autocomplete
                                     fullWidth
                                     renderInput={
@@ -149,7 +155,7 @@ export default function AddModifyRecord({type}) {
                                     }}
                                 />
                             </Grid2>
-                            <Grid2 xs={6}>
+                            <Grid2 xs={12} md={6}>
                                 <Autocomplete
                                     fullWidth
                                     renderInput={
@@ -179,44 +185,40 @@ export default function AddModifyRecord({type}) {
                                 },
                             }}
                         >
-                            <Grid2 xs={4}>
+                            <Grid2 xs={12} lg={4}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DemoContainer components={['DateField']}>
-                                        <DateField
+                                    <DemoContainer components={['DatePicker']}>
+                                        <DatePicker
                                             label="提交申请时间"
                                             name='Submit'
                                             format='YYYY-MM-DD'
-                                            required
-                                            size='small'
-                                            fullWidth
+                                            slotProps={ { textField: {size: 'small', fullWidth: true, required: true} }}
                                             defaultValue={record ? dayjs(record.TimeLine.Submit.split('T')[0]) : null}
                                         />
                                     </DemoContainer>
                                 </LocalizationProvider>
                             </Grid2>
-                            <Grid2 xs={4}>
+                            <Grid2 xs={12} lg={4}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DemoContainer components={['DateField']}>
-                                        <DateField
+                                    <DemoContainer components={['DatePicker']}>
+                                        <DatePicker
                                             label="面试时间"
                                             name='Interview'
                                             format='YYYY-MM-DD'
-                                            size='small'
-                                            fullWidth
+                                            slotProps={ { textField: {size: 'small', fullWidth: true} }}
                                             defaultValue={record ? record.TimeLine.Interview ? dayjs(record.TimeLine.Interview.split('T')[0]) : null : null}
                                         />
                                     </DemoContainer>
                                 </LocalizationProvider>
                             </Grid2>
-                            <Grid2 xs={4}>
+                            <Grid2 xs={12} lg={4}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DemoContainer components={['DateField']}>
-                                        <DateField
+                                    <DemoContainer components={['DatePicker']}>
+                                        <DatePicker
                                             label="结果通知时间"
                                             name='Decision'
                                             format='YYYY-MM-DD'
-                                            fullWidth
-                                            size='small'
+                                            slotProps={ { textField: {size: 'small', fullWidth: true} }}
                                             defaultValue={record ? record.TimeLine.Decision ? dayjs(record.TimeLine.Decision.split('T')[0]) : null : null}
                                         />
                                     </DemoContainer>
@@ -238,13 +240,29 @@ export default function AddModifyRecord({type}) {
                                     defaultValue={record ? record.Detail : null}
                                 />
                             </Grid2>
+                            <Grid2 xs={12}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={isFinal}
+                                            onChange={(event) => {
+                                                setIsFinal(event.target.checked);
+                                            }}
+                                            color='primary'
+                                            name="Final"
+                                            value={isFinal}
+                                        />
+                                    }
+                                    label="这是我的最终去向"
+                                />
+                            </Grid2>
                         </Grid2>
                     </Box>
                     <Box sx={{display: "flex", justifyContent: "flex-end", margin: 3}}>
                         <Button
                             sx={{ mr: 1 }}
                             variant='contained'
-                            onClick={() => navigate(-1)}
+                            onClick={() => navigate(`/profile/${applicantID}`)}
                         >
                             取消
                         </Button>
