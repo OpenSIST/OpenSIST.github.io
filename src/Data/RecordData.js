@@ -8,6 +8,7 @@ import localforage from "localforage";
 import {getApplicant} from "./ApplicantData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+// const CACHE_EXPIRATION = 1; // 10 min
 
 export async function addModifyRecord(requestBody) {
     const response = await fetch(ADD_MODIFY_RECORD, {
@@ -32,6 +33,7 @@ export async function addModifyRecord(requestBody) {
 
 export async function getRecordByApplicant(applicantId, isRefresh = false) {
     const applicant = await getApplicant(applicantId, isRefresh);
+    // console.log('getRecordByApplicant get applicantId:', applicantId, 'applicant:', applicant)
     const recordIDs = Object.keys(applicant.Programs).map(programID => {
         return applicantId + '|' + programID;
     }).flat();
