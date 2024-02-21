@@ -592,7 +592,7 @@ function RecordBlock({Records, ApplicantID, editable}) {
                     </Button>
                 </Tooltip>
             </ContentCenteredGrid>
-            {Records.map((record, index) => {
+            {Object.values(Records).map((record, index) => {
                 return (
                     <Grid2 sx={{display: 'flex'}} xs={12} md={6} xl={4} key={index}>
                         <Card elevation={3} sx={{

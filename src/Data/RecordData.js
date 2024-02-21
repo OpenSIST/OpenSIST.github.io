@@ -1,11 +1,11 @@
 import {
     ADD_MODIFY_RECORD,
-    GET_RECORD_BY_APPLICANT,
     GET_RECORD_BY_RECORD_IDs,
     REMOVE_RECORD
 } from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
 import localforage from "localforage";
+import {getApplicant} from "./ApplicantData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
@@ -21,36 +21,27 @@ export async function addModifyRecord(requestBody) {
     });
     await handleErrors(response);
     await setRecordByRecordID(requestBody.content.RecordID, requestBody.content);
-    let records = await getRecordByApplicant(requestBody.content.ApplicantID, true);
-    if (records.find(record => record.RecordID === requestBody.content.RecordID) !== undefined) {
-        records[records.indexOf(requestBody.content)] = requestBody.content;
-    } else {
-        records.push(requestBody.content);
-    }
-    await setRecordByApplicant(requestBody.content.ApplicantID, records);
+    // let records = await getRecordByApplicant(requestBody.content.ApplicantID, true);
+    // if (records.find(record => record.RecordID === requestBody.content.RecordID) !== undefined) {
+    //     records[records.indexOf(requestBody.content)] = requestBody.content;
+    // } else {
+    //     records.push(requestBody.content);
+    // }
+    // await setRecordByApplicant(requestBody.content.ApplicantID, records);
 }
 
 export async function getRecordByApplicant(applicantId, isRefresh = false) {
-    // await localforage.removeItem(`records-${applicantId}`)  //TODO: remove this line
-    let records = await localforage.getItem(`records-${applicantId}`);
-    if (isRefresh || records === null || (Date.now() - records.Date) > CACHE_EXPIRATION) {
-        const response = await fetch(GET_RECORD_BY_APPLICANT, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-            body: JSON.stringify({ApplicantID: applicantId}),
-        });
-        await handleErrors(response);
-        records = await response.json()
-        await setRecordByApplicant(applicantId, records['data'])
-    }
-    return records['data'];
+    const applicant = await getApplicant(applicantId, isRefresh);
+    const recordIDs = Object.keys(applicant.Programs).map(programID => {
+        return applicantId + '|' + programID;
+    }).flat();
+    return getRecordByRecordIDs(recordIDs, isRefresh);
 }
 
-export async function setRecordByApplicant(applicantId, records) {
-    records = {data: records, Date: Date.now()};
-    await localforage.setItem(`records-${applicantId}`, records)
-}
+// export async function setRecordByApplicant(applicantId, records) {
+//     records = {data: records, Date: Date.now()};
+//     await localforage.setItem(`records-${applicantId}`, records)
+// }
 
 export async function getRecordByRecordIDs(recordIDs, isRefresh = false) {
     const cacheRecords = await Promise.all(recordIDs.map(async (recordId) => {
@@ -105,7 +96,7 @@ export async function removeRecord(recordId) {
     await handleErrors(response);
 
     await localforage.removeItem(`record-${recordId}`);
-    const applicantID = recordId.split('|')[0];
-    const records = await getRecordByApplicant(applicantID);
-    await setRecordByApplicant(applicantID, records.filter(record => record.RecordID !== recordId));
+    // const applicantID = recordId.split('|')[0];
+    // const records = await getRecordByApplicant(applicantID);
+    // await setRecordByApplicant(applicantID, records.filter(record => record.RecordID !== recordId));
 }

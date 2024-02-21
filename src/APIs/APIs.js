@@ -19,7 +19,6 @@ export const REMOVE_FROM_TRASH = ROOT + "api/admin/email/remove_from_trash";
 export const ADD_MODIFY_APPLICANT = ROOT + "api/mutating/new_modify_applicant";
 export const REMOVE_APPLICANT = ROOT + "api/mutating/remove_applicant";
 export const APPLICANT_LIST = ROOT + "api/list/applicants";
-export const GET_RECORD_BY_APPLICANT = ROOT + "api/query/by_applicant";
 export const GET_RECORD_BY_RECORD_IDs = ROOT + "api/query/by_records";
 export const ADD_MODIFY_RECORD = ROOT + "api/mutating/new_modify_record";
 export const REMOVE_RECORD = ROOT + "api/mutating/remove_record";
