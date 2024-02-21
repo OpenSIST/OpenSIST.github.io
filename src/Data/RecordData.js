@@ -32,28 +32,27 @@ export async function addModifyRecord(requestBody) {
     await setApplicant(applicant);
 
     let program = await getProgram(programID);
-    program.Applicants = program.Applicants.map(applicant => {
-        if (applicant.ApplicantID === applicantID) {
-            applicant.Programs[programID] = requestBody.content.Status;
-        }
-        return applicant;
-    });
+    if (!program.Applicants.includes(applicantID)) {
+        program.Applicants.push(applicantID);
+    }
     await setProgram(program);
 }
 
 export async function getRecordByApplicant(applicantId, isRefresh = false) {
     const applicant = await getApplicant(applicantId, isRefresh);
-    // console.log('getRecordByApplicant get applicantId:', applicantId, 'applicant:', applicant)
     const recordIDs = Object.keys(applicant.Programs).map(programID => {
         return applicantId + '|' + programID;
     }).flat();
     return getRecordByRecordIDs(recordIDs, isRefresh);
 }
 
-// export async function setRecordByApplicant(applicantId, records) {
-//     records = {data: records, Date: Date.now()};
-//     await localforage.setItem(`records-${applicantId}`, records)
-// }
+export async function getRecordByProgram(programId, isRefresh = false) {
+    const program = await getProgram(programId, isRefresh);
+    const recordIDs = program.Applicants.map(applicantID => {
+        return applicantID + '|' + programId;
+    }).flat();
+    return getRecordByRecordIDs(recordIDs, isRefresh);
+}
 
 export async function getRecordByRecordIDs(recordIDs, isRefresh = false) {
     const cacheRecords = await Promise.all(recordIDs.map(async (recordId) => {
@@ -112,25 +111,17 @@ export async function removeRecord(recordId) {
 
     const applicantID = recordId.split('|')[0];
     const programID = recordId.split('|')[1];
-    const removeApplicantProgram = async (applicant) => {
-        applicant.Programs = Object.keys(applicant.Programs).filter(program =>
-            program !== programID).reduce((obj, key) => {
-            obj[key] = applicant.Programs[key];
-            return obj;
-        }, {});
-        return applicant;
-    }
 
     let applicant = await getApplicant(applicantID);
-    applicant = await removeApplicantProgram(applicant);
+    applicant.Programs = Object.entries(applicant.Programs).reduce((obj, [key, value]) => {
+        if (key !== programID) {
+            obj[key] = value;
+        }
+        return obj;
+    }, {});
     await setApplicant(applicant);
 
     let program = await getProgram(programID);
-    program.Applicants = program.Applicants.map(applicant => {
-        if (applicant.ApplicantID === applicantID) {
-            applicant = removeApplicantProgram(applicant);
-        }
-        return applicant;
-    });
+    program.Applicants = program.Applicants.filter(applicant => applicant !== applicantID);
     await setProgram(program);
 }

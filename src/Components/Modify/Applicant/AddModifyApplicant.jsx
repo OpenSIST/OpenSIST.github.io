@@ -110,7 +110,7 @@ export async function action({request}) {
             'Final': Final === undefined ? "" : Final,
         }
     };
-    await addModifyApplicant(requestBody, displayName);
+    await addModifyApplicant(requestBody);
     return redirect(`/profile/${ApplicantID}`);
 }
 
