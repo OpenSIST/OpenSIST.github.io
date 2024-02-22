@@ -93,14 +93,10 @@ export function useUser() {
 }
 
 export async function uploadAvatar(avatar) {
-    let fileSuffix = avatar.name.split('.');
-    fileSuffix = fileSuffix[fileSuffix.length - 1];
     const response = await fetch(UPLOAD_AVATAR, {
         method: 'POST',
         credentials: "include",
-        headers: await headerGenerator(true,
-            `image/${fileSuffix}`
-        ),
+        headers: await headerGenerator(true, avatar.type),
         body: avatar
     })
     await handleErrors(response);
