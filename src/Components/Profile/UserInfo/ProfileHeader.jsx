@@ -4,17 +4,17 @@ import {
     List,
     ListItem,
     ListItemButton,
-    Paper, Switch, TextField,
+    Paper, Switch, TextField, Tooltip,
     Typography,
 } from "@mui/material";
 import "./ProfileHeader.css";
 import {Form, Link} from "react-router-dom";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import {ConnectWithoutContact, Edit} from "@mui/icons-material";
+import {ConnectWithoutContact, Edit, Refresh} from "@mui/icons-material";
 import {blue} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
-import {useState} from "react";
+import React, {useState} from "react";
 
 export function ProfileHeader({loaderData}) {
     const applicants = loaderData.metaData.ApplicantIDs;
@@ -74,6 +74,13 @@ export function ProfileHeader({loaderData}) {
                 >
                     <Avatar src={avatar} sx={{height: '100px', width: '100px'}}/>
                 </Badge>
+                <Form method='post' style={{position: 'absolute', left: '230px'}}>
+                    <Tooltip title='刷新申请人信息' arrow>
+                        <IconButton type='submit' variant="outlined" name='button' value='Refresh' >
+                            <Refresh fontSize='large'/>
+                        </IconButton>
+                    </Tooltip>
+                </Form>
                 <Typography variant='h4'>{displayName}</Typography>
                 <Box sx={{display: 'flex', alignItems: 'center'}}>
                     <InputLabel>匿名:</InputLabel>
@@ -117,8 +124,8 @@ export function ProfileHeader({loaderData}) {
                         </DialogActions>
                     </Dialog>
                 </Box>
-                <Typography
-                    variant='h6'>{applicants.length} {applicants.length > 1 ? 'Applicants' : 'Applicant'}</Typography>
+                {/*<Typography*/}
+                {/*    variant='h6'>{applicants.length} {applicants.length > 1 ? 'Applicants' : 'Applicant'}</Typography>*/}
                 <List>
                     {applicants.map((applicant) => (
                         <ListItem key={applicant}>
@@ -128,13 +135,13 @@ export function ProfileHeader({loaderData}) {
                         </ListItem>
                     ))}
                     <ListItem>
-                        <ListItemButton onClick={() => setEditContactOpen(true)} sx={{justifyContent: 'center'}}>
-                            <ConnectWithoutContact/> 编辑个人联系方式
+                        <ListItemButton component={Link} to="/profile/new-applicant" sx={{justifyContent: 'center'}}>
+                            <PersonAddAltIcon/> 添加申请人
                         </ListItemButton>
                     </ListItem>
                     <ListItem>
-                        <ListItemButton component={Link} to="/profile/new-applicant" sx={{justifyContent: 'center'}}>
-                            <PersonAddAltIcon/> 添加申请人
+                        <ListItemButton onClick={() => setEditContactOpen(true)} sx={{justifyContent: 'center'}}>
+                            <ConnectWithoutContact/> 编辑个人联系方式
                         </ListItemButton>
                     </ListItem>
                 </List>

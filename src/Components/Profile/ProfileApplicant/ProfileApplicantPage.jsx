@@ -7,7 +7,7 @@ import {
     ListItemIcon, ListItemText, TextField,
     Paper, Slider, styled, Typography, Divider, Tooltip, Input, ButtonGroup
 } from "@mui/material";
-import {Add, Delete, Edit} from "@mui/icons-material";
+import {Add, Delete, Edit, Refresh} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
 import {Link} from 'react-router-dom';
 import {
@@ -29,7 +29,7 @@ import {
     RecordStatusPaltette,
     SliderValueRankStringMapping
 } from "../../../Data/Schemas";
-import {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
@@ -76,6 +76,12 @@ export async function action({params, request}) {
     } else if (actionType === 'DeleteRecord') {
         const recordId = formData.get('RecordID');
         await removeRecord(recordId);
+        return redirect(`/profile/${applicantId}`);
+    } else if (actionType === 'Refresh') {
+        await getApplicant(applicantId);
+        await getRecordByApplicant(applicantId);
+        const metaData = await getMetaData();
+        await getAvatar(metaData?.Avatar);
         return redirect(`/profile/${applicantId}`);
     }
 }
@@ -183,7 +189,7 @@ function EditDeleteButtonGroup({applicantId}) {
     return (
         <>
             <Tooltip title='更改申请人信息' arrow>
-                <IconButton component={Link} to={`/profile/${applicantId}/edit`} color='primary'>
+                <IconButton component={Link} to={`/profile/${applicantId}/edit`}>
                     <Edit/>
                 </IconButton>
             </Tooltip>
@@ -259,6 +265,13 @@ function BasicInfoBlock({avatarUrl, contact, applicant, editable}) {
                         <Typography variant="subtitle1">
                             {`${applicant.Major} ${currentDegreeMapping[applicant.CurrentDegree]}`}
                         </Typography>
+                        <Form method='post'>
+                            <Tooltip title='刷新申请人信息' arrow>
+                                <IconButton type='submit' variant="outlined" name='ActionType' value='Refresh'>
+                                    <Refresh/>
+                                </IconButton>
+                            </Tooltip>
+                        </Form>
                         {editable && isAuth ?
                             <EditDeleteButtonGroup applicantId={applicant.ApplicantID}/> : null}
                     </ContentCenteredGrid>

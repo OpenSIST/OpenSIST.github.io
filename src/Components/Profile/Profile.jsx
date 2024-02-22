@@ -21,7 +21,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 export async function loader() {
     const displayName = await getDisplayName();
     const metaData = await getMetaData();
-    const avatarUrl = await getAvatar(metaData?.Avatar)
+    const avatarUrl = await getAvatar(metaData?.Avatar);
     const user = await localforage.getItem('user');
     return {displayName, metaData, avatarUrl, user};
 }
@@ -40,6 +40,11 @@ export async function action({request}) {
     } else if (actionType === 'EditContact') {
         const contact = formData.get('contact');
         await updateContact(contact);
+        return redirect(window.location.href);
+    } else if (actionType === 'Refresh') {
+        await getDisplayName();
+        const metaData = await getMetaData();
+        await getAvatar(metaData?.Avatar);
         return redirect(window.location.href);
     }
     // return getApplicants(true);
