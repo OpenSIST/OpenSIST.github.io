@@ -151,6 +151,7 @@ export function ProfileHeader({loaderData}) {
                             label="联系方式"
                             size='small'
                             fullWidth
+                            multiline
                             value={contact}
                             onChange={(e) => setContact(e.target.value)}
                         />
