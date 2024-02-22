@@ -15,7 +15,7 @@ import {
 import localforage from "localforage";
 import {InlineTypography} from "../common";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
-import {Add, ConnectWithoutContact, Delete, Edit} from "@mui/icons-material";
+import {Add, ConnectWithoutContact, Delete, Edit, Refresh} from "@mui/icons-material";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 export async function loader() {
@@ -102,6 +102,11 @@ export function ProfileIndex() {
                                 可点击侧边栏的<ConnectWithoutContact/>填写个人联系方式（包括但不限于个人主页、LinkedIn、QQ、微信等），用户可按照自己意愿选择性填写此项。
                             </InlineTypography>
                         </li>
+                        <li>
+                            <InlineTypography>
+                                如遇任何信息更改后不同步的情况，可点击侧边栏右上角<Refresh/>按钮刷新侧边栏。
+                            </InlineTypography>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -109,7 +114,7 @@ export function ProfileIndex() {
                     <ul>
                         <li>
                             <InlineTypography>
-                                申请人页面包括申请人的专业、申请年份、三维、软背景等信息，用户可点击顶栏的<Edit/>编辑申请人信息，点击<Delete/>删除该申请人。
+                                申请人页面包括申请人的专业、申请年份、三维、软背景等信息，用户可点击页面上部基本信息栏的<Edit/>编辑申请人信息，点击<Delete/>删除该申请人。
                             </InlineTypography>
                         </li>
                         <li>
@@ -123,6 +128,11 @@ export function ProfileIndex() {
                         <li>
                             <InlineTypography>
                                 OpenSIST本着信息共享的原则，将申请人页面设为对OpenSIST所有用户可见，但非用户本人无法编辑或删除申请人信息。
+                            </InlineTypography>
+                        </li>
+                        <li>
+                            <InlineTypography>
+                                如遇任何信息更改后不同步的情况，可在申请人信息表的上部基本信息栏当中点击<Refresh/>按钮刷新申请人信息页面。
                             </InlineTypography>
                         </li>
                     </ul>
