@@ -12,16 +12,17 @@ import Autocomplete from "@mui/material/Autocomplete";
 import {
     applicationYearOptions,
     currentDegreeOptions, englishOptions,
-    genderOptions,
+    genderOptions, list2Options,
     majorOptions, rankPercentOptions,
 } from "../../../../Data/Schemas";
 import "../AddModifyApplicant.css";
 import {useNavigate} from "react-router-dom";
 
 function BasicInfo({formValues, handleNext, handleChange, actionType}) {
-    const finalOptions = formValues.Programs ? Object.keys(formValues.Programs).map((record) => {
-        return {value: record, label: record}
+    let finalOptions = formValues.Programs ? Object.keys(formValues.Programs).filter((record) => {
+        return ['Admit', 'Defer'].includes(formValues.Programs[record]);
     }) : [];
+    finalOptions = list2Options(finalOptions);
 
     const [englishOption, setEnglishOption] = useState('');
     const [isGRETotalRequired, setIsGRETotalRequired] = useState(false);
@@ -477,6 +478,20 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                                     name="Final"
                                     label="最终去向"
                                     variant="outlined"
+                                    InputProps={{
+                                        ...params.InputProps,
+                                        endAdornment: (
+                                            <>
+                                                {params.InputProps.endAdornment}
+                                                <Tooltip
+                                                    title='选项只包含申请结果为Admit或Defer的项目'
+                                                    arrow
+                                                >
+                                                    <HelpOutline/>
+                                                </Tooltip>
+                                            </>
+                                        ),
+                                    }}
                                     disabled={!formValues.Programs}
                                 />
                             }

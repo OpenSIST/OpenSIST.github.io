@@ -170,7 +170,7 @@ export function ProfileHeader({loaderData}) {
                             >
                                 确定
                             </Button>
-                            <input value={contact} name='contact' hidden/>
+                            <input defaultValue={contact} name='contact' hidden/>
                         </Form>
                     </DialogActions>
                 </Dialog>
