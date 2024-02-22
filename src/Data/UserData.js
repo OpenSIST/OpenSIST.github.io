@@ -15,8 +15,8 @@ import {useState} from "react";
 import {getApplicants, setApplicants} from "./ApplicantData";
 import {getRecordByApplicant, setRecord} from "./RecordData";
 
-const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
-// const CACHE_EXPIRATION = 1; // 10 min
+// const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+const CACHE_EXPIRATION = 1; // 10 min
 
 export async function login(email, password) {
     const username = email.split('@')[0];
@@ -47,7 +47,6 @@ export async function registerReset(email, password, token, status) {
     const api = status === 'reset' ? RESET_PASSWORD : REGISTER;
     const response = await fetch(api, {
         method: "POST",
-        mode: "cors",
         credentials: "include",
         headers: await headerGenerator(),
         body: JSON.stringify({email, password, token}),
@@ -98,7 +97,6 @@ export async function uploadAvatar(avatar) {
     fileSuffix = fileSuffix[fileSuffix.length - 1];
     const response = await fetch(UPLOAD_AVATAR, {
         method: 'POST',
-        mode: "cors",
         credentials: "include",
         headers: await headerGenerator(true,
             `image/${fileSuffix}`
@@ -269,7 +267,6 @@ export async function toggleAnonymous() {
 export async function updateContact(contact) {
     const response = await fetch(UPDATE_CONTACT, {
         method: 'POST',
-        mode: "cors",
         credentials: "include",
         headers: await headerGenerator(true),
         body: JSON.stringify({newContact: contact})

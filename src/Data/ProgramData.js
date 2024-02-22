@@ -3,8 +3,10 @@ import {ADD_MODIFY_PROGRAM, MODIFY_PROGRAM_ID, PROGRAM_DESC, PROGRAM_LIST, REMOV
 import {handleErrors, headerGenerator, univAbbrFullNameMapping} from "./Common";
 import univListOrder from "./UnivList.json";
 import {getRecordByProgram, removeRecord} from "./RecordData";
+import {getApplicants} from "./ApplicantData";
 
-const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+// const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+const CACHE_EXPIRATION = 1; // 10 min
 
 /*
 * All functions started with 'set' -> Offline operation to set items to local cache
@@ -236,7 +238,7 @@ export async function removeProgram(programId) {
     const univName = programId.split('@')[1]
     programs[univName] = programs[univName].filter(p => p.ProgramID !== programId);
     await setPrograms(programs);
-    // Since the backend
+    // Since the backend forbids the deletion of the program with applicants, the following code is not necessary actually...
     const records = await getRecordByProgram(programId);
     for (let record of records) {
         await removeRecord(record.RecordID);
@@ -261,8 +263,13 @@ export async function modifyProgramID(requestBody) {
     });
     await handleErrors(response)
     const oldProgramID = requestBody.ProgramID;
+    const records = await getRecordByProgram(oldProgramID);
+    for (let record of records) {
+        await removeRecord(record.RecordID);
+    }
     await deleteProgramDesc(oldProgramID);
     await getPrograms(true);
     // TODO: handle bipartite graph
+    await getApplicants(true);
 
 }

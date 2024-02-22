@@ -162,13 +162,14 @@ export function ProfileHeader({loaderData}) {
                             取消
                         </Button>
                         <Form method='post'>
-                            <Button color='success' type='submit' name='contact' value={contact}
+                            <Button color='success' type='submit' name='button' value="EditContact"
                                     onClick={() => {
                                         setEditContactOpen(false);
                                     }}
                             >
                                 确定
                             </Button>
+                            <input value={contact} name='contact' hidden/>
                         </Form>
                     </DialogActions>
                 </Dialog>

@@ -114,7 +114,6 @@ export default function RegisterAndReset() {
         try {
             const response = await fetch(api, {
                 method: "POST",
-                mode: "cors",
                 credentials: "include",
                 headers: await headerGenerator(),
                 body: JSON.stringify({email}),

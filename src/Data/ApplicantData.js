@@ -4,8 +4,8 @@ import {handleErrors, headerGenerator} from "./Common";
 import {getDisplayName, getMetaData, setMetaData} from "./UserData";
 import {getRecordByApplicant, removeRecord} from "./RecordData";
 
-const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
-// const CACHE_EXPIRATION = 1; // 10 min
+// const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+const CACHE_EXPIRATION = 1; // 10 min
 
 
 export async function getApplicants(isRefresh = false, query = {}) {

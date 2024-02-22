@@ -25,16 +25,18 @@ export async function loader() {
 export async function action({request}) {
     const formData = await request.formData();
     const actionType = formData.get('button');
-    const contact = formData.get('contact');
-    await updateContact(contact);
+    // await updateContact(contact);
     if (actionType === 'EditAvatar') {
         const avatar = formData.get('avatar');
         await uploadAvatar(avatar);
         return redirect(window.location.href);
     } else if (actionType === 'ToggleAnonymous') {
         await toggleAnonymous()
-            // .then((r => setTimeout(r, 1000)));
         return redirect('/profile');
+    } else if (actionType === 'EditContact') {
+        const contact = formData.get('contact');
+        await updateContact(contact);
+        return redirect(window.location.href);
     }
     // return getApplicants(true);
 }
