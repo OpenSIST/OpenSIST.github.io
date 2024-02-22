@@ -15,8 +15,8 @@ import {useState} from "react";
 import {getApplicants, setApplicants} from "./ApplicantData";
 import {getRecordByApplicant, setRecord} from "./RecordData";
 
-// const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
-const CACHE_EXPIRATION = 1; // 10 min
+const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+// const CACHE_EXPIRATION = 1; // 10 min
 
 export async function login(email, password) {
     const username = email.split('@')[0];

@@ -5,8 +5,8 @@ import univListOrder from "./UnivList.json";
 import {getRecordByProgram, removeRecord} from "./RecordData";
 import {getApplicants} from "./ApplicantData";
 
-// const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
-const CACHE_EXPIRATION = 1; // 10 min
+const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+// const CACHE_EXPIRATION = 1; // 10 min
 
 /*
 * All functions started with 'set' -> Offline operation to set items to local cache
