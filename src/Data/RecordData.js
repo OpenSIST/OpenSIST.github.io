@@ -69,9 +69,7 @@ export async function getRecordByRecordIDs(recordIDs, isRefresh = false) {
     unexpiredIDs.forEach((recordId) => {
         unexpiredRecords[recordId] = cacheRecords[recordIDs.indexOf(recordId)]['data'];
     })
-
     let expiredRecords = {data: {}};
-    console.log('expiredIDs', expiredIDs)
     if (expiredIDs.length > 0) {
         const response = await fetch(GET_RECORD_BY_RECORD_IDs, {
             method: 'POST',
@@ -98,6 +96,8 @@ export async function setRecord(record) {
 }
 
 export async function removeRecord(recordId) {
+    /* Remove recode from server and localforage
+     */
     const response = await fetch(REMOVE_RECORD, {
         method: 'POST',
         credentials: 'include',
@@ -107,7 +107,30 @@ export async function removeRecord(recordId) {
         }),
     });
     await handleErrors(response);
+    await deleteRecord(recordId);
+    //
+    // await localforage.removeItem(`record-${recordId}`);
+    //
+    // const applicantID = recordId.split('|')[0];
+    // const programID = recordId.split('|')[1];
+    //
+    // let applicant = await getApplicant(applicantID);
+    // applicant.Programs = Object.entries(applicant.Programs).reduce((obj, [key, value]) => {
+    //     if (key !== programID) {
+    //         obj[key] = value;
+    //     }
+    //     return obj;
+    // }, {});
+    // await setApplicant(applicant);
+    //
+    // let program = await getProgram(programID);
+    // program.Applicants = program.Applicants.filter(applicant => applicant !== applicantID);
+    // await setProgram(program);
+}
 
+export async function deleteRecord(recordId) {
+    /* Remove recode from localforage
+     */
     await localforage.removeItem(`record-${recordId}`);
 
     const applicantID = recordId.split('|')[0];

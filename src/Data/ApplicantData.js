@@ -2,7 +2,7 @@ import localforage from "localforage";
 import {ADD_MODIFY_APPLICANT, APPLICANT_LIST, REMOVE_APPLICANT} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
 import {getDisplayName, getMetaData, setMetaData} from "./UserData";
-import {getRecordByApplicant, removeRecord} from "./RecordData";
+import {deleteRecord, getRecordByApplicant, removeRecord} from "./RecordData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 // const CACHE_EXPIRATION = 1; // 10 min
@@ -144,9 +144,8 @@ export async function removeApplicant(applicantId) {
     await deleteApplicantIDByDisplayName(applicantId);
     // Since the backend prohibits the deletion of an applicant with records, the following code is not necessary actually...
     const records = await getRecordByApplicant(applicantId);
-    for (let record of records) {
-        await removeRecord(record.RecordID);
-        console.log(`Record ${record.RecordID} has been removed due to the deletion of the applicant ${applicantId}`)
+    for (const recordID of Object.keys(records)) {
+        await deleteRecord(recordID);
     }
 }
 

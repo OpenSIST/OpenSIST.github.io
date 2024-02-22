@@ -2,7 +2,7 @@ import localforage from "localforage";
 import {ADD_MODIFY_PROGRAM, MODIFY_PROGRAM_ID, PROGRAM_DESC, PROGRAM_LIST, REMOVE_PROGRAM} from "../APIs/APIs";
 import {handleErrors, headerGenerator, univAbbrFullNameMapping} from "./Common";
 import univListOrder from "./UnivList.json";
-import {getRecordByProgram, removeRecord} from "./RecordData";
+import {deleteRecord, getRecordByProgram, removeRecord} from "./RecordData";
 import {getApplicants} from "./ApplicantData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
@@ -234,15 +234,14 @@ export async function removeProgram(programId) {
 
     await handleErrors(response)
     await deleteProgramDesc(programId);
+    const records = await getRecordByProgram(programId);
     const programs = await getPrograms();
     const univName = programId.split('@')[1]
     programs[univName] = programs[univName].filter(p => p.ProgramID !== programId);
     await setPrograms(programs);
     // Since the backend forbids the deletion of the program with applicants, the following code is not necessary actually...
-    const records = await getRecordByProgram(programId);
-    for (let record of records) {
-        await removeRecord(record.RecordID);
-        console.log(`Record ${record.RecordID} has been removed due to the removal of program ${programId}`)
+    for (const recordID of Object.keys(records)) {
+        await deleteRecord(recordID);
     }
 
 }
@@ -264,12 +263,12 @@ export async function modifyProgramID(requestBody) {
     await handleErrors(response)
     const oldProgramID = requestBody.ProgramID;
     const records = await getRecordByProgram(oldProgramID);
-    for (let record of records) {
-        await removeRecord(record.RecordID);
+
+    for (const recordID of Object.keys(records)) {
+        await deleteRecord(recordID);
     }
     await deleteProgramDesc(oldProgramID);
     await getPrograms(true);
-    // TODO: handle bipartite graph
     await getApplicants(true);
 
 }

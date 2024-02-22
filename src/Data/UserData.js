@@ -10,7 +10,7 @@ import {
     RESET_PASSWORD, TOGGLE_NICKNAME, UPDATE_CONTACT,
     UPLOAD_AVATAR
 } from "../APIs/APIs";
-import {handleErrors, headerGenerator} from "./Common";
+import {blobToBase64, handleErrors, headerGenerator} from "./Common";
 import {useState} from "react";
 import {getApplicants, setApplicants} from "./ApplicantData";
 import {getRecordByApplicant, setRecord} from "./RecordData";
