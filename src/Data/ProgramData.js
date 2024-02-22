@@ -96,7 +96,7 @@ export async function getProgram(programId, isRefresh = false) {
     if (!programs[univName]) {
         throw new Response("", {
                 status: 404,
-                statusText: "Program Not Found",
+                statusText: "Program not found",
             }
         );
     }

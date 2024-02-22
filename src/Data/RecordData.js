@@ -90,6 +90,9 @@ export async function getRecordByRecordIDs(recordIDs, isRefresh = false) {
 }
 
 export async function setRecord(record) {
+    if (!record) {
+        return;
+    }
     const recordID = record.RecordID;
     record = {data: record, Date: Date.now()};
     await localforage.setItem(`record-${recordID}`, record)

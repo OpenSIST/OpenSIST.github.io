@@ -91,6 +91,9 @@ function OpenSIST() {
                                     errorElement: <ErrorPage/>,
                                     children: [
                                         {
+                                            index: true,
+                                            element: <ProgramIndex/>,
+                                        }, {
                                             path: '/programs/:programId',
                                             element: <ProgramContent/>,
                                             loader: programContentLoader,
@@ -104,10 +107,7 @@ function OpenSIST() {
                                             path: '/programs/new',
                                             element: <AddModifyProgram key='new' type='new'/>,
                                             action: addModifyProgramAction
-                                        }, {
-                                            index: true,
-                                            element: <ProgramIndex/>,
-                                        }
+                                        },
                                     ]
                                 }
                             ]
@@ -150,32 +150,37 @@ function OpenSIST() {
                             action: profileAction,
                             children: [
                                 {
-                                    index: true,
-                                    element: <ProfileIndex/>
-                                }, {
-                                    path: '/profile/:applicantId',
-                                    element: <ProfileApplicantPage editable={true}/>,
-                                    loader: ProfileApplicantLoader,
-                                    action: ProfileApplicantAction,
-                                }, {
-                                    path: '/profile/new-applicant',
-                                    element: <AddModifyApplicant key='new' type='new'/>,
-                                    action: addModifyApplicantAction
-                                }, {
-                                    path: '/profile/:applicantId/new-record',
-                                    element: <AddModifyRecord key='new' type='new'/>,
-                                    loader: addModifyRecordLoader,
-                                    action: addModifyRecordAction
-                                }, {
-                                    path: '/profile/:applicantId/edit',
-                                    element: <AddModifyApplicant key='edit' type='edit'/>,
-                                    loader: ProfileApplicantLoader,
-                                    action: addModifyApplicantAction
-                                }, {
-                                    path: '/profile/:applicantId/:programId/edit',
-                                    element: <AddModifyRecord key='edit' type='edit'/>,
-                                    loader: addModifyRecordLoader,
-                                    action: addModifyRecordAction
+                                    errorElement: <ErrorPage/>,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <ProfileIndex/>
+                                        }, {
+                                            path: '/profile/:applicantId',
+                                            element: <ProfileApplicantPage editable={true}/>,
+                                            loader: ProfileApplicantLoader,
+                                            action: ProfileApplicantAction,
+                                        }, {
+                                            path: '/profile/new-applicant',
+                                            element: <AddModifyApplicant key='new' type='new'/>,
+                                            action: addModifyApplicantAction
+                                        }, {
+                                            path: '/profile/:applicantId/new-record',
+                                            element: <AddModifyRecord key='new' type='new'/>,
+                                            loader: addModifyRecordLoader,
+                                            action: addModifyRecordAction
+                                        }, {
+                                            path: '/profile/:applicantId/edit',
+                                            element: <AddModifyApplicant key='edit' type='edit'/>,
+                                            loader: ProfileApplicantLoader,
+                                            action: addModifyApplicantAction
+                                        }, {
+                                            path: '/profile/:applicantId/:programId/edit',
+                                            element: <AddModifyRecord key='edit' type='edit'/>,
+                                            loader: addModifyRecordLoader,
+                                            action: addModifyRecordAction
+                                        }
+                                    ]
                                 }
                             ]
                         }, {

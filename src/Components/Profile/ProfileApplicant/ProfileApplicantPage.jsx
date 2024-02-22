@@ -11,7 +11,7 @@ import {Add, Delete, Edit} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
 import {Link} from 'react-router-dom';
 import {
-    getApplicant,
+    getApplicant, getApplicants,
     isAuthApplicant,
     removeApplicant
 } from "../../../Data/ApplicantData";
@@ -47,14 +47,23 @@ export async function loader({params}) {
     const applicantId = params.applicantId;
     const isAuth = await isAuthApplicant(applicantId);
     if (!isAuth) {
-        throw new Error('Unauthorized');
+        await getApplicants(true);
+        const doubleCheck = await isAuthApplicant(applicantId);
+        if (!doubleCheck) {
+            // We can guarantee that the user is not authorized to view the profile page.
+            throw new Error(`Sorry, you are not authorized to view the profile page of ${applicantId}.`);
+        }
     }
-    const applicant = await getApplicant(applicantId);
-    const records = await getRecordByApplicant(applicantId);
-    const metaData = await getMetaData();
-    const contact = metaData?.Contact;
-    const avatarUrl = await getAvatar(metaData?.Avatar);
-    return {avatarUrl, contact, applicant, records};
+    try {
+        const applicant = await getApplicant(applicantId);
+        const records = await getRecordByApplicant(applicantId);
+        const metaData = await getMetaData();
+        const contact = metaData?.Contact;
+        const avatarUrl = await getAvatar(metaData?.Avatar);
+        return {avatarUrl, contact, applicant, records};
+    } catch (e) {
+        throw e;
+    }
 }
 
 export async function action({params, request}) {

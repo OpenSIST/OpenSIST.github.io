@@ -77,10 +77,7 @@ export async function logout() {
         const content = await response.json();
         alert(`${content.error}, Error code: ${response.status}`);
     }
-    await localforage.removeItem('user');
-    await localforage.removeItem('session');
-    await localforage.removeItem('expireAt');
-    await localforage.removeItem('displayName');
+    await localforage.clear();  // clear all the cache data
     return redirect("/login");
 }
 

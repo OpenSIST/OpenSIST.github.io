@@ -71,7 +71,12 @@ export async function getApplicant(applicantId, isRefresh = false) {
     * @return: applicant
     */
     const applicants = await getApplicants(isRefresh);
-    return applicants.find(p => p.ApplicantID === applicantId);
+    const applicant = applicants.find(p => p.ApplicantID === applicantId);
+    if (!applicant) {
+        await getMetaData(applicantId.split('@')[0], true);
+        throw new Error('Applicant not found');
+    }
+    return applicant;
 }
 
 export async function setApplicants(applicants) {
@@ -156,6 +161,8 @@ export async function isAuthApplicant(applicantId) {
     * @param applicantId [String]: applicantId
     * @return: [Boolean]: whether the user is authorized to access the applicant
     */
-    const authApplicants = await getApplicantIDByDisplayName();
-    return authApplicants.indexOf(applicantId) !== -1;
+    // const authApplicants = await getApplicantIDByDisplayName();
+    // return authApplicants.indexOf(applicantId) !== -1;
+    const displayName = await getDisplayName();
+    return applicantId.split('@')[0] === displayName;
 }
