@@ -75,7 +75,7 @@ export function ProfileHeader({loaderData}) {
                     <Avatar src={avatar} sx={{height: '100px', width: '100px'}}/>
                 </Badge>
                 <Form method='post' style={{position: 'absolute', left: '230px'}}>
-                    <Tooltip title='刷新申请人信息' arrow>
+                    <Tooltip title='刷新侧边栏信息' arrow>
                         <IconButton type='submit' variant="outlined" name='button' value='Refresh' >
                             <Refresh fontSize='large'/>
                         </IconButton>
