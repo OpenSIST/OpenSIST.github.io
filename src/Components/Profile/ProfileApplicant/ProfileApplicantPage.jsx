@@ -40,7 +40,7 @@ import BiotechIcon from '@mui/icons-material/Biotech';
 import ArticleIcon from '@mui/icons-material/Article';
 import EmailIcon from '@mui/icons-material/Email';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
-import {getAvatar, getMetaData} from "../../../Data/UserData";
+import {getAvatar, getDisplayName, getMetaData} from "../../../Data/UserData";
 import {grey} from "@mui/material/colors";
 
 export async function loader({params}) {
@@ -78,10 +78,11 @@ export async function action({params, request}) {
         await removeRecord(recordId);
         return redirect(`/profile/${applicantId}`);
     } else if (actionType === 'Refresh') {
-        await getApplicant(applicantId);
-        await getRecordByApplicant(applicantId);
-        const metaData = await getMetaData();
-        await getAvatar(metaData?.Avatar);
+        const displayName = await getDisplayName(true);
+        await getApplicant(applicantId, true);
+        await getRecordByApplicant(applicantId, true);
+        const metaData = await getMetaData(displayName, true);
+        await getAvatar(metaData?.Avatar, displayName, true);
         return redirect(`/profile/${applicantId}`);
     }
 }

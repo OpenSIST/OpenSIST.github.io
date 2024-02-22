@@ -42,9 +42,9 @@ export async function action({request}) {
         await updateContact(contact);
         return redirect(window.location.href);
     } else if (actionType === 'Refresh') {
-        await getDisplayName();
-        const metaData = await getMetaData();
-        await getAvatar(metaData?.Avatar);
+        const displayName = await getDisplayName(true);
+        const metaData = await getMetaData(displayName, true);
+        await getAvatar(metaData?.Avatar, displayName, true);
         return redirect(window.location.href);
     }
     // return getApplicants(true);
