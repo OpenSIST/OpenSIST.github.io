@@ -1,7 +1,7 @@
 import {getPrograms} from "../../../Data/ProgramData";
 import React, {useState} from "react";
 import {addModifyRecord, getRecordByRecordIDs} from "../../../Data/RecordData";
-import {Box, Button, Checkbox, FormControlLabel, Input, Paper, TextField, Typography} from "@mui/material";
+import {Box, Button, Checkbox, FormControlLabel, Input, Paper, TextField, Tooltip, Typography} from "@mui/material";
 import {Form, redirect, useLoaderData, useNavigate} from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -11,6 +11,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from "dayjs";
 import {DatePicker} from "@mui/x-date-pickers";
+import {HelpOutline} from "@mui/icons-material";
 
 export async function loader({params}) {
     const programs = await getPrograms();
@@ -125,6 +126,20 @@ export default function AddModifyRecord({type}) {
                                                 name='Status'
                                                 size='small'
                                                 required
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    endAdornment: (
+                                                        <>
+                                                            {params.InputProps.endAdornment}
+                                                            <Tooltip
+                                                                title='此项为项目方而非本人的决定；如果被录取但被项目方延期入学 (如申的2024 Fall但被要求2025 Spring入学)，则选择Defer而非Admit'
+                                                                arrow
+                                                            >
+                                                                <HelpOutline/>
+                                                            </Tooltip>
+                                                        </>
+                                                    ),
+                                                }}
                                             />
                                     }
                                     options={recordStatusOptions}
