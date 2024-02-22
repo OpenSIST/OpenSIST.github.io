@@ -7,12 +7,6 @@ export default function AdminPage() {
             name: 'Program',
             path: '/admin/programs'
         }, {
-            name: 'Applicant',
-            path: '/admin/applicants'
-        }, {
-            name: 'Record',
-            path: '/admin/records'
-        }, {
             name: 'Email',
             path: '/admin/emails'
         },

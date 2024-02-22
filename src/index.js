@@ -115,35 +115,6 @@ function OpenSIST() {
                             path: '/applicants',
                             element: <h1>开发组正在加班加点赶工...</h1>,
                         }, {
-                            path: '/admin',
-                            element: <AdminPage/>,
-                            children: [
-                                {
-                                    errorElement: <ErrorPage/>,
-                                    children: [
-                                        {
-                                            index: true,
-                                            element: <AdminIndex/>,
-                                        },
-                                        {
-                                            path: '/admin/programs',
-                                            element: <AdminProgramPage/>,
-                                            loader: AdminProgramLoader,
-                                            action: AdminProgramAction
-                                        }, {
-                                            path: '/admin/applicants',
-                                        }, {
-                                            path: '/admin/records',
-                                        }, {
-                                            path: '/admin/emails',
-                                            element: <AdminEmailPage/>,
-                                            loader: AdminEmailPageLoader,
-                                            action: AdminEmailPageAction
-                                        }
-                                    ]
-                                }
-                            ]
-                        }, {
                             path: '/profile',
                             element: <Profile/>,
                             loader: profileLoader,
@@ -179,6 +150,31 @@ function OpenSIST() {
                                             element: <AddModifyRecord key='edit' type='edit'/>,
                                             loader: addModifyRecordLoader,
                                             action: addModifyRecordAction
+                                        }
+                                    ]
+                                }
+                            ]
+                        }, {
+                            path: '/admin',
+                            element: <AdminPage/>,
+                            children: [
+                                {
+                                    errorElement: <ErrorPage/>,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <AdminIndex/>,
+                                        },
+                                        {
+                                            path: '/admin/programs',
+                                            element: <AdminProgramPage/>,
+                                            loader: AdminProgramLoader,
+                                            action: AdminProgramAction
+                                        }, {
+                                            path: '/admin/emails',
+                                            element: <AdminEmailPage/>,
+                                            loader: AdminEmailPageLoader,
+                                            action: AdminEmailPageAction
                                         }
                                     ]
                                 }
