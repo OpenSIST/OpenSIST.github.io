@@ -99,7 +99,7 @@ export function ProfileIndex() {
                         </li>
                         <li>
                             <InlineTypography>
-                                OpenSIST为用户提供匿名选项，用户可点击侧边栏的匿名开关来开启/关闭匿名。开启匿名后，用户的username将从上科大邮箱前缀变为随机的英文名。
+                                <b>OpenSIST为用户提供匿名选项，用户可点击侧边栏的匿名开关来开启/关闭匿名。开启匿名后，用户的username将从上科大邮箱前缀变为随机的英文名，同时用户下属的所有申请人id也会相应改变。</b>
                             </InlineTypography>
                         </li>
                         <li>
@@ -124,7 +124,7 @@ export function ProfileIndex() {
                         </li>
                         <li>
                             <InlineTypography>
-                                在该页面底部，可编辑该申请人所申请的项目以及申请结果。点击<Add/>按钮可添加一条记录，添加后的记录会以卡片形式显示在底部，每个卡片都有<Edit/>和<Delete/>按钮来编辑/删除该条记录。
+                                在该页面中部，可编辑该申请人所申请的项目以及申请结果。点击<Add/>按钮可添加一条记录，添加后的记录会以卡片形式显示在申请记录这一栏，每个卡片都有<Edit/>和<Delete/>按钮来编辑/删除该条记录。
                             </InlineTypography>
                         </li>
                         <li>
@@ -132,7 +132,7 @@ export function ProfileIndex() {
                         </li>
                         <li>
                             <InlineTypography>
-                                OpenSIST本着信息共享的原则，将申请人页面设为对OpenSIST所有用户可见，但非用户本人无法编辑或删除申请人信息。
+                                <b>本着信息共享的原则，申请人页面是对OpenSIST所有用户可见的，但非用户本人无法编辑或删除申请人信息。如果您不希望您的邮箱前缀被其他人看到，可以开启匿名。</b>
                             </InlineTypography>
                         </li>
                         <li>

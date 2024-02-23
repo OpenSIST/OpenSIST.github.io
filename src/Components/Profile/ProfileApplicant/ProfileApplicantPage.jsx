@@ -154,13 +154,13 @@ export function ProfileApplicantPage({editable = false}) {
             }}
         >
             <BasicInfoBlock avatarUrl={avatarUrl} contact={contact} applicant={applicant} editable={editable}/>
+            <RecordBlock Records={records} ApplicantID={applicant.ApplicantID} editable={editable}/>
             <ExchangeBlock Exchanges={applicant?.Exchange}/>
             <ResearchBlock Researches={applicant?.Research}/>
             <InternshipBlock Internships={applicant?.Internship}/>
             <PublicationBlock Publications={applicant?.Publication}/>
             <RecommendationBlock Recommendations={applicant?.Recommendation}/>
             <CompetitionBlock Competitions={applicant?.Competition}/>
-            <RecordBlock Records={records} ApplicantID={applicant.ApplicantID} editable={editable}/>
         </Grid2>
     )
 }
