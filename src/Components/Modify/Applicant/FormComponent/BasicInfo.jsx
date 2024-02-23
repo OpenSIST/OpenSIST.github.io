@@ -38,10 +38,10 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
 
     const isGPAError = formValues.GPA && (formValues.GPA < 0 || formValues.GPA > 4);
     const isEnglishTotalError = formValues.EnglishTotal && ((formValues.EnglishOption === 'TOEFL' && (formValues.EnglishTotal < 0 || formValues.EnglishTotal > 120)) || (formValues.EnglishOption === 'IELTS' && (formValues.EnglishTotal < 0 || formValues.EnglishTotal > 9)));
-    const isReadingError = formValues.R && (formValues.EnglishOption === 'TOEFL' && (formValues.R < 0 || formValues.R > 30) || (formValues.EnglishOption === 'IELTS' && (formValues.R < 0 || formValues.R > 9)));
-    const isListeningError = formValues.L && (formValues.EnglishOption === 'TOEFL' && (formValues.L < 0 || formValues.L > 30) || (formValues.EnglishOption === 'IELTS' && (formValues.L < 0 || formValues.L > 9)));
-    const isSpeakingError = formValues.S && (formValues.EnglishOption === 'TOEFL' && (formValues.S < 0 || formValues.S > 30) || (formValues.EnglishOption === 'IELTS' && (formValues.S < 0 || formValues.S > 9)));
-    const isWritingError = formValues.W && (formValues.EnglishOption === 'TOEFL' && (formValues.W < 0 || formValues.W > 30) || (formValues.EnglishOption === 'IELTS' && (formValues.W < 0 || formValues.W > 9)));
+    const isReadingError = formValues.R && ((formValues.EnglishOption === 'TOEFL' && (formValues.R < 0 || formValues.R > 30)) || ((formValues.EnglishOption === 'IELTS' && (formValues.R < 0 || formValues.R > 9))));
+    const isListeningError = formValues.L && ((formValues.EnglishOption === 'TOEFL' && (formValues.L < 0 || formValues.L > 30)) || ((formValues.EnglishOption === 'IELTS' && (formValues.L < 0 || formValues.L > 9))));
+    const isSpeakingError = formValues.S && ((formValues.EnglishOption === 'TOEFL' && (formValues.S < 0 || formValues.S > 30)) || ((formValues.EnglishOption === 'IELTS' && (formValues.S < 0 || formValues.S > 9))));
+    const isWritingError = formValues.W && ((formValues.EnglishOption === 'TOEFL' && (formValues.W < 0 || formValues.W > 30)) || ((formValues.EnglishOption === 'IELTS' && (formValues.W < 0 || formValues.W > 9))));
     const isGRETotalError = formValues.GRETotal && (formValues.GRETotal < 260 || formValues.GRETotal > 340);
     const isGREVError = formValues.V && (formValues.V < 130 || formValues.V > 170);
     const isGREQError = formValues.Q && (formValues.Q < 130 || formValues.Q > 170);

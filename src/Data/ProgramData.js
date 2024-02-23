@@ -2,7 +2,7 @@ import localforage from "localforage";
 import {ADD_MODIFY_PROGRAM, MODIFY_PROGRAM_ID, PROGRAM_DESC, PROGRAM_LIST, REMOVE_PROGRAM} from "../APIs/APIs";
 import {handleErrors, headerGenerator, univAbbrFullNameMapping} from "./Common";
 import univListOrder from "./UnivList.json";
-import {deleteRecord, getRecordByProgram, removeRecord} from "./RecordData";
+import {deleteRecord, getRecordByProgram} from "./RecordData";
 import {getApplicants} from "./ApplicantData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
