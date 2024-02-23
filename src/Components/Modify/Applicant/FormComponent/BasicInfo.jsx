@@ -25,16 +25,17 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
     finalOptions = list2Options(finalOptions);
 
     const [englishOption, setEnglishOption] = useState('');
-    const [isGRETotalRequired, setIsGRETotalRequired] = useState(false);
-    const [isGREVRequired, setIsGREVRequired] = useState(false);
-    const [isGREQRequired, setIsGREQRequired] = useState(false);
-    const [isGREAWRequired, setIsGREAWRequired] = useState(false);
+    const [isGRETotalRequired, setIsGRETotalRequired] = useState(!!(formValues.GRETotal || formValues.V || formValues.Q || formValues.AW));
+    const [isGREVRequired, setIsGREVRequired] = useState(!!(formValues.GRETotal || formValues.V || formValues.Q || formValues.AW));
+    const [isGREQRequired, setIsGREQRequired] = useState(!!(formValues.GRETotal || formValues.V || formValues.Q || formValues.AW));
+    const [isGREAWRequired, setIsGREAWRequired] = useState(!!(formValues.GRETotal || formValues.V || formValues.Q || formValues.AW));
     const setGREStatus = (value) => {
         setIsGRETotalRequired(value);
         setIsGREVRequired(value);
         setIsGREQRequired(value);
         setIsGREAWRequired(value);
     }
+
     const isGPAError = formValues.GPA && (formValues.GPA < 0 || formValues.GPA > 4);
     const isEnglishTotalError = formValues.EnglishTotal && ((formValues.EnglishOption === 'TOEFL' && (formValues.EnglishTotal < 0 || formValues.EnglishTotal > 120)) || (formValues.EnglishOption === 'IELTS' && (formValues.EnglishTotal < 0 || formValues.EnglishTotal > 9)));
     const isReadingError = formValues.R && (formValues.EnglishOption === 'TOEFL' && (formValues.R < 0 || formValues.R > 30) || (formValues.EnglishOption === 'IELTS' && (formValues.R < 0 || formValues.R > 9)));
@@ -404,7 +405,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                             value={formValues.GRETotal ?? ""}
                             onChange={(event) => {
                                 handleChange(event);
-                                if (event.target.value) {
+                                if (event.target.value || formValues.V || formValues.Q || formValues.AW) {
                                     setGREStatus(true);
                                 } else {
                                     setGREStatus(false);
@@ -427,7 +428,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                             value={formValues.V ?? ""}
                             onChange={(event) => {
                                 handleChange(event);
-                                if (event.target.value) {
+                                if (event.target.value || formValues.GRETotal || formValues.Q || formValues.AW) {
                                     setGREStatus(true);
                                 } else {
                                     setGREStatus(false);
@@ -450,7 +451,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                             value={formValues.Q ?? ""}
                             onChange={(event) => {
                                 handleChange(event);
-                                if (event.target.value) {
+                                if (event.target.value || formValues.AW || formValues.V || formValues.GRETotal) {
                                     setGREStatus(true);
                                 } else {
                                     setGREStatus(false);
@@ -473,7 +474,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                             value={formValues.AW || ""}
                             onChange={(event) => {
                                 handleChange(event);
-                                if (event.target.value) {
+                                if (event.target.value || formValues.V || formValues.Q || formValues.GRETotal) {
                                     setGREStatus(true);
                                 } else {
                                     setGREStatus(false);
