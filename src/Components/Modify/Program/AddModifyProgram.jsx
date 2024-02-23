@@ -57,7 +57,7 @@ export default function AddModifyProgram({type}) {
     const [univ, setUniv] = useState(univOptions.find((univ) => univ.value === programContent?.University) ?? null);
     const [major, setMajor] = useState(majorOptions.filter((m) => programContent?.TargetApplicantMajor.includes(m.value)) ?? []);
     const [programName, setProgramName] = useState(programContent?.Program ?? '');
-    const programNameInvalid = programName.includes('@') || programName.includes('|') || programName.includes('/');
+    const programNameInvalid = ['@', '|', '/', '$', '\\', '?', '!'].some(char => programName.includes(char));
     return (
         <Form method="post"
               style={{display: 'flex', flexDirection: 'column'}}
