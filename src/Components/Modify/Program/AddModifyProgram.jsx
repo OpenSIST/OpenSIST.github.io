@@ -131,7 +131,7 @@ export default function AddModifyProgram({type}) {
                     }}
                     options={majorOptions}
                     value={major}
-                    renderTags={(value, getTagProps) =>
+                    renderTags={(value) =>
                         <Typography variant="body1">
                             {value.map((option) => option.label).join(', ')}
                         </Typography>

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import './ProgramContent.css'
-import {Form, Link, redirect, useLoaderData} from "react-router-dom";
+import {Form, Link, useLoaderData} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 import {IconButton, Typography} from "@mui/material";
 import {Edit, Refresh} from "@mui/icons-material";

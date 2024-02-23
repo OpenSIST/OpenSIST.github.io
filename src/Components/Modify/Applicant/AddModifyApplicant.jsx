@@ -201,7 +201,7 @@ export default function AddModifyApplicant({type}) {
                 activeStep={activeStep}
                 sx={{ mt: 10 }}
             >
-                {steps.map((label, index) => (
+                {steps.map((label) => (
                     <Step key={label}>
                         <StepButton color="inherit" sx={{"&.MuiButtonBase-root:hover": {
                                 bgcolor: "transparent",

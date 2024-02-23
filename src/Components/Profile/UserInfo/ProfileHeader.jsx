@@ -1,6 +1,5 @@
 import {
-    Avatar, Badge, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel,
-    IconButton, InputLabel,
+    Avatar, Badge, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputLabel,
     List,
     ListItem,
     ListItemButton,

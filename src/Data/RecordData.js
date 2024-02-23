@@ -61,8 +61,8 @@ export async function getRecordByRecordIDs(recordIDs, isRefresh = false) {
     const expiredIDs = recordIDs.filter((recordId, index) => {
         return isRefresh || cacheRecords[index] === null || (Date.now() - cacheRecords[index].Date) > CACHE_EXPIRATION;
     });
-    const unexpiredIDs = recordIDs.filter((recordId, index) => {
-        return !expiredIDs.includes(recordId)
+    const unexpiredIDs = recordIDs.filter((recordId) => {
+        return !expiredIDs.includes(recordId);
     });
 
     const unexpiredRecords = {};

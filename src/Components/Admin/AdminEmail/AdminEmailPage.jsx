@@ -97,7 +97,7 @@ function Email({email, emailID, selectEmails, setSelectEmails}) {
             setSelectEmails(selectEmails.filter((id) => id !== emailID));
         }
     }
-    const handleAccordionClick = async (event) => {
+    const handleAccordionClick = async () => {
         if (emailContent.html === null) {
             setEmailContent(await getEmailBody(emailID));
         }

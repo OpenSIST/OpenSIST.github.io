@@ -188,7 +188,7 @@ export default function RegisterAndReset() {
                 name='confirmPassword'
                 value={passwordConfirm}
                 onChange={(e) => {
-                    setPasswordConfirm((P) => e.target.value);
+                    setPasswordConfirm(() => e.target.value);
                 }}
                 size='small'
                 required
