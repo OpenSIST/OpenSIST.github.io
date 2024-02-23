@@ -150,8 +150,10 @@ export async function setPrograms(programs) {
     * Set the list of programs (without description) to the local storage (i.e. localforage.getItem('programs'))
     * @param programs [Array]: list of programs (without description)
     */
-    programs = {'data': programs, 'Date': Date.now()};
-    await localforage.setItem('programs', programs);
+    if (programs) {
+        programs = {'data': programs, 'Date': Date.now()};
+        await localforage.setItem('programs', programs);
+    }
 }
 
 export async function setProgram(program) {
@@ -178,8 +180,10 @@ export async function setProgramDesc(programId, programDesc) {
     * @param programId [String]: programId
     * @param programDesc [String]: description of the program
     */
-    programDesc = {'description': programDesc, 'Date': Date.now()}
-    await localforage.setItem(`${programId}-Desc`, programDesc);
+    if (programDesc) {
+        programDesc = {'description': programDesc, 'Date': Date.now()}
+        await localforage.setItem(`${programId}-Desc`, programDesc);
+    }
 }
 
 export async function setProgramContent(program) {
