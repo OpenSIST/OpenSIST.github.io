@@ -88,6 +88,11 @@ export function ProfileIndex() {
                             </InlineTypography>
                         </li>
                         <li>
+                            <b>
+                                一个用户可以拥有多个申请人（例如一个用户有连续两年的申请经历），不同申请人之间以@后面的年份作为区分。
+                            </b>
+                        </li>
+                        <li>
                             <InlineTypography>
                                 可点击侧边栏的<Edit/>上传头像，图片大小不得超过4MB，支持的图片格式有：jpg、jpeg、png、gif、svg、webp。
                             </InlineTypography>
