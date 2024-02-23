@@ -146,6 +146,10 @@ export async function deleteRecord(recordId) {
         }
         return obj;
     }, {});
+    if (applicant.Final === programID) {
+        applicant.Final = "";
+    }
+    console.log(applicant)
     await setApplicant(applicant);
 
     let program = await getProgram(programID);

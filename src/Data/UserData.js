@@ -39,12 +39,7 @@ export async function login(email, password) {
         }
         await setUserInfo(user_info);
         await getDisplayName();
-        // return redirect("/");
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve(redirect("/"));
-            }, 2000); // Delay for 2 seconds
-        });  // TODO: redirect to the previous page
+        return redirect("/");
     }
 }
 

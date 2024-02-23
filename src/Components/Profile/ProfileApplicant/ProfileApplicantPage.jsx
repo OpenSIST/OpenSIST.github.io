@@ -178,7 +178,7 @@ function GenderIcon({gender}) {
     }
 }
 
-function EditDeleteButtonGroup({applicantId}) {
+function ControlButtonGroup({applicantId}) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
@@ -189,6 +189,13 @@ function EditDeleteButtonGroup({applicantId}) {
     const [confirmText, setConfirmText] = useState('');
     return (
         <>
+            <Form method='post'>
+                <Tooltip title='刷新申请人信息' arrow>
+                    <IconButton type='submit' variant="outlined" name='ActionType' value='Refresh'>
+                        <Refresh/>
+                    </IconButton>
+                </Tooltip>
+            </Form>
             <Tooltip title='更改申请人信息' arrow>
                 <IconButton component={Link} to={`/profile/${applicantId}/edit`}>
                     <Edit/>
@@ -266,15 +273,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, editable}) {
                         <Typography variant="subtitle1">
                             {`${applicant.Major} ${currentDegreeMapping[applicant.CurrentDegree]}`}
                         </Typography>
-                        <Form method='post'>
-                            <Tooltip title='刷新申请人信息' arrow>
-                                <IconButton type='submit' variant="outlined" name='ActionType' value='Refresh'>
-                                    <Refresh/>
-                                </IconButton>
-                            </Tooltip>
-                        </Form>
-                        {editable && isAuth ?
-                            <EditDeleteButtonGroup applicantId={applicant.ApplicantID}/> : null}
+                        {editable && isAuth ? <ControlButtonGroup applicantId={applicant.ApplicantID}/> : null}
                     </ContentCenteredGrid>
                 </Grid2>
                 <ContentCenteredGrid xs={12} sx={{gap: "1rem"}}>
