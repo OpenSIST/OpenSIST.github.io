@@ -35,6 +35,17 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
         setIsGREQRequired(value);
         setIsGREAWRequired(value);
     }
+    const isGPAError = formValues.GPA && (formValues.GPA < 0 || formValues.GPA > 4);
+    const isEnglishTotalError = formValues.EnglishTotal && ((formValues.EnglishOption === 'TOEFL' && (formValues.EnglishTotal < 0 || formValues.EnglishTotal > 120)) || (formValues.EnglishOption === 'IELTS' && (formValues.EnglishTotal < 0 || formValues.EnglishTotal > 9)));
+    const isReadingError = formValues.R && (formValues.EnglishOption === 'TOEFL' && (formValues.R < 0 || formValues.R > 30) || (formValues.EnglishOption === 'IELTS' && (formValues.R < 0 || formValues.R > 9)));
+    const isListeningError = formValues.L && (formValues.EnglishOption === 'TOEFL' && (formValues.L < 0 || formValues.L > 30) || (formValues.EnglishOption === 'IELTS' && (formValues.L < 0 || formValues.L > 9)));
+    const isSpeakingError = formValues.S && (formValues.EnglishOption === 'TOEFL' && (formValues.S < 0 || formValues.S > 30) || (formValues.EnglishOption === 'IELTS' && (formValues.S < 0 || formValues.S > 9)));
+    const isWritingError = formValues.W && (formValues.EnglishOption === 'TOEFL' && (formValues.W < 0 || formValues.W > 30) || (formValues.EnglishOption === 'IELTS' && (formValues.W < 0 || formValues.W > 9)));
+    const isGRETotalError = formValues.GRETotal && (formValues.GRETotal < 260 || formValues.GRETotal > 340);
+    const isGREVError = formValues.V && (formValues.V < 130 || formValues.V > 170);
+    const isGREQError = formValues.Q && (formValues.Q < 130 || formValues.Q > 170);
+    const isGREAWError = formValues.AW && (formValues.AW < 0 || formValues.AW > 6);
+
     const disableNumberUpDown = {
         "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
             display: "none",
@@ -46,7 +57,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
 
     const navigate = useNavigate();
     const isError = () => {
-        return !formValues.Gender || !formValues.CurrentDegree || !formValues.ApplicationYear || !formValues.Major || !formValues.GPA || !formValues.Ranking || !formValues.EnglishOption || !formValues.EnglishTotal || !formValues.R || !formValues.L || !formValues.S || !formValues.W || (isGRETotalRequired && !formValues.GRETotal) || (isGREVRequired && !formValues.V) || (isGREQRequired && !formValues.Q) || (isGREAWRequired && !formValues.AW);
+        return !formValues.Gender || !formValues.CurrentDegree || !formValues.ApplicationYear || !formValues.Major || !formValues.GPA || !formValues.Ranking || !formValues.EnglishOption || !formValues.EnglishTotal || !formValues.R || !formValues.L || !formValues.S || !formValues.W || (isGRETotalRequired && !formValues.GRETotal) || (isGREVRequired && !formValues.V) || (isGREQRequired && !formValues.Q) || (isGREAWRequired && !formValues.AW) || isGPAError || isEnglishTotalError || isReadingError || isListeningError || isSpeakingError || isWritingError || isGRETotalError || isGREVError || isGREQError || isGREAWError;
     }
 
     return (
@@ -207,6 +218,8 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                             onChange={(event) => {handleChange(event)}}
                             type="number"
                             sx={disableNumberUpDown}
+                            error={isGPAError}
+                            helperText={isGPAError ? "GPA应在0-4之间" : null}
                             InputProps={{
                                 endAdornment: (
                                     <Tooltip title={'填写在该申请季用于申请的最高学历的GPA'} arrow sx={{cursor: 'pointer'}}>
@@ -295,6 +308,8 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
                                     required
+                                    error={isEnglishTotalError}
+                                    helperText={isEnglishTotalError ? (formValues.EnglishOption === 'TOEFL' ? "TOEFL总分应在0-120之间" : "IELTS总分应在0-9之间") : null}
                                     sx={disableNumberUpDown}
                                 />
                             </Grid2>
@@ -309,6 +324,8 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
                                     required
+                                    error={isReadingError}
+                                    helperText={isReadingError ? (formValues.EnglishOption === 'TOEFL' ? "TOEFL阅读分应在0-30之间" : "IELTS阅读分应在0-9之间") : null}
                                     sx={disableNumberUpDown}
                                 />
                             </Grid2>
@@ -323,6 +340,8 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
                                     required
+                                    error={isListeningError}
+                                    helperText={isListeningError ? (formValues.EnglishOption === 'TOEFL' ? "TOEFL听力分应在0-30之间" : "IELTS听力分应在0-9之间") : null}
                                     sx={disableNumberUpDown}
                                 />
                             </Grid2>
@@ -336,6 +355,9 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                                     value={formValues.S || ""}
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
+                                    required
+                                    error={isSpeakingError}
+                                    helperText={isSpeakingError ? (formValues.EnglishOption === 'TOEFL' ? "TOEFL口语分应在0-30之间" : "IELTS口语分应在0-9之间") : null}
                                     sx={disableNumberUpDown}
                                 />
                             </Grid2>
@@ -350,6 +372,8 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
                                     required
+                                    error={isWritingError}
+                                    helperText={isWritingError ? (formValues.EnglishOption === 'TOEFL' ? "TOEFL写作分应在0-30之间" : "IELTS写作分应在0-9之间") : null}
                                     sx={disableNumberUpDown}
                                 />
                             </Grid2>
@@ -388,6 +412,8 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                             }}
                             type="number"
                             sx={disableNumberUpDown}
+                            error={isGRETotalError}
+                            helperText={isGRETotalError ? "GRE总分应在260-340之间" : null}
                             required={isGRETotalRequired}
                         />
                     </Grid2>
@@ -410,6 +436,8 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                             type="number"
                             sx={disableNumberUpDown}
                             required={isGREVRequired}
+                            error={isGREVError}
+                            helperText={isGREVError ? "GRE语文分应在130-170之间" : null}
                         />
                     </Grid2>
                     <Grid2 xs={12} md={4}>
@@ -431,6 +459,8 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                             type="number"
                             sx={disableNumberUpDown}
                             required={isGREQRequired}
+                            error={isGREQError}
+                            helperText={isGREQError ? "GRE数学分应在130-170之间" : null}
                         />
                     </Grid2>
                     <Grid2 xs={12} md={4}>
@@ -452,6 +482,8 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                             type="number"
                             sx={disableNumberUpDown}
                             required={isGREAWRequired}
+                            error={isGREAWError}
+                            helperText={isGREAWError ? "GRE写作分应在0-6之间" : null}
                         />
                     </Grid2>
                 </Grid2>

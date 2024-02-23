@@ -502,7 +502,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                 <TextField
                                     fullWidth
                                     name="Detail"
-                                    label="具体描述"
+                                    label="具体描述（推荐人、强度等）"
                                     multiline
                                     value={recommendation.Detail}
                                     onChange={(event) => handleRecommendationChange(index, event)}
