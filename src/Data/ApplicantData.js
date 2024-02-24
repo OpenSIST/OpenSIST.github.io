@@ -48,6 +48,9 @@ export async function setApplicantIDByDisplayName(applicants) {
     * Set the list of applicants to the local storage (i.e. localforage.getItem('applicants'))
     * @param applicants [Array]: list of applicants
     */
+    if (!applicants) {
+        return;
+    }
     const displayName = await getDisplayName();
     let metaData = await getMetaData(displayName, true);
     metaData.ApplicantIDs = applicants;
@@ -85,6 +88,9 @@ export async function setApplicants(applicants) {
     * Set the list of applicants to the local storage (i.e. localforage.getItem('applicants'))
     * @param applicants [Array]: list of applicants
     */
+    if (!applicants) {
+        return;
+    }
     applicants = {'data': applicants, 'Date': Date.now()}
     await localforage.setItem('applicants', applicants);
 }
@@ -94,6 +100,9 @@ export async function setApplicant(applicant) {
     * Set the applicant to the local storage (i.e. localforage.getItem('applicants'))
     * @param applicant [Object]: applicant
     */
+    if (!applicant) {
+        return;
+    }
     const applicants = await getApplicants(true);
     if (applicants.find(p => p.ApplicantID === applicant.ApplicantID) !== undefined) {
         applicants[applicants.indexOf(applicant)] = applicant;

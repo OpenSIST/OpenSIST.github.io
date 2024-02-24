@@ -150,10 +150,11 @@ export async function setPrograms(programs) {
     * Set the list of programs (without description) to the local storage (i.e. localforage.getItem('programs'))
     * @param programs [Array]: list of programs (without description)
     */
-    if (programs) {
-        programs = {'data': programs, 'Date': Date.now()};
-        await localforage.setItem('programs', programs);
+    if (!programs) {
+        return;
     }
+    programs = {'data': programs, 'Date': Date.now()};
+    await localforage.setItem('programs', programs);
 }
 
 export async function setProgram(program) {
@@ -161,6 +162,9 @@ export async function setProgram(program) {
     * Set the program (without description) to the local storage (i.e. localforage.getItem('programs'))
     * @param program [Object]: program (without description)
     */
+    if (!program) {
+        return;
+    }
     const programs = await getPrograms(true);
     const univName = program.University;
     if (programs[univName] === undefined) {
@@ -180,10 +184,11 @@ export async function setProgramDesc(programId, programDesc) {
     * @param programId [String]: programId
     * @param programDesc [String]: description of the program
     */
-    if (programDesc) {
-        programDesc = {'description': programDesc, 'Date': Date.now()}
-        await localforage.setItem(`${programId}-Desc`, programDesc);
+    if (!programDesc) {
+        return;
     }
+    programDesc = {'description': programDesc, 'Date': Date.now()}
+    await localforage.setItem(`${programId}-Desc`, programDesc);
 }
 
 export async function setProgramContent(program) {
@@ -191,6 +196,9 @@ export async function setProgramContent(program) {
     * Set the program (with description) to the local storage (i.e. localforage.getItem('programs') and localforage.getItem(`${programId}-Desc`))
     * @param program [Object]: program (with description)
     */
+    if (!program) {
+        return;
+    }
     await setProgram(program);
     await setProgramDesc(program.ProgramID, program.Description);
 }
