@@ -38,13 +38,13 @@ export function CollapseSideBar({children, sx}) {
                     display: "flex",
                     width: 'auto',
                     height: 'auto',
+                    zIndex: (smallPage ? 1200 : 1),
                     ...sx,
                     '& .MuiDrawer-paper': {
+                        borderRadius: '0 5px 5px 0',
                         border: 'none',
                         position: (smallPage ? 'absolute' : 'initial'),
                         top: '60px',
-                        // bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
-                        borderRadius: '5px',
                         overflowY: 'auto',
                         boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);",
                         ...(sx['& .MuiDrawer-paper'] ?? {})
@@ -65,6 +65,7 @@ export function CollapseSideBar({children, sx}) {
                     width: "20px",
                     height: "80px",
                     borderRadius: "0 10px 10px 0",
+                    zIndex: (smallPage ? 1200 : 1)
                 }}
             >
                 <ChevronRight/>
