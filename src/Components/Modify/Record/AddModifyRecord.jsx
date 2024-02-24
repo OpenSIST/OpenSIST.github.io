@@ -132,7 +132,7 @@ export default function AddModifyRecord({type}) {
                                                         <>
                                                             {params.InputProps.endAdornment}
                                                             <Tooltip
-                                                                title='此项为项目方而非本人的决定；如果被录取但被项目方延期入学 (如申的2024 Fall但被要求2025 Spring入学)，则选择Defer而非Admit'
+                                                                title='此项为项目方而非本人的决定；如果被录取但被项目方延期入学 (如申的2024 Fall但被要求2025 Spring入学)，则选择Defer而非Admit；如果项目方给了你面试但你拒绝了面试，请填写Reject并在最下方一栏备注'
                                                                 arrow
                                                             >
                                                                 <HelpOutline/>

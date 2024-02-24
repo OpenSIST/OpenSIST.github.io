@@ -97,7 +97,7 @@ export default function AddModifyProgram({type}) {
                     value={programName}
                     onChange={(event) => setProgramName(event.target.value)}
                     error={programNameInvalid}
-                    helperText={programNameInvalid ? "项目名称中不可包含@, |, /, \\, ?, !, $" : ""}
+                    helperText={programNameInvalid ? "项目名称中不可包含@, |, /, \\, ?, !, $，如果必须要使用'/'字符，请用'&'代替" : ""}
                     placeholder="硕士写简称 (e.g. MSCS)，博士要加院系 (e.g. EECS PhD)"
                     sx={AddMode ? {} : {color: 'gray', cursor: 'not-allowed', pointerEvents: 'none'}}
                     fullWidth
