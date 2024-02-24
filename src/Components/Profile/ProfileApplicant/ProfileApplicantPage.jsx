@@ -44,6 +44,7 @@ import {getAvatar, getDisplayName, getMetaData} from "../../../Data/UserData";
 import {grey} from "@mui/material/colors";
 
 export async function loader({params}) {
+    console.log("we're in loader of ProfileApplicantPage");
     const applicantId = params.applicantId;
     const isAuth = await isAuthApplicant(applicantId);
     if (!isAuth) {
@@ -154,7 +155,7 @@ export function ProfileApplicantPage({editable = false}) {
                 bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
             }}
         >
-            <BasicInfoBlock avatarUrl={avatarUrl} contact={contact} applicant={applicant} editable={editable}/>
+            <BasicInfoBlock avatarUrl={avatarUrl} contact={contact} applicant={applicant} records={records} editable={editable}/>
             <RecordBlock Records={records} ApplicantID={applicant.ApplicantID} editable={editable}/>
             <ExchangeBlock Exchanges={applicant?.Exchange}/>
             <ResearchBlock Researches={applicant?.Research}/>
@@ -179,7 +180,7 @@ function GenderIcon({gender}) {
     }
 }
 
-function ControlButtonGroup({applicantId}) {
+function ControlButtonGroup({applicantId, records}) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
@@ -211,39 +212,43 @@ function ControlButtonGroup({applicantId}) {
                 <DialogTitle>是否要删除{applicantId}？</DialogTitle>
                 <DialogContent>
                     <DialogContentText color='error'>
-                        此操作会将申请人信息及其附属申请记录一并删除，且无法恢复，请谨慎！
+                        {Object.keys(records).length === 0 ? '此操作会将申请人信息全部删除，且无法恢复，请谨慎！': '在删除之前，请确保您已经删除了所有附属的申请记录！'}
                     </DialogContentText>
-                    <DialogContentText>
-                        请输入您的Applicant ID: {applicantId}以确认删除。
-                    </DialogContentText>
-                    <TextField
-                        margin="dense"
-                        id="applicantId"
-                        label="Applicant ID"
-                        type="text"
-                        size='small'
-                        fullWidth
-                        value={confirmText}
-                        onChange={(e) => setConfirmText(e.target.value)}
-                    />
+                    {Object.keys(records).length === 0 ?
+                        <>
+                            <DialogContentText>
+                                请输入您的Applicant ID: {applicantId}以确认删除。
+                            </DialogContentText>
+                            <TextField
+                                margin="dense"
+                                id="applicantId"
+                                label="Applicant ID"
+                                type="text"
+                                size='small'
+                                fullWidth
+                                value={confirmText}
+                                onChange={(e) => setConfirmText(e.target.value)}
+                            />
+                        </> : null}
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>取消</Button>
-                    <Form method='post'>
-                        <Button color='error' type='submit' name='ActionType' value='DeleteApplicant'
-                                onClick={handleClose}
-                                disabled={confirmText !== applicantId}>
-                            确认
-                        </Button>
-                    </Form>
-                </DialogActions>
+                {Object.keys(records).length === 0 ?
+                    <DialogActions>
+                        <Button onClick={handleClose}>取消</Button>
+                        <Form method='post'>
+                            <Button color='error' type='submit' name='ActionType' value='DeleteApplicant'
+                                    onClick={handleClose}
+                                    disabled={confirmText !== applicantId}>
+                                确认
+                            </Button>
+                        </Form>
+                    </DialogActions> : null}
             </Dialog>
         </>
     )
 
 }
 
-function BasicInfoBlock({avatarUrl, contact, applicant, editable}) {
+function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
     const [isAuth, setIsAuth] = useState(false);
     useEffect(() => {
         isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
@@ -274,7 +279,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, editable}) {
                         <Typography variant="subtitle1">
                             {`${applicant.Major} ${currentDegreeMapping[applicant.CurrentDegree]}`}
                         </Typography>
-                        {editable && isAuth ? <ControlButtonGroup applicantId={applicant.ApplicantID}/> : null}
+                        {editable && isAuth ? <ControlButtonGroup applicantId={applicant.ApplicantID} records={records}/> : null}
                     </ContentCenteredGrid>
                 </Grid2>
                 <ContentCenteredGrid xs={12} sx={{gap: "1rem"}}>
