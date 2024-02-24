@@ -48,6 +48,9 @@ export async function setApplicantIDByDisplayName(applicants) {
     * Set the list of applicants to the local storage (i.e. localforage.getItem('applicants'))
     * @param applicants [Array]: list of applicants
     */
+    if (!applicants) {
+        return;
+    }
     const displayName = await getDisplayName();
     let metaData = await getMetaData(displayName, true);
     metaData.ApplicantIDs = applicants;
@@ -73,6 +76,7 @@ export async function getApplicant(applicantId, isRefresh = false) {
     const applicants = await getApplicants(isRefresh);
     const applicant = applicants.find(p => p.ApplicantID === applicantId);
     if (!applicant) {
+        console.log("aksjfhskfghd")
         await getMetaData(applicantId.split('@')[0], true);
         throw new Error('Applicant not found');
     }
@@ -84,6 +88,9 @@ export async function setApplicants(applicants) {
     * Set the list of applicants to the local storage (i.e. localforage.getItem('applicants'))
     * @param applicants [Array]: list of applicants
     */
+    if (!applicants) {
+        return;
+    }
     applicants = {'data': applicants, 'Date': Date.now()}
     await localforage.setItem('applicants', applicants);
 }
@@ -93,6 +100,9 @@ export async function setApplicant(applicant) {
     * Set the applicant to the local storage (i.e. localforage.getItem('applicants'))
     * @param applicant [Object]: applicant
     */
+    if (!applicant) {
+        return;
+    }
     const applicants = await getApplicants(true);
     if (applicants.find(p => p.ApplicantID === applicant.ApplicantID) !== undefined) {
         applicants[applicants.indexOf(applicant)] = applicant;
@@ -144,11 +154,11 @@ export async function removeApplicant(applicantId) {
     });
 
     await handleErrors(response);
+    const records = await getRecordByApplicant(applicantId);
     const applicants = await getApplicants();
     await setApplicants(applicants.filter(p => p.ApplicantID !== applicantId));
     await deleteApplicantIDByDisplayName(applicantId);
     // Since the backend prohibits the deletion of an applicant with records, the following code is not necessary actually...
-    const records = await getRecordByApplicant(applicantId);
     for (const recordID of Object.keys(records)) {
         await deleteRecord(recordID);
     }

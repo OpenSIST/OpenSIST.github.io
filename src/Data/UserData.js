@@ -63,9 +63,14 @@ export async function registerReset(email, password, token, status) {
 }
 
 export async function setUserInfo(user_info) {
-    Object.entries(user_info).map(async ([key, value]) => {
-        await localforage.setItem(key, value)
-    })
+    if (!user_info) {
+        return;
+    }
+    await Promise.all(Object.entries(user_info).map(async ([key, value]) => {
+        if (value) {
+            await localforage.setItem(key, value)
+        }
+    }))
 }
 
 export async function logout() {
@@ -103,9 +108,11 @@ export async function uploadAvatar(avatar) {
 }
 
 export async function setAvatarID(avatarId) {
+    if (!avatarId) {
+        return;
+    }
     const displayName = await getDisplayName();
-    await getMetaData(displayName, true);
-    let metadata = await getMetaData(displayName, false);
+    let metadata = await getMetaData(displayName);
     metadata["Avatar"] = avatarId;
     await setMetaData(metadata, displayName);
 
@@ -139,9 +146,15 @@ export async function getAvatar(avatarId, displayName = null, isRefresh = false,
     return URL.createObjectURL(avatar["avatar"]);
 }
 
-export async function setAvatar(avatar, avatarId, displayName = null) {
+export async function setAvatar(avatar, displayName = null) {
+    if (!avatar) {
+        return
+    }
     if (!displayName) {
         displayName = await getDisplayName();
+    }
+    if (!displayName) {
+        return;
     }
     avatar = {avatar: avatar, Date: Date.now()}
     await localforage.setItem(`${displayName}-avatar`, avatar);
@@ -185,6 +198,10 @@ export async function setMetaData(metadata, displayName = null) {
     if (displayName === null) {
         displayName = await getDisplayName();
     }
+    if (!displayName) {
+        return;
+    }
+
     metadata = {'result': metadata, 'Date': Date.now()}
     await localforage.setItem(`${displayName}-metadata`, metadata);
 }
@@ -237,7 +254,7 @@ export async function toggleAnonymous() {
     await setMetaData(ori_metaData, displayName);
     await localforage.removeItem(`${ori_displayName}-avatar`);
 
-    await setAvatar(ori_avatar, ori_metaData.Avatar, displayName);
+    await setAvatar(ori_avatar, displayName);
 
     ori_all_applicants = ori_all_applicants.map((applicant) => {
         if (ori_applicants.includes(applicant.ApplicantID)) {
