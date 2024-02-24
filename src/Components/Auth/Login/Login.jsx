@@ -31,7 +31,8 @@ function Login() {
         <Form method='post' className="login">
             <Typography variant='h4' sx={{mb: "1rem"}}>用户登录</Typography>
             <Box sx={{
-                display: 'flex'
+                display: 'flex',
+                width: '100%'
             }}>
                 <TextField
                     fullWidth

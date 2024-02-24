@@ -73,6 +73,7 @@ export async function getApplicant(applicantId, isRefresh = false) {
     const applicants = await getApplicants(isRefresh);
     const applicant = applicants.find(p => p.ApplicantID === applicantId);
     if (!applicant) {
+        console.log("aksjfhskfghd")
         await getMetaData(applicantId.split('@')[0], true);
         throw new Error('Applicant not found');
     }
@@ -144,11 +145,11 @@ export async function removeApplicant(applicantId) {
     });
 
     await handleErrors(response);
+    const records = await getRecordByApplicant(applicantId);
     const applicants = await getApplicants();
     await setApplicants(applicants.filter(p => p.ApplicantID !== applicantId));
     await deleteApplicantIDByDisplayName(applicantId);
     // Since the backend prohibits the deletion of an applicant with records, the following code is not necessary actually...
-    const records = await getRecordByApplicant(applicantId);
     for (const recordID of Object.keys(records)) {
         await deleteRecord(recordID);
     }
