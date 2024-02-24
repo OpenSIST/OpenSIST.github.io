@@ -57,10 +57,11 @@ export async function loader({params}) {
     }
     try {
         const applicant = await getApplicant(applicantId);
+        const displayName = applicant.ApplicantID.split('@')[0];
         const records = await getRecordByApplicant(applicantId);
-        const metaData = await getMetaData();
+        const metaData = await getMetaData(displayName);
         const contact = metaData?.Contact;
-        const avatarUrl = await getAvatar(metaData?.Avatar);
+        const avatarUrl = await getAvatar(metaData?.Avatar, displayName);
         return {avatarUrl, contact, applicant, records};
     } catch (e) {
         throw e;
@@ -270,7 +271,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                 </ContentCenteredGrid>
                 <Grid2 container xs spacing={0}>
                     <ContentCenteredGrid xs={12}>
-                        <Typography variant="h4" color="primary" sx={{fontWeight: 'bold'}}>
+                        <Typography variant="h5" color="primary" sx={{fontWeight: 'bold'}}>
                             {applicant.ApplicantID}
                         </Typography>
                     </ContentCenteredGrid>
