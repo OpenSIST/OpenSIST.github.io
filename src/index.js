@@ -7,7 +7,7 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import ProgramPage, {
-    loader as programPageLoader
+    loader as ProgramPageLoader
 } from "./Components/ProgramPage/ProgramPage";
 import ProgramContent, {
     loader as programContentLoader,
@@ -25,7 +25,10 @@ import AddModifyProgram, {
 import {getPrograms} from "./Data/ProgramData";
 import Agreement from "./Components/Agreement/Agreement";
 import ErrorPage from "./Components/Errors/ErrorPage";
-import Profile from "./Components/Profile/Profile";
+import Profile, {
+    action as profileAction,
+    loader as profileLoader, ProfileIndex
+} from "./Components/Profile/Profile";
 import {createTheme, ThemeProvider, useMediaQuery} from "@mui/material";
 import AdminPage, {AdminIndex} from "./Components/Admin/AdminPage";
 import AdminProgramPage, {
@@ -43,7 +46,19 @@ import AdminEmailPage, {
 } from "./Components/Admin/AdminEmail/AdminEmailPage";
 import {ProgramIndex} from "./Components/ProgramPage/ProgramPage";
 import localforage from "localforage";
-import {action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
+import {loader as HomeLoader, action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
+import {
+    loader as ProfileApplicantLoader,
+    action as ProfileApplicantAction, ProfileApplicantPage
+} from "./Components/Profile/ProfileApplicant/ProfileApplicantPage";
+import AddModifyApplicant, {
+    action as addModifyApplicantAction
+} from "./Components/Modify/Applicant/AddModifyApplicant";
+import AddModifyRecord, {
+    loader as addModifyRecordLoader,
+    action as addModifyRecordAction
+} from "./Components/Modify/Record/AddModifyRecord";
+import {AboutUs} from "./Components/AboutUs/AboutUs";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -55,6 +70,7 @@ function OpenSIST() {
         {
             path: '/',
             element: <Home/>,
+            loader: HomeLoader,
             action: HomeAction,
             errorElement: <ErrorPage/>,
             children: [
@@ -67,7 +83,7 @@ function OpenSIST() {
                         {
                             path: '/programs',
                             element: <ProgramPage/>,
-                            loader: programPageLoader,
+                            loader: ProgramPageLoader,
                             action: (
                                 () => getPrograms(true)
                             ),
@@ -76,29 +92,69 @@ function OpenSIST() {
                                     errorElement: <ErrorPage/>,
                                     children: [
                                         {
+                                            index: true,
+                                            element: <ProgramIndex/>,
+                                        }, {
                                             path: '/programs/:programId',
                                             element: <ProgramContent/>,
                                             loader: programContentLoader,
                                             action: programContentAction
                                         }, {
                                             path: '/programs/:programId/edit',
-                                            element: <AddModifyProgram key='edit'/>,
+                                            element: <AddModifyProgram key='edit' type='edit'/>,
                                             loader: programContentLoader,
                                             action: addModifyProgramAction
                                         }, {
                                             path: '/programs/new',
-                                            element: <AddModifyProgram key='new'/>,
+                                            element: <AddModifyProgram key='new' type='new'/>,
                                             action: addModifyProgramAction
-                                        }, {
-                                            index: true,
-                                            element: <ProgramIndex/>,
-                                        }
+                                        },
                                     ]
                                 }
                             ]
                         }, {
-                            path: '/applicants',
+                            path: '/datapoints',
                             element: <h1>开发组正在加班加点赶工...</h1>,
+                        }, {
+                            path: '/profile',
+                            element: <Profile/>,
+                            loader: profileLoader,
+                            action: profileAction,
+                            children: [
+                                {
+                                    errorElement: <ErrorPage/>,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <ProfileIndex/>
+                                        }, {
+                                            path: '/profile/:applicantId',
+                                            element: <ProfileApplicantPage editable={true}/>,
+                                            loader: ProfileApplicantLoader,
+                                            action: ProfileApplicantAction,
+                                        }, {
+                                            path: '/profile/new-applicant',
+                                            element: <AddModifyApplicant key='new' type='new'/>,
+                                            action: addModifyApplicantAction
+                                        }, {
+                                            path: '/profile/:applicantId/new-record',
+                                            element: <AddModifyRecord key='new' type='new'/>,
+                                            loader: addModifyRecordLoader,
+                                            action: addModifyRecordAction
+                                        }, {
+                                            path: '/profile/:applicantId/edit',
+                                            element: <AddModifyApplicant key='edit' type='edit'/>,
+                                            loader: ProfileApplicantLoader,
+                                            action: addModifyApplicantAction
+                                        }, {
+                                            path: '/profile/:applicantId/:programId/edit',
+                                            element: <AddModifyRecord key='edit' type='edit'/>,
+                                            loader: addModifyRecordLoader,
+                                            action: addModifyRecordAction
+                                        }
+                                    ]
+                                }
+                            ]
                         }, {
                             path: '/admin',
                             element: <AdminPage/>,
@@ -116,10 +172,6 @@ function OpenSIST() {
                                             loader: AdminProgramLoader,
                                             action: AdminProgramAction
                                         }, {
-                                            path: '/admin/applicants',
-                                        }, {
-                                            path: '/admin/records',
-                                        }, {
                                             path: '/admin/emails',
                                             element: <AdminEmailPage/>,
                                             loader: AdminEmailPageLoader,
@@ -128,9 +180,6 @@ function OpenSIST() {
                                     ]
                                 }
                             ]
-                        }, {
-                            path: '/profile',
-                            element: <Profile/>,
                         }, {
                             path: '/login',
                             element: <Login/>,
@@ -148,7 +197,7 @@ function OpenSIST() {
                             element: <Agreement/>,
                         }, {
                             path: '/about-us',
-                            element: <h1>开发组正在加班加点赶工...</h1>,
+                            element: <AboutUs/>,
                         }, {
                             path: '/how-to-use',
                             element: <h1>开发组正在加班加点赶工...</h1>,

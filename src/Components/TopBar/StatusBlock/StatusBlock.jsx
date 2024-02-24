@@ -1,8 +1,8 @@
-import {Form, Link, useNavigate} from "react-router-dom";
+import {Form, Link, useLoaderData, useNavigate} from "react-router-dom";
 import "./StatusBlock.css";
 import React, {useContext, useEffect} from "react";
 import localforage from "localforage";
-import {logout, useUser} from "../../../Data/UserData";
+import {getAvatar, getDisplayName, getMetaData, logout, useUser} from "../../../Data/UserData";
 import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, useTheme} from "@mui/material";
 import {AccountBox, LockReset, Logout} from "@mui/icons-material";
 import {blue} from "@mui/material/colors";
@@ -10,11 +10,26 @@ import {ThemeContext} from "../../../index";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-export async function action(){
+export async function loader() {
+    let displayName = null;
+    let avatarUrl = null;
+    const session = await localforage.getItem('session');
+    const expireAt = await localforage.getItem('expireAt');
+    if (session && expireAt > Date.now() / 1000) {
+        displayName = await getDisplayName();
+        const metaData = await getMetaData();
+        avatarUrl = await getAvatar(metaData?.Avatar);
+    }
+    return {displayName, avatarUrl};
+
+}
+
+export async function action() {
     return await logout();
 }
 
 export function StatusBlock() {
+    const {displayName, avatarUrl} = useLoaderData();
     const navigate = useNavigate();
     const theme = useTheme();
     const {toggleTheme} = useContext(ThemeContext);
@@ -32,18 +47,20 @@ export function StatusBlock() {
         if (user === null) {
             navigate('/login');
         }
-    }, [user]);
+    }, [user, navigate]);
 
     localforage.setItem('theme', theme.palette.mode).then()
 
     return (<Box sx={{display: 'flex', mr: '1vw'}}>
-        <IconButton onClick={toggleTheme} sx={{m: 'auto'}}>
-            {theme.palette.mode === 'dark' ? <Brightness7Icon/> : <Brightness4Icon/>}
-        </IconButton>
+        <Tooltip title={`${theme.palette.mode === 'dark' ? '关闭' : '打开'}夜间模式`} arrow>
+            <IconButton onClick={toggleTheme} sx={{m: 'auto'}}>
+                {theme.palette.mode === 'dark' ? <Brightness7Icon/> : <Brightness4Icon/>}
+            </IconButton>
+        </Tooltip>
         {user ? <>
-            <Tooltip title="Account settings">
+            <Tooltip title="Account settings" arrow>
                 <IconButton onClick={handleMenu}>
-                    <Avatar sx={{bgcolor: blue[500]}}>{user?.slice(0, 1).toUpperCase()}</Avatar>
+                    <Avatar src={avatarUrl} sx={{bgcolor: blue[500]}}>{displayName?.slice(0, 1).toUpperCase()}</Avatar>
                 </IconButton>
             </Tooltip>
             <Menu
@@ -75,7 +92,7 @@ export function StatusBlock() {
                 transformOrigin={{horizontal: 'right', vertical: 'top'}}
                 anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
             >
-                <MenuItem to="/profile" component={Link} onClick={handleClose}>
+                <MenuItem to={`/profile`} component={Link} onClick={handleClose}>
                     <ListItemIcon>
                         <AccountBox fontSize="small"/>
                     </ListItemIcon>

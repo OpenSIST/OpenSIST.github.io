@@ -45,7 +45,7 @@ export async function moveEmail(emailID, action) {
         method: 'POST',
         credentials: 'include',
         headers: await headerGenerator(true),
-        body: JSON.stringify({EmailID: emailID})
+        body: JSON.stringify({EmailIDs: emailID})
     });
     await handleErrors(response);
 }

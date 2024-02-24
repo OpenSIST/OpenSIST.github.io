@@ -1,7 +1,7 @@
 import TopBar from "./TopBar/TopBar";
 import {Outlet} from "react-router-dom";
 import React from "react";
-import {InlineTypography, LoadingBackdrop} from "./common";
+import {LoadingBackdrop} from "./common";
 import {Paper} from "@mui/material";
 import ReactMarkdown from "react-markdown";
 

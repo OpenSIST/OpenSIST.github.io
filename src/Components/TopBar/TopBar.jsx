@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './TopBar.css';
 import {StatusBlock} from "./StatusBlock/StatusBlock";
 import NavBar from "./NavBar/NavBar";
 import {useNavigate} from "react-router-dom";
 import {AppBar, SvgIcon, Toolbar, useTheme} from "@mui/material";
 import {grey} from "@mui/material/colors";
-import localforage from "localforage";
 import {ReactComponent as LightIcon} from '../icons/header.svg';
 import {ReactComponent as DarkIcon} from '../icons/header-dark.svg';
 import {useUser} from "../../Data/UserData";

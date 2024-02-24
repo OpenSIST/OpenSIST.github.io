@@ -1,0 +1,52 @@
+.ProfileContent {
+    width: 100%;
+    padding: 20px;
+    overflow-y: auto;
+    user-select: text;
+}
+
+.BasicInfoBlock,
+.ExchangeBlock,
+.ResearchBlock,
+.InternshipBlock,
+.PublicationBlock,
+.RecommendationBlock,
+.CompetitionBlock,
+.RecordBlock {
+    width: 100%;
+    padding: 1rem 2rem;
+}
+
+.RankingSlider.MuiSlider-root {
+    height: 15px;
+}
+
+.RankingSlider > .MuiSlider-thumb {
+    box-shadow: none;
+    color: rgb(0, 0, 0, 0%);
+}
+
+.RankingSlider > .MuiSlider-thumb::before {
+    box-shadow: none;
+}
+
+.RankingSlider > .MuiSlider-mark {
+    display: none;
+
+}
+
+.RankingSlider {
+    pointer-events: none;
+    cursor: default;
+}
+
+.ExchangeBlock,
+.ResearchBlock,
+.InternshipBlock,
+.PublicationBlock,
+.RecommendationBlock,
+.CompetitionBlock {
+    overflow-y: auto;
+}
+
+

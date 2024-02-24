@@ -1,9 +1,12 @@
 import localforage from "localforage";
 import {ADD_MODIFY_PROGRAM, MODIFY_PROGRAM_ID, PROGRAM_DESC, PROGRAM_LIST, REMOVE_PROGRAM} from "../APIs/APIs";
 import {handleErrors, headerGenerator, univAbbrFullNameMapping} from "./Common";
-import univListOrder from "./univ_list.json";
+import univListOrder from "./UnivList.json";
+import {deleteRecord, getRecordByProgram} from "./RecordData";
+import {getApplicants} from "./ApplicantData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+// const CACHE_EXPIRATION = 1; // 10 min
 
 /*
 * All functions started with 'set' -> Offline operation to set items to local cache
@@ -93,7 +96,7 @@ export async function getProgram(programId, isRefresh = false) {
     if (!programs[univName]) {
         throw new Response("", {
                 status: 404,
-                statusText: "Program Not Found",
+                statusText: "Program not found",
             }
         );
     }
@@ -147,8 +150,10 @@ export async function setPrograms(programs) {
     * Set the list of programs (without description) to the local storage (i.e. localforage.getItem('programs'))
     * @param programs [Array]: list of programs (without description)
     */
-    programs = {'data': programs, 'Date': Date.now()}
-    await localforage.setItem('programs', programs);
+    if (programs) {
+        programs = {'data': programs, 'Date': Date.now()};
+        await localforage.setItem('programs', programs);
+    }
 }
 
 export async function setProgram(program) {
@@ -156,7 +161,7 @@ export async function setProgram(program) {
     * Set the program (without description) to the local storage (i.e. localforage.getItem('programs'))
     * @param program [Object]: program (without description)
     */
-    const programs = await getPrograms();
+    const programs = await getPrograms(true);
     const univName = program.University;
     if (programs[univName] === undefined) {
         programs[univName] = []
@@ -175,8 +180,10 @@ export async function setProgramDesc(programId, programDesc) {
     * @param programId [String]: programId
     * @param programDesc [String]: description of the program
     */
-    programDesc = {'description': programDesc, 'Date': Date.now()}
-    await localforage.setItem(`${programId}-Desc`, programDesc);
+    if (programDesc) {
+        programDesc = {'description': programDesc, 'Date': Date.now()}
+        await localforage.setItem(`${programId}-Desc`, programDesc);
+    }
 }
 
 export async function setProgramContent(program) {
@@ -231,10 +238,16 @@ export async function removeProgram(programId) {
 
     await handleErrors(response)
     await deleteProgramDesc(programId);
+    const records = await getRecordByProgram(programId);
     const programs = await getPrograms();
     const univName = programId.split('@')[1]
     programs[univName] = programs[univName].filter(p => p.ProgramID !== programId);
     await setPrograms(programs);
+    // Since the backend forbids the deletion of the program with applicants, the following code is not necessary actually...
+    for (const recordID of Object.keys(records)) {
+        await deleteRecord(recordID);
+    }
+
 }
 
 export async function modifyProgramID(requestBody) {
@@ -253,6 +266,13 @@ export async function modifyProgramID(requestBody) {
     });
     await handleErrors(response)
     const oldProgramID = requestBody.ProgramID;
+    const records = await getRecordByProgram(oldProgramID);
+
+    for (const recordID of Object.keys(records)) {
+        await deleteRecord(recordID);
+    }
     await deleteProgramDesc(oldProgramID);
     await getPrograms(true);
+    await getApplicants(true);
+
 }

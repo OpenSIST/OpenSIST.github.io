@@ -13,9 +13,9 @@ import {
     OutlinedInput, useTheme
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import {majorList, degreeList, regionList} from "../../../Data/Schemas";
-import {isEmptyObject} from "../../common";
-import {regionFlagMapping} from "../../../Data/Common";
+import {majorList, degreeList, regionList} from "../../../../Data/Schemas";
+import {isEmptyObject} from "../../../common";
+import {regionFlagMapping} from "../../../../Data/Common";
 import {grey} from "@mui/material/colors";
 
 export default function SearchBar({query}) {

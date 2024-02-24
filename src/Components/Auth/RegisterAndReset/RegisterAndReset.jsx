@@ -10,11 +10,9 @@ import {
     Box,
     Button,
     Checkbox,
-    FormControl,
     FormControlLabel,
     Input,
-    InputAdornment,
-    InputLabel, MenuItem,
+    MenuItem,
     TextField,
     Typography
 } from "@mui/material";
@@ -116,7 +114,6 @@ export default function RegisterAndReset() {
         try {
             const response = await fetch(api, {
                 method: "POST",
-                mode: "cors",
                 credentials: "include",
                 headers: await headerGenerator(),
                 body: JSON.stringify({email}),
@@ -191,7 +188,7 @@ export default function RegisterAndReset() {
                 name='confirmPassword'
                 value={passwordConfirm}
                 onChange={(e) => {
-                    setPasswordConfirm((P) => e.target.value);
+                    setPasswordConfirm(() => e.target.value);
                 }}
                 size='small'
                 required

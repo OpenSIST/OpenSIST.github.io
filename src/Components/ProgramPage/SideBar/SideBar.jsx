@@ -1,9 +1,8 @@
-import React, {useState} from "react";
+import React from "react";
 import {Form, Link} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
-import {useSmallPage} from "../common";
-import {regionFlagMapping, univAbbrFullNameMapping} from "../../Data/Common";
+import {regionFlagMapping, univAbbrFullNameMapping} from "../../../Data/Common";
 import {
     Box,
     Button,
@@ -12,55 +11,39 @@ import {
     List,
     ListItemButton,
     ListItemText,
-    Paper, SwipeableDrawer, Tooltip,
+    Paper, Tooltip,
     useTheme
 } from "@mui/material";
-import {Add, ChevronRight, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
+import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
 import {blue, grey} from "@mui/material/colors";
+import {CollapseSideBar} from "../../common";
 
 export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
-    const smallPage = useSmallPage();
-    const [open, setOpen] = useState(false)
     return (
         <>
-            <SwipeableDrawer
-                variant={smallPage ? "temporary" : "persistent"}
-                open={!smallPage || (smallPage && open)}
-                onOpen={() => setOpen(true)}
-                onClose={() => setOpen(false)}
-                elevation={1}
+            <CollapseSideBar
                 sx={{
-                    display: "flex",
-                    width: 'auto',
-                    height: 'auto',
-                    [`& .MuiDrawer-paper`]: {
-                        border: 'none',
-                        position: (smallPage ? 'absolute' : 'initial'),
-                        top: '60px',
+                    '& .MuiDrawer-paper': {
                         bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
-                        width: "250px",
-                        height: "calc(100vh - 160px)",
-                        ml: (smallPage ? '0' : '2vw'),
-                        mt: '10px',
+                        width: '250px',
+                        height: 'calc(100vh - 160px)',
                         p: '20px',
-                        borderRadius: '5px',
-                        overflowY: 'auto',
-                        boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);"
-                    },
+                        mt: '10px'
+                    }
                 }}
             >
                 <SearchBar query={getQuery(loaderData)}/>
                 <Box sx={{mb: "10px", display: 'flex', gap: "10px"}}>
                     <Form action='/programs/new' style={{width: "100%"}}>
-                        <Tooltip title='添加新项目'>
+                        <Tooltip title='添加新项目' arrow>
                             <Button fullWidth type='submit' variant="outlined">
                                 <Add/>
                             </Button>
                         </Tooltip>
                     </Form>
                     <Form method='post' style={{width: "100%"}}>
-                        <Tooltip title='刷新项目列表'>
+                        <Tooltip title='刷新项目列表' arrow>
                             <Button fullWidth type='submit' variant="outlined">
                                 <Refresh/>
                             </Button>
@@ -72,23 +55,7 @@ export default function SideBar({loaderData}) {
                 <div style={{textAlign: 'center', paddingTop: '5px'}}>
                     对列表有问题可以<a href='https://github.com/OpenSIST/OpenSIST.github.io/issues'>联系我们</a>
                 </div>
-            </SwipeableDrawer>
-            <Button
-                className="ShowUpButton"
-                variant="contained"
-                onClick={() => setOpen(!open)}
-                sx={{
-                    position: 'absolute',
-                    visibility: smallPage ? 'visible' : 'hidden',
-                    minWidth: "0",
-                    px: "1vw",
-                    width: "20px",
-                    height: "80px",
-                    borderRadius: "0 10px 10px 0",
-                }}
-            >
-                <ChevronRight/>
-            </Button>
+            </CollapseSideBar>
         </>
     )
 }
