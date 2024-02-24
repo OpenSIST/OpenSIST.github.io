@@ -28,8 +28,8 @@ export default function NavBar() {
             path: "/programs",
         },
         {
-            name: "申请人信息表",
-            path: "/applicants",
+            name: "申请季数据汇总",
+            path: "/datapoints",
         },
         {
             name: "关于我们",
