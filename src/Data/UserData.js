@@ -112,8 +112,7 @@ export async function setAvatarID(avatarId) {
         return;
     }
     const displayName = await getDisplayName();
-    await getMetaData(displayName, true);
-    let metadata = await getMetaData(displayName, false);
+    let metadata = await getMetaData(displayName);
     metadata["Avatar"] = avatarId;
     await setMetaData(metadata, displayName);
 

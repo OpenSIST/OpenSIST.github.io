@@ -1,9 +1,23 @@
 import {
-    Avatar, Badge, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputLabel,
+    Avatar,
+    Badge,
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    IconButton,
+    Input,
+    InputLabel,
     List,
     ListItem,
     ListItemButton,
-    Paper, Switch, TextField, Tooltip,
+    Paper,
+    Switch,
+    TextField,
+    Tooltip,
     Typography,
 } from "@mui/material";
 import "./ProfileHeader.css";
@@ -176,7 +190,7 @@ export function ProfileHeader({loaderData}) {
                             >
                                 确定
                             </Button>
-                            <input defaultValue={contact} name='contact' hidden/>
+                            <Input value={contact} name='contact' type="hidden"/>
                         </Form>
                     </DialogActions>
                 </Dialog>
