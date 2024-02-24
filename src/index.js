@@ -58,6 +58,7 @@ import AddModifyRecord, {
     loader as addModifyRecordLoader,
     action as addModifyRecordAction
 } from "./Components/Modify/Record/AddModifyRecord";
+import {AboutUs} from "./Components/AboutUs/AboutUs";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -112,7 +113,7 @@ function OpenSIST() {
                                 }
                             ]
                         }, {
-                            path: '/applicants',
+                            path: '/datapoints',
                             element: <h1>开发组正在加班加点赶工...</h1>,
                         }, {
                             path: '/profile',
@@ -196,7 +197,7 @@ function OpenSIST() {
                             element: <Agreement/>,
                         }, {
                             path: '/about-us',
-                            element: <h1>开发组正在加班加点赶工...</h1>,
+                            element: <AboutUs/>,
                         }, {
                             path: '/how-to-use',
                             element: <h1>开发组正在加班加点赶工...</h1>,
