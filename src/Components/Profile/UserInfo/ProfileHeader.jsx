@@ -71,6 +71,15 @@ export function ProfileHeader({loaderData}) {
                                     type='file'
                                     onChange={(e) => {
                                         if (e.target.files.length > 0) {
+                                            const file = e.target.files[0];
+                                            if (file.size > 4 * 1024 * 1024) {
+                                                alert("图片大小不能超过4MB!");
+                                                return;
+                                            }
+                                            if (!(/^[\x00-\x7F]*$/.test(file.name))) {
+                                                alert("图片文件名不能包含中文!");
+                                                return;
+                                            }
                                             document.querySelector("button[type='submit']").click();
                                         }
                                     }}

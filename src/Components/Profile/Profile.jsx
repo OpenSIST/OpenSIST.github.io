@@ -1,6 +1,6 @@
 import {Paper, useTheme} from "@mui/material";
 import React from "react";
-import {Outlet, redirect, useLoaderData} from "react-router-dom";
+import {Form, Outlet, redirect, useLoaderData} from "react-router-dom";
 import {ProfileHeader} from "./UserInfo/ProfileHeader";
 import {grey} from "@mui/material/colors";
 import {
@@ -28,9 +28,9 @@ export async function loader() {
 export async function action({request}) {
     const formData = await request.formData();
     const actionType = formData.get('button');
-    // await updateContact(contact);
     if (actionType === 'EditAvatar') {
         const avatar = formData.get('avatar');
+        console.log(avatar);
         await uploadAvatar(avatar);
         return redirect(window.location.href);
     } else if (actionType === 'ToggleAnonymous') {
@@ -46,7 +46,6 @@ export async function action({request}) {
         await getAvatar(metaData?.Avatar, displayName, true);
         return redirect(window.location.href);
     }
-    // return getApplicants(true);
 }
 
 export default function Profile() {
