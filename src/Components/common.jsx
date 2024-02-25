@@ -9,7 +9,8 @@ export function isEmptyObject(value) {
 
 export function LoadingBackdrop() {
     const navigation = useNavigation()
-    const loading = navigation.state !== 'idle'
+    const loading = navigation.state !== 'idle';
+    // const loading = navigation.state === 'loading';
     return (
         <Backdrop open={loading} sx={{zIndex: 99999}} transitionDuration={1000}>
             <CircularProgress color="inherit"/>

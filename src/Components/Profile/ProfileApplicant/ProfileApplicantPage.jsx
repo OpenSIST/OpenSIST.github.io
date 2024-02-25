@@ -44,7 +44,6 @@ import {getAvatar, getDisplayName, getMetaData} from "../../../Data/UserData";
 import {grey} from "@mui/material/colors";
 
 export async function loader({params}) {
-    console.log("we're in loader of ProfileApplicantPage");
     const applicantId = params.applicantId;
     const isAuth = await isAuthApplicant(applicantId);
     if (!isAuth) {

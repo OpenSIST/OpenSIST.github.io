@@ -10,7 +10,7 @@ import {
     RESET_PASSWORD, TOGGLE_NICKNAME, UPDATE_CONTACT,
     UPLOAD_AVATAR
 } from "../APIs/APIs";
-import {handleErrors, headerGenerator} from "./Common";
+import {blobToBase64, handleErrors, headerGenerator} from "./Common";
 import {useState} from "react";
 import {getApplicants, setApplicants} from "./ApplicantData";
 import {getRecordByApplicant, setRecord} from "./RecordData";
@@ -95,10 +95,11 @@ export function useUser() {
 }
 
 export async function uploadAvatar(avatar) {
+    avatar = await blobToBase64(avatar);
     const response = await fetch(UPLOAD_AVATAR, {
         method: 'POST',
         credentials: "include",
-        headers: await headerGenerator(true, avatar.type),
+        headers: await headerGenerator(true),
         body: avatar
     })
     await handleErrors(response);
@@ -118,7 +119,7 @@ export async function setAvatarID(avatarId) {
 
 }
 
-export async function getAvatar(avatarId, displayName = null, isRefresh = false, raw = false) {
+export async function getAvatar(avatarId, displayName = null, isRefresh = false) {
     if (!avatarId || avatarId === '') {
         return null;
     }
@@ -140,10 +141,7 @@ export async function getAvatar(avatarId, displayName = null, isRefresh = false,
         await setAvatar(avatar, displayName);
         avatar = {avatar: avatar}
     }
-    if (raw) {
-        return avatar["avatar"];
-    }
-    return URL.createObjectURL(avatar["avatar"]);
+    return avatar["avatar"];
 }
 
 export async function setAvatar(avatar, displayName = null) {
@@ -231,7 +229,7 @@ export async function setDisplayName(displayName) {
 export async function toggleAnonymous() {
     let ori_displayName = await getDisplayName();
     let ori_metaData = await getMetaData(ori_displayName);
-    let ori_avatar = await getAvatar(ori_metaData.Avatar, ori_displayName, false, true);
+    let ori_avatar = await getAvatar(ori_metaData.Avatar, ori_displayName, false);
     let ori_applicants = ori_metaData.ApplicantIDs;
     let ori_all_applicants = await getApplicants();
     let ori_applicant_records = await Promise.all(ori_applicants.map(async (applicant) => {
@@ -286,4 +284,13 @@ export async function updateContact(contact) {
     let metadata = await getMetaData();
     metadata['Contact'] = contact;
     await setMetaData(metadata);
+}
+
+export async function testAPI() {
+    const response = await fetch("https://copy-kv-to-r2.caoster.workers.dev/wait_5_seconds", {
+        method: 'GET',
+        headers: await headerGenerator(),
+    });
+    await handleErrors(response);
+    return "test done";
 }

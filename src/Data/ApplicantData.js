@@ -76,7 +76,6 @@ export async function getApplicant(applicantId, isRefresh = false) {
     const applicants = await getApplicants(isRefresh);
     const applicant = applicants.find(p => p.ApplicantID === applicantId);
     if (!applicant) {
-        console.log("aksjfhskfghd")
         await getMetaData(applicantId.split('@')[0], true);
         throw new Error('Applicant not found');
     }

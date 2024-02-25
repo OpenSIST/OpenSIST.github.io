@@ -1,8 +1,8 @@
-import {Form, Link, useLoaderData, useNavigate} from "react-router-dom";
+import {Await, defer, Form, Link, useLoaderData, useNavigate} from "react-router-dom";
 import "./StatusBlock.css";
-import React, {useContext, useEffect} from "react";
+import React, {Suspense, useContext, useEffect} from "react";
 import localforage from "localforage";
-import {getAvatar, getDisplayName, getMetaData, logout, useUser} from "../../../Data/UserData";
+import {getAvatar, getDisplayName, getMetaData, logout, testAPI, useUser} from "../../../Data/UserData";
 import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, useTheme} from "@mui/material";
 import {AccountBox, LockReset, Logout} from "@mui/icons-material";
 import {blue} from "@mui/material/colors";
@@ -21,6 +21,10 @@ export async function loader() {
         avatarUrl = await getAvatar(metaData?.Avatar);
     }
     return {displayName, avatarUrl};
+    // return defer({
+    //     displayName: displayName,
+    //     avatarUrl: await avatarUrl,
+    // });
 
 }
 
@@ -63,6 +67,18 @@ export function StatusBlock() {
                     <Avatar src={avatarUrl} sx={{bgcolor: blue[500]}}>{displayName?.slice(0, 1).toUpperCase()}</Avatar>
                 </IconButton>
             </Tooltip>
+            {/*<Suspense fallback={() => console.log('loading...')}>*/}
+            {/*    <Await*/}
+            {/*        resolve={avatarUrl}*/}
+            {/*    >*/}
+            {/*        {(avatarUrl) => (*/}
+            {/*            <IconButton onClick={handleMenu}>*/}
+            {/*                <Avatar src={avatarUrl}*/}
+            {/*                        sx={{bgcolor: blue[500]}}>{displayName?.slice(0, 1).toUpperCase()}</Avatar>*/}
+            {/*            </IconButton>*/}
+            {/*        )}*/}
+            {/*    </Await>*/}
+            {/*</Suspense>*/}
             <Menu
                 id="user-menu"
                 anchorEl={anchorEl}
