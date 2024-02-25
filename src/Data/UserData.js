@@ -137,7 +137,7 @@ export async function getAvatar(avatarId, displayName = null, isRefresh = false)
             body: JSON.stringify({avatar_id: avatarId})
         })
         await handleErrors(response);
-        avatar = await response.blob();
+        avatar = await response.text();
         await setAvatar(avatar, displayName);
         avatar = {avatar: avatar}
     }
