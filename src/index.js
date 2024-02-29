@@ -126,6 +126,7 @@ function OpenSIST() {
                                         {
                                             path: '/datapoints/:applicantId',
                                             element: <ProfileApplicantPage editable={false}/>,
+                                            loader: ProfileApplicantLoader,
                                         }
                                     ]
                                 }

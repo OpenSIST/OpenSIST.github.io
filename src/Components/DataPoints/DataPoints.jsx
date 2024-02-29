@@ -5,7 +5,7 @@ import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByProgram} from "../../Data/RecordData";
 import {Link, useLoaderData} from "react-router-dom";
 import 'primereact/resources/themes/md-light-indigo/theme.css';
-import React, {useState} from "react";
+import React from "react";
 import {Chip} from "@mui/material";
 import {Check} from "@mui/icons-material";
 
@@ -24,7 +24,6 @@ export async function loader() {
 
 export default function DataPoints() {
     const records = useLoaderData();
-    const [expandedRows, setExpandedRows] = useState([]);
     const getStatusColor = (status) => {
         switch (status) {
             case 'Reject':
@@ -32,7 +31,7 @@ export default function DataPoints() {
             case 'Admit':
                 return 'success';
             case 'Waitlist':
-                return null;
+                return "default";
             case 'Defer':
                 return 'warning';
             default:
@@ -91,11 +90,10 @@ export default function DataPoints() {
                 sortMode='single'
                 sortField='ProgramID'
                 sortOrder={1}
+                size='small'
                 showGridlines
                 scrollable
-                expandableRowGroups
-                expandedRows={expandedRows}
-                onRowToggle={(e) => setExpandedRows(e.data)}
+                scrollHeight="90%"
                 rowGroupHeaderTemplate={headerTemplate}
             >
                 <Column field='ApplicantID' header='申请人' body={applicantBodyTemplate} align='center'/>
