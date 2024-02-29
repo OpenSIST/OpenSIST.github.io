@@ -6,8 +6,9 @@ import {getRecordByProgram} from "../../Data/RecordData";
 import {Link, useLoaderData} from "react-router-dom";
 import 'primereact/resources/themes/md-light-indigo/theme.css';
 import React from "react";
-import {Chip} from "@mui/material";
-import {Check} from "@mui/icons-material";
+import {Chip, IconButton} from "@mui/material";
+import {Check, Link as LinkIcon} from "@mui/icons-material";
+import {InlineTypography} from "../common";
 
 export async function loader() {
     const programs = await getPrograms();
@@ -54,9 +55,15 @@ export default function DataPoints() {
     }
     const headerTemplate = (data) => {
         return (
-            <React.Fragment>
-                <span><b>{data.ProgramID}</b></span>
-            </React.Fragment>
+            // <React.Fragment>
+            <InlineTypography sx={{fontWeight: 'bold'}}>
+                {data.ProgramID}
+                <IconButton component={Link} to={`/programs/${data.ProgramID}`}>
+                    <LinkIcon/>
+                </IconButton>
+                {/*<Link to={`/programs/${data.ProgramID}`}><LinkIcon/></Link>*/}
+            </InlineTypography>
+            // </React.Fragment>
         );
     };
     const statusBodyTemplate = (rowData) => {
@@ -76,9 +83,12 @@ export default function DataPoints() {
         </>
     };
     const applicantBodyTemplate = (rowData) => {
-        return <Link to={`/datapoints/${rowData.ApplicantID}`}>
-            <b>{rowData.ApplicantID}</b>
-        </Link>
+        return <Chip
+            component={Link}
+            to={`/datapoints/${rowData.ApplicantID}`}
+            label={rowData.ApplicantID}
+            sx={{cursor: 'pointer'}}
+        />
     }
 
     return (
@@ -91,12 +101,13 @@ export default function DataPoints() {
                 sortField='ProgramID'
                 sortOrder={1}
                 size='small'
-                showGridlines
+                // showGridlines
                 scrollable
                 scrollHeight="90%"
                 rowGroupHeaderTemplate={headerTemplate}
+                tableStyle={{marginTop: '50px'}}
             >
-                <Column field='ApplicantID' header='申请人' body={applicantBodyTemplate} align='center'/>
+                <Column field='ApplicantID' header='申请人' body={applicantBodyTemplate}/>
                 <Column field='Status' header='申请结果' body={statusBodyTemplate} align='center'/>
                 <Column field='Final' header='最终去向' body={finalBodyTemplate} align='center'/>
                 <Column field='ProgramYear' header='申请年份' align='center'/>

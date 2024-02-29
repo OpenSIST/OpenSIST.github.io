@@ -1,6 +1,6 @@
 import {useNavigation} from "react-router-dom";
 import React, {useState} from "react";
-import {Backdrop, Button, CircularProgress, SwipeableDrawer, Typography, useMediaQuery} from "@mui/material";
+import {Backdrop, Button, CircularProgress, styled, SwipeableDrawer, Typography, useMediaQuery} from "@mui/material";
 import {ChevronRight} from "@mui/icons-material";
 
 export function isEmptyObject(value) {
@@ -18,8 +18,13 @@ export function LoadingBackdrop() {
     )
 }
 
-export const InlineTypography = (props) => <Typography variant="body1" {...props}
-                                                sx={{display: 'flex', alignItems: 'center', flexWrap: "wrap"}}/>;
+// export const InlineTypography = (props) => <Typography variant="body1" {...props}
+//                                                 sx={{display: 'flex', alignItems: 'center', flexWrap: "wrap"}}/>;
+export const InlineTypography = styled(Typography)(() => ({
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: "wrap"
+}));
 
 export function useSmallPage() {
     return useMediaQuery('(max-width:900px)');
