@@ -118,7 +118,18 @@ function OpenSIST() {
                         }, {
                             path: '/datapoints',
                             element: <DataPoints/>,
-                            loader: DataPointsLoader
+                            loader: DataPointsLoader,
+                            children: [
+                                {
+                                    errorElement: <ErrorPage/>,
+                                    children: [
+                                        {
+                                            path: '/datapoints/:applicantId',
+                                            element: <ProfileApplicantPage editable={false}/>,
+                                        }
+                                    ]
+                                }
+                            ]
                         }, {
                             path: '/profile',
                             element: <Profile/>,

@@ -3,10 +3,10 @@ import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByProgram} from "../../Data/RecordData";
-import {useLoaderData} from "react-router-dom";
+import {Link, useLoaderData} from "react-router-dom";
 import 'primereact/resources/themes/md-light-indigo/theme.css';
 import React, {useState} from "react";
-import {Checkbox, Chip} from "@mui/material";
+import {Chip} from "@mui/material";
 import {Check} from "@mui/icons-material";
 
 export async function loader() {
@@ -56,7 +56,7 @@ export default function DataPoints() {
     const headerTemplate = (data) => {
         return (
             <React.Fragment>
-                <span>{data.ProgramID}</span>
+                <span><b>{data.ProgramID}</b></span>
             </React.Fragment>
         );
     };
@@ -68,13 +68,18 @@ export default function DataPoints() {
     };
     const semesterBodyTemplate = (rowData) => {
         return <Chip label={rowData.Semester} color={getSemesterColor(rowData.Semester)}/>
-    }
+    };
     const timelineBodyTemplate = (rowData, columnBodyOption) => {
         const field = columnBodyOption.field;
         const timelineKey = field.split('.')[1];
         return <>
             {rowData.TimeLine[timelineKey] ? rowData.TimeLine[timelineKey].split('T')[0] : null}
         </>
+    };
+    const applicantBodyTemplate = (rowData) => {
+        return <Link to={`/datapoints/${rowData.ApplicantID}`}>
+            <b>{rowData.ApplicantID}</b>
+        </Link>
     }
 
     return (
@@ -87,12 +92,13 @@ export default function DataPoints() {
                 sortField='ProgramID'
                 sortOrder={1}
                 showGridlines
+                scrollable
                 expandableRowGroups
                 expandedRows={expandedRows}
                 onRowToggle={(e) => setExpandedRows(e.data)}
                 rowGroupHeaderTemplate={headerTemplate}
             >
-                <Column field='ApplicantID' header='申请人' align='center'/>
+                <Column field='ApplicantID' header='申请人' body={applicantBodyTemplate} align='center'/>
                 <Column field='Status' header='申请结果' body={statusBodyTemplate} align='center'/>
                 <Column field='Final' header='最终去向' body={finalBodyTemplate} align='center'/>
                 <Column field='ProgramYear' header='申请年份' align='center'/>
