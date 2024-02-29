@@ -59,9 +59,9 @@ import AddModifyRecord, {
     action as addModifyRecordAction
 } from "./Components/Modify/Record/AddModifyRecord";
 import {AboutUs} from "./Components/AboutUs/AboutUs";
-import Datapoints, {
-    loader as DatapointsLoader
-} from "./Components/Datapoints/Datapoints";
+import DataPoints, {
+    loader as DataPointsLoader
+} from "./Components/DataPoints/DataPoints";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -117,8 +117,8 @@ function OpenSIST() {
                             ]
                         }, {
                             path: '/datapoints',
-                            element: <Datapoints/>,
-                            loader: DatapointsLoader
+                            element: <DataPoints/>,
+                            loader: DataPointsLoader
                         }, {
                             path: '/profile',
                             element: <Profile/>,
