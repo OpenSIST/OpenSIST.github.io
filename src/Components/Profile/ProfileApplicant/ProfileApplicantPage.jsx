@@ -67,6 +67,21 @@ export async function loader({params}) {
     }
 }
 
+export async function DataPointsLoader({params}) {
+    const applicantId = params.applicantId;
+    try {
+        const applicant = await getApplicant(applicantId);
+        const displayName = applicant.ApplicantID.split('@')[0];
+        const records = await getRecordByApplicant(applicantId);
+        const metaData = await getMetaData(displayName);
+        const contact = metaData?.Contact;
+        const avatarUrl = await getAvatar(metaData?.Avatar, displayName);
+        return {avatarUrl, contact, applicant, records};
+    } catch (e) {
+        throw e;
+    }
+}
+
 export async function action({params, request}) {
     const formData = await request.formData();
     const actionType = formData.get('ActionType');

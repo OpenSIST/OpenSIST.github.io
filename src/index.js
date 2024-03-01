@@ -49,6 +49,7 @@ import localforage from "localforage";
 import {loader as HomeLoader, action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
 import {
     loader as ProfileApplicantLoader,
+    DataPointsLoader as ProfileDataPointsLoader,
     action as ProfileApplicantAction, ProfileApplicantPage
 } from "./Components/Profile/ProfileApplicant/ProfileApplicantPage";
 import AddModifyApplicant, {
@@ -60,6 +61,7 @@ import AddModifyRecord, {
 } from "./Components/Modify/Record/AddModifyRecord";
 import {AboutUs} from "./Components/AboutUs/AboutUs";
 import DataPoints, {
+    ApplicantProfileInDataPoints,
     loader as DataPointsLoader
 } from "./Components/DataPoints/DataPoints";
 
@@ -125,8 +127,8 @@ function OpenSIST() {
                                     children: [
                                         {
                                             path: '/datapoints/:applicantId',
-                                            element: <ProfileApplicantPage editable={false}/>,
-                                            loader: ProfileApplicantLoader,
+                                            element: <ApplicantProfileInDataPoints/>,
+                                            loader: ProfileDataPointsLoader,
                                         }
                                     ]
                                 }

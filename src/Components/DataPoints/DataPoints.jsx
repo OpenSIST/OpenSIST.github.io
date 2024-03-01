@@ -3,12 +3,17 @@ import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByProgram} from "../../Data/RecordData";
-import {Link, useLoaderData} from "react-router-dom";
+import {Link, Outlet, useLoaderData, useNavigate} from "react-router-dom";
 import 'primereact/resources/themes/md-light-indigo/theme.css';
 import React from "react";
-import {Chip, IconButton} from "@mui/material";
-import {Check, Link as LinkIcon} from "@mui/icons-material";
+import {
+    Chip, Dialog, DialogActions,
+    DialogContent,
+    IconButton,
+} from "@mui/material";
+import {Check, Close, Link as LinkIcon} from "@mui/icons-material";
 import {InlineTypography} from "../common";
+import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 
 export async function loader() {
     const programs = await getPrograms();
@@ -20,11 +25,27 @@ export async function loader() {
     records = records.map(record => {
         return Object.values(record)
     }).flat();
-    return records;
+    return {records};
+}
+
+export function ApplicantProfileInDataPoints() {
+    const navigate = useNavigate();
+    return (
+        <Dialog open onClose={() => navigate(-1)} fullWidth maxWidth={'xl'}>
+            <DialogActions>
+                <IconButton onClick={() => navigate(-1)}>
+                    <Close/>
+                </IconButton>
+            </DialogActions>
+            <DialogContent>
+                <ProfileApplicantPage editable={false}/>
+            </DialogContent>
+        </Dialog>
+    )
 }
 
 export default function DataPoints() {
-    const records = useLoaderData();
+    const {records} = useLoaderData();
     const getStatusColor = (status) => {
         switch (status) {
             case 'Reject':
@@ -55,15 +76,12 @@ export default function DataPoints() {
     }
     const headerTemplate = (data) => {
         return (
-            // <React.Fragment>
             <InlineTypography sx={{fontWeight: 'bold'}}>
                 {data.ProgramID}
                 <IconButton component={Link} to={`/programs/${data.ProgramID}`}>
                     <LinkIcon/>
                 </IconButton>
-                {/*<Link to={`/programs/${data.ProgramID}`}><LinkIcon/></Link>*/}
             </InlineTypography>
-            // </React.Fragment>
         );
     };
     const statusBodyTemplate = (rowData) => {
@@ -117,6 +135,7 @@ export default function DataPoints() {
                 <Column field='TimeLine.Submit' header='网申提交时间' body={timelineBodyTemplate} align='center'/>
                 <Column field='Detail' header='备注、补充说明' align='center'/>
             </DataTable>
+            <Outlet/>
         </PrimeReactProvider>
     )
 }
