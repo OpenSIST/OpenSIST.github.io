@@ -4,12 +4,12 @@ import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByProgram} from "../../Data/RecordData";
 import {Link, Outlet, useLoaderData, useNavigate, useParams} from "react-router-dom";
-import 'primereact/resources/themes/md-light-indigo/theme.css';
-import React from "react";
+import './DataPoints.css';
+import React, {useEffect} from "react";
 import {
     Chip, Dialog, DialogActions,
     DialogContent,
-    IconButton,
+    IconButton, useTheme,
 } from "@mui/material";
 import {Check, Close, Link as LinkIcon} from "@mui/icons-material";
 import {InlineTypography} from "../common";
@@ -49,6 +49,15 @@ export function ApplicantProfileInDataPoints() {
 
 export default function DataPoints() {
     const {records} = useLoaderData();
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === "dark";
+    useEffect(() => {
+        if (darkMode) {
+            require('./TableDark.css');
+        } else {
+            require('./TableLight.css');
+        }
+    }, [darkMode]);
     const getStatusColor = (status) => {
         switch (status) {
             case 'Reject':
@@ -113,32 +122,33 @@ export default function DataPoints() {
     }
 
     return (
-        <PrimeReactProvider>
-            <DataTable
-                value={records}
-                rowGroupMode="subheader"
-                groupRowsBy="ProgramID"
-                sortMode='single'
-                sortField='ProgramID'
-                sortOrder={1}
-                size='small'
-                // showGridlines
-                scrollable
-                scrollHeight="90%"
-                rowGroupHeaderTemplate={headerTemplate}
-                tableStyle={{marginTop: '50px'}}
-            >
-                <Column field='ApplicantID' header='申请人' body={applicantBodyTemplate}/>
-                <Column field='Status' header='申请结果' body={statusBodyTemplate} align='center'/>
-                <Column field='Final' header='最终去向' body={finalBodyTemplate} align='center'/>
-                <Column field='ProgramYear' header='申请年份' align='center'/>
-                <Column field='Semester' header='申请学期' body={semesterBodyTemplate} align='center'/>
-                <Column field='TimeLine.Decision' header='结果通知时间' body={timelineBodyTemplate} align='center'/>
-                <Column field='TimeLine.Interview' header='面试时间' body={timelineBodyTemplate} align='center'/>
-                <Column field='TimeLine.Submit' header='网申提交时间' body={timelineBodyTemplate} align='center'/>
-                <Column field='Detail' header='备注、补充说明' align='center'/>
-            </DataTable>
-            <Outlet/>
-        </PrimeReactProvider>
+        // <Paper sx={{width: "100%", p: "20px", overflowY: 'auto'}}>
+            <PrimeReactProvider>
+                <DataTable
+                    value={records}
+                    rowGroupMode="subheader"
+                    groupRowsBy="ProgramID"
+                    sortMode='single'
+                    sortField='ProgramID'
+                    sortOrder={1}
+                    size='small'
+                    scrollable
+                    scrollHeight="90%"
+                    rowGroupHeaderTemplate={headerTemplate}
+                    // className='DataTableStyle'
+                >
+                    <Column field='ApplicantID' header='申请人' body={applicantBodyTemplate}/>
+                    <Column field='Status' header='申请结果' body={statusBodyTemplate}/>
+                    <Column field='Final' header='最终去向' body={finalBodyTemplate} align='center'/>
+                    <Column field='ProgramYear' header='申请年份'/>
+                    <Column field='Semester' header='申请学期' body={semesterBodyTemplate}/>
+                    <Column field='TimeLine.Decision' header='结果通知时间' body={timelineBodyTemplate}/>
+                    <Column field='TimeLine.Interview' header='面试时间' body={timelineBodyTemplate}/>
+                    <Column field='TimeLine.Submit' header='网申提交时间' body={timelineBodyTemplate}/>
+                    <Column field='Detail' header='备注、补充说明'/>
+                </DataTable>
+                <Outlet/>
+            </PrimeReactProvider>
+        // </Paper>
     )
 }

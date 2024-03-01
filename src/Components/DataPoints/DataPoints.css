@@ -1,0 +1,15 @@
+.DataTableStyle {
+    margin-top: 50px;
+}
+
+.DataTableStyle .p-rowgroup-header {
+    background-color: #efefef;
+}
+
+.DataTableStyle .p-column-title {
+    font-weight: bold;
+}
+
+.DataTableStyle .p-datatable-thead > tr > th {
+    background: #e5e5e5;
+}
