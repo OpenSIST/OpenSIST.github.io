@@ -3,7 +3,7 @@ import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByProgram} from "../../Data/RecordData";
-import {Link, Outlet, useLoaderData, useNavigate} from "react-router-dom";
+import {Link, Outlet, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import 'primereact/resources/themes/md-light-indigo/theme.css';
 import React from "react";
 import {
@@ -30,8 +30,11 @@ export async function loader() {
 
 export function ApplicantProfileInDataPoints() {
     const navigate = useNavigate();
+    const params = useParams();
+    const applicantID = params.applicantId;
+    const {applicant} = useLoaderData();
     return (
-        <Dialog open onClose={() => navigate(-1)} fullWidth maxWidth={'xl'}>
+        <Dialog open={applicantID === applicant.ApplicantID} onClose={() => navigate(-1)} fullWidth maxWidth={'xl'}>
             <DialogActions>
                 <IconButton onClick={() => navigate(-1)}>
                     <Close/>
