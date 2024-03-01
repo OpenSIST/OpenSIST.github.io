@@ -628,11 +628,11 @@ function RecordBlock({Records, ApplicantID, editable}) {
         <BaseItemBlock className="RecordBlock" checkpointProps={{xs: 12}} spacing={2}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'row', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>申请记录</Typography>
-                <Tooltip title='添加记录' arrow sx={{marginLeft: '10px'}}>
+                { editable ? <Tooltip title='添加记录' arrow sx={{marginLeft: '10px'}}>
                     <Button component={Link} to={`/profile/${ApplicantID}/new-record`} variant='outlined'>
                         <Add/>
                     </Button>
-                </Tooltip>
+                </Tooltip> : null}
             </ContentCenteredGrid>
             {Object.values(Records).map((record, index) => {
                 return (
