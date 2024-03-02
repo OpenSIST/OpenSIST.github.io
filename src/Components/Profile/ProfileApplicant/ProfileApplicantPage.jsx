@@ -267,6 +267,15 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
     useEffect(() => {
         isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
     }, [applicant.ApplicantID]);
+    const isValidUrl = (urlString) => {
+        const urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
+            '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
+        return !!urlPattern.test(urlString);
+    }
     return (
         <BaseItemBlock className="BasicInfoBlock" checkpointProps={{xs: 12}} spacing={2}>
             <Grid2 container xs={12} sm={5} md={6} lg={5} xl={3}>
@@ -301,7 +310,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                         联系方式:
                     </Typography>
                     <Typography variant="subtitle1">
-                        {(!contact || contact === '') ? "暂无" : contact}
+                        {(!contact || contact === '') ? "暂无" : isValidUrl(contact) ? <Link to={`${contact}`}>{contact}</Link> : contact}
                     </Typography>
                 </ContentCenteredGrid>
                 <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
@@ -628,7 +637,7 @@ function RecordBlock({Records, ApplicantID, editable}) {
         <BaseItemBlock className="RecordBlock" checkpointProps={{xs: 12}} spacing={2}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'row', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>申请记录</Typography>
-                { editable ? <Tooltip title='添加记录' arrow sx={{marginLeft: '10px'}}>
+                {editable ? <Tooltip title='添加记录' arrow sx={{marginLeft: '10px'}}>
                     <Button component={Link} to={`/profile/${ApplicantID}/new-record`} variant='outlined'>
                         <Add/>
                     </Button>

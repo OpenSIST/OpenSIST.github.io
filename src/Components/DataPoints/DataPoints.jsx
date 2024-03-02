@@ -34,7 +34,13 @@ export function ApplicantProfileInDataPoints() {
     const applicantID = params.applicantId;
     const {applicant} = useLoaderData();
     return (
-        <Dialog open={applicantID === applicant.ApplicantID} onClose={() => navigate(-1)} fullWidth maxWidth={'xl'}>
+        <Dialog
+            open={applicantID === applicant.ApplicantID}
+            onClose={() => navigate(-1)}
+            fullWidth
+            maxWidth={'xl'}
+            sx={{userSelect: 'text'}}
+        >
             <DialogActions>
                 <IconButton onClick={() => navigate(-1)}>
                     <Close/>
