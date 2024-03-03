@@ -29,7 +29,7 @@ import Profile, {
     action as profileAction,
     loader as profileLoader, ProfileIndex
 } from "./Components/Profile/Profile";
-import {createTheme, ThemeProvider, useMediaQuery} from "@mui/material";
+import {alpha, createTheme, getContrastRatio, ThemeProvider, useMediaQuery} from "@mui/material";
 import AdminPage, {AdminIndex} from "./Components/Admin/AdminPage";
 import AdminProgramPage, {
     loader as AdminProgramLoader,
@@ -62,7 +62,7 @@ import AddModifyRecord, {
 import {AboutUs} from "./Components/AboutUs/AboutUs";
 import DataPoints, {
     ApplicantProfileInDataPoints,
-    loader as DataPointsLoader
+    loader as DataPointsLoader, ProgramContentInDataPoints
 } from "./Components/DataPoints/DataPoints";
 
 export const ThemeContext = createContext({
@@ -126,9 +126,13 @@ function OpenSIST() {
                                     errorElement: <ErrorPage/>,
                                     children: [
                                         {
-                                            path: '/datapoints/:applicantId',
+                                            path: '/datapoints/applicant/:applicantId',
                                             element: <ApplicantProfileInDataPoints/>,
                                             loader: ProfileDataPointsLoader,
+                                        }, {
+                                            path: '/datapoints/program/:programId',
+                                            element: <ProgramContentInDataPoints/>,
+                                            loader: programContentLoader,
                                         }
                                     ]
                                 }
@@ -248,9 +252,23 @@ function OpenSIST() {
     const toggleTheme = () => {
         setMode((prevMode) => (prevMode === 'dark' ? 'light' : 'dark'));
     };
+    const violetBase = '#7F00FF';
+    const violetMain = alpha(violetBase, 0.7);
     const theme = createTheme({
         palette: {
             mode: mode ?? (prefersDarkMode ? 'dark' : 'light'),
+            violet: {
+                main: violetMain,
+                light: alpha(violetBase, 0.5),
+                dark: alpha(violetBase, 0.9),
+                contrastText: getContrastRatio(violetMain, '#fff') > 4.5 ? '#fff' : '#111',
+            },
+            ochre: {
+                main: '#E3D026',
+                light: '#E9DB5D',
+                dark: '#A29415',
+                contrastText: '#242105',
+            },
         },
         // palette: getPalette(prefersDarkMode),
         components: {
