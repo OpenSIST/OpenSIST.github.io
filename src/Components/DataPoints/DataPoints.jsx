@@ -248,6 +248,7 @@ export default function DataPoints() {
                 scrollHeight="90%"
                 rowGroupHeaderTemplate={groupSubheaderTemplate}
                 rowHover
+                showGridlines
                 filters={filters}
                 globalFilterFields={['ApplicantID', 'Status', 'Final', 'ProgramYear', 'Semester', 'TimeLine.Decision', 'TimeLine.Interview', 'TimeLine.Submit']}
                 emptyMessage="未找到任何匹配内容"

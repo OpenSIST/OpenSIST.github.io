@@ -13,3 +13,7 @@
 .DataTableStyle .p-datatable-thead > tr > th {
     background: #e5e5e5;
 }
+
+.DataTableStyle .p-datatable-header {
+    border: none;
+}
