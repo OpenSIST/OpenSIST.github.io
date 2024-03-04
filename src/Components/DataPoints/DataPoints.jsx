@@ -193,7 +193,7 @@ export default function DataPoints() {
                 label={rowData.ApplicantID}
             />
             <Tooltip title='查看申请人信息' arrow>
-                <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ApplicantID}`)}>
+                <IconButton onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}>
                     <OpenInFull fontSize='small'/>
                 </IconButton>
             </Tooltip>
