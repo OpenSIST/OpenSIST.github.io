@@ -10,9 +10,9 @@ import {
     Button,
     Chip, Dialog, DialogActions,
     DialogContent,
-    IconButton, InputAdornment, Paper, TextField, useTheme,
+    IconButton, InputAdornment, Paper, TextField, Tooltip, useTheme,
 } from "@mui/material";
-import {Check, Close, FilterAltOff, Link as LinkIcon, Search} from "@mui/icons-material";
+import {Check, Close, FilterAltOff, Link as LinkIcon, OpenInFull, OpenInNew, Search} from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import {recordStatusList} from "../../Data/Schemas";
 import { MultiSelect } from 'primereact/multiselect';
@@ -70,11 +70,11 @@ export function ProgramContentInDataPoints() {
             maxWidth={'xl'}
             sx={{userSelect: 'text'}}
         >
-            <DialogActions>
-                <IconButton onClick={() => navigate(-1)}>
-                    <Close/>
-                </IconButton>
-            </DialogActions>
+            {/*<DialogActions>*/}
+            {/*    <IconButton onClick={() => navigate(-1)}>*/}
+            {/*        <Close/>*/}
+            {/*    </IconButton>*/}
+            {/*</DialogActions>*/}
             <DialogContent>
                 <ProgramContent editable={false}/>
             </DialogContent>
@@ -84,6 +84,7 @@ export function ProgramContentInDataPoints() {
 
 export default function DataPoints() {
     const {records} = useLoaderData();
+    const navigate = useNavigate();
     const [filters, setFilters] = useState(null);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
 
@@ -95,6 +96,7 @@ export default function DataPoints() {
         setFilters({
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
             ApplicantID: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }] },
+            ProgramID: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }] },
             Status: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }] },
             'TimeLine.Submit': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             'TimeLine.Interview': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
@@ -173,7 +175,7 @@ export default function DataPoints() {
     };
 
     const finalBodyTemplate = (rowData) => {
-        return <>{rowData.Final ? <Check/> : null}</>
+        return <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{rowData.Final ? <Check/> : null}</div>
     };
     const semesterBodyTemplate = (rowData) => {
         return <Chip label={rowData.Semester} color={getSemesterColor(rowData.Semester)}/>
@@ -186,23 +188,29 @@ export default function DataPoints() {
         </>
     };
     const applicantBodyTemplate = (rowData) => {
-        return <Chip
-            component={Link}
-            to={`/datapoints/applicant/${rowData.ApplicantID}`}
-            label={rowData.ApplicantID}
-            sx={{cursor: 'pointer'}}
-            color='info'
-        />
+        return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Chip
+                label={rowData.ApplicantID}
+            />
+            <Tooltip title='查看申请人信息' arrow>
+                <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ApplicantID}`)}>
+                    <OpenInFull fontSize='small'/>
+                </IconButton>
+            </Tooltip>
+        </div>
     };
 
     const programBodyTemplate = (rowData) => {
-        return <Chip
-            component={Link}
-            to={`/datapoints/program/${rowData.ProgramID}`}
-            label={rowData.ProgramID}
-            sx={{cursor: 'pointer'}}
-            color='ochre'
-        />
+        return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Chip
+                label={rowData.ProgramID}
+            />
+            <Tooltip title='查看项目描述' arrow>
+                <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
+                    <OpenInFull fontSize='small'/>
+                </IconButton>
+            </Tooltip>
+        </div>
     };
 
     const renderHeader = () => {
@@ -256,15 +264,15 @@ export default function DataPoints() {
                 className='DataTableStyle'
             >
                 <Column field='ApplicantID' header='申请人' body={applicantBodyTemplate} filter filterPlaceholder="Search by Applicant ID"/>
-                <Column field='ProgramID' header='申请项目' body={programBodyTemplate}/>
-                <Column field='Status' header='申请结果' body={statusBodyTemplate} filter filterElement={statusFilterTemplate}/>
-                <Column field='Final' header='最终去向' body={finalBodyTemplate} align='center'/>
-                <Column field='ProgramYear' header='申请年份'/>
-                <Column field='Semester' header='申请学期' body={semesterBodyTemplate}/>
-                <Column field='TimeLine.Decision' header='结果通知时间' body={timelineBodyTemplate}/>
-                <Column field='TimeLine.Interview' header='面试时间' body={timelineBodyTemplate}/>
-                <Column field='TimeLine.Submit' header='网申提交时间' body={timelineBodyTemplate}/>
-                <Column field='Detail' header='备注、补充说明'/>
+                <Column field='ProgramID' header='申请项目' body={programBodyTemplate} filter/>
+                <Column field='Status' header='申请结果' body={statusBodyTemplate} filter filterElement={statusFilterTemplate} style={{width: '130px'}}/>
+                <Column field='Final' header='最终去向' body={finalBodyTemplate} filter align='center'/>
+                <Column field='ProgramYear' header='申请年份' filter/>
+                <Column field='Semester' header='申请学期' body={semesterBodyTemplate} filter style={{width: '130px'}}/>
+                <Column field='TimeLine.Decision' header='结果通知时间' body={timelineBodyTemplate} filter style={{width: '160px'}}/>
+                <Column field='TimeLine.Interview' header='面试时间' body={timelineBodyTemplate} filter style={{width: '160px'}}/>
+                <Column field='TimeLine.Submit' header='网申提交时间' body={timelineBodyTemplate} filter style={{width: '160px'}}/>
+                <Column field='Detail' header='备注、补充说明' style={{maxWidth: '300px'}}/>
             </DataTable>
             <Outlet/>
         </PrimeReactProvider>
