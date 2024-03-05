@@ -250,21 +250,21 @@ export default function DataPoints() {
 
     return (
         <Paper className="DataPointsContent">
-            {/*<Accordion>*/}
-            {/*    <AccordionSummary*/}
-            {/*        expandIcon={<ArrowDropDownIcon />}*/}
-            {/*    >*/}
-            {/*        <InlineTypography>*/}
-            {/*            <Explore/> 请先阅读使用指南*/}
-            {/*        </InlineTypography>*/}
-            {/*    </AccordionSummary>*/}
-            {/*    <AccordionDetails>*/}
-            {/*        <InlineTypography>*/}
-            {/*            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse*/}
-            {/*            malesuada lacus ex, sit amet blandit leo lobortis eget.*/}
-            {/*        </InlineTypography>*/}
-            {/*    </AccordionDetails>*/}
-            {/*</Accordion>*/}
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ArrowDropDownIcon />}
+                >
+                    <InlineTypography>
+                        <Explore/> 请先阅读使用指南
+                    </InlineTypography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <InlineTypography>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+                    </InlineTypography>
+                </AccordionDetails>
+            </Accordion>
                 <DataTable
                     value={records}
                     dataKey='RecordID'

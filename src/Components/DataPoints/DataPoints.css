@@ -1,8 +1,8 @@
 .DataPointsContent {
     width: 100%;
     margin: 1rem;
-    overflow-x: auto;
     user-select: text;
+    height: 1700px;
     display: flex;
     flex-direction: column;
 }
@@ -11,8 +11,7 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    /*min-width: calc(1700px - 2rem);*/
-    /*width: 500px;*/
+    height: 100%;
     overflow-y: auto;
     overflow-x: auto;
 }
