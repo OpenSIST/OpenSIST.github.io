@@ -261,10 +261,15 @@ export default function DataPoints() {
                         </InlineTypography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <InlineTypography>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                            malesuada lacus ex, sit amet blandit leo lobortis eget.
-                        </InlineTypography>
+                        <ol>
+                            <li>可通过表格上部的filter来进行关键信息筛选。</li>
+                            <li>
+                                <InlineTypography>
+                                    对于<b>申请人</b>和<b>申请项目</b>这两列，可点击单元格右侧<OpenInFull/>按钮查看申请人或项目的详细信息。
+                                </InlineTypography>
+                            </li>
+                            <li>本页面为只读模式，想要编辑自己的申请人信息或添加/删除/修改所申请的项目，请点击右上角头像下拉菜单中Profile页面编辑相应信息。</li>
+                        </ol>
                     </AccordionDetails>
                 </Accordion>
                 <DataTable
