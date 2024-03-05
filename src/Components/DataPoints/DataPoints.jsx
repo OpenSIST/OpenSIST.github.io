@@ -184,11 +184,7 @@ export default function DataPoints() {
             {rowData.Final ? <Check/> : null}
         </div>
     };
-    const semesterBodyTemplate = (rowData) => {
-        return <Chip label={rowData.Semester} color={getSemesterColor(rowData.Semester)}/>
-    };
-
-    const ProgramPeriodBodyTemplate = (rowData) => {
+    const programPeriodBodyTemplate = (rowData) => {
         return <Chip label={`${rowData.ProgramYear} ${rowData.Semester}`} color={getSemesterColor(rowData.Semester)}/>
     };
     const timelineBodyTemplate = (rowData, columnBodyOption) => {
@@ -201,7 +197,9 @@ export default function DataPoints() {
     const applicantBodyTemplate = (rowData) => {
         return (
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Chip label={rowData.ApplicantID} sx={{maxWidth: "100px"}}/>
+                <Tooltip title={rowData.ApplicantID} arrow>
+                    <Chip label={rowData.ApplicantID} sx={{maxWidth: "100px"}}/>
+                </Tooltip>
                 <Tooltip title='查看申请人信息' arrow>
                     <IconButton onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}>
                         <OpenInFull fontSize='small'/>
@@ -213,7 +211,9 @@ export default function DataPoints() {
 
     const programBodyTemplate = (rowData) => {
         return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Chip label={rowData.ProgramID} sx={{maxWidth: "100px"}}/>
+            <Tooltip title={rowData.ProgramID} arrow>
+                <Chip label={rowData.ProgramID} sx={{maxWidth: "100px"}}/>
+            </Tooltip>
             <Tooltip title='查看项目描述' arrow>
                 <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
                     <OpenInFull fontSize='small'/>
@@ -268,57 +268,57 @@ export default function DataPoints() {
                     </InlineTypography>
                 </AccordionDetails>
             </Accordion>
-                <DataTable
-                    value={records}
-                    dataKey='RecordID'
-                    rowGroupMode="subheader"
-                    groupRowsBy="ProgramID"
-                    sortMode='single'
-                    sortField='ProgramID'
-                    sortOrder={1}
-                    size='small'
-                    scrollable
-                    scrollHeight="100%"
-                    rowGroupHeaderTemplate={groupSubheaderTemplate}
-                    rowHover
-                    showGridlines
-                    filters={filters}
-                    globalFilterFields={['ApplicantID', 'Status', 'Final', 'ProgramYear', 'Semester', 'TimeLine.Decision', 'TimeLine.Interview', 'TimeLine.Submit']}
-                    emptyMessage="未找到任何匹配内容"
-                    header={renderHeader}
-                    className='DataTableStyle'
-                >
-                    <Column field='ApplicantID' header='申请人' body={applicantBodyTemplate} filter
-                            filterPlaceholder="Search by Applicant ID"
-                            style={{minWidth: '10rem'}}
-                    />
-                    <Column field='ProgramID' header='申请项目' body={programBodyTemplate} filter
-                            style={{minWidth: '10rem'}}
-                    />
-                    <Column field='Status' header='申请结果' body={statusBodyTemplate} filter
-                            filterElement={statusFilterTemplate}
-                            style={{minWidth: '9rem'}}
-                    />
-                    <Column field='Final' header='最终去向' body={finalBodyTemplate} filter align='center'
-                            style={{minWidth: '9rem'}}
-                    />
-                    <Column field='ProgramPeriod' header='申请季' filter body={ProgramPeriodBodyTemplate}
-                            style={{minWidth: '8rem'}}
-                    />
-                    <Column field='TimeLine.Decision' header='结果通知时间' body={timelineBodyTemplate} filter
-                            style={{minWidth: '12rem'}}
-                    />
-                    <Column field='TimeLine.Interview' header='面试时间' body={timelineBodyTemplate} filter
-                            style={{minWidth: '9rem'}}
-                    />
-                    <Column field='TimeLine.Submit' header='网申提交时间' body={timelineBodyTemplate} filter
-                            style={{minWidth: '12rem'}}
-                    />
-                    <Column field='Detail' header='备注、补充说明'
-                            style={{minWidth: '12rem'}}
-                    />
-                </DataTable>
-                <Outlet/>
+            <DataTable
+                value={records}
+                dataKey='RecordID'
+                rowGroupMode="subheader"
+                groupRowsBy="ProgramID"
+                sortMode='single'
+                sortField='ProgramID'
+                sortOrder={1}
+                size='small'
+                scrollable
+                scrollHeight="100%"
+                rowGroupHeaderTemplate={groupSubheaderTemplate}
+                rowHover
+                showGridlines
+                filters={filters}
+                globalFilterFields={['ApplicantID', 'ProgramID', 'Status', 'Final', 'ProgramYear', 'Semester', 'TimeLine.Decision', 'TimeLine.Interview', 'TimeLine.Submit', 'Detail']}
+                emptyMessage="未找到任何匹配内容"
+                header={renderHeader}
+                className='DataTableStyle'
+            >
+                <Column field='ApplicantID' header='申请人' body={applicantBodyTemplate} filter
+                        filterPlaceholder="Search by Applicant ID"
+                        style={{minWidth: '10rem'}}
+                />
+                <Column field='ProgramID' header='申请项目' body={programBodyTemplate} filter
+                        style={{minWidth: '10rem'}}
+                />
+                <Column field='Status' header='申请结果' body={statusBodyTemplate} filter
+                        filterElement={statusFilterTemplate}
+                        style={{minWidth: '9rem'}}
+                />
+                <Column field='Final' header='最终去向' body={finalBodyTemplate} filter align='center'
+                        style={{minWidth: '9rem'}}
+                />
+                <Column field='ProgramPeriod' header='申请季' filter body={programPeriodBodyTemplate}
+                        style={{minWidth: '8rem'}}
+                />
+                <Column field='TimeLine.Decision' header='结果通知时间' body={timelineBodyTemplate} filter
+                        style={{minWidth: '12rem'}}
+                />
+                <Column field='TimeLine.Interview' header='面试时间' body={timelineBodyTemplate} filter
+                        style={{minWidth: '9rem'}}
+                />
+                <Column field='TimeLine.Submit' header='网申提交时间' body={timelineBodyTemplate} filter
+                        style={{minWidth: '12rem'}}
+                />
+                <Column field='Detail' header='备注、补充说明'
+                        style={{minWidth: '12rem'}}
+                />
+            </DataTable>
+            <Outlet/>
         </Paper>
     )
 }
