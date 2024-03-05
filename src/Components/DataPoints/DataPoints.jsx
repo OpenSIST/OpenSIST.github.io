@@ -183,11 +183,7 @@ export default function DataPoints() {
             {rowData.Final ? <Check/> : null}
         </div>
     };
-    const semesterBodyTemplate = (rowData) => {
-        return <Chip label={rowData.Semester} color={getSemesterColor(rowData.Semester)}/>
-    };
-
-    const ProgramPeriodBodyTemplate = (rowData) => {
+    const programPeriodBodyTemplate = (rowData) => {
         return <Chip label={`${rowData.ProgramYear} ${rowData.Semester}`} color={getSemesterColor(rowData.Semester)}/>
     };
     const timelineBodyTemplate = (rowData, columnBodyOption) => {
@@ -200,7 +196,9 @@ export default function DataPoints() {
     const applicantBodyTemplate = (rowData) => {
         return (
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Chip label={rowData.ApplicantID} sx={{maxWidth: "100px"}}/>
+                <Tooltip title={rowData.ApplicantID} arrow>
+                    <Chip label={rowData.ApplicantID} sx={{maxWidth: "100px"}}/>
+                </Tooltip>
                 <Tooltip title='查看申请人信息' arrow>
                     <IconButton onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}>
                         <OpenInFull fontSize='small'/>
@@ -212,7 +210,9 @@ export default function DataPoints() {
 
     const programBodyTemplate = (rowData) => {
         return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Chip label={rowData.ProgramID} sx={{maxWidth: "100px"}}/>
+            <Tooltip title={rowData.ProgramID} arrow>
+                <Chip label={rowData.ProgramID} sx={{maxWidth: "100px"}}/>
+            </Tooltip>
             <Tooltip title='查看项目描述' arrow>
                 <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
                     <OpenInFull fontSize='small'/>
