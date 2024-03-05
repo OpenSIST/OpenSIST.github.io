@@ -33,6 +33,10 @@ body,html {
     background-color: var(--bg-color);
 }
 
+#root {
+    height: 100vh;
+}
+
 /* open-sans-regular - latin-ext_latin */
 @font-face {
     font-family: 'Open Sans';

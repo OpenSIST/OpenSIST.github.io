@@ -179,7 +179,7 @@ export default function DataPoints() {
 
     const finalBodyTemplate = (rowData) => {
         return <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            {rowData.Final ? <Check/> : null}
+            {rowData.Final ? <Check color='success'/> : null}
         </div>
     };
     const programPeriodBodyTemplate = (rowData) => {

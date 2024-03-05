@@ -1,4 +1,4 @@
-#error-page {
+.error-page {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -8,12 +8,19 @@
     font-family: Arial, sans-serif;
 }
 
-#error-page h1 {
+.error-page h1 {
     font-size: 3em;
     margin-bottom: 20px;
 }
 
-#error-page p {
+.error-page p {
     font-size: 1.2em;
     margin-bottom: 10px;
 }
+
+.error-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+

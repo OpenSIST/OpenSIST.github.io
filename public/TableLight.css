@@ -9418,11 +9418,11 @@
         border-color: #d9d8d9;
     }
 }
-
 .p-rowgroup-header {
     background-color: #efefef;
 }
 
 .p-datatable-thead > tr > th {
-    background: #e5e5e5;
+    background: #d5d5d5;
 }
+
