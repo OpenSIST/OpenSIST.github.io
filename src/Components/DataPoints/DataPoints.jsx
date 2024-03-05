@@ -3,20 +3,23 @@ import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByProgram} from "../../Data/RecordData";
-import {Link, Outlet, useLoaderData, useNavigate, useParams} from "react-router-dom";
+import {Outlet, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
 import {
+    Accordion, AccordionDetails, AccordionSummary,
     Button,
     Chip, Dialog, DialogActions,
     DialogContent,
-    IconButton, InputAdornment, Paper, TextField, Tooltip, useTheme,
+    IconButton, InputAdornment, Paper, TextField, Tooltip, Typography, useTheme,
 } from "@mui/material";
-import {Check, Close, FilterAltOff, Link as LinkIcon, OpenInFull, OpenInNew, Search} from "@mui/icons-material";
+import {Check, Close, CompassCalibration, Explore, FilterAltOff, OpenInFull, Search} from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import {recordStatusList} from "../../Data/Schemas";
 import {MultiSelect} from 'primereact/multiselect';
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import {InlineTypography} from "../common";
 
 export async function loader() {
     const programs = await getPrograms();
@@ -250,6 +253,21 @@ export default function DataPoints() {
 
     return (
         <Paper className="DataPointsContent">
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ArrowDropDownIcon />}
+                >
+                    <InlineTypography>
+                        <Explore/> 请先阅读使用指南
+                    </InlineTypography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <InlineTypography>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+                    </InlineTypography>
+                </AccordionDetails>
+            </Accordion>
             <PrimeReactProvider>
                 <DataTable
                     value={records}
