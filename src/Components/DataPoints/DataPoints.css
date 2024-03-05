@@ -37,3 +37,6 @@
     border-radius: 5px;
 }
 
+.DataTableStyle .p-datatable-wrapper > .p-datatable-table > .p-datatable-thead {
+    height: 60px;
+}
