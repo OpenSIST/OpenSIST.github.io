@@ -302,7 +302,7 @@ export default function DataPoints() {
                     <Column field='Final' header='最终去向' body={finalBodyTemplate} filter align='center'
                             style={{minWidth: '9rem'}}
                     />
-                    <Column field='ProgramPeriod' header='申请季' filter body={ProgramPeriodBodyTemplate}
+                    <Column field='ProgramPeriod' header='申请季' filter body={programPeriodBodyTemplate}
                             style={{minWidth: '8rem'}}
                     />
                     <Column field='TimeLine.Decision' header='结果通知时间' body={timelineBodyTemplate} filter
