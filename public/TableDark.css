@@ -9426,3 +9426,7 @@
 .p-datatable-thead > tr > th {
     background: #313131;
 }
+
+.p-datatable-header {
+    background-color: #313131;
+}

@@ -21,6 +21,7 @@ import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
+
 export async function loader() {
     const programs = await getPrograms();
     const programIDs = Object.values(programs).map(program => {
@@ -223,8 +224,7 @@ export default function DataPoints() {
     const renderHeader = () => {
         return (
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Button variant='outlined' size='large' endIcon={<FilterAltOff/>} onClick={clearFilter}>Clear
-                    Filter</Button>
+                <Button variant='outlined' size='large' endIcon={<FilterAltOff/>} onClick={clearFilter}>重置所有筛选</Button>
                 <TextField
                     InputProps={{
                         startAdornment: (
@@ -252,7 +252,7 @@ export default function DataPoints() {
     return (
         <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap}>
             <Paper className="DataPointsContent">
-                <Accordion>
+                <Accordion sx={{bgcolor: '#448aff1a'}} disableGutters>
                     <AccordionSummary
                         expandIcon={<ArrowDropDownIcon/>}
                     >
@@ -287,7 +287,7 @@ export default function DataPoints() {
                     rowHover
                     showGridlines
                     filters={filters}
-                    globalFilterFields={['ApplicantID', 'Status', 'Final', 'ProgramYear', 'Semester', 'TimeLine.Decision', 'TimeLine.Interview', 'TimeLine.Submit']}
+                    globalFilterFields={['ApplicantID', 'ProgramID', 'Status', 'Final', 'ProgramPeriod', 'TimeLine.Decision', 'TimeLine.Interview', 'TimeLine.Submit', 'Detail']}
                     emptyMessage="未找到任何匹配内容"
                     header={renderHeader}
                     className='DataTableStyle'
@@ -319,7 +319,7 @@ export default function DataPoints() {
                             style={{minWidth: '12rem'}}
                     />
                     <Column field='Detail' header='备注、补充说明'
-                            style={{minWidth: '12rem'}}
+                            style={{width: '15rem', minWidth: '12rem'}}
                     />
                 </DataTable>
                 <Outlet/>
