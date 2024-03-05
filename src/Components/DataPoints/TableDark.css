@@ -1824,7 +1824,6 @@
     }
     .p-slider:not(.p-disabled) .p-slider-handle:hover {
         background: #9FA8DA;
-        border-color: 0 none;
     }
     .p-treeselect {
         background: #1e1e1e;
@@ -2852,7 +2851,7 @@
     .p-datatable .p-datatable-tfoot > tr > td {
         text-align: left;
         padding: 1rem 1rem;
-        border: 1px solid 3404040;
+        border: 1px solid #404040;
         border-width: 0 0 1px 0;
         font-weight: 500;
         color: rgba(255, 255, 255, 0.87);
@@ -3672,7 +3671,7 @@
     .p-treetable .p-treetable-tfoot > tr > td {
         text-align: left;
         padding: 1rem 1rem;
-        border: 1px solid 3404040;
+        border: 1px solid #404040;
         border-width: 0 0 1px 0;
         font-weight: 500;
         color: rgba(255, 255, 255, 0.87);
@@ -4135,7 +4134,7 @@
     .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus-visible {
         outline: 0 none;
         outline-offset: 0;
-        box-shadow: inset none;
+        box-shadow: none;
     }
     .p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
         background: rgba(159, 168, 218, 0.04);
@@ -4160,7 +4159,7 @@
     .p-tabview .p-tabview-nav-btn.p-link:focus-visible {
         outline: 0 none;
         outline-offset: 0;
-        box-shadow: inset none;
+        box-shadow: none;
     }
     .p-tabview .p-tabview-panels {
         background: transparent;
@@ -5295,7 +5294,7 @@
     .p-panelmenu .p-panelmenu-header:not(.p-disabled):focus-visible .p-panelmenu-header-content {
         outline: 0 none;
         outline-offset: 0;
-        box-shadow: inset none;
+        box-shadow: none;
     }
     .p-panelmenu .p-panelmenu-header:not(.p-highlight):not(.p-disabled):hover .p-panelmenu-header-content {
         background: rgba(255, 255, 255, 0.04);
@@ -5593,7 +5592,7 @@
     .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link:not(.p-disabled):focus-visible {
         outline: 0 none;
         outline-offset: 0;
-        box-shadow: inset none;
+        box-shadow: none;
     }
     .p-tabmenu .p-tabmenu-nav .p-tabmenuitem:not(.p-highlight):not(.p-disabled):hover .p-menuitem-link {
         background: rgba(159, 168, 218, 0.04);
@@ -7067,7 +7066,7 @@
         border-color: transparent;
     }
     .p-inputswitch .p-inputswitch-slider:before {
-        transition-property: box-shadow transform;
+        transition-property: box-shadow;
         box-shadow: 0px 3px 1px -2px rgba(255, 255, 255, 0.2), 0px 2px 2px 0px rgba(255, 255, 255, 0.14), 0px 1px 5px 0px rgba(255, 255, 255, 0.12);
     }
     .p-inputswitch:not(.p-disabled):hover .p-inputswitch-slider:before {

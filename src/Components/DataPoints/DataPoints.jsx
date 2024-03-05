@@ -70,11 +70,6 @@ export function ProgramContentInDataPoints() {
             maxWidth={'xl'}
             sx={{userSelect: 'text'}}
         >
-            {/*<DialogActions>*/}
-            {/*    <IconButton onClick={() => navigate(-1)}>*/}
-            {/*        <Close/>*/}
-            {/*    </IconButton>*/}
-            {/*</DialogActions>*/}
             <DialogContent>
                 <ProgramContent editable={false}/>
             </DialogContent>
@@ -169,7 +164,9 @@ export default function DataPoints() {
     };
 
     const statusBodyTemplate = (rowData) => {
-        return <Chip label={rowData.Status} color={getStatusColor(rowData.Status)} sx={{maxWidth: '100px'}}/>
+        return <Chip label={rowData.Status} color={getStatusColor(rowData.Status)}
+                     // sx={{maxWidth: '100px'}}
+        />
     };
     const statusFilterTemplate = (options) => {
         return <MultiSelect
@@ -198,7 +195,9 @@ export default function DataPoints() {
     const applicantBodyTemplate = (rowData) => {
         return (
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Chip label={rowData.ApplicantID} sx={{maxWidth: "100px"}}/>
+                <Chip label={rowData.ApplicantID}
+                      // sx={{maxWidth: "100px"}}
+                />
                 <Tooltip title='查看申请人信息' arrow>
                     <IconButton onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}>
                         <OpenInFull fontSize='small'/>
@@ -210,7 +209,9 @@ export default function DataPoints() {
 
     const programBodyTemplate = (rowData) => {
         return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Chip label={rowData.ProgramID} sx={{maxWidth: "150px"}}/>
+            <Chip label={rowData.ProgramID}
+                  // sx={{maxWidth: "150px"}}
+            />
             <Tooltip title='查看项目描述' arrow>
                 <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
                     <OpenInFull fontSize='small'/>
@@ -282,7 +283,9 @@ export default function DataPoints() {
                     <Column field='TimeLine.Decision' header='结果通知时间' body={timelineBodyTemplate} filter/>
                     <Column field='TimeLine.Interview' header='面试时间' body={timelineBodyTemplate} filter/>
                     <Column field='TimeLine.Submit' header='网申提交时间' body={timelineBodyTemplate} filter/>
-                    <Column field='Detail' header='备注、补充说明' style={{maxWidth: '300px'}}/>
+                    <Column field='Detail' header='备注、补充说明'
+                            // style={{maxWidth: '300px'}}
+                    />
                 </DataTable>
                 <Outlet/>
             </PrimeReactProvider>
