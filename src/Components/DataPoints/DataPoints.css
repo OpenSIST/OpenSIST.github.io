@@ -11,7 +11,8 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    min-width: calc(1700px - 2rem);
+    /*min-width: calc(1700px - 2rem);*/
+    /*width: 500px;*/
     overflow-y: auto;
     overflow-x: auto;
 }

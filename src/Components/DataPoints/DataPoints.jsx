@@ -7,13 +7,13 @@ import {Outlet, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
 import {
-    Accordion, AccordionDetails, AccordionSummary,
+    Accordion, AccordionDetails, AccordionSummary, Box,
     Button,
     Chip, Dialog, DialogActions,
     DialogContent,
-    IconButton, InputAdornment, Paper, TextField, Tooltip, Typography, useTheme,
+    IconButton, InputAdornment, Paper, TextField, Tooltip, useTheme,
 } from "@mui/material";
-import {Check, Close, CompassCalibration, Explore, FilterAltOff, OpenInFull, Search} from "@mui/icons-material";
+import {Check, Close, Explore, FilterAltOff, OpenInFull, Search} from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import {recordStatusList} from "../../Data/Schemas";
 import {MultiSelect} from 'primereact/multiselect';
@@ -168,7 +168,7 @@ export default function DataPoints() {
 
     const statusBodyTemplate = (rowData) => {
         return <Chip label={rowData.Status} color={getStatusColor(rowData.Status)}
-                     // sx={{maxWidth: '100px'}}
+                     sx={{maxWidth: '100px'}}
         />
     };
     const statusFilterTemplate = (options) => {
@@ -198,9 +198,7 @@ export default function DataPoints() {
     const applicantBodyTemplate = (rowData) => {
         return (
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Chip label={rowData.ApplicantID}
-                      // sx={{maxWidth: "100px"}}
-                />
+                <Chip label={rowData.ApplicantID} sx={{maxWidth: "100px"}}/>
                 <Tooltip title='查看申请人信息' arrow>
                     <IconButton onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}>
                         <OpenInFull fontSize='small'/>
@@ -212,9 +210,7 @@ export default function DataPoints() {
 
     const programBodyTemplate = (rowData) => {
         return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Chip label={rowData.ProgramID}
-                  // sx={{maxWidth: "150px"}}
-            />
+            <Chip label={rowData.ProgramID} sx={{maxWidth: "100px"}}/>
             <Tooltip title='查看项目描述' arrow>
                 <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
                     <OpenInFull fontSize='small'/>
@@ -254,22 +250,21 @@ export default function DataPoints() {
 
     return (
         <Paper className="DataPointsContent">
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ArrowDropDownIcon />}
-                >
-                    <InlineTypography>
-                        <Explore/> 请先阅读使用指南
-                    </InlineTypography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <InlineTypography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                        malesuada lacus ex, sit amet blandit leo lobortis eget.
-                    </InlineTypography>
-                </AccordionDetails>
-            </Accordion>
-            <PrimeReactProvider>
+            {/*<Accordion>*/}
+            {/*    <AccordionSummary*/}
+            {/*        expandIcon={<ArrowDropDownIcon />}*/}
+            {/*    >*/}
+            {/*        <InlineTypography>*/}
+            {/*            <Explore/> 请先阅读使用指南*/}
+            {/*        </InlineTypography>*/}
+            {/*    </AccordionSummary>*/}
+            {/*    <AccordionDetails>*/}
+            {/*        <InlineTypography>*/}
+            {/*            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse*/}
+            {/*            malesuada lacus ex, sit amet blandit leo lobortis eget.*/}
+            {/*        </InlineTypography>*/}
+            {/*    </AccordionDetails>*/}
+            {/*</Accordion>*/}
                 <DataTable
                     value={records}
                     dataKey='RecordID'
@@ -291,22 +286,39 @@ export default function DataPoints() {
                     className='DataTableStyle'
                 >
                     <Column field='ApplicantID' header='申请人' body={applicantBodyTemplate} filter
-                            filterPlaceholder="Search by Applicant ID"/>
-                    <Column field='ProgramID' header='申请项目' body={programBodyTemplate} filter/>
+                            filterPlaceholder="Search by Applicant ID"
+                            style={{minWidth: '10rem'}}
+                    />
+                    <Column field='ProgramID' header='申请项目' body={programBodyTemplate} filter
+                            style={{minWidth: '10rem'}}
+                    />
                     <Column field='Status' header='申请结果' body={statusBodyTemplate} filter
-                            filterElement={statusFilterTemplate}/>
-                    <Column field='Final' header='最终去向' body={finalBodyTemplate} filter align='center'/>
-                    <Column field='ProgramYear' header='申请年份' filter/>
-                    <Column field='Semester' header='申请学期' body={semesterBodyTemplate} filter/>
-                    <Column field='TimeLine.Decision' header='结果通知时间' body={timelineBodyTemplate} filter/>
-                    <Column field='TimeLine.Interview' header='面试时间' body={timelineBodyTemplate} filter/>
-                    <Column field='TimeLine.Submit' header='网申提交时间' body={timelineBodyTemplate} filter/>
+                            filterElement={statusFilterTemplate}
+                            style={{minWidth: '9rem'}}
+                    />
+                    <Column field='Final' header='最终去向' body={finalBodyTemplate} filter align='center'
+                            style={{minWidth: '9rem'}}
+                    />
+                    <Column field='ProgramYear' header='申请年份' filter
+                            style={{minWidth: '9rem'}}
+                    />
+                    <Column field='Semester' header='申请学期' body={semesterBodyTemplate} filter
+                            style={{minWidth: '9rem'}}
+                    />
+                    <Column field='TimeLine.Decision' header='结果通知时间' body={timelineBodyTemplate} filter
+                            style={{minWidth: '12rem'}}
+                    />
+                    <Column field='TimeLine.Interview' header='面试时间' body={timelineBodyTemplate} filter
+                            style={{minWidth: '9rem'}}
+                    />
+                    <Column field='TimeLine.Submit' header='网申提交时间' body={timelineBodyTemplate} filter
+                            style={{minWidth: '12rem'}}
+                    />
                     <Column field='Detail' header='备注、补充说明'
-                            // style={{maxWidth: '300px'}}
+                            style={{minWidth: '12rem'}}
                     />
                 </DataTable>
                 <Outlet/>
-            </PrimeReactProvider>
         </Paper>
     )
 }
