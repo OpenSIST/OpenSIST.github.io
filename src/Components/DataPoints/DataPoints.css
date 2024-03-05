@@ -4,6 +4,7 @@
     overflow-x: auto;
     user-select: text;
     display: flex;
+    flex-direction: column;
 }
 
 .DataTableStyle {
