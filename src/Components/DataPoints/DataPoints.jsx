@@ -7,7 +7,7 @@ import {Outlet, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
 import {
-    Accordion, AccordionDetails, AccordionSummary, Box,
+    Accordion, AccordionDetails, AccordionSummary,
     Button,
     Chip, Dialog, DialogActions,
     DialogContent,
@@ -20,7 +20,7 @@ import {MultiSelect} from 'primereact/multiselect';
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {InlineTypography} from "../common";
-import {ThemeSwitcherProvider, useThemeSwitcher} from 'react-css-theme-switcher';
+import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 export async function loader() {
     const programs = await getPrograms();
     const programIDs = Object.values(programs).map(program => {
@@ -126,9 +126,9 @@ export default function DataPoints() {
 
     const theme = useTheme();
     const themeMap = {
-        light: "/TableLight.css",
-        dark: "/TableDark.css"
-    };
+        light: "./TableLight.css",
+        dark: "./TableDark.css"
+    }
     const getStatusColor = (status) => {
         switch (status) {
             case 'Reject':
@@ -250,10 +250,7 @@ export default function DataPoints() {
     };
 
     return (
-        <ThemeSwitcherProvider
-            defaultTheme={theme.palette.mode}
-            themeMap={themeMap}
-        >
+        <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap}>
             <Paper className="DataPointsContent">
                 <Accordion>
                     <AccordionSummary
@@ -264,10 +261,15 @@ export default function DataPoints() {
                         </InlineTypography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <InlineTypography>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                            malesuada lacus ex, sit amet blandit leo lobortis eget.
-                        </InlineTypography>
+                        <ol>
+                            <li>可通过表格上部的filter来进行关键信息筛选。</li>
+                            <li>
+                                <InlineTypography>
+                                    对于<b>申请人</b>和<b>申请项目</b>这两列，可点击单元格右侧<OpenInFull/>按钮查看申请人或项目的详细信息。
+                                </InlineTypography>
+                            </li>
+                            <li>本页面为只读模式，想要编辑自己的申请人信息或添加/删除/修改所申请的项目，请点击右上角头像下拉菜单中Profile页面编辑相应信息。</li>
+                        </ol>
                     </AccordionDetails>
                 </Accordion>
                 <DataTable
