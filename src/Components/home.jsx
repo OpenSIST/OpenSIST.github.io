@@ -2,11 +2,10 @@ import TopBar from "./TopBar/TopBar";
 import {Outlet} from "react-router-dom";
 import React from "react";
 import {LoadingBackdrop} from "./common";
-import {Paper, useTheme} from "@mui/material";
+import {Paper} from "@mui/material";
 import ReactMarkdown from "react-markdown";
 
 function Home() {
-    const theme = useTheme();
     return (
         <Paper elevation={0}>
             <TopBar/>

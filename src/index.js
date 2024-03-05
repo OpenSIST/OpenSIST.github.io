@@ -29,7 +29,7 @@ import Profile, {
     action as profileAction,
     loader as profileLoader, ProfileIndex
 } from "./Components/Profile/Profile";
-import {alpha, createTheme, getContrastRatio, ThemeProvider, useMediaQuery} from "@mui/material";
+import {createTheme, ThemeProvider, useMediaQuery} from "@mui/material";
 import AdminPage, {AdminIndex} from "./Components/Admin/AdminPage";
 import AdminProgramPage, {
     loader as AdminProgramLoader,
@@ -252,8 +252,6 @@ function OpenSIST() {
     const toggleTheme = () => {
         setMode((prevMode) => (prevMode === 'dark' ? 'light' : 'dark'));
     };
-    const violetBase = '#7F00FF';
-    const violetMain = alpha(violetBase, 0.7);
     const theme = createTheme({
         palette: {
             mode: mode ?? (prefersDarkMode ? 'dark' : 'light'),
