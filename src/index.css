@@ -28,6 +28,8 @@ body,html {
     --font-body: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Twemoji', 'Segoe UI Emoji', sans-serif;
     --scrollbar-color: #fff;
     --bg-color: #fff;
+    --datatable-header-bg-color: #e5e5e5;
+    --datatable-rowgroup-header-bg-color: #efefef;
     user-select: none;
     font-size: clamp(10px, 1.5vw, 16px);
     background-color: var(--bg-color);

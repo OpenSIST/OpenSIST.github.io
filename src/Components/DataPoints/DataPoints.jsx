@@ -20,6 +20,7 @@ import {MultiSelect} from 'primereact/multiselect';
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {InlineTypography} from "../common";
+import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 
 export async function loader() {
     const programs = await getPrograms();
@@ -111,7 +112,10 @@ export default function DataPoints() {
                 operator: FilterOperator.AND,
                 constraints: [{value: null, matchMode: FilterMatchMode.DATE_IS}]
             },
-            ProgramPeriod: {operator: FilterOperator.OR, constraints: [{value: null, matchMode: FilterMatchMode.EQUALS}]},
+            ProgramPeriod: {
+                operator: FilterOperator.OR,
+                constraints: [{value: null, matchMode: FilterMatchMode.EQUALS}]
+            },
             Final: {value: null, matchMode: FilterMatchMode.EQUALS}
         });
         setGlobalFilterValue('');
@@ -122,15 +126,10 @@ export default function DataPoints() {
     };
 
     const theme = useTheme();
-    const darkMode = theme.palette.mode === "dark";
-    useEffect(() => {
-        if (darkMode) {
-            require('./TableDark.css');
-        } else {
-            require('./TableLight.css');
-        }
-    }, [darkMode]);
-
+    const themeMap = {
+        light: "./TableLight.css",
+        dark: "./TableDark.css"
+    }
     const getStatusColor = (status) => {
         switch (status) {
             case 'Reject':
@@ -252,22 +251,23 @@ export default function DataPoints() {
     };
 
     return (
-        <Paper className="DataPointsContent">
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ArrowDropDownIcon />}
-                >
-                    <InlineTypography>
-                        <Explore/> 请先阅读使用指南
-                    </InlineTypography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <InlineTypography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                        malesuada lacus ex, sit amet blandit leo lobortis eget.
-                    </InlineTypography>
-                </AccordionDetails>
-            </Accordion>
+        <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap}>
+            <Paper className="DataPointsContent">
+                <Accordion>
+                    <AccordionSummary
+                        expandIcon={<ArrowDropDownIcon/>}
+                    >
+                        <InlineTypography>
+                            <Explore/> 请先阅读使用指南
+                        </InlineTypography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <InlineTypography>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                            malesuada lacus ex, sit amet blandit leo lobortis eget.
+                        </InlineTypography>
+                    </AccordionDetails>
+                </Accordion>
                 <DataTable
                     value={records}
                     dataKey='RecordID'
@@ -319,6 +319,7 @@ export default function DataPoints() {
                     />
                 </DataTable>
                 <Outlet/>
-        </Paper>
+            </Paper>
+        </ThemeSwitcherProvider>
     )
 }

@@ -17,7 +17,7 @@
 }
 
 .DataTableStyle .p-rowgroup-header {
-    background-color: #efefef;
+    background-color: var(--datatable-rowgroup-header-bg-color);
 }
 
 .DataTableStyle .p-column-title {
@@ -25,7 +25,7 @@
 }
 
 .DataTableStyle .p-datatable-thead > tr > th {
-    background: #e5e5e5;
+    background: var(--datatable-header-bg-color);
 }
 
 .DataTableStyle .p-datatable-header {
