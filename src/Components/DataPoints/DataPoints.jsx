@@ -1,4 +1,4 @@
-import {FilterMatchMode, FilterOperator, PrimeReactProvider} from "primereact/api";
+import {FilterMatchMode, FilterOperator} from "primereact/api";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
@@ -20,8 +20,7 @@ import {MultiSelect} from 'primereact/multiselect';
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {InlineTypography} from "../common";
-import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
-
+import {ThemeSwitcherProvider, useThemeSwitcher} from 'react-css-theme-switcher';
 export async function loader() {
     const programs = await getPrograms();
     const programIDs = Object.values(programs).map(program => {
@@ -127,9 +126,9 @@ export default function DataPoints() {
 
     const theme = useTheme();
     const themeMap = {
-        light: "./TableLight.css",
-        dark: "./TableDark.css"
-    }
+        light: "/TableLight.css",
+        dark: "/TableDark.css"
+    };
     const getStatusColor = (status) => {
         switch (status) {
             case 'Reject':
@@ -251,7 +250,10 @@ export default function DataPoints() {
     };
 
     return (
-        <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap}>
+        <ThemeSwitcherProvider
+            defaultTheme={theme.palette.mode}
+            themeMap={themeMap}
+        >
             <Paper className="DataPointsContent">
                 <Accordion>
                     <AccordionSummary

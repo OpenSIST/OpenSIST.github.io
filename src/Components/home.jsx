@@ -2,10 +2,11 @@ import TopBar from "./TopBar/TopBar";
 import {Outlet} from "react-router-dom";
 import React from "react";
 import {LoadingBackdrop} from "./common";
-import {Paper} from "@mui/material";
+import {Paper, useTheme} from "@mui/material";
 import ReactMarkdown from "react-markdown";
 
 function Home() {
+    const theme = useTheme();
     return (
         <Paper elevation={0}>
             <TopBar/>
@@ -25,7 +26,8 @@ function HomeIndex() {
         <div style={{width: '70%'}}>
             <h1 style={{textAlign: 'center'}}>欢迎来到OpenSIST</h1>
             <ReactMarkdown>
-                [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+                [![License: GPL
+                v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
             </ReactMarkdown>
             <a href="https://github.com/opensist/opensist.github.io">
                 <img alt="GitHub Repo stars"
@@ -44,7 +46,7 @@ function HomeIndex() {
                         本网站为OpenSIST的阶段性临时演示网站，<b style={{color: 'red'}}>严禁</b>公开演示网址。
                     </li>
                     <li>
-                    本项目目前仍处在开发阶段, 请各位用户谅解网站可能存在的不便,
+                        本项目目前仍处在开发阶段, 请各位用户谅解网站可能存在的不便,
                         目前绝大多数网站设计和功能尚未完成，部分页面（包括此页面）属临时搭建，并不代表最终成品。
                     </li>
                     <li>
