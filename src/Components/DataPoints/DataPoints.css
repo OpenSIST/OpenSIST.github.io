@@ -16,16 +16,8 @@
     overflow-x: auto;
 }
 
-.DataTableStyle .p-rowgroup-header {
-    background-color: var(--datatable-rowgroup-header-bg-color);
-}
-
 .DataTableStyle .p-column-title {
     font-weight: bold;
-}
-
-.DataTableStyle .p-datatable-thead > tr > th {
-    background: var(--datatable-header-bg-color);
 }
 
 .DataTableStyle .p-datatable-header {

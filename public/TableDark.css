@@ -9418,3 +9418,11 @@
         border-color: rgba(255, 255, 255, 0.12);
     }
 }
+
+.p-rowgroup-header {
+    background-color: #3b3b3b;
+}
+
+.p-datatable-thead > tr > th {
+    background: #313131;
+}

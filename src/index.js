@@ -243,13 +243,9 @@ function OpenSIST() {
         if (mode === 'dark') {
             root.style.setProperty('--scrollbar-color', 'rgba(155, 155, 155, 0.7)');
             root.style.setProperty('--bg-color', 'rgba(0, 0, 0, 0.9)');
-            root.style.setProperty('--datatable-header-bg-color', "#313131");
-            root.style.setProperty('--datatable-rowgroup-header-bg-color', "#3b3b3b");
         } else {
             root.style.setProperty('--scrollbar-color', 'rgba(0, 0, 0, 0.5)');
             root.style.setProperty('--bg-color', 'rgba(255, 255, 255, 0.9)');
-            root.style.setProperty('--datatable-header-bg-color', "#e5e5e5");
-            root.style.setProperty('--datatable-rowgroup-header-bg-color', "#efefef");
         }
     }, [mode]);
 
