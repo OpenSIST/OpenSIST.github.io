@@ -111,8 +111,7 @@ export default function DataPoints() {
                 operator: FilterOperator.AND,
                 constraints: [{value: null, matchMode: FilterMatchMode.DATE_IS}]
             },
-            ProgramYear: {operator: FilterOperator.OR, constraints: [{value: null, matchMode: FilterMatchMode.EQUALS}]},
-            Semester: {operator: FilterOperator.OR, constraints: [{value: null, matchMode: FilterMatchMode.EQUALS}]},
+            ProgramPeriod: {operator: FilterOperator.OR, constraints: [{value: null, matchMode: FilterMatchMode.EQUALS}]},
             Final: {value: null, matchMode: FilterMatchMode.EQUALS}
         });
         setGlobalFilterValue('');
@@ -187,6 +186,10 @@ export default function DataPoints() {
     };
     const semesterBodyTemplate = (rowData) => {
         return <Chip label={rowData.Semester} color={getSemesterColor(rowData.Semester)}/>
+    };
+
+    const ProgramPeriodBodyTemplate = (rowData) => {
+        return <Chip label={`${rowData.ProgramYear} ${rowData.Semester}`} color={getSemesterColor(rowData.Semester)}/>
     };
     const timelineBodyTemplate = (rowData, columnBodyOption) => {
         const field = columnBodyOption.field;
@@ -299,11 +302,8 @@ export default function DataPoints() {
                     <Column field='Final' header='最终去向' body={finalBodyTemplate} filter align='center'
                             style={{minWidth: '9rem'}}
                     />
-                    <Column field='ProgramYear' header='申请年份' filter
-                            style={{minWidth: '9rem'}}
-                    />
-                    <Column field='Semester' header='申请学期' body={semesterBodyTemplate} filter
-                            style={{minWidth: '9rem'}}
+                    <Column field='ProgramPeriod' header='申请季' filter body={ProgramPeriodBodyTemplate}
+                            style={{minWidth: '8rem'}}
                     />
                     <Column field='TimeLine.Decision' header='结果通知时间' body={timelineBodyTemplate} filter
                             style={{minWidth: '12rem'}}
