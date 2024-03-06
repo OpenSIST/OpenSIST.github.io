@@ -7,9 +7,11 @@ import {IconButton, Typography} from "@mui/material";
 import {Edit, Refresh} from "@mui/icons-material";
 
 export async function loader({params}) {
+    console.time("ProgramContentLoader")
     const programId = params.programId;
     try {
         const programContent = await getProgramContent(programId);
+        console.timeEnd("ProgramContentLoader")
         return {programContent};
     } catch (e) {
         throw e;

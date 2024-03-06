@@ -60,9 +60,9 @@ export default function AddModifyProgram({type}) {
     const programNameInvalid = ['@', '|', '/', '$', '\\', '?', '!'].some(char => programName.includes(char));
     return (
         <Form method="post"
-              style={{display: 'flex', flexDirection: 'column'}}
+              style={{display: 'flex', flexDirection: 'column', height: "100%"}}
         >
-            <Input type='hidden' value={type} name='ActionType'></Input>
+            <Input type='hidden' sx={{visibility: 'hidden'}} value={type} name='ActionType'/>
             <Typography variant="h4" sx={{alignSelf: 'center'}}>{`${mode}项目`}</Typography>
             <Typography variant="h5">项目信息</Typography>
             <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "15px"}} fullWidth>

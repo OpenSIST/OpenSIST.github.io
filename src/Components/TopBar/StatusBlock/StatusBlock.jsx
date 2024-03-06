@@ -1,8 +1,8 @@
-import {Await, defer, Form, Link, useLoaderData, useNavigate} from "react-router-dom";
+import {Form, Link, useLoaderData, useNavigate} from "react-router-dom";
 import "./StatusBlock.css";
-import React, {Suspense, useContext, useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import localforage from "localforage";
-import {getAvatar, getDisplayName, getMetaData, logout, testAPI, useUser} from "../../../Data/UserData";
+import {getAvatar, getDisplayName, getMetaData, logout, useUser} from "../../../Data/UserData";
 import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, useTheme} from "@mui/material";
 import {AccountBox, LockReset, Logout} from "@mui/icons-material";
 import {blue} from "@mui/material/colors";
@@ -11,21 +11,12 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 export async function loader() {
-    let displayName = null;
-    let avatarUrl = null;
-    const session = await localforage.getItem('session');
-    const expireAt = await localforage.getItem('expireAt');
-    if (session && expireAt > Date.now() / 1000) {
-        displayName = await getDisplayName();
-        const metaData = await getMetaData();
-        avatarUrl = await getAvatar(metaData?.Avatar);
-    }
+    console.time("HomeLoader")
+    const displayName = await getDisplayName();
+    const metaData = await getMetaData();
+    const avatarUrl = await getAvatar(metaData?.Avatar);
+    console.timeEnd("HomeLoader")
     return {displayName, avatarUrl};
-    // return defer({
-    //     displayName: displayName,
-    //     avatarUrl: await avatarUrl,
-    // });
-
 }
 
 export async function action() {

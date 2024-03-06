@@ -10,8 +10,9 @@
 .ProgramContent {
     display: flex;
     flex-direction: column;
-    width: 80vw;
-    height: calc(100vh - 160px);
+    /*width: 80vw;*/
+    width: 100%;
+    height: calc(100vh - 120px);
     padding: 20px;
     margin-top: 10px;
     margin-left: 2vw;

@@ -2,7 +2,7 @@ import {FilterMatchMode, FilterOperator} from "primereact/api";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
-import {getRecordByProgram} from "../../Data/RecordData";
+import {getRecordByProgram, getRecordByRecordIDs} from "../../Data/RecordData";
 import {Outlet, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
@@ -23,15 +23,12 @@ import {InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 
 export async function loader() {
-    const programs = await getPrograms();
-    const programIDs = Object.values(programs).map(program => {
-        return program.map(p => p.ProgramID);
-    }).flat();
-    let records = await Promise.all(programIDs.map(async id => await getRecordByProgram(id)));
-    records = records.filter(record => Object.keys(record).length > 0);
-    records = records.map(record => {
-        return Object.values(record)
-    }).flat();
+    console.time("DataPointsLoader")
+    let programs = await getPrograms();
+    programs = Object.values(programs).flat().filter(program => program.Applicants.length > 0);
+    const recordIDs = programs.map(program => program.Applicants.map(applicant => applicant + "|" + program.ProgramID)).flat();
+    const records = Object.values(await getRecordByRecordIDs(recordIDs));
+    console.timeEnd("DataPointsLoader")
     return {records};
 }
 

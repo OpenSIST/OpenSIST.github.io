@@ -27,7 +27,7 @@ export default function SideBar({loaderData}) {
                     '& .MuiDrawer-paper': {
                         bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
                         width: '250px',
-                        height: 'calc(100vh - 160px)',
+                        height: 'calc(100vh - 120px)',
                         p: '20px',
                         mt: '10px'
                     }
@@ -70,6 +70,8 @@ export function UnivProgramList({univProgramList, ButtonComponent = ProgramButto
             elevation={darkMode ? 0 : 1}
             sx={{
                 bgcolor: darkMode ? grey[800] : grey[50],
+                height: "100%",
+                overflowY: "auto"
             }}
         >
             <List
