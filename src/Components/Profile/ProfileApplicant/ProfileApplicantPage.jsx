@@ -296,19 +296,21 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                 </ContentCenteredGrid>
                 <Grid2 container xs spacing={0}>
                     <ContentCenteredGrid xs={12}>
-                        <Typography variant="h5" color="primary" sx={{fontWeight: 'bold'}}>
+                        <Typography variant="h5" color="primary" sx={{fontWeight: 'bold', pl: '8px'}}>
                             {applicant.ApplicantID}
                         </Typography>
                     </ContentCenteredGrid>
                     <ContentCenteredGrid xs={12}>
-                        <Typography variant="subtitle1">
+                        <Typography variant="subtitle1" sx={{pl: '8px', pt: '8px'}}>
                             {`${applicant.Major} ${currentDegreeMapping[applicant.CurrentDegree]}`}
                         </Typography>
+                    </ContentCenteredGrid>
+                    <ContentCenteredGrid xs={12}>
                         {editable && isAuth ? <ControlButtonGroup applicantId={applicant.ApplicantID} records={records}/> : null}
                     </ContentCenteredGrid>
                 </Grid2>
                 <ContentCenteredGrid xs={12} sx={{gap: "1rem"}}>
-                    <Typography variant="h6" sx={{fontWeight: 'bold'}}>
+                    <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>
                         联系方式:
                     </Typography>
                     <Typography variant="subtitle1">
@@ -316,7 +318,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                     </Typography>
                 </ContentCenteredGrid>
                 <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
-                    <Typography variant="h6" sx={{fontWeight: 'bold'}}>
+                    <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>
                         最终去向:
                     </Typography>
                     <Chip label={applicant.Final === "" ? "暂无/未知" : applicant.Final}/>
@@ -357,7 +359,7 @@ function GradeBar({ranking, GPA}) {
     return (
         <Grid2 container xs={12} spacing={2}>
             <ContentCenteredGrid xs={12} sx={{mb: '0.5rem'}}>
-                <Typography variant="subtitle1">申请时最高学位GPA以及对应学院/专业排名：</Typography>
+                <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>申请时最高学位GPA以及对应学院/专业排名：</Typography>
             </ContentCenteredGrid>
             <ContentCenteredGrid xs={12}>
                 <Slider

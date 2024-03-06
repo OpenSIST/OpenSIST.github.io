@@ -62,7 +62,9 @@ import AddModifyRecord, {
 import {AboutUs} from "./Components/AboutUs/AboutUs";
 import DataPoints, {
     ApplicantProfileInDataPoints,
-    loader as DataPointsLoader, ProgramContentInDataPoints
+    loader as DataPointsLoader,
+    action as DataPointsAction,
+    ProgramContentInDataPoints
 } from "./Components/DataPoints/DataPoints";
 
 export const ThemeContext = createContext({
@@ -121,6 +123,7 @@ function OpenSIST() {
                             path: '/datapoints',
                             element: <DataPoints/>,
                             loader: DataPointsLoader,
+                            action: DataPointsAction,
                             children: [
                                 {
                                     errorElement: <ErrorPage/>,

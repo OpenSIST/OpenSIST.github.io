@@ -18,8 +18,6 @@ export function LoadingBackdrop() {
     )
 }
 
-// export const InlineTypography = (props) => <Typography variant="body1" {...props}
-//                                                 sx={{display: 'flex', alignItems: 'center', flexWrap: "wrap"}}/>;
 export const InlineTypography = styled(Typography)(() => ({
     display: 'flex',
     alignItems: 'center',

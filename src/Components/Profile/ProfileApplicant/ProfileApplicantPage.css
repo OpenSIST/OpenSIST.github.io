@@ -3,8 +3,8 @@
     padding: 20px;
     height: calc(100vh - 120px);
     margin-top: 10px;
-    margin-left: 2vw;
-    margin-right: 2vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
     border-radius: 5px;
     overflow-y: auto;
     user-select: text;

@@ -46,7 +46,7 @@ export function StatusBlock() {
 
     localforage.setItem('theme', theme.palette.mode).then()
 
-    return (<Box sx={{display: 'flex', mr: '1vw'}}>
+    return (<Box sx={{display: 'flex'}}>
         <Tooltip title={`${theme.palette.mode === 'dark' ? '关闭' : '打开'}夜间模式`} arrow>
             <IconButton onClick={toggleTheme} sx={{m: 'auto'}}>
                 {theme.palette.mode === 'dark' ? <Brightness7Icon/> : <Brightness4Icon/>}

@@ -9430,3 +9430,7 @@
 .p-datatable-header {
     background-color: #efefef;
 }
+
+.p-dropdown-item:hover {
+    background-color: #999999;
+}

@@ -50,7 +50,7 @@ export default function SearchBar({query}) {
                 role='search'
                 className='searchContainer'
                 sx={{
-                    bgcolor: darkMode ? grey[800] : grey[50],
+                    bgcolor: darkMode ? grey[800] : '#fff',
                 }}
             >
                 <SearchIcon sx={{mx: "10px"}}/>
@@ -101,7 +101,7 @@ export default function SearchBar({query}) {
 function Filter({label, id, name, value, handleFilterChange, options, OptionItem: OptionContent}) {
     return (
         <FormControl component={Paper} fullWidth sx={{
-            bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : grey[50],
+            bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : "#fff",
         }}>
             <InputLabel size="small">{label}</InputLabel>
             <Select
@@ -115,7 +115,6 @@ function Filter({label, id, name, value, handleFilterChange, options, OptionItem
                 renderValue={(selected) => selected.join(', ')}
                 sx={{
                     '.MuiOutlinedInput-notchedOutline': {border: 0},
-                    // bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : grey[50],
                 }}
                 size="small"
             >

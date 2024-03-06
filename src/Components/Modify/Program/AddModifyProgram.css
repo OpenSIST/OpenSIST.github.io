@@ -12,7 +12,6 @@
 }
 
 .MarkDownEditorContent {
-    /*height: calc(100vh - 460px);*/
     overflow-y: auto;
     font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Twemoji', 'Segoe UI Emoji', sans-serif;
 }

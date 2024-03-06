@@ -1,35 +1,50 @@
-import {FilterMatchMode, FilterOperator} from "primereact/api";
+import {FilterMatchMode, FilterOperator, FilterService} from "primereact/api";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByProgram, getRecordByRecordIDs} from "../../Data/RecordData";
-import {Outlet, useLoaderData, useNavigate, useParams} from "react-router-dom";
+import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
 import {
     Accordion, AccordionDetails, AccordionSummary,
-    Button,
+    Button, ButtonGroup,
     Chip, Dialog, DialogActions,
     DialogContent,
     IconButton, InputAdornment, Paper, TextField, Tooltip, useTheme,
 } from "@mui/material";
-import {Check, Close, Explore, FilterAltOff, OpenInFull, Search} from "@mui/icons-material";
+import {Check, Close, Explore, FilterAltOff, OpenInFull, Refresh, Search} from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
-import {recordStatusList} from "../../Data/Schemas";
+import {recordStatusList, recordStatusOptions} from "../../Data/Schemas";
 import {MultiSelect} from 'primereact/multiselect';
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
+import {TriStateCheckbox} from 'primereact/tristatecheckbox';
+import {Dropdown} from "primereact/dropdown";
 
 export async function loader() {
     console.time("DataPointsLoader")
     let programs = await getPrograms();
     programs = Object.values(programs).flat().filter(program => program.Applicants.length > 0);
     const recordIDs = programs.map(program => program.Applicants.map(applicant => applicant + "|" + program.ProgramID)).flat();
-    const records = Object.values(await getRecordByRecordIDs(recordIDs));
+    let records = Object.values(await getRecordByRecordIDs(recordIDs));
+    records = records.map(record => {
+        record['Season'] = record.ProgramYear + " " + record.Semester;
+        return record;
+    })
+
     console.timeEnd("DataPointsLoader")
     return {records};
+}
+
+export async function action() {
+    let programs = await getPrograms(true);
+    programs = Object.values(programs).flat().filter(program => program.Applicants.length > 0);
+    const recordIDs = programs.map(program => program.Applicants.map(applicant => applicant + "|" + program.ProgramID)).flat();
+    await getRecordByRecordIDs(recordIDs, true);
+    return redirect('/datapoints');
 }
 
 export function ApplicantProfileInDataPoints() {
@@ -83,7 +98,6 @@ export default function DataPoints() {
     const navigate = useNavigate();
     const [filters, setFilters] = useState(null);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
-
     useEffect(() => {
         initFilters();
     }, []);
@@ -91,28 +105,10 @@ export default function DataPoints() {
     const initFilters = () => {
         setFilters({
             global: {value: null, matchMode: FilterMatchMode.CONTAINS},
-            ApplicantID: {
-                operator: FilterOperator.AND,
-                constraints: [{value: null, matchMode: FilterMatchMode.CONTAINS}]
-            },
-            ProgramID: {operator: FilterOperator.OR, constraints: [{value: null, matchMode: FilterMatchMode.CONTAINS}]},
-            Status: {operator: FilterOperator.OR, constraints: [{value: null, matchMode: FilterMatchMode.CONTAINS}]},
-            'TimeLine.Submit': {
-                operator: FilterOperator.AND,
-                constraints: [{value: null, matchMode: FilterMatchMode.DATE_IS}]
-            },
-            'TimeLine.Interview': {
-                operator: FilterOperator.AND,
-                constraints: [{value: null, matchMode: FilterMatchMode.DATE_IS}]
-            },
-            'TimeLine.Decision': {
-                operator: FilterOperator.AND,
-                constraints: [{value: null, matchMode: FilterMatchMode.DATE_IS}]
-            },
-            ProgramPeriod: {
-                operator: FilterOperator.OR,
-                constraints: [{value: null, matchMode: FilterMatchMode.EQUALS}]
-            },
+            ApplicantID: {value: null, matchMode: FilterMatchMode.CONTAINS},
+            ProgramID: {value: null, matchMode: FilterMatchMode.CONTAINS},
+            Status: {value: null, matchMode: FilterMatchMode.EQUALS},
+            Season: {value: null, matchMode: FilterMatchMode.CUSTOM},
             Final: {value: null, matchMode: FilterMatchMode.EQUALS}
         });
         setGlobalFilterValue('');
@@ -162,17 +158,25 @@ export default function DataPoints() {
     };
 
     const statusBodyTemplate = (rowData) => {
-        return <Chip label={rowData.Status} color={getStatusColor(rowData.Status)}
-                     sx={{maxWidth: '100px'}}
-        />
+        return <Chip label={rowData.Status} color={getStatusColor(rowData.Status)} sx={{maxWidth: '100px'}}/>
     };
+
+    const statusFilterItemTemplate = (option) => {
+        return <Chip label={option} color={getStatusColor(option)}/>
+    };
+
     const statusFilterTemplate = (options) => {
-        return <MultiSelect
-            value={options.value}
-            options={recordStatusList}
-            onChange={(e) => options.filterCallback(e.value, options.index)}
-            placeholder="Select Status"
-        />;
+        return (
+            <Dropdown
+                value={options.value}
+                options={recordStatusList}
+                onChange={(e) => options.filterApplyCallback(e.value)}
+                itemTemplate={statusFilterItemTemplate}
+                placeholder="搜索申请结果"
+                className="p-column-filter"
+                showClear
+            />
+        );
     };
 
     const finalBodyTemplate = (rowData) => {
@@ -218,30 +222,56 @@ export default function DataPoints() {
         </div>
     };
 
+    const FinalRowFilterTemplate = (options) => {
+        return <TriStateCheckbox value={options.value} onChange={(e) => options.filterApplyCallback(e.value)}/>;
+    };
+
+    FilterService.register('custom_Season', (value, filters) => {
+        if (!filters) {
+            return true;
+        }
+        filters = filters.replace(/\s/g, "").toLowerCase();
+        value = value.replace(/\s/g, "").toLowerCase();
+        return value.includes(filters);
+    })
+
     const renderHeader = () => {
         return (
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Button variant='outlined' size='large' endIcon={<FilterAltOff/>} onClick={clearFilter}>重置所有筛选</Button>
-                <TextField
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <Search/>
-                            </InputAdornment>
-                        ),
-                    }}
-                    variant="outlined"
-                    size='small'
-                    value={globalFilterValue}
-                    onChange={(e) => {
-                        const value = e.target.value;
-                        let _filters = {...filters};
-                        _filters['global'].value = value;
-                        setFilters(_filters);
-                        setGlobalFilterValue(value);
-                    }}
-                    label='Global Search'
-                />
+                <ButtonGroup>
+                    <Tooltip title="重置所有筛选" arrow>
+                        <IconButton>
+                            <FilterAltOff onClick={clearFilter}/>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="刷新数据" arrow>
+                        <Form method='post'>
+                            <IconButton type='submit'>
+                                <Refresh/>
+                            </IconButton>
+                        </Form>
+                    </Tooltip>
+                </ButtonGroup>
+                {/*<TextField*/}
+                {/*    InputProps={{*/}
+                {/*        startAdornment: (*/}
+                {/*            <InputAdornment position="start">*/}
+                {/*                <Search/>*/}
+                {/*            </InputAdornment>*/}
+                {/*        ),*/}
+                {/*    }}*/}
+                {/*    variant="outlined"*/}
+                {/*    size='small'*/}
+                {/*    value={globalFilterValue}*/}
+                {/*    onChange={(e) => {*/}
+                {/*        const value = e.target.value;*/}
+                {/*        let _filters = {...filters};*/}
+                {/*        _filters['global'].value = value;*/}
+                {/*        setFilters(_filters);*/}
+                {/*        setGlobalFilterValue(value);*/}
+                {/*    }}*/}
+                {/*    label='Global Search'*/}
+                {/*/>*/}
             </div>
         );
     };
@@ -249,26 +279,7 @@ export default function DataPoints() {
     return (
         <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap}>
             <Paper className="DataPointsContent">
-                <Accordion sx={{bgcolor: '#448aff1a'}} disableGutters>
-                    <AccordionSummary
-                        expandIcon={<ArrowDropDownIcon/>}
-                    >
-                        <InlineTypography>
-                            <Explore/> 请先阅读使用指南
-                        </InlineTypography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <ol>
-                            <li>可通过表格上部的filter来进行关键信息筛选。</li>
-                            <li>
-                                <InlineTypography>
-                                    对于<b>申请人</b>和<b>申请项目</b>这两列，可点击单元格右侧<OpenInFull/>按钮查看申请人或项目的详细信息。
-                                </InlineTypography>
-                            </li>
-                            <li>本页面为只读模式，想要编辑自己的申请人信息或添加/删除/修改所申请的项目，请点击右上角头像下拉菜单中Profile页面编辑相应信息。</li>
-                        </ol>
-                    </AccordionDetails>
-                </Accordion>
+                <UsageGuidance/>
                 <DataTable
                     value={records}
                     dataKey='RecordID'
@@ -284,43 +295,112 @@ export default function DataPoints() {
                     rowHover
                     showGridlines
                     filters={filters}
-                    globalFilterFields={['ApplicantID', 'ProgramID', 'Status', 'Final', 'ProgramPeriod', 'TimeLine.Decision', 'TimeLine.Interview', 'TimeLine.Submit', 'Detail']}
+                    filterDisplay='row'
+                    // globalFilterFields={['ApplicantID', 'ProgramID', 'Status', 'Final', 'Semester', 'TimeLine.Decision', 'TimeLine.Interview', 'TimeLine.Submit', 'Detail']}
                     emptyMessage="未找到任何匹配内容"
                     header={renderHeader}
                     className='DataTableStyle'
                 >
-                    <Column field='ApplicantID' header='申请人' body={applicantBodyTemplate} filter
-                            filterPlaceholder="Search by Applicant ID"
-                            style={{minWidth: '10rem'}}
+                    <Column
+                        field='ApplicantID'
+                        header='申请人'
+                        body={applicantBodyTemplate}
+                        filter
+                        align='center'
+                        filterPlaceholder="搜索申请人"
+                        style={{minWidth: '10rem'}}
                     />
-                    <Column field='ProgramID' header='申请项目' body={programBodyTemplate} filter
-                            style={{minWidth: '10rem'}}
+                    <Column
+                        field='ProgramID'
+                        header='申请项目'
+                        body={programBodyTemplate}
+                        align='center'
+                        filter
+                        filterPlaceholder="搜索项目"
+                        style={{minWidth: '10rem'}}
                     />
-                    <Column field='Status' header='申请结果' body={statusBodyTemplate} filter
-                            filterElement={statusFilterTemplate}
-                            style={{minWidth: '9rem'}}
+                    <Column
+                        field='Status'
+                        header='申请结果'
+                        body={statusBodyTemplate}
+                        align='center'
+                        filter
+                        filterElement={statusFilterTemplate}
+                        style={{minWidth: '9rem'}}
                     />
-                    <Column field='Final' header='最终去向' body={finalBodyTemplate} filter align='center'
-                            style={{minWidth: '9rem'}}
+                    <Column
+                        field='Final'
+                        header='最终去向'
+                        body={finalBodyTemplate}
+                        dataType="boolean"
+                        filter
+                        align='center'
+                        filterElement={FinalRowFilterTemplate}
+                        style={{minWidth: '7rem'}}
                     />
-                    <Column field='ProgramPeriod' header='申请季' filter body={programPeriodBodyTemplate}
-                            style={{minWidth: '8rem'}}
+                    <Column
+                        field='Season'
+                        header='申请季'
+                        filter
+                        align='center'
+                        filterPlaceholder="搜索申请季"
+                        body={programPeriodBodyTemplate}
+                        style={{minWidth: '8rem'}}
                     />
-                    <Column field='TimeLine.Decision' header='结果通知时间' body={timelineBodyTemplate} filter
-                            style={{minWidth: '12rem'}}
+                    <Column
+                        field='TimeLine.Decision'
+                        header='结果通知时间'
+                        align='center'
+                        body={timelineBodyTemplate}
+                        style={{minWidth: '9rem'}}
                     />
-                    <Column field='TimeLine.Interview' header='面试时间' body={timelineBodyTemplate} filter
-                            style={{minWidth: '9rem'}}
+                    <Column
+                        field='TimeLine.Interview'
+                        header='面试时间'
+                        align='center'
+                        body={timelineBodyTemplate}
+                        style={{minWidth: '8rem'}}
                     />
-                    <Column field='TimeLine.Submit' header='网申提交时间' body={timelineBodyTemplate} filter
-                            style={{minWidth: '12rem'}}
+                    <Column
+                        field='TimeLine.Submit'
+                        header='网申提交时间'
+                        align='center'
+                        body={timelineBodyTemplate}
+                        style={{minWidth: '9rem'}}
                     />
-                    <Column field='Detail' header='备注、补充说明'
-                            style={{width: '15rem', minWidth: '12rem'}}
+                    <Column
+                        field='Detail'
+                        header='备注、补充说明'
+                        style={{width: '15rem', minWidth: '12rem'}}
                     />
                 </DataTable>
                 <Outlet/>
             </Paper>
         </ThemeSwitcherProvider>
     )
+}
+
+function UsageGuidance() {
+    return (
+        <Accordion sx={{bgcolor: '#448aff1a'}} disableGutters>
+            <AccordionSummary
+                expandIcon={<ArrowDropDownIcon/>}
+            >
+                <InlineTypography>
+                    <Explore/> 请先阅读使用指南
+                </InlineTypography>
+            </AccordionSummary>
+            <AccordionDetails>
+                <ol>
+                    <li>可通过表格上部的filter来进行关键信息筛选。</li>
+                    <li>
+                        <InlineTypography>
+                            对于<b>申请人</b>和<b>申请项目</b>这两列，可点击单元格右侧<OpenInFull/>按钮查看申请人或项目的详细信息。
+                        </InlineTypography>
+                    </li>
+                    <li>本页面为只读模式，想要编辑自己的申请人信息或添加/删除/修改所申请的项目，请点击右上角头像下拉菜单中Profile页面编辑相应信息。</li>
+                </ol>
+            </AccordionDetails>
+        </Accordion>
+    );
 }

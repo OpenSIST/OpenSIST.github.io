@@ -14,12 +14,13 @@ import {
     ButtonGroup, Checkbox,
     FormControl, Input, ListItemText,
     MenuItem,
-    TextField,
+    TextField, Tooltip,
     Typography
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMarkdown} from "@fortawesome/free-brands-svg-icons";
+import {HelpOutline} from "@mui/icons-material";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -77,7 +78,22 @@ export default function AddModifyProgram({type}) {
                         <>
                             <TextField {...params} label={"学校名称" + (AddMode ? "" : " (不可修改)")}
                                        variant="standard"
-                                       required/>
+                                       required
+                                       InputProps={{
+                                           ...params.InputProps,
+                                           endAdornment: (
+                                               <>
+                                                   {params.InputProps.endAdornment}
+                                                   <Tooltip
+                                                       title={<>未找到学校？请前往<a href="https://github.com/orgs/OpenSIST/discussions/23">此处</a></>}
+                                                       arrow
+                                                   >
+                                                       <HelpOutline/>
+                                                   </Tooltip>
+                                               </>
+                                           ),
+                                       }}
+                            />
                             <TextField sx={{display: 'none'}} name="University" value={univ?.value || ""}/>
                         </>}
                     fullWidth

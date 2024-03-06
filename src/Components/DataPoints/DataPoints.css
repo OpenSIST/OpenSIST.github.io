@@ -29,6 +29,24 @@
     border-radius: 0 0 5px 5px;
 }
 
-.DataTableStyle .p-datatable-wrapper > .p-datatable-table > .p-datatable-thead {
+.DataTableStyle .p-datatable-wrapper > .p-datatable-table > .p-datatable-thead,
+.p-filter-column {
     height: 60px;
+}
+
+.p-column-filter-row-items,
+.p-multiselect-items.p-component,
+.p-dropdown-items
+{
+    padding: 0;
+}
+
+.p-column-filter-clear-button.p-link.p-hidden-space,
+.p-column-filter-clear-button.p-link {
+    display: none;
+}
+
+.p-fluid.p-column-filter-element {
+    display: flex;
+    justify-content: center;
 }
