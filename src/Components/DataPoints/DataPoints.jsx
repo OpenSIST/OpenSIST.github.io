@@ -1,22 +1,21 @@
-import {FilterMatchMode, FilterOperator, FilterService} from "primereact/api";
+import {FilterMatchMode, FilterService} from "primereact/api";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
-import {getRecordByProgram, getRecordByRecordIDs} from "../../Data/RecordData";
+import {getRecordByRecordIDs} from "../../Data/RecordData";
 import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
 import {
     Accordion, AccordionDetails, AccordionSummary,
-    Button, ButtonGroup,
+    ButtonGroup,
     Chip, Dialog, DialogActions,
     DialogContent,
-    IconButton, InputAdornment, Paper, TextField, Tooltip, useTheme,
+    IconButton, Paper, Tooltip, useTheme,
 } from "@mui/material";
-import {Check, Close, Explore, FilterAltOff, OpenInFull, Refresh, Search} from "@mui/icons-material";
+import {Check, Close, Explore, FilterAltOff, OpenInFull, Refresh} from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
-import {recordStatusList, recordStatusOptions} from "../../Data/Schemas";
-import {MultiSelect} from 'primereact/multiselect';
+import {recordStatusList} from "../../Data/Schemas";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {InlineTypography} from "../common";
@@ -97,7 +96,6 @@ export default function DataPoints() {
     const {records} = useLoaderData();
     const navigate = useNavigate();
     const [filters, setFilters] = useState(null);
-    const [globalFilterValue, setGlobalFilterValue] = useState('');
     useEffect(() => {
         initFilters();
     }, []);
@@ -111,7 +109,6 @@ export default function DataPoints() {
             Season: {value: null, matchMode: FilterMatchMode.CUSTOM},
             Final: {value: null, matchMode: FilterMatchMode.EQUALS}
         });
-        setGlobalFilterValue('');
     };
 
     const clearFilter = () => {
@@ -198,7 +195,7 @@ export default function DataPoints() {
         return (
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                 <Tooltip title={rowData.ApplicantID} arrow>
-                    <Chip label={rowData.ApplicantID} sx={{maxWidth: "100px"}}/>
+                    <Chip label={rowData.ApplicantID} sx={{maxWidth: "150px"}}/>
                 </Tooltip>
                 <Tooltip title='查看申请人信息' arrow>
                     <IconButton onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}>
@@ -212,7 +209,7 @@ export default function DataPoints() {
     const programBodyTemplate = (rowData) => {
         return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <Tooltip title={rowData.ProgramID} arrow>
-                <Chip label={rowData.ProgramID} sx={{maxWidth: "100px"}}/>
+                <Chip label={rowData.ProgramID} sx={{maxWidth: "150px"}}/>
             </Tooltip>
             <Tooltip title='查看项目描述' arrow>
                 <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
@@ -240,8 +237,8 @@ export default function DataPoints() {
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                 <ButtonGroup>
                     <Tooltip title="重置所有筛选" arrow>
-                        <IconButton>
-                            <FilterAltOff onClick={clearFilter}/>
+                        <IconButton onClick={clearFilter}>
+                            <FilterAltOff/>
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="刷新数据" arrow>
@@ -252,26 +249,6 @@ export default function DataPoints() {
                         </Form>
                     </Tooltip>
                 </ButtonGroup>
-                {/*<TextField*/}
-                {/*    InputProps={{*/}
-                {/*        startAdornment: (*/}
-                {/*            <InputAdornment position="start">*/}
-                {/*                <Search/>*/}
-                {/*            </InputAdornment>*/}
-                {/*        ),*/}
-                {/*    }}*/}
-                {/*    variant="outlined"*/}
-                {/*    size='small'*/}
-                {/*    value={globalFilterValue}*/}
-                {/*    onChange={(e) => {*/}
-                {/*        const value = e.target.value;*/}
-                {/*        let _filters = {...filters};*/}
-                {/*        _filters['global'].value = value;*/}
-                {/*        setFilters(_filters);*/}
-                {/*        setGlobalFilterValue(value);*/}
-                {/*    }}*/}
-                {/*    label='Global Search'*/}
-                {/*/>*/}
             </div>
         );
     };
@@ -296,7 +273,6 @@ export default function DataPoints() {
                     showGridlines
                     filters={filters}
                     filterDisplay='row'
-                    // globalFilterFields={['ApplicantID', 'ProgramID', 'Status', 'Final', 'Semester', 'TimeLine.Decision', 'TimeLine.Interview', 'TimeLine.Submit', 'Detail']}
                     emptyMessage="未找到任何匹配内容"
                     header={renderHeader}
                     className='DataTableStyle'
