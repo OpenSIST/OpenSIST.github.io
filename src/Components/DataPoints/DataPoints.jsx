@@ -96,7 +96,6 @@ export default function DataPoints() {
     const {records} = useLoaderData();
     const navigate = useNavigate();
     const [filters, setFilters] = useState(null);
-    const [globalFilterValue, setGlobalFilterValue] = useState('');
     useEffect(() => {
         initFilters();
     }, []);
