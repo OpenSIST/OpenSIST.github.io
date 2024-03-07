@@ -2,7 +2,7 @@ import {FilterMatchMode, FilterService} from "primereact/api";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
-import {getRecordByRecordIDs} from "../../Data/RecordData";
+import {getRecordByProgram, getRecordByRecordIDs} from "../../Data/RecordData";
 import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
@@ -194,9 +194,7 @@ export default function DataPoints() {
     const applicantBodyTemplate = (rowData) => {
         return (
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Tooltip title={rowData.ApplicantID} arrow>
-                    <Chip label={rowData.ApplicantID} sx={{maxWidth: "150px"}}/>
-                </Tooltip>
+                <Chip label={rowData.ApplicantID}/>
                 <Tooltip title='查看申请人信息' arrow>
                     <IconButton onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}>
                         <OpenInFull sx={{fontSize: "1rem"}}/>
@@ -208,9 +206,7 @@ export default function DataPoints() {
 
     const programBodyTemplate = (rowData) => {
         return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Tooltip title={rowData.ProgramID} arrow>
-                <Chip label={rowData.ProgramID} sx={{maxWidth: "150px"}}/>
-            </Tooltip>
+            <Chip label={rowData.ProgramID}/>
             <Tooltip title='查看项目描述' arrow>
                 <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
                     <OpenInFull sx={{fontSize: "1rem"}}/>
@@ -368,13 +364,22 @@ function UsageGuidance() {
             </AccordionSummary>
             <AccordionDetails>
                 <ol>
-                    <li>可通过表格上部的filter来进行关键信息筛选。</li>
                     <li>
                         <InlineTypography>
                             对于<b>申请人</b>和<b>申请项目</b>这两列，可点击单元格右侧<OpenInFull sx={{fontSize: "1rem"}}/>按钮查看申请人或项目的详细信息。
                         </InlineTypography>
                     </li>
                     <li>本页面为只读模式，想要编辑自己的申请人信息或添加/删除/修改所申请的项目，请点击右上角头像下拉菜单中Profile页面编辑相应信息。</li>
+                    <li>
+                        <InlineTypography>
+                            可通过表格上部的filter来进行关键信息筛选。可点击左上角<FilterAltOff/>按钮重置所有筛选。
+                        </InlineTypography>
+                    </li>
+                    <li>
+                        <InlineTypography>
+                            表格会每十分钟自动从服务器获取一次最新数据，您也可以可点击左上角<Refresh/>按钮手动获取。
+                        </InlineTypography>
+                    </li>
                 </ol>
             </AccordionDetails>
         </Accordion>
