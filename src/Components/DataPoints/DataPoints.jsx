@@ -199,7 +199,7 @@ export default function DataPoints() {
                 </Tooltip>
                 <Tooltip title='查看申请人信息' arrow>
                     <IconButton onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}>
-                        <OpenInFull fontSize='small'/>
+                        <OpenInFull sx={{fontSize: "1rem"}}/>
                     </IconButton>
                 </Tooltip>
             </div>
@@ -213,7 +213,7 @@ export default function DataPoints() {
             </Tooltip>
             <Tooltip title='查看项目描述' arrow>
                 <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
-                    <OpenInFull fontSize='small'/>
+                    <OpenInFull sx={{fontSize: "1rem"}}/>
                 </IconButton>
             </Tooltip>
         </div>
@@ -371,7 +371,7 @@ function UsageGuidance() {
                     <li>可通过表格上部的filter来进行关键信息筛选。</li>
                     <li>
                         <InlineTypography>
-                            对于<b>申请人</b>和<b>申请项目</b>这两列，可点击单元格右侧<OpenInFull/>按钮查看申请人或项目的详细信息。
+                            对于<b>申请人</b>和<b>申请项目</b>这两列，可点击单元格右侧<OpenInFull sx={{fontSize: "1rem"}}/>按钮查看申请人或项目的详细信息。
                         </InlineTypography>
                     </li>
                     <li>本页面为只读模式，想要编辑自己的申请人信息或添加/删除/修改所申请的项目，请点击右上角头像下拉菜单中Profile页面编辑相应信息。</li>

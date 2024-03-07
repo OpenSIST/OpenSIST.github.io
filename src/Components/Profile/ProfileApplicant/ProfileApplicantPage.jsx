@@ -386,7 +386,7 @@ function GREBlock({GRE}) {
     }
     return (
         <Grid2 container xs={12}>
-            <ContentCenteredGrid xs={3} sx={{flexDirection: 'column', justifyContent: 'center'}}>
+            <ContentCenteredGrid xs={12 / 5} sx={{flexDirection: 'column', justifyContent: 'center'}}>
                 <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>GRE</Typography>
                 <Typography>{GRE.Total}</Typography>
             </ContentCenteredGrid>
@@ -395,7 +395,7 @@ function GREBlock({GRE}) {
                     return null;
                 }
                 return (
-                    <ContentCenteredGrid xs={3} key={key}
+                    <ContentCenteredGrid xs={12 / 5} key={key}
                                          sx={{flexDirection: 'column', justifyContent: 'center'}}>
                         <Typography variant="subtitle1"
                                     sx={{fontWeight: 'bold'}}>{EnglishExamMapping["GRE"][key]}</Typography>
@@ -403,6 +403,7 @@ function GREBlock({GRE}) {
                     </ContentCenteredGrid>
                 )
             })}
+            <ContentCenteredGrid xs={12 / 5} sx={{flexDirection: 'column', justifyContent: 'center'}}/>
 
         </Grid2>
     )
