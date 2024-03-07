@@ -20,7 +20,7 @@ import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
-import {TriStateCheckbox} from 'primereact/tristatecheckbox';
+import {Checkbox} from 'primereact/checkbox';
 import {Dropdown} from "primereact/dropdown";
 
 export async function loader() {
@@ -197,7 +197,7 @@ export default function DataPoints() {
                 <Chip label={rowData.ApplicantID}/>
                 <Tooltip title='查看申请人信息' arrow>
                     <IconButton onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}>
-                        <OpenInFull sx={{fontSize: "1rem"}}/>
+                        <OpenInFull sx={{fontSize: "0.8rem"}}/>
                     </IconButton>
                 </Tooltip>
             </div>
@@ -209,14 +209,14 @@ export default function DataPoints() {
             <Chip label={rowData.ProgramID}/>
             <Tooltip title='查看项目描述' arrow>
                 <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
-                    <OpenInFull sx={{fontSize: "1rem"}}/>
+                    <OpenInFull sx={{fontSize: "0.8rem"}}/>
                 </IconButton>
             </Tooltip>
         </div>
     };
 
     const FinalRowFilterTemplate = (options) => {
-        return <TriStateCheckbox value={options.value} onChange={(e) => options.filterApplyCallback(e.value)}/>;
+        return <Checkbox onChange={(e) => options.filterApplyCallback(e.checked)} checked={options.value}/>;
     };
 
     FilterService.register('custom_Season', (value, filters) => {
