@@ -7,9 +7,11 @@ import {IconButton, Typography} from "@mui/material";
 import {Edit, Refresh} from "@mui/icons-material";
 
 export async function loader({params}) {
+    console.time("ProgramContentLoader")
     const programId = params.programId;
     try {
         const programContent = await getProgramContent(programId);
+        console.timeEnd("ProgramContentLoader")
         return {programContent};
     } catch (e) {
         throw e;
@@ -21,7 +23,7 @@ export async function action({params}) {
     return await getProgramDesc(programId, true);
 }
 
-function ProgramContent() {
+function ProgramContent({editable = true}) {
     const {programContent} = useLoaderData();
     return (
         <>
@@ -29,7 +31,7 @@ function ProgramContent() {
                 <Typography variant='h3' sx={{display: 'flex', position: 'relative'}}>
                     {programContent.ProgramID}
                 </Typography>
-                <div className='ReviseRefreshButtonGroup'>
+                {editable ? <div className='ReviseRefreshButtonGroup'>
                     <IconButton component={Link} to={`edit${window.location.search}`}>
                         <Edit/>
                     </IconButton>
@@ -38,7 +40,7 @@ function ProgramContent() {
                             <Refresh/>
                         </IconButton>
                     </Form>
-                </div>
+                </div> : null}
             </div>
             <ReactMarkdown
                 className='ProgramDescription'

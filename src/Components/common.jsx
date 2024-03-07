@@ -1,6 +1,6 @@
 import {useNavigation} from "react-router-dom";
 import React, {useState} from "react";
-import {Backdrop, Button, CircularProgress, SwipeableDrawer, Typography, useMediaQuery} from "@mui/material";
+import {Backdrop, Button, CircularProgress, styled, SwipeableDrawer, Typography, useMediaQuery} from "@mui/material";
 import {ChevronRight} from "@mui/icons-material";
 
 export function isEmptyObject(value) {
@@ -18,8 +18,11 @@ export function LoadingBackdrop() {
     )
 }
 
-export const InlineTypography = (props) => <Typography variant="body1" {...props}
-                                                sx={{display: 'flex', alignItems: 'center', flexWrap: "wrap"}}/>;
+export const InlineTypography = styled(Typography)(() => ({
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: "wrap"
+}));
 
 export function useSmallPage() {
     return useMediaQuery('(max-width:900px)');
@@ -35,17 +38,19 @@ export function CollapseSideBar({children, sx}) {
                 open={!smallPage || (smallPage && open)}
                 onOpen={() => setOpen(true)}
                 onClose={() => setOpen(false)}
+                elevation={1}
                 sx={{
                     display: "flex",
                     width: 'auto',
                     height: 'auto',
-                    zIndex: (smallPage ? 1200 : 1),
+                    zIndex: (smallPage ? 1201 : 1),
                     ...sx,
                     '& .MuiDrawer-paper': {
                         borderRadius: '0 5px 5px 0',
                         border: 'none',
                         position: (smallPage ? 'absolute' : 'initial'),
                         top: '60px',
+                        borderRadius: '5px',
                         overflowY: 'auto',
                         boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);",
                         ...(sx['& .MuiDrawer-paper'] ?? {})

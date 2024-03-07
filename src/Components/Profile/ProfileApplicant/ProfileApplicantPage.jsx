@@ -44,6 +44,7 @@ import {getAvatar, getDisplayName, getMetaData} from "../../../Data/UserData";
 import {grey} from "@mui/material/colors";
 
 export async function loader({params}) {
+    console.time("ProfileApplicantLoader")
     const applicantId = params.applicantId;
     const isAuth = await isAuthApplicant(applicantId);
     if (!isAuth) {
@@ -54,6 +55,22 @@ export async function loader({params}) {
             throw new Error(`Sorry, you are not authorized to view the profile page of ${applicantId}.`);
         }
     }
+    try {
+        const applicant = await getApplicant(applicantId);
+        const displayName = applicant.ApplicantID.split('@')[0];
+        const records = await getRecordByApplicant(applicantId);
+        const metaData = await getMetaData(displayName);
+        const contact = metaData?.Contact;
+        const avatarUrl = await getAvatar(metaData?.Avatar, displayName);
+        console.timeEnd("ProfileApplicantLoader")
+        return {avatarUrl, contact, applicant, records};
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function DataPointsLoader({params}) {
+    const applicantId = params.applicantId;
     try {
         const applicant = await getApplicant(applicantId);
         const displayName = applicant.ApplicantID.split('@')[0];
@@ -250,6 +267,15 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
     useEffect(() => {
         isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
     }, [applicant.ApplicantID]);
+    const isValidUrl = (urlString) => {
+        const urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
+            '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
+        return !!urlPattern.test(urlString);
+    }
     return (
         <BaseItemBlock className="BasicInfoBlock" checkpointProps={{xs: 12}} spacing={2}>
             <Grid2 container xs={12} sm={5} md={6} lg={5} xl={3}>
@@ -268,27 +294,29 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                 </ContentCenteredGrid>
                 <Grid2 container xs spacing={0}>
                     <ContentCenteredGrid xs={12}>
-                        <Typography variant="h5" color="primary" sx={{fontWeight: 'bold'}}>
+                        <Typography variant="h5" color="primary" sx={{fontWeight: 'bold', pl: '8px'}}>
                             {applicant.ApplicantID}
                         </Typography>
                     </ContentCenteredGrid>
                     <ContentCenteredGrid xs={12}>
-                        <Typography variant="subtitle1">
+                        <Typography variant="subtitle1" sx={{pl: '8px', pt: '8px'}}>
                             {`${applicant.Major} ${currentDegreeMapping[applicant.CurrentDegree]}`}
                         </Typography>
+                    </ContentCenteredGrid>
+                    <ContentCenteredGrid xs={12}>
                         {editable && isAuth ? <ControlButtonGroup applicantId={applicant.ApplicantID} records={records}/> : null}
                     </ContentCenteredGrid>
                 </Grid2>
                 <ContentCenteredGrid xs={12} sx={{gap: "1rem"}}>
-                    <Typography variant="h6" sx={{fontWeight: 'bold'}}>
+                    <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>
                         联系方式:
                     </Typography>
                     <Typography variant="subtitle1">
-                        {(!contact || contact === '') ? "暂无" : contact}
+                        {(!contact || contact === '') ? "暂无" : isValidUrl(contact) ? <Link to={`${contact}`}>{contact}</Link> : contact}
                     </Typography>
                 </ContentCenteredGrid>
                 <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
-                    <Typography variant="h6" sx={{fontWeight: 'bold'}}>
+                    <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>
                         最终去向:
                     </Typography>
                     <Chip label={applicant.Final === "" ? "暂无/未知" : applicant.Final}/>
@@ -329,7 +357,7 @@ function GradeBar({ranking, GPA}) {
     return (
         <Grid2 container xs={12} spacing={2}>
             <ContentCenteredGrid xs={12} sx={{mb: '0.5rem'}}>
-                <Typography variant="subtitle1">申请时最高学位GPA以及对应学院/专业排名：</Typography>
+                <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>申请时最高学位GPA以及对应学院/专业排名：</Typography>
             </ContentCenteredGrid>
             <ContentCenteredGrid xs={12}>
                 <Slider
@@ -356,7 +384,7 @@ function GREBlock({GRE}) {
     }
     return (
         <Grid2 container xs={12}>
-            <ContentCenteredGrid xs={3} sx={{flexDirection: 'column', justifyContent: 'center'}}>
+            <ContentCenteredGrid xs={12 / 5} sx={{flexDirection: 'column', justifyContent: 'center'}}>
                 <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>GRE</Typography>
                 <Typography>{GRE.Total}</Typography>
             </ContentCenteredGrid>
@@ -365,7 +393,7 @@ function GREBlock({GRE}) {
                     return null;
                 }
                 return (
-                    <ContentCenteredGrid xs={3} key={key}
+                    <ContentCenteredGrid xs={12 / 5} key={key}
                                          sx={{flexDirection: 'column', justifyContent: 'center'}}>
                         <Typography variant="subtitle1"
                                     sx={{fontWeight: 'bold'}}>{EnglishExamMapping["GRE"][key]}</Typography>
@@ -373,6 +401,7 @@ function GREBlock({GRE}) {
                     </ContentCenteredGrid>
                 )
             })}
+            <ContentCenteredGrid xs={12 / 5} sx={{flexDirection: 'column', justifyContent: 'center'}}/>
 
         </Grid2>
     )
@@ -611,11 +640,11 @@ function RecordBlock({Records, ApplicantID, editable}) {
         <BaseItemBlock className="RecordBlock" checkpointProps={{xs: 12}} spacing={2}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'row', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>申请记录</Typography>
-                <Tooltip title='添加记录' arrow sx={{marginLeft: '10px'}}>
+                {editable ? <Tooltip title='添加记录' arrow sx={{marginLeft: '10px'}}>
                     <Button component={Link} to={`/profile/${ApplicantID}/new-record`} variant='outlined'>
                         <Add/>
                     </Button>
-                </Tooltip>
+                </Tooltip> : null}
             </ContentCenteredGrid>
             {Object.values(Records).map((record, index) => {
                 return (

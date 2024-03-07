@@ -14,7 +14,6 @@ import {
     List,
     ListItem,
     ListItemButton,
-    Paper,
     Switch,
     TextField,
     Tooltip,
@@ -25,7 +24,7 @@ import {Form, Link} from "react-router-dom";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import {ConnectWithoutContact, Edit, Refresh} from "@mui/icons-material";
-import {blue} from "@mui/material/colors";
+import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
 import React, {useState} from "react";
 
@@ -42,14 +41,16 @@ export function ProfileHeader({loaderData}) {
     return (
         <CollapseSideBar
             sx={{
-                width: '300px',
                 '& .MuiDrawer-paper': {
-                    width: '300px',
-                    boxShadow: 'none'
+                    bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
+                    width: '250px',
+                    height: 'calc(100vh - 120px)',
+                    p: '20px',
+                    mt: '10px'
                 },
             }}
         >
-            <Paper className="ProfileHeader">
+            <Box className="ProfileHeader">
                 <Badge
                     className="ProfileHeaderAvatarBadge"
                     badgeContent={
@@ -96,7 +97,7 @@ export function ProfileHeader({loaderData}) {
                 >
                     <Avatar src={avatar} sx={{height: '100px', width: '100px'}}/>
                 </Badge>
-                <Form method='post' style={{position: 'absolute', left: '230px'}}>
+                <Form method='post' style={{position: 'absolute', right: '10px'}}>
                     <Tooltip title='刷新侧边栏信息' arrow>
                         <IconButton type='submit' variant="outlined" name='button' value='Refresh' >
                             <Refresh fontSize='large'/>
@@ -146,8 +147,6 @@ export function ProfileHeader({loaderData}) {
                         </DialogActions>
                     </Dialog>
                 </Box>
-                {/*<Typography*/}
-                {/*    variant='h6'>{applicants.length} {applicants.length > 1 ? 'Applicants' : 'Applicant'}</Typography>*/}
                 <List>
                     {applicants.map((applicant) => (
                         <ListItem key={applicant}>
@@ -203,7 +202,7 @@ export function ProfileHeader({loaderData}) {
                         </Form>
                     </DialogActions>
                 </Dialog>
-            </Paper>
+            </Box>
         </CollapseSideBar>
     )
 }

@@ -10,7 +10,7 @@ import {
     InputLabel,
     ListItemText,
     MenuItem,
-    OutlinedInput, useTheme
+    OutlinedInput, Paper, useTheme
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {majorList, degreeList, regionList} from "../../../../Data/Schemas";
@@ -45,12 +45,12 @@ export default function SearchBar({query}) {
     const defaultRegion = regionList.filter(x => query.r?.split(',').includes(x));
 
     return (
-        <Box>
-            <Box
+        <Box sx={{display: 'flex', flexDirection: 'column', gap: "10px", mb: '10px'}}>
+            <Paper
                 role='search'
                 className='searchContainer'
                 sx={{
-                    bgcolor: darkMode ? grey[800] : grey[50],
+                    bgcolor: darkMode ? grey[800] : '#fff',
                 }}
             >
                 <SearchIcon sx={{mx: "10px"}}/>
@@ -66,7 +66,7 @@ export default function SearchBar({query}) {
                     fullWidth
                     size="small"
                 />
-            </Box>
+            </Paper>
             <Filter
                 label='Select Degree'
                 id='d'
@@ -100,7 +100,9 @@ export default function SearchBar({query}) {
 
 function Filter({label, id, name, value, handleFilterChange, options, OptionItem: OptionContent}) {
     return (
-        <FormControl fullWidth>
+        <FormControl component={Paper} fullWidth sx={{
+            bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : "#fff",
+        }}>
             <InputLabel size="small">{label}</InputLabel>
             <Select
                 multiple
@@ -113,7 +115,6 @@ function Filter({label, id, name, value, handleFilterChange, options, OptionItem
                 renderValue={(selected) => selected.join(', ')}
                 sx={{
                     '.MuiOutlinedInput-notchedOutline': {border: 0},
-                    bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : grey[50],
                 }}
                 size="small"
             >

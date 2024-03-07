@@ -1,6 +1,6 @@
 import {Paper, useTheme} from "@mui/material";
 import React from "react";
-import {Form, Outlet, redirect, useLoaderData} from "react-router-dom";
+import {Outlet, redirect, useLoaderData} from "react-router-dom";
 import {ProfileHeader} from "./UserInfo/ProfileHeader";
 import {grey} from "@mui/material/colors";
 import {
@@ -18,10 +18,12 @@ import {Add, ConnectWithoutContact, Delete, Edit, Refresh} from "@mui/icons-mate
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 export async function loader() {
+    console.time("ProfileLoader")
     const displayName = await getDisplayName();
     const metaData = await getMetaData();
     const avatarUrl = await getAvatar(metaData?.Avatar);
     const user = await localforage.getItem('user');
+    console.timeEnd("ProfileLoader")
     return {displayName, metaData, avatarUrl, user};
 }
 
@@ -124,6 +126,9 @@ export function ProfileIndex() {
                             <InlineTypography>
                                 在该页面中部，可编辑该申请人所申请的项目以及申请结果。点击<Add/>按钮可添加一条记录，添加后的记录会以卡片形式显示在申请记录这一栏，每个卡片都有<Edit/>和<Delete/>按钮来编辑/删除该条记录。
                             </InlineTypography>
+                        </li>
+                        <li>
+                            申请人每添加一条申请记录，该申请记录都会实时更新到申请季数据汇总表当中。
                         </li>
                         <li>
                             可点击每个卡片的项目名跳转到项目信息表当中查看该项目的详细信息。

@@ -49,6 +49,7 @@ import localforage from "localforage";
 import {loader as HomeLoader, action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
 import {
     loader as ProfileApplicantLoader,
+    DataPointsLoader as ProfileDataPointsLoader,
     action as ProfileApplicantAction, ProfileApplicantPage
 } from "./Components/Profile/ProfileApplicant/ProfileApplicantPage";
 import AddModifyApplicant, {
@@ -59,6 +60,13 @@ import AddModifyRecord, {
     action as addModifyRecordAction
 } from "./Components/Modify/Record/AddModifyRecord";
 import {AboutUs} from "./Components/AboutUs/AboutUs";
+import DataPoints, {
+    ApplicantProfileInDataPoints,
+    loader as DataPointsLoader,
+    action as DataPointsAction,
+    ProgramContentInDataPoints
+} from "./Components/DataPoints/DataPoints";
+import {HowToUse} from "./Components/HowToUse/HowToUse";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -114,7 +122,25 @@ function OpenSIST() {
                             ]
                         }, {
                             path: '/datapoints',
-                            element: <h1>开发组正在加班加点赶工...</h1>,
+                            element: <DataPoints/>,
+                            loader: DataPointsLoader,
+                            action: DataPointsAction,
+                            children: [
+                                {
+                                    errorElement: <ErrorPage/>,
+                                    children: [
+                                        {
+                                            path: '/datapoints/applicant/:applicantId',
+                                            element: <ApplicantProfileInDataPoints/>,
+                                            loader: ProfileDataPointsLoader,
+                                        }, {
+                                            path: '/datapoints/program/:programId',
+                                            element: <ProgramContentInDataPoints/>,
+                                            loader: programContentLoader,
+                                        }
+                                    ]
+                                }
+                            ]
                         }, {
                             path: '/profile',
                             element: <Profile/>,
@@ -200,7 +226,7 @@ function OpenSIST() {
                             element: <AboutUs/>,
                         }, {
                             path: '/how-to-use',
-                            element: <h1>开发组正在加班加点赶工...</h1>,
+                            element: <HowToUse/>,
                         }
                     ]
                 }

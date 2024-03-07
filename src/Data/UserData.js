@@ -285,12 +285,3 @@ export async function updateContact(contact) {
     metadata['Contact'] = contact;
     await setMetaData(metadata);
 }
-
-export async function testAPI() {
-    const response = await fetch("https://copy-kv-to-r2.caoster.workers.dev/wait_5_seconds", {
-        method: 'GET',
-        headers: await headerGenerator(),
-    });
-    await handleErrors(response);
-    return "test done";
-}

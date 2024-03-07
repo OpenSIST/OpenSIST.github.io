@@ -27,7 +27,7 @@ export default function SideBar({loaderData}) {
                     '& .MuiDrawer-paper': {
                         bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
                         width: '250px',
-                        height: 'calc(100vh - 160px)',
+                        height: 'calc(100vh - 120px)',
                         p: '20px',
                         mt: '10px'
                     }
@@ -37,14 +37,24 @@ export default function SideBar({loaderData}) {
                 <Box sx={{mb: "10px", display: 'flex', gap: "10px"}}>
                     <Form action='/programs/new' style={{width: "100%"}}>
                         <Tooltip title='添加新项目' arrow>
-                            <Button fullWidth type='submit' variant="outlined">
+                            <Button fullWidth type='submit' variant="outlined"
+                                sx={{
+                                    transition: 'background-color 0s',
+                                    bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
+                                }}
+                            >
                                 <Add/>
                             </Button>
                         </Tooltip>
                     </Form>
                     <Form method='post' style={{width: "100%"}}>
                         <Tooltip title='刷新项目列表' arrow>
-                            <Button fullWidth type='submit' variant="outlined">
+                            <Button fullWidth type='submit' variant="outlined"
+                                    sx={{
+                                        transition: 'background-color 0s',
+                                        bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
+                                    }}
+                            >
                                 <Refresh/>
                             </Button>
                         </Tooltip>
@@ -52,9 +62,6 @@ export default function SideBar({loaderData}) {
                 </Box>
 
                 <UnivProgramList univProgramList={univProgramList}/>
-                <div style={{textAlign: 'center', paddingTop: '5px'}}>
-                    对列表有问题可以<a href='https://github.com/OpenSIST/OpenSIST.github.io/issues'>联系我们</a>
-                </div>
             </CollapseSideBar>
         </>
     )
@@ -69,7 +76,9 @@ export function UnivProgramList({univProgramList, ButtonComponent = ProgramButto
             variant={darkMode ? 'elevation' : 'elevation'}
             elevation={darkMode ? 0 : 1}
             sx={{
-                bgcolor: darkMode ? grey[800] : grey[50],
+                bgcolor: darkMode ? grey[800] : '#fff',
+                height: "100%",
+                overflowY: "auto"
             }}
         >
             <List

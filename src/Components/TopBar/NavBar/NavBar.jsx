@@ -21,19 +21,19 @@ export default function NavBar() {
     const navItems = [
         {
             name: "使用指南",
-            path: "/how-to-use", // TODO: write how-to-use page
-        },
-        {
-            name: "项目信息表",
-            path: "/programs",
+            path: "/how-to-use",
         },
         {
             name: "申请季数据汇总",
             path: "/datapoints",
         },
         {
+            name: "项目信息表",
+            path: "/programs",
+        },
+        {
             name: "关于我们",
-            path: "/about-us", // TODO: write ABOUT US page
+            path: "/about-us",
         },
     ]
     const routeMatch = useRouteMatch(navItems.map((item) => item.path));
