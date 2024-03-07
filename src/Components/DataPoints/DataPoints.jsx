@@ -2,7 +2,7 @@ import {FilterMatchMode, FilterService} from "primereact/api";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
-import {getRecordByProgram, getRecordByRecordIDs} from "../../Data/RecordData";
+import {getRecordByRecordIDs} from "../../Data/RecordData";
 import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
@@ -155,7 +155,7 @@ export default function DataPoints() {
     };
 
     const statusBodyTemplate = (rowData) => {
-        return <Chip label={rowData.Status} color={getStatusColor(rowData.Status)} sx={{maxWidth: '100px'}}/>
+        return <Chip label={rowData.Status} color={getStatusColor(rowData.Status)}/>
     };
 
     const statusFilterItemTemplate = (option) => {
@@ -194,7 +194,9 @@ export default function DataPoints() {
     const applicantBodyTemplate = (rowData) => {
         return (
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Chip label={rowData.ApplicantID}/>
+                <Tooltip title={rowData.ApplicantID} arrow>
+                    <Chip label={rowData.ApplicantID} sx={{maxWidth: "8rem"}}/>
+                </Tooltip>
                 <Tooltip title='查看申请人信息' arrow>
                     <IconButton onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}>
                         <OpenInFull sx={{fontSize: "0.8rem"}}/>
@@ -206,7 +208,9 @@ export default function DataPoints() {
 
     const programBodyTemplate = (rowData) => {
         return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Chip label={rowData.ProgramID}/>
+            <Tooltip title={rowData.ProgramID} arrow>
+                <Chip label={rowData.ProgramID} sx={{maxWidth: "10rem"}}/>
+            </Tooltip>
             <Tooltip title='查看项目描述' arrow>
                 <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
                     <OpenInFull sx={{fontSize: "0.8rem"}}/>
@@ -280,7 +284,8 @@ export default function DataPoints() {
                         filter
                         align='center'
                         filterPlaceholder="搜索申请人"
-                        style={{minWidth: '10rem'}}
+                        className="ApplicantIDColumn"
+                        style={{width: '10rem'}}
                     />
                     <Column
                         field='ProgramID'
@@ -289,7 +294,8 @@ export default function DataPoints() {
                         align='center'
                         filter
                         filterPlaceholder="搜索项目"
-                        style={{minWidth: '10rem'}}
+                        className="ProgramIDColumn"
+                        style={{width: '12rem'}}
                     />
                     <Column
                         field='Status'
@@ -298,7 +304,8 @@ export default function DataPoints() {
                         align='center'
                         filter
                         filterElement={statusFilterTemplate}
-                        style={{minWidth: '9rem'}}
+                        className="StatusColumn"
+                        style={{width: '6rem'}}
                     />
                     <Column
                         field='Final'
@@ -308,7 +315,8 @@ export default function DataPoints() {
                         filter
                         align='center'
                         filterElement={FinalRowFilterTemplate}
-                        style={{minWidth: '7rem'}}
+                        className="FinalColumn"
+                        style={{minWidth: '6rem'}}
                     />
                     <Column
                         field='Season'
@@ -317,6 +325,7 @@ export default function DataPoints() {
                         align='center'
                         filterPlaceholder="搜索申请季"
                         body={programPeriodBodyTemplate}
+                        className="SeasonColumn"
                         style={{minWidth: '8rem'}}
                     />
                     <Column
@@ -343,7 +352,7 @@ export default function DataPoints() {
                     <Column
                         field='Detail'
                         header='备注、补充说明'
-                        style={{width: '15rem', minWidth: '12rem'}}
+                        style={{width: '25rem', minWidth: '15rem'}}
                     />
                 </DataTable>
                 <Outlet/>
