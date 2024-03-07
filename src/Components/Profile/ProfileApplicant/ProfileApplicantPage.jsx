@@ -105,11 +105,9 @@ export async function action({params, request}) {
     }
 }
 
-const ContentCenteredGrid = styled(Grid2)(({theme}) => ({
+const ContentCenteredGrid = styled(Grid2)(() => ({
     display: 'flex',
-    // justifyContent: 'center',
     alignItems: 'center',
-    // padding: "0.5rem"
 }));
 
 function BaseItemBlock({children, className, checkpointProps, spacing = 0, elevation = 2}) {

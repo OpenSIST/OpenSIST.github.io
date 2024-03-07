@@ -46,6 +46,7 @@ export function CollapseSideBar({children, sx}) {
                     zIndex: (smallPage ? 1201 : 1),
                     ...sx,
                     '& .MuiDrawer-paper': {
+                        borderRadius: '0 5px 5px 0',
                         border: 'none',
                         position: (smallPage ? 'absolute' : 'initial'),
                         top: '60px',
@@ -70,6 +71,7 @@ export function CollapseSideBar({children, sx}) {
                     width: "20px",
                     height: "80px",
                     borderRadius: "0 10px 10px 0",
+                    zIndex: (smallPage ? 1200 : 1)
                 }}
             >
                 <ChevronRight/>

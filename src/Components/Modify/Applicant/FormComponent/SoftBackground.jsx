@@ -96,11 +96,10 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 {exchanges.map((exchange, index) => (
                     <Grid2
                         container
-                        spacing={2}
                         sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
-                        <Grid2 container xs={11}>
+                        <Grid2 container spacing={2} xs={11}>
                             <Grid2 xs={12} lg={4}>
                                 <FormControl fullWidth required>
                                     <InputLabel size="small">交换学校</InputLabel>
@@ -165,7 +164,6 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 ))}
                 <Grid2
                     container
-                    spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
                     <Grid2 xs={12}>
@@ -346,7 +344,6 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 {publications.map((publication, index) => (
                     <Grid2
                         container
-                        spacing={2}
                         sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
@@ -446,7 +443,6 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 ))}
                 <Grid2
                     container
-                    spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
                     <Grid2 xs={12}>
@@ -471,7 +467,6 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 {recommendations.map((recommendation, index) => (
                     <Grid2
                         container
-                        spacing={2}
                         sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
@@ -524,7 +519,6 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 ))}
                 <Grid2
                     container
-                    spacing={2}
                     sx={{width: '80%', marginBottom: '10px'}}
                 >
                     <Grid2 xs={12}>

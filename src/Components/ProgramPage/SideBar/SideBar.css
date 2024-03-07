@@ -38,3 +38,7 @@
     width: 1px;
     opacity: 1;
 }
+
+.CollapseSideBar > .PrivateSwipeArea-root {
+    z-index: 1;
+}
