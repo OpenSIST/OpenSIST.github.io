@@ -169,7 +169,6 @@ export default function DataPoints() {
                 options={recordStatusList}
                 onChange={(e) => options.filterApplyCallback(e.value)}
                 itemTemplate={statusFilterItemTemplate}
-                placeholder="搜索申请结果"
                 className="p-column-filter"
                 showClear
             />

@@ -66,6 +66,7 @@ import DataPoints, {
     action as DataPointsAction,
     ProgramContentInDataPoints
 } from "./Components/DataPoints/DataPoints";
+import {HowToUse} from "./Components/HowToUse/HowToUse";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -225,7 +226,7 @@ function OpenSIST() {
                             element: <AboutUs/>,
                         }, {
                             path: '/how-to-use',
-                            element: <h1>开发组正在加班加点赶工...</h1>,
+                            element: <HowToUse/>,
                         }
                     ]
                 }

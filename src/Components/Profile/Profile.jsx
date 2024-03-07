@@ -128,6 +128,9 @@ export function ProfileIndex() {
                             </InlineTypography>
                         </li>
                         <li>
+                            申请人每添加一条申请记录，该申请记录都会实时更新到申请季数据汇总表当中。
+                        </li>
+                        <li>
                             可点击每个卡片的项目名跳转到项目信息表当中查看该项目的详细信息。
                         </li>
                         <li>

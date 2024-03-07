@@ -24,12 +24,12 @@ export default function NavBar() {
             path: "/how-to-use",
         },
         {
-            name: "项目信息表",
-            path: "/programs",
-        },
-        {
             name: "申请季数据汇总",
             path: "/datapoints",
+        },
+        {
+            name: "项目信息表",
+            path: "/programs",
         },
         {
             name: "关于我们",
