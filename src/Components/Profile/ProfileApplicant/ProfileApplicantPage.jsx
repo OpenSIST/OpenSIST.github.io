@@ -44,7 +44,7 @@ import {getAvatar, getDisplayName, getMetaData} from "../../../Data/UserData";
 import {grey} from "@mui/material/colors";
 
 export async function loader({params}) {
-    console.time("ProfileApplicantLoader")
+    // console.time("ProfileApplicantLoader")
     const applicantId = params.applicantId;
     const isAuth = await isAuthApplicant(applicantId);
     if (!isAuth) {
@@ -62,7 +62,7 @@ export async function loader({params}) {
         const metaData = await getMetaData(displayName);
         const contact = metaData?.Contact;
         const avatarUrl = await getAvatar(metaData?.Avatar, displayName);
-        console.timeEnd("ProfileApplicantLoader")
+        // console.timeEnd("ProfileApplicantLoader")
         return {avatarUrl, contact, applicant, records};
     } catch (e) {
         throw e;

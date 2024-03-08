@@ -24,7 +24,7 @@ import {Checkbox} from 'primereact/checkbox';
 import {Dropdown} from "primereact/dropdown";
 
 export async function loader() {
-    console.time("DataPointsLoader")
+    // console.time("DataPointsLoader")
     let programs = await getPrograms();
     programs = Object.values(programs).flat().filter(program => program.Applicants.length > 0);
     const recordIDs = programs.map(program => program.Applicants.map(applicant => applicant + "|" + program.ProgramID)).flat();
@@ -34,7 +34,7 @@ export async function loader() {
         return record;
     })
 
-    console.timeEnd("DataPointsLoader")
+    // console.timeEnd("DataPointsLoader")
     return {records};
 }
 

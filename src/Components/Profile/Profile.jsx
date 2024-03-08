@@ -18,12 +18,12 @@ import {Add, ConnectWithoutContact, Delete, Edit, Refresh} from "@mui/icons-mate
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 export async function loader() {
-    console.time("ProfileLoader")
+    // console.time("ProfileLoader")
     const displayName = await getDisplayName();
     const metaData = await getMetaData();
     const avatarUrl = await getAvatar(metaData?.Avatar);
     const user = await localforage.getItem('user');
-    console.timeEnd("ProfileLoader")
+    // console.timeEnd("ProfileLoader")
     return {displayName, metaData, avatarUrl, user};
 }
 

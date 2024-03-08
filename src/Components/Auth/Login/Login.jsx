@@ -63,6 +63,7 @@ function Login() {
                 id='password'
                 name='password'
                 value={password}
+                helperText='注：首次访问请先用上科大邮箱注册账号'
                 onChange={(e) => setPassword(e.target.value)}
                 required
             />

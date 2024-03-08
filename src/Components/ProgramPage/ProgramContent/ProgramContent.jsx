@@ -8,11 +8,11 @@ import {Edit, Refresh} from "@mui/icons-material";
 import remarkGfm from 'remark-gfm'
 
 export async function loader({params}) {
-    console.time("ProgramContentLoader")
+    // console.time("ProgramContentLoader")
     const programId = params.programId;
     try {
         const programContent = await getProgramContent(programId);
-        console.timeEnd("ProgramContentLoader")
+        // console.timeEnd("ProgramContentLoader")
         return {programContent};
     } catch (e) {
         throw e;

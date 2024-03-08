@@ -8,14 +8,14 @@ import {Add, Edit, Refresh} from "@mui/icons-material";
 import {InlineTypography} from "../common";
 
 export async function loader({request}) {
-    console.time("ProgramPageLoader")
+    // console.time("ProgramPageLoader")
     const url = new URL(request.url);
     const u = url.searchParams.get('u');
     const d = url.searchParams.get('d');
     const m = url.searchParams.get('m');
     const r = url.searchParams.get('r');
     const programs = await getPrograms(false, {u: u, d: d, m: m, r: r});
-    console.timeEnd("ProgramPageLoader")
+    // console.timeEnd("ProgramPageLoader")
     return {programs, u, d, m, r};
 }
 
