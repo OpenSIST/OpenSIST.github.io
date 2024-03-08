@@ -659,7 +659,7 @@ function RecordBlock({Records, ApplicantID, editable}) {
                                 Icon={<Chip label={record.Status} color={RecordStatusPaltette[record.Status]}/>}
                                 primary={
                                     <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                                        <Link to={`/programs/${record.ProgramID}`}>{record.ProgramID}</Link>
+                                        {record.ProgramID}
                                         {
                                             editable ?
                                                 <ButtonGroup>

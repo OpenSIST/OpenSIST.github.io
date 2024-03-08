@@ -24,6 +24,7 @@ export async function action({request}) {
     const username = formData.get('username');
     const suffix = formData.get('suffix');
     const email = username + suffix;
+    console.log(email)
     const password = formData.get('password');
     const token = formData.get('token');
     const status = formData.get('status');
@@ -44,7 +45,7 @@ export function isValidPassword(password) {
 }
 
 export default function RegisterAndReset() {
-    const [email, setEmail] = useState("");
+    const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [token, setToken] = useState("");
@@ -111,12 +112,13 @@ export default function RegisterAndReset() {
     const handleVerify = async (e) => {
         e.preventDefault();
         const api = status === 'reset' ? SEND_RESET_VERIFY_TOKEN : SEND_VERIFY_TOKEN;
+        console.log(user + suffix)
         try {
             const response = await fetch(api, {
                 method: "POST",
                 credentials: "include",
                 headers: await headerGenerator(),
-                body: JSON.stringify({email}),
+                body: JSON.stringify({email: user + suffix}),
             });
 
             if (response.status === 200) {
@@ -147,8 +149,8 @@ export default function RegisterAndReset() {
                     label='邮箱'
                     id='username'
                     name='username'
-                    value={email.split("@")[0]}
-                    onChange={(e) => setEmail(e.target.value.split('@')[0]+suffix)}
+                    value={user}
+                    onChange={(e) => setUser(e.target.value.split('@')[0])}
                     required
                 />
                 <Select
@@ -208,7 +210,7 @@ export default function RegisterAndReset() {
                 />
                 <Button
                     variant='contained'
-                    disabled={sendButtonDisabled || email?.split('@')[0] === ""}
+                    disabled={sendButtonDisabled || user === ""}
                     onClick={handleVerify}
                     required
                 >
