@@ -16,16 +16,21 @@
     overflow-x: auto;
 }
 
+.DataTableStyle * {
+
+    transition: none;
+}
+
 .DataTableStyle .p-column-title {
     font-weight: bold;
 }
 
 .DataTableStyle .p-datatable-header {
-    border-radius: 5px 5px 0 0 ;
+    border-radius: 5px 5px 0 0;
 }
 
 .DataTableStyle .p-datatable-wrapper {
-    box-shadow: 0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 1px 0 0 rgba(0,0,0,0.12);
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 0 0 rgba(0, 0, 0, 0.12);
     border-radius: 0 0 5px 5px;
 }
 
@@ -36,14 +41,13 @@
 
 .p-column-filter-row-items,
 .p-multiselect-items.p-component,
-.p-dropdown-items
-{
+.p-dropdown-items {
     padding: 0;
 }
 
 .p-column-filter-clear-button.p-link.p-hidden-space,
 .p-column-filter-clear-button.p-link,
-.p-column-filter-menu-button.p-link{
+.p-column-filter-menu-button.p-link {
     display: none;
 }
 
@@ -64,6 +68,7 @@
 }
 
 .p-column-filter.p-inputtext.p-component.p-column-filter {
+    /*transition: none;*/
     height: inherit;
 }
 
@@ -71,7 +76,7 @@
     align-items: center;
 }
 
-.ApplicantIDColumn .p-column-filter{
+.ApplicantIDColumn .p-column-filter {
     max-width: 10rem;
 }
 
@@ -98,3 +103,9 @@
 .SeasonColumn .p-column-filter {
     margin: auto
 }
+
+/*.p-column-filter.p-dropdown.p-component.p-inputwrapper.p-dropdown-clearable,*/
+/*.p-inputtext,*/
+/*.p-checkbox-box {*/
+/*    transition: none;*/
+/*}*/
