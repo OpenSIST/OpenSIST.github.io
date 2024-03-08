@@ -74,7 +74,6 @@ export function ApplicantProfileInDataPoints() {
 export function ProgramContentInDataPoints() {
     const navigate = useNavigate();
     const params = useParams();
-    console.log(params)
     const programID = params.programId;
     const {programContent} = useLoaderData();
     return (

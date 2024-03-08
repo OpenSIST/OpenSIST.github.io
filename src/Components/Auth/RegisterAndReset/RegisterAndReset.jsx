@@ -24,7 +24,6 @@ export async function action({request}) {
     const username = formData.get('username');
     const suffix = formData.get('suffix');
     const email = username + suffix;
-    console.log(email)
     const password = formData.get('password');
     const token = formData.get('token');
     const status = formData.get('status');
@@ -112,7 +111,6 @@ export default function RegisterAndReset() {
     const handleVerify = async (e) => {
         e.preventDefault();
         const api = status === 'reset' ? SEND_RESET_VERIFY_TOKEN : SEND_VERIFY_TOKEN;
-        console.log(user + suffix)
         try {
             const response = await fetch(api, {
                 method: "POST",

@@ -32,7 +32,6 @@ export async function action({request}) {
     const actionType = formData.get('button');
     if (actionType === 'EditAvatar') {
         const avatar = formData.get('avatar');
-        console.log(avatar);
         await uploadAvatar(avatar);
         return redirect(window.location.href);
     } else if (actionType === 'ToggleAnonymous') {
