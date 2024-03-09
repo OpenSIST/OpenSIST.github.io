@@ -6,7 +6,6 @@ import {
     DialogContentText, DialogTitle, List, ListItem,
     ListItemIcon, ListItemText, TextField,
     Paper, Slider, styled, Typography, Divider, Tooltip, Input, ButtonGroup,
-    Link as MuiLink
 } from "@mui/material";
 import {Add, Delete, Edit, Refresh} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
@@ -330,7 +329,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                     <ButtonGroup>
                         {Object.entries(contact).length ? Object.entries(contact).map(([key, value]) => {
                             const Icon = contactIcons[key];
-                            if (value == "") {
+                            if (value === "") {
                                 return null;
                             }
                             return (
