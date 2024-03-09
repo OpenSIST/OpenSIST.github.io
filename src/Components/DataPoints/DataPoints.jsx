@@ -21,6 +21,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import {Checkbox} from 'primereact/checkbox';
+import {TriStateCheckbox} from 'primereact/tristatecheckbox';
 import {Dropdown} from "primereact/dropdown";
 
 export async function loader() {
@@ -218,7 +219,8 @@ export default function DataPoints() {
     };
 
     const FinalRowFilterTemplate = (options) => {
-        return <Checkbox onChange={(e) => options.filterApplyCallback(e.checked)} checked={options.value}/>;
+        // return <Checkbox onChange={(e) => options.filterApplyCallback(e.checked)} checked={options.value}/>;
+        return <TriStateCheckbox onChange={(e) => options.filterApplyCallback(e.value)} value={options.value}/>
     };
 
     FilterService.register('custom_Season', (value, filters) => {
