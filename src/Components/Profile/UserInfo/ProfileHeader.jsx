@@ -23,21 +23,31 @@ import "./ProfileHeader.css";
 import {Form, Link} from "react-router-dom";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import {ConnectWithoutContact, Edit, Refresh} from "@mui/icons-material";
+import {ConnectWithoutContact, Edit, Refresh, HomeRounded, LinkedIn, Link as LinkIcon} from "@mui/icons-material";
 import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
 import React, {useState} from "react";
+import Grid2 from "@mui/material/Unstable_Grid2";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
 
 export function ProfileHeader({loaderData}) {
     const applicants = loaderData.metaData.ApplicantIDs;
     const avatar = loaderData.avatarUrl;
     const displayName = loaderData.displayName;
     const user = loaderData.user;
-    const userContact = loaderData.metaData.Contact;
+    let userContact = loaderData.metaData.Contact;
+    userContact = userContact.length === 0 ? '{}' : userContact;
     const [anonymous, setAnonymous] = useState(displayName !== user);
     const [anonymousOpen, setAnonymousOpen] = useState(false);
     const [editContactOpen, setEditContactOpen] = useState(false);
-    const [contact, setContact] = useState(userContact);
+    const [contact, setContact] = useState(JSON.parse(userContact));
+    const [homePage, setHomePage] = useState(contact.HomePage ?? '');
+    const [linkedin, setLinkedIn] = useState(contact.LinkedIn ?? '');
+    const [QQ, setQQ] = useState(contact.QQ ?? '');
+    const [wechat, setWeChat] = useState(contact.WeChat ?? '');
+    const [otherLink, setOtherLink] = useState(contact.OtherLink ?? '');
+
     return (
         <CollapseSideBar
             sx={{
@@ -172,17 +182,97 @@ export function ProfileHeader({loaderData}) {
                     <DialogTitle>编辑个人联系方式</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            可以输入您的个人主页、LinkedIn、QQ、微信等。
+                            可填写下方任何联系方式：
                         </DialogContentText>
-                        <TextField
-                            margin="dense"
-                            label="联系方式"
-                            size='small'
-                            fullWidth
-                            multiline
-                            value={contact}
-                            onChange={(e) => setContact(e.target.value)}
-                        />
+                        <Grid2 container spacing={2}>
+                            <Grid2 container xs={12}>
+                                <Grid2 xs={1} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                                    <HomeRounded/>
+                                </Grid2>
+                                <Grid2 xs={11}>
+                                    <TextField
+                                        margin="dense"
+                                        label="个人主页"
+                                        size='small'
+                                        fullWidth
+                                        multiline
+                                        value={homePage}
+                                        onChange={(e) => {
+                                            setHomePage(e.target.value);
+                                            setContact({...contact, HomePage: e.target.value});
+                                        }}
+                                    />
+                                </Grid2>
+                                <Grid2 xs={1} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                                    <LinkedIn/>
+                                </Grid2>
+                                <Grid2 xs={11}>
+                                    <TextField
+                                        margin="dense"
+                                        label="LinkedIn"
+                                        size='small'
+                                        fullWidth
+                                        multiline
+                                        value={linkedin}
+                                        onChange={(e) => {
+                                            setLinkedIn(e.target.value);
+                                            setContact({...contact, LinkedIn: e.target.value});
+                                        }}
+                                    />
+                                </Grid2>
+                                <Grid2 xs={1} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                                    <FontAwesomeIcon icon={faQq}/>
+                                </Grid2>
+                                <Grid2 xs={11}>
+                                    <TextField
+                                        margin="dense"
+                                        label="QQ"
+                                        size='small'
+                                        fullWidth
+                                        multiline
+                                        value={QQ}
+                                        onChange={(e) => {
+                                            setQQ(e.target.value);
+                                            setContact({...contact, QQ: e.target.value});
+                                        }}
+                                    />
+                                </Grid2>
+                                <Grid2 xs={1} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                                    <FontAwesomeIcon icon={faWeixin}/>
+                                </Grid2>
+                                <Grid2 xs={11}>
+                                    <TextField
+                                        margin="dense"
+                                        label="WeChat"
+                                        size='small'
+                                        fullWidth
+                                        multiline
+                                        value={wechat}
+                                        onChange={(e) => {
+                                            setWeChat(e.target.value);
+                                            setContact({...contact, WeChat: e.target.value});
+                                        }}
+                                    />
+                                </Grid2>
+                                <Grid2 xs={1} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                                    <LinkIcon/>
+                                </Grid2>
+                                <Grid2 xs={11}>
+                                    <TextField
+                                        margin="dense"
+                                        label="其他外部链接"
+                                        size='small'
+                                        fullWidth
+                                        multiline
+                                        value={otherLink}
+                                        onChange={(e) => {
+                                            setOtherLink(e.target.value);
+                                            setContact({...contact, OtherLink: e.target.value});
+                                        }}
+                                    />
+                                </Grid2>
+                            </Grid2>
+                        </Grid2>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
@@ -198,7 +288,7 @@ export function ProfileHeader({loaderData}) {
                             >
                                 确定
                             </Button>
-                            <Input value={contact} name='contact' type="hidden"/>
+                            <Input value={Object.keys(contact).length > 0 ? JSON.stringify(contact) : ""} name='contact' type="hidden"/>
                         </Form>
                     </DialogActions>
                 </Dialog>

@@ -107,7 +107,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
                                 (params) =>
                                     <TextField
                                         {...params}
-                                        label="申请人学位"
+                                        label="申请时身份"
                                         size="small"
                                         variant="outlined"
                                         name="CurrentDegree"
