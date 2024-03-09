@@ -7,11 +7,15 @@ import {AppBar, SvgIcon, Toolbar, useTheme} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import {ReactComponent as LightIcon} from '../icons/header.svg';
 import {ReactComponent as DarkIcon} from '../icons/header-dark.svg';
+import {ReactComponent as LightShortIcon} from '../icons/light.svg';
+import {ReactComponent as DarkShortIcon} from '../icons/dark.svg';
 import {useUser} from "../../Data/UserData";
+import {useSmallPage} from "../common";
 
 function TopBar() {
     const navigate = useNavigate();
     const user = useUser()
+    const smallPage = useSmallPage();
 
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
@@ -25,17 +29,20 @@ function TopBar() {
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}>
             <Toolbar className="TopBar" sx={{
+                p: (smallPage ? 0 : 'auto'),
                 minHeight: '60px',
                 '@media (min-width:600px)': {
                     minHeight: '60px',
                 },
             }}>
                 <SvgIcon
-                    component={darkMode ? DarkIcon : LightIcon}
+                    component={darkMode ? (smallPage ? DarkShortIcon : DarkIcon) : (smallPage ? LightShortIcon : LightIcon)}
                     inheritViewBox
                     onClick={() => navigate(user === null ? "/login" : "/")}
                     sx={{
                         height: "40px",
+                        width: (smallPage ? "40px" : "auto"),
+                        pl: (smallPage ? "8px" : 0),
                         fontSize: '10em',
                         cursor: 'pointer',
                     }}

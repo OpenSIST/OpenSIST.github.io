@@ -57,7 +57,7 @@ export default function NavBar() {
                     value={item.path}
                     to={item.path}
                     component={Link}
-                    sx={{fontSize: "1.2rem"}}
+                    // sx={{fontSize: "1.2rem"}}
                 />
             ))}
         </Tabs>

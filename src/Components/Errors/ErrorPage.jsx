@@ -8,7 +8,7 @@ const NetworkBrokeMessage = "网络异常，请检查网络连接或采取以下
 export default function ErrorPage() {
     const error = useRouteError();
     const stackLines = error?.stack?.split('\n') || [];
-    error.message = error.message === 'Failed to fetch' ? NetworkBrokeMessage : error.message
+    error.message = (error.message === 'Failed to fetch' ? NetworkBrokeMessage : error.message) ?? "";
     return (
         <div className="error-page">
             <h1 className="error-title">Oops!</h1>
