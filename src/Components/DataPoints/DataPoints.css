@@ -45,6 +45,10 @@
     padding: 0;
 }
 
+.p-sortable-column-badge {
+    display: none;
+}
+
 .p-column-filter-clear-button.p-link.p-hidden-space,
 .p-column-filter-clear-button.p-link,
 .p-column-filter-menu-button.p-link {

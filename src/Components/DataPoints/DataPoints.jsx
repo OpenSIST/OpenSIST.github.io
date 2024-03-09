@@ -262,7 +262,6 @@ export default function DataPoints() {
                     groupRowsBy="ProgramID"
                     sortMode='multiple'
                     multiSortMeta={[{field: 'ProgramID', order: 0}, {field: 'Season', order: -1}]}
-                    // sortOrder={1}
                     size='small'
                     scrollable
                     scrollHeight="100%"
