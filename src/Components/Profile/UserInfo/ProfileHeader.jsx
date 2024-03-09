@@ -36,12 +36,11 @@ export function ProfileHeader({loaderData}) {
     const avatar = loaderData.avatarUrl;
     const displayName = loaderData.displayName;
     const user = loaderData.user;
-    let userContact = loaderData.metaData.Contact;
-    userContact = userContact.length === 0 ? '{}' : userContact;
+    const userContact = loaderData.metaData.Contact;
     const [anonymous, setAnonymous] = useState(displayName !== user);
     const [anonymousOpen, setAnonymousOpen] = useState(false);
     const [editContactOpen, setEditContactOpen] = useState(false);
-    const [contact, setContact] = useState(JSON.parse(userContact));
+    const [contact, setContact] = useState(userContact);
     const [homePage, setHomePage] = useState(contact.HomePage ?? '');
     const [linkedin, setLinkedIn] = useState(contact.LinkedIn ?? '');
     const [QQ, setQQ] = useState(contact.QQ ?? '');
@@ -288,7 +287,7 @@ export function ProfileHeader({loaderData}) {
                             >
                                 确定
                             </Button>
-                            <Input value={Object.keys(contact).length > 0 ? JSON.stringify(contact) : ""} name='contact' type="hidden"/>
+                            <Input value={contact} name='contact' type="hidden"/>
                         </Form>
                     </DialogActions>
                 </Dialog>
