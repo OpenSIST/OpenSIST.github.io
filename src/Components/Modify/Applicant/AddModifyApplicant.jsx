@@ -11,6 +11,13 @@ import React, {useState} from "react";
 import BasicInfo from "./FormComponent/BasicInfo";
 import SoftBackground from "./FormComponent/SoftBackground";
 import {getDisplayName} from "../../../Data/UserData";
+import {getPrograms} from "../../../Data/ProgramData";
+
+export async function loader() {
+    let programs = await getPrograms(true);
+    programs = Object.values(programs).flat().map(program => program.ProgramID);
+    return programs;
+}
 
 export async function action({request}) {
     const removeEmptyDictInList = (list) => {
@@ -114,10 +121,10 @@ export async function action({request}) {
     return redirect(`/profile/${ApplicantID}`);
 }
 
-const FormContent = (activeStep, formValues, handleBack, handleNext, handleChange, type) => {
+const FormContent = (activeStep, formValues, handleBack, handleNext, handleChange, type, loaderData) => {
     switch (activeStep) {
         case 0:
-            return <BasicInfo formValues={formValues} handleNext={handleNext} handleChange={handleChange} actionType={type}/>;
+            return <BasicInfo formValues={formValues} handleNext={handleNext} handleChange={handleChange} actionType={type} loaderData={loaderData}/>;
         case 1:
             return <SoftBackground formValues={formValues} handleBack={handleBack} handleChange={handleChange}/>;
         default:
@@ -126,6 +133,7 @@ const FormContent = (activeStep, formValues, handleBack, handleNext, handleChang
 }
 
 export default function AddModifyApplicant({type}) {
+    const loaderData = useLoaderData();
     const steps = [
         '基本信息',
         '软背景'
@@ -221,7 +229,7 @@ export default function AddModifyApplicant({type}) {
                     textAlign: "center"
                 }}
             >
-                {FormContent(activeStep, formValues, handleBack, handleNext, handleChange, type)}
+                {FormContent(activeStep, formValues, handleBack, handleNext, handleChange, type, loaderData)}
             </Box>
         </Form>
     )

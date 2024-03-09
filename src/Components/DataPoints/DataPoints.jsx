@@ -260,9 +260,9 @@ export default function DataPoints() {
                     dataKey='RecordID'
                     rowGroupMode="subheader"
                     groupRowsBy="ProgramID"
-                    sortMode='single'
-                    sortField='ProgramID'
-                    sortOrder={1}
+                    sortMode='multiple'
+                    multiSortMeta={[{field: 'ProgramID', order: 0}, {field: 'Season', order: -1}]}
+                    // sortOrder={1}
                     size='small'
                     scrollable
                     scrollHeight="100%"
