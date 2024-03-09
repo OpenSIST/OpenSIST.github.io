@@ -287,7 +287,7 @@ export function ProfileHeader({loaderData}) {
                             >
                                 确定
                             </Button>
-                            <Input value={contact} name='contact' type="hidden"/>
+                            <Input value={JSON.stringify(contact)} name='contact' type="hidden"/>
                         </Form>
                     </DialogActions>
                 </Dialog>
