@@ -39,6 +39,7 @@ function HomeIndex() {
                 <p>
                     <strong>如果你喜欢这个网站，请点亮Star支持我们！</strong>
                 </p>
+                <h2><b>新用户请先移步至<a href='/how-to-use'>使用指南</a>！</b></h2>
                 <h2>网站声明：</h2>
                 <ul>
                     <li>
