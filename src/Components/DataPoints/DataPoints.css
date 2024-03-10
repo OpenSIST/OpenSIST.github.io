@@ -1,8 +1,9 @@
 .DataPointsContent {
     width: 90%;
     margin: 1rem;
+    overflow-x: auto;
     user-select: text;
-    height: 1700px;
+    height: calc(100% - 2rem);
     display: flex;
     flex-direction: column;
 }
