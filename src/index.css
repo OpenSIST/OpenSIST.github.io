@@ -29,7 +29,7 @@ body,html {
     --scrollbar-color: #fff;
     --bg-color: #fff;
     user-select: none;
-    font-size: clamp(10px, 1.5vw, 16px);
+    font-size: clamp(14px, 1.5vw, 16px);
     background-color: var(--bg-color);
 }
 
