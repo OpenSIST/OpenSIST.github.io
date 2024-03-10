@@ -16,7 +16,6 @@ import program from "../../Assets/imgs/program.png";
 import {Link, useLoaderData} from "react-router-dom";
 import {Link as MuiLink} from '@mui/material';
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import {InlineTypography} from "../common";
 
 
 export function HowToUse() {

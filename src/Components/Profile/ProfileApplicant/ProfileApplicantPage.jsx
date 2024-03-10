@@ -46,6 +46,7 @@ import {grey} from "@mui/material/colors";
 import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
 import {HomeRounded, LinkedIn, Link as LinkIcon} from "@mui/icons-material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {getPrograms} from "../../../Data/ProgramData";
 
 const contactIcons = {
     "QQ": faQq,
@@ -75,8 +76,9 @@ export async function loader({params}) {
         // const contact = JSON.stringify(metaData?.Contact);
         const contact = metaData.Contact;
         const avatarUrl = await getAvatar(metaData?.Avatar, displayName);
+        const programs = await getPrograms();
         // console.timeEnd("ProfileApplicantLoader")
-        return {avatarUrl, contact, applicant, records};
+        return {avatarUrl, contact, applicant, records, programs};
     } catch (e) {
         throw e;
     }

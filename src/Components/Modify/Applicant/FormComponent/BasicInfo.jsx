@@ -20,7 +20,14 @@ import {useNavigate} from "react-router-dom";
 import {Link as MuiLink} from '@mui/material';
 
 function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData}) {
-    let finalOptions = loaderData;
+    let finalOptions = [];
+    if (loaderData.programs) {
+        finalOptions = Object.values(loaderData.programs).flat().map((program) => {
+            return program.ProgramID;
+        });
+    } else {
+        finalOptions = loaderData;
+    }
     finalOptions = list2Options(finalOptions);
 
     const [englishOption, setEnglishOption] = useState('');
