@@ -17,6 +17,7 @@ import {
 } from "../../../../Data/Schemas";
 import "../AddModifyApplicant.css";
 import {useNavigate} from "react-router-dom";
+import {Link as MuiLink} from '@mui/material';
 
 function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData}) {
     let finalOptions = loaderData;
@@ -509,7 +510,8 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
                                     name="Final"
                                     label="最终去向"
                                     variant="outlined"
-                                    helperText='如果未找到项目，请前往项目信息表手动添加'
+                                    helperText={<MuiLink href='/programs/new'>如果未找到项目，请点此前往添加项目信息</MuiLink>}
+                                    FormHelperTextProps={{component: 'div'}}
                                 />
                             }
                             options={finalOptions}

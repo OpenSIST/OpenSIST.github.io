@@ -229,6 +229,7 @@ function OpenSIST() {
                         }, {
                             path: '/how-to-use',
                             element: <HowToUse/>,
+                            loader: profileLoader,
                         }
                     ]
                 }

@@ -170,7 +170,7 @@ export const authorOrderMapping = {
     'Co-first': '共同第一作者',
     'Second': '第二作者',
     'Co-second': '共同第二作者',
-    'Other': '其他'
+    'Other': '三作及以后'
 }
 export const authorOrderOptions = dict2Options(authorOrderMapping);
 
