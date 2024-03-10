@@ -143,7 +143,7 @@ function BaseListItem({Icon, primary, secondary}) {
             </ListItemIcon>
             <ListItemText
                 primary={
-                    <Typography variant='h6' sx={{fontWeight: 'bold', color: 'black'}}>
+                    <Typography variant='h6' sx={{fontWeight: 'bold'}}>
                         {primary}
                     </Typography>
                 }
