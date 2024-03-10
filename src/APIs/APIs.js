@@ -1,4 +1,6 @@
-const ROOT = "https://api.opensist.tech/";
+// const ROOT = "https://api.opensist.tech/";
+const ROOT = "https://si290f.opensist.tech/";
+
 export const PROGRAM_LIST = ROOT + "api/list/programs";
 export const PROGRAM_DESC = ROOT + "api/query/program_description";
 export const ADD_MODIFY_PROGRAM = ROOT + "api/mutating/new_modify_program";
