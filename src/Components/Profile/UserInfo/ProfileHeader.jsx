@@ -41,11 +41,6 @@ export function ProfileHeader({loaderData}) {
     const [anonymousOpen, setAnonymousOpen] = useState(false);
     const [editContactOpen, setEditContactOpen] = useState(false);
     const [contact, setContact] = useState(userContact);
-    const [homePage, setHomePage] = useState(contact.HomePage ?? '');
-    const [linkedin, setLinkedIn] = useState(contact.LinkedIn ?? '');
-    const [QQ, setQQ] = useState(contact.QQ ?? '');
-    const [wechat, setWeChat] = useState(contact.WeChat ?? '');
-    const [otherLink, setOtherLink] = useState(contact.OtherLink ?? '');
 
     return (
         <CollapseSideBar
@@ -185,91 +180,16 @@ export function ProfileHeader({loaderData}) {
                         </DialogContentText>
                         <Grid2 container spacing={2}>
                             <Grid2 container xs={12}>
-                                <Grid2 xs={1} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                                    <HomeRounded/>
-                                </Grid2>
-                                <Grid2 xs={11}>
-                                    <TextField
-                                        margin="dense"
-                                        label="个人主页"
-                                        size='small'
-                                        fullWidth
-                                        multiline
-                                        value={homePage}
-                                        onChange={(e) => {
-                                            setHomePage(e.target.value);
-                                            setContact({...contact, HomePage: e.target.value});
-                                        }}
-                                    />
-                                </Grid2>
-                                <Grid2 xs={1} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                                    <LinkedIn/>
-                                </Grid2>
-                                <Grid2 xs={11}>
-                                    <TextField
-                                        margin="dense"
-                                        label="LinkedIn"
-                                        size='small'
-                                        fullWidth
-                                        multiline
-                                        value={linkedin}
-                                        onChange={(e) => {
-                                            setLinkedIn(e.target.value);
-                                            setContact({...contact, LinkedIn: e.target.value});
-                                        }}
-                                    />
-                                </Grid2>
-                                <Grid2 xs={1} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                                    <FontAwesomeIcon icon={faQq}/>
-                                </Grid2>
-                                <Grid2 xs={11}>
-                                    <TextField
-                                        margin="dense"
-                                        label="QQ"
-                                        size='small'
-                                        fullWidth
-                                        multiline
-                                        value={QQ}
-                                        onChange={(e) => {
-                                            setQQ(e.target.value);
-                                            setContact({...contact, QQ: e.target.value});
-                                        }}
-                                    />
-                                </Grid2>
-                                <Grid2 xs={1} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                                    <FontAwesomeIcon icon={faWeixin}/>
-                                </Grid2>
-                                <Grid2 xs={11}>
-                                    <TextField
-                                        margin="dense"
-                                        label="WeChat"
-                                        size='small'
-                                        fullWidth
-                                        multiline
-                                        value={wechat}
-                                        onChange={(e) => {
-                                            setWeChat(e.target.value);
-                                            setContact({...contact, WeChat: e.target.value});
-                                        }}
-                                    />
-                                </Grid2>
-                                <Grid2 xs={1} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                                    <LinkIcon/>
-                                </Grid2>
-                                <Grid2 xs={11}>
-                                    <TextField
-                                        margin="dense"
-                                        label="其他外部链接"
-                                        size='small'
-                                        fullWidth
-                                        multiline
-                                        value={otherLink}
-                                        onChange={(e) => {
-                                            setOtherLink(e.target.value);
-                                            setContact({...contact, OtherLink: e.target.value});
-                                        }}
-                                    />
-                                </Grid2>
+                                <ContactField field='HomePage' label='个人主页' icon={<HomeRounded/>} contact={contact}
+                                              setContact={setContact}/>
+                                <ContactField label='LinkedIn' field='LinkedIn' icon={<LinkedIn/>} contact={contact}
+                                              setContact={setContact}/>
+                                <ContactField label='QQ' field='QQ' icon={<FontAwesomeIcon icon={faQq}/>} contact={contact}
+                                              setContact={setContact}/>
+                                <ContactField label='WeChat' field='WeChat' icon={<FontAwesomeIcon icon={faWeixin}/>} contact={contact}
+                                              setContact={setContact}/>
+                                <ContactField label='其他外部链接' field='OtherLink' icon={<LinkIcon/>} contact={contact}
+                                              setContact={setContact}/>
                             </Grid2>
                         </Grid2>
                     </DialogContent>
@@ -294,4 +214,34 @@ export function ProfileHeader({loaderData}) {
             </Box>
         </CollapseSideBar>
     )
+}
+
+function ContactField({field, label, icon, contact, setContact}) {
+    return (
+        <>
+            <Grid2 xs={1} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                {icon}
+            </Grid2>
+            <Grid2 xs={11}>
+                <TextField
+                    margin="dense"
+                    label={label}
+                    size='small'
+                    fullWidth
+                    value={contact[field] ?? ""}
+                    onChange={(e) => {
+                        setContact(() => {
+                            if (e.target.value.length > 0) {
+                                return {...contact, [field]: e.target.value};
+                            } else {
+                                const newContact = {...contact};
+                                delete newContact[field];
+                                return newContact;
+                            }
+                        });
+                    }}
+                />
+            </Grid2>
+        </>
+    );
 }

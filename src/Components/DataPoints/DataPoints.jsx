@@ -32,7 +32,16 @@ export async function loader() {
     records = records.map(record => {
         record['Season'] = record.ProgramYear + " " + record.Semester;
         return record;
-    })
+    });
+    records = records.sort((a, b) => {
+        if (programs.indexOf(a.ProgramID) > programs.indexOf(b.ProgramID)) {
+            return -1;
+        } else if (programs.indexOf(a.ProgramID) < programs.indexOf(b.ProgramID)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
 
     // console.timeEnd("DataPointsLoader")
     return {records};
