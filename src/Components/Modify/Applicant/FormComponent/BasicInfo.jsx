@@ -18,10 +18,8 @@ import {
 import "../AddModifyApplicant.css";
 import {useNavigate} from "react-router-dom";
 
-function BasicInfo({formValues, handleNext, handleChange, actionType}) {
-    let finalOptions = formValues.Programs ? Object.keys(formValues.Programs).filter((record) => {
-        return ['Admit', 'Defer'].includes(formValues.Programs[record]);
-    }) : [];
+function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData}) {
+    let finalOptions = loaderData;
     finalOptions = list2Options(finalOptions);
 
     const [englishOption, setEnglishOption] = useState('');
@@ -109,7 +107,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                                 (params) =>
                                     <TextField
                                         {...params}
-                                        label="申请人学位"
+                                        label="申请时身份"
                                         size="small"
                                         variant="outlined"
                                         name="CurrentDegree"
@@ -511,21 +509,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                                     name="Final"
                                     label="最终去向"
                                     variant="outlined"
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        endAdornment: (
-                                            <>
-                                                {params.InputProps.endAdornment}
-                                                <Tooltip
-                                                    title='选项只包含申请结果为Admit或Defer的项目'
-                                                    arrow
-                                                >
-                                                    <HelpOutline/>
-                                                </Tooltip>
-                                            </>
-                                        ),
-                                    }}
-                                    disabled={!formValues.Programs}
+                                    helperText='如果未找到项目，请前往项目信息表手动添加'
                                 />
                             }
                             options={finalOptions}
@@ -533,8 +517,8 @@ function BasicInfo({formValues, handleNext, handleChange, actionType}) {
                                 return option.value === formValues.Final;
                             }) : null}
                             onChange={(event, newInputValue) => {
-                                    handleChange(event, newInputValue?.value, "Final")
-                                }}
+                                handleChange(event, newInputValue?.value, "Final")
+                            }}
                         />
                     </Grid2>
                 </Grid2>

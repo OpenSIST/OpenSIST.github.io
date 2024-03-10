@@ -3,7 +3,7 @@ import "./StatusBlock.css";
 import React, {useContext, useEffect} from "react";
 import localforage from "localforage";
 import {getAvatar, getDisplayName, getMetaData, logout, useUser} from "../../../Data/UserData";
-import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, useTheme} from "@mui/material";
+import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography, useTheme} from "@mui/material";
 import {AccountBox, LockReset, Logout} from "@mui/icons-material";
 import {blue} from "@mui/material/colors";
 import {ThemeContext} from "../../../index";
@@ -11,11 +11,11 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 export async function loader() {
-    console.time("HomeLoader")
+    // console.time("HomeLoader")
     const displayName = await getDisplayName();
     const metaData = await getMetaData();
     const avatarUrl = await getAvatar(metaData?.Avatar);
-    console.timeEnd("HomeLoader")
+    // console.timeEnd("HomeLoader")
     return {displayName, avatarUrl};
 }
 
@@ -103,7 +103,7 @@ export function StatusBlock() {
                     <ListItemIcon>
                         <AccountBox fontSize="small"/>
                     </ListItemIcon>
-                    Profile
+                    <Typography>Profile</Typography>
                 </MenuItem>
                 <MenuItem to="/reset" component={Link} onClick={handleClose}>
                     <ListItemIcon>

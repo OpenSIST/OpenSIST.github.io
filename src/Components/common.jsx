@@ -46,11 +46,10 @@ export function CollapseSideBar({children, sx}) {
                     zIndex: (smallPage ? 1201 : 1),
                     ...sx,
                     '& .MuiDrawer-paper': {
-                        borderRadius: '0 5px 5px 0',
+                        borderRadius: (smallPage ? '0 5px 5px 0' : '5px'),
                         border: 'none',
                         position: (smallPage ? 'absolute' : 'initial'),
                         top: '60px',
-                        borderRadius: '5px',
                         overflowY: 'auto',
                         boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);",
                         ...(sx['& .MuiDrawer-paper'] ?? {})

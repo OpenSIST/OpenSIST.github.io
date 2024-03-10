@@ -20,11 +20,11 @@ import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
-import {Checkbox} from 'primereact/checkbox';
+import {TriStateCheckbox} from 'primereact/tristatecheckbox';
 import {Dropdown} from "primereact/dropdown";
 
 export async function loader() {
-    console.time("DataPointsLoader")
+    // console.time("DataPointsLoader")
     let programs = await getPrograms();
     programs = Object.values(programs).flat().filter(program => program.Applicants.length > 0);
     const recordIDs = programs.map(program => program.Applicants.map(applicant => applicant + "|" + program.ProgramID)).flat();
@@ -32,9 +32,18 @@ export async function loader() {
     records = records.map(record => {
         record['Season'] = record.ProgramYear + " " + record.Semester;
         return record;
-    })
+    });
+    records = records.sort((a, b) => {
+        if (programs.indexOf(a.ProgramID) > programs.indexOf(b.ProgramID)) {
+            return -1;
+        } else if (programs.indexOf(a.ProgramID) < programs.indexOf(b.ProgramID)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
 
-    console.timeEnd("DataPointsLoader")
+    // console.timeEnd("DataPointsLoader")
     return {records};
 }
 
@@ -74,7 +83,6 @@ export function ApplicantProfileInDataPoints() {
 export function ProgramContentInDataPoints() {
     const navigate = useNavigate();
     const params = useParams();
-    console.log(params)
     const programID = params.programId;
     const {programContent} = useLoaderData();
     return (
@@ -219,7 +227,8 @@ export default function DataPoints() {
     };
 
     const FinalRowFilterTemplate = (options) => {
-        return <Checkbox onChange={(e) => options.filterApplyCallback(e.checked)} checked={options.value}/>;
+        // return <Checkbox onChange={(e) => options.filterApplyCallback(e.checked)} checked={options.value}/>;
+        return <TriStateCheckbox onChange={(e) => options.filterApplyCallback(e.value)} value={options.value}/>
     };
 
     FilterService.register('custom_Season', (value, filters) => {
@@ -261,9 +270,8 @@ export default function DataPoints() {
                     dataKey='RecordID'
                     rowGroupMode="subheader"
                     groupRowsBy="ProgramID"
-                    sortMode='single'
-                    sortField='ProgramID'
-                    sortOrder={1}
+                    sortMode='multiple'
+                    multiSortMeta={[{field: 'ProgramID', order: 0}, {field: 'Season', order: -1}]}
                     size='small'
                     scrollable
                     scrollHeight="100%"

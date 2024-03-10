@@ -53,6 +53,7 @@ import {
     action as ProfileApplicantAction, ProfileApplicantPage
 } from "./Components/Profile/ProfileApplicant/ProfileApplicantPage";
 import AddModifyApplicant, {
+    loader as addModifyApplicantLoader,
     action as addModifyApplicantAction
 } from "./Components/Modify/Applicant/AddModifyApplicant";
 import AddModifyRecord, {
@@ -161,6 +162,7 @@ function OpenSIST() {
                                         }, {
                                             path: '/profile/new-applicant',
                                             element: <AddModifyApplicant key='new' type='new'/>,
+                                            loader: addModifyApplicantLoader,
                                             action: addModifyApplicantAction
                                         }, {
                                             path: '/profile/:applicantId/new-record',

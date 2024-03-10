@@ -5,13 +5,14 @@ import {Form, Link, useLoaderData} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 import {IconButton, Typography} from "@mui/material";
 import {Edit, Refresh} from "@mui/icons-material";
+import remarkGfm from 'remark-gfm'
 
 export async function loader({params}) {
-    console.time("ProgramContentLoader")
+    // console.time("ProgramContentLoader")
     const programId = params.programId;
     try {
         const programContent = await getProgramContent(programId);
-        console.timeEnd("ProgramContentLoader")
+        // console.timeEnd("ProgramContentLoader")
         return {programContent};
     } catch (e) {
         throw e;
@@ -43,6 +44,7 @@ function ProgramContent({editable = true}) {
                 </div> : null}
             </div>
             <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
                 className='ProgramDescription'
             >
                 {programContent.description}

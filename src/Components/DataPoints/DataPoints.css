@@ -1,8 +1,9 @@
 .DataPointsContent {
-    width: 100%;
+    width: 90%;
     margin: 1rem;
+    overflow-x: auto;
     user-select: text;
-    height: 1700px;
+    height: calc(100% - 2rem);
     display: flex;
     flex-direction: column;
 }
@@ -43,6 +44,10 @@
 .p-multiselect-items.p-component,
 .p-dropdown-items {
     padding: 0;
+}
+
+.p-sortable-column-badge {
+    display: none;
 }
 
 .p-column-filter-clear-button.p-link.p-hidden-space,

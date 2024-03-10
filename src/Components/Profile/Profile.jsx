@@ -18,12 +18,12 @@ import {Add, ConnectWithoutContact, Delete, Edit, Refresh} from "@mui/icons-mate
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 export async function loader() {
-    console.time("ProfileLoader")
+    // console.time("ProfileLoader")
     const displayName = await getDisplayName();
     const metaData = await getMetaData();
     const avatarUrl = await getAvatar(metaData?.Avatar);
     const user = await localforage.getItem('user');
-    console.timeEnd("ProfileLoader")
+    // console.timeEnd("ProfileLoader")
     return {displayName, metaData, avatarUrl, user};
 }
 
@@ -32,7 +32,6 @@ export async function action({request}) {
     const actionType = formData.get('button');
     if (actionType === 'EditAvatar') {
         const avatar = formData.get('avatar');
-        console.log(avatar);
         await uploadAvatar(avatar);
         return redirect(window.location.href);
     } else if (actionType === 'ToggleAnonymous') {
@@ -129,9 +128,6 @@ export function ProfileIndex() {
                         </li>
                         <li>
                             申请人每添加一条申请记录，该申请记录都会实时更新到申请季数据汇总表当中。
-                        </li>
-                        <li>
-                            可点击每个卡片的项目名跳转到项目信息表当中查看该项目的详细信息。
                         </li>
                         <li>
                             <InlineTypography>

@@ -5,7 +5,7 @@ import {
     Dialog, DialogActions, DialogContent,
     DialogContentText, DialogTitle, List, ListItem,
     ListItemIcon, ListItemText, TextField,
-    Paper, Slider, styled, Typography, Divider, Tooltip, Input, ButtonGroup
+    Paper, Slider, styled, Typography, Divider, Tooltip, Input, ButtonGroup,
 } from "@mui/material";
 import {Add, Delete, Edit, Refresh} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
@@ -43,8 +43,20 @@ import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
 import {getAvatar, getDisplayName, getMetaData} from "../../../Data/UserData";
 import {grey} from "@mui/material/colors";
 
+import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
+import {HomeRounded, LinkedIn, Link as LinkIcon} from "@mui/icons-material";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+
+const contactIcons = {
+    "QQ": faQq,
+    "WeChat": faWeixin,
+    "LinkedIn": LinkedIn,
+    "HomePage": HomeRounded,
+    "OtherLink": LinkIcon
+}
+
 export async function loader({params}) {
-    console.time("ProfileApplicantLoader")
+    // console.time("ProfileApplicantLoader")
     const applicantId = params.applicantId;
     const isAuth = await isAuthApplicant(applicantId);
     if (!isAuth) {
@@ -60,9 +72,10 @@ export async function loader({params}) {
         const displayName = applicant.ApplicantID.split('@')[0];
         const records = await getRecordByApplicant(applicantId);
         const metaData = await getMetaData(displayName);
-        const contact = metaData?.Contact;
+        // const contact = JSON.stringify(metaData?.Contact);
+        const contact = metaData.Contact;
         const avatarUrl = await getAvatar(metaData?.Avatar, displayName);
-        console.timeEnd("ProfileApplicantLoader")
+        // console.timeEnd("ProfileApplicantLoader")
         return {avatarUrl, contact, applicant, records};
     } catch (e) {
         throw e;
@@ -169,7 +182,8 @@ export function ProfileApplicantPage({editable = false}) {
                 bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
             }}
         >
-            <BasicInfoBlock avatarUrl={avatarUrl} contact={contact} applicant={applicant} records={records} editable={editable}/>
+            <BasicInfoBlock avatarUrl={avatarUrl} contact={contact} applicant={applicant} records={records}
+                            editable={editable}/>
             <RecordBlock Records={records} ApplicantID={applicant.ApplicantID} editable={editable}/>
             <ExchangeBlock Exchanges={applicant?.Exchange}/>
             <ResearchBlock Researches={applicant?.Research}/>
@@ -226,7 +240,7 @@ function ControlButtonGroup({applicantId, records}) {
                 <DialogTitle>是否要删除{applicantId}？</DialogTitle>
                 <DialogContent>
                     <DialogContentText color='error'>
-                        {Object.keys(records).length === 0 ? '此操作会将申请人信息全部删除，且无法恢复，请谨慎！': '在删除之前，请确保您已经删除了所有附属的申请记录！'}
+                        {Object.keys(records).length === 0 ? '此操作会将申请人信息全部删除，且无法恢复，请谨慎！' : '在删除之前，请确保您已经删除了所有附属的申请记录！'}
                     </DialogContentText>
                     {Object.keys(records).length === 0 ?
                         <>
@@ -268,17 +282,17 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
         isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
     }, [applicant.ApplicantID]);
     const isValidUrl = (urlString) => {
-        const urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
-            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
-            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
-            '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
+        const urlPattern = new RegExp('^(https?:\\/\\/)?' + // validate protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // validate domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // validate OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // validate port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // validate query string
+            '(\\#[-a-z\\d_]*)?$', 'i'); // validate fragment locator
         return !!urlPattern.test(urlString);
     }
     return (
         <BaseItemBlock className="BasicInfoBlock" checkpointProps={{xs: 12}} spacing={2}>
-            <Grid2 container xs={12} sm={5} md={6} lg={5} xl={3}>
+            <Grid2 container xs={12} sm={5} md={6} lg={5} xl={4}>
                 <ContentCenteredGrid>
                     <Badge
                         badgeContent={<GenderIcon gender={applicant.Gender}/>}
@@ -304,16 +318,34 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                         </Typography>
                     </ContentCenteredGrid>
                     <ContentCenteredGrid xs={12}>
-                        {editable && isAuth ? <ControlButtonGroup applicantId={applicant.ApplicantID} records={records}/> : null}
+                        {editable && isAuth ?
+                            <ControlButtonGroup applicantId={applicant.ApplicantID} records={records}/> : null}
                     </ContentCenteredGrid>
                 </Grid2>
-                <ContentCenteredGrid xs={12} sx={{gap: "1rem"}}>
+                <ContentCenteredGrid xs={12}>
                     <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>
                         联系方式:
                     </Typography>
-                    <Typography variant="subtitle1">
-                        {(!contact || contact === '') ? "暂无" : isValidUrl(contact) ? <Link to={`${contact}`}>{contact}</Link> : contact}
-                    </Typography>
+                    <ButtonGroup>
+                        {Object.entries(contact).length ? Object.entries(contact).map(([key, value]) => {
+                            const Icon = contactIcons[key];
+                            if (value === "") {
+                                return null;
+                            }
+                            return (
+                                <Tooltip title={key} key={key} arrow>
+                                    <IconButton
+                                        onClick={async () => {
+                                            await navigator.clipboard.writeText(value)
+                                            alert(`已复制${value}到剪贴板！`)
+                                        }}
+                                    >
+                                        {["QQ", "WeChat"].includes(key) ? <FontAwesomeIcon icon={Icon}/> : <Icon fontSize="large"/>}
+                                    </IconButton>
+                                </Tooltip>
+                            )
+                        }) : "暂无"}
+                    </ButtonGroup>
                 </ContentCenteredGrid>
                 <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
                     <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>
@@ -322,7 +354,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                     <Chip label={applicant.Final === "" ? "暂无/未知" : applicant.Final}/>
                 </ContentCenteredGrid>
             </Grid2>
-            <Grid2 container xs={12} sm={7} md={6} lg={7} xl={9}>
+            <Grid2 container xs={12} sm={7} md={6} lg={7} xl={8}>
                 <EnglishExamBlock EnglishProficiency={applicant?.EnglishProficiency}/>
                 <GREBlock GRE={applicant?.GRE}/>
             </Grid2>
@@ -357,7 +389,8 @@ function GradeBar({ranking, GPA}) {
     return (
         <Grid2 container xs={12} spacing={2}>
             <ContentCenteredGrid xs={12} sx={{mb: '0.5rem'}}>
-                <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>申请时最高学位GPA以及对应学院/专业排名：</Typography>
+                <Typography variant="subtitle1"
+                            sx={{fontWeight: 'bold'}}>申请时最高学位GPA以及对应学院/专业排名：</Typography>
             </ContentCenteredGrid>
             <ContentCenteredGrid xs={12}>
                 <Slider
@@ -659,7 +692,7 @@ function RecordBlock({Records, ApplicantID, editable}) {
                                 Icon={<Chip label={record.Status} color={RecordStatusPaltette[record.Status]}/>}
                                 primary={
                                     <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                                        <Link to={`/programs/${record.ProgramID}`}>{record.ProgramID}</Link>
+                                        {record.ProgramID}
                                         {
                                             editable ?
                                                 <ButtonGroup>

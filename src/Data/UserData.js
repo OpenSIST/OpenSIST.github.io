@@ -273,6 +273,7 @@ export async function toggleAnonymous() {
 }
 
 export async function updateContact(contact) {
+    contact = JSON.parse(contact);
     const response = await fetch(UPDATE_CONTACT, {
         method: 'POST',
         credentials: "include",
