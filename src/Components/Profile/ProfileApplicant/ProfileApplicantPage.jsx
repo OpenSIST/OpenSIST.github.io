@@ -138,12 +138,12 @@ function BaseItemBlock({children, className, checkpointProps, spacing = 0, eleva
 function BaseListItem({Icon, primary, secondary}) {
     return (
         <ListItem alignItems="flex-start" sx={{gap: '1rem'}}>
-            <ListItemIcon>
+            <ListItemIcon sx={{minWidth: '2rem'}}>
                 {Icon}
             </ListItemIcon>
             <ListItemText
                 primary={
-                    <Typography variant='h5' sx={{fontWeight: 'bold'}}>
+                    <Typography variant='h6' sx={{fontWeight: 'bold', color: 'black'}}>
                         {primary}
                     </Typography>
                 }
