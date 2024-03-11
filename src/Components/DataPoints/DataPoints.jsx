@@ -21,7 +21,7 @@ import {InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import {TriStateCheckbox} from 'primereact/tristatecheckbox';
 import {Dropdown} from "primereact/dropdown";
-import Draggable, {DraggableCore} from "react-draggable";
+import Draggable from "react-draggable";
 
 export async function loader() {
     // console.time("DataPointsLoader")
