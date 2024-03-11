@@ -241,7 +241,7 @@ function ControlButtonGroup({applicantId, records, editable}) {
         <>
             <Form method='post'>
                 <Tooltip title='刷新申请人信息' arrow>
-                    <IconButton type='submit' variant="outlined" name='ActionType' value='Refresh'>
+                    <IconButton type='submit' variant="outlined" name='ActionType' value='Refresh' sx={{pl: 0}}>
                         <Refresh/>
                     </IconButton>
                 </Tooltip>
@@ -316,17 +316,20 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                         overlap='circular'
                         color="primary"
                     >
-                        <Avatar src={avatarUrl} sx={{width: 100, height: 100}}/>
+                        <Avatar src={avatarUrl}
+                                sx={{width: "7rem", height: "7rem"}}
+                                // sx={{width: "100px", height: "100px"}}
+                        />
                     </Badge>
                 </ContentCenteredGrid>
                 <Grid2 container xs spacing={0}>
                     <ContentCenteredGrid xs={12}>
-                        <Typography variant="h5" color="primary" sx={{fontWeight: 'bold', pl: '8px'}}>
-                            {applicant.ApplicantID}
+                        <Typography variant="h5" color="primary" sx={{fontWeight: 'bold'}}>
+                            {applicant.ApplicantID.replace("@", " ")}
                         </Typography>
                     </ContentCenteredGrid>
                     <ContentCenteredGrid xs={12}>
-                        <Typography variant="subtitle1" sx={{pl: '8px', pt: '8px'}}>
+                        <Typography variant="subtitle1" sx={{pt: '8px'}}>
                             {`${applicant.Major} ${currentDegreeMapping[applicant.CurrentDegree]}`}
                         </Typography>
                     </ContentCenteredGrid>
