@@ -23,7 +23,7 @@ import "./ProfileHeader.css";
 import {Form, Link} from "react-router-dom";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import {ConnectWithoutContact, Edit, Refresh, HomeRounded, LinkedIn, Link as LinkIcon} from "@mui/icons-material";
+import {ConnectWithoutContact, Edit, Refresh, HomeRounded, LinkedIn, Link as LinkIcon, Mail} from "@mui/icons-material";
 import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
 import React, {useState} from "react";
@@ -181,6 +181,8 @@ export function ProfileHeader({loaderData}) {
                         <Grid2 container spacing={2}>
                             <Grid2 container xs={12}>
                                 <ContactField field='HomePage' label='个人主页' icon={<HomeRounded/>} contact={contact}
+                                              setContact={setContact}/>
+                                <ContactField field='Email' label='邮箱' icon={<Mail/>} contact={contact}
                                               setContact={setContact}/>
                                 <ContactField label='LinkedIn' field='LinkedIn' icon={<LinkedIn/>} contact={contact}
                                               setContact={setContact}/>

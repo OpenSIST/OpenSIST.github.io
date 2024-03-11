@@ -5,13 +5,12 @@ import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByRecordIDs} from "../../Data/RecordData";
 import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
     Accordion, AccordionDetails, AccordionSummary,
-    ButtonGroup,
     Chip, Dialog, DialogActions,
-    DialogContent,
-    IconButton, Paper, Tooltip, useTheme,
+    DialogContent, Fab,
+    IconButton, Paper, Tooltip, Typography, useTheme,
 } from "@mui/material";
 import {Check, Close, Explore, FilterAltOff, OpenInFull, Refresh} from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
@@ -22,6 +21,7 @@ import {InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import {TriStateCheckbox} from 'primereact/tristatecheckbox';
 import {Dropdown} from "primereact/dropdown";
+import Draggable from "react-draggable";
 
 export async function loader() {
     // console.time("DataPointsLoader")
@@ -33,14 +33,9 @@ export async function loader() {
         record['Season'] = record.ProgramYear + " " + record.Semester;
         return record;
     });
+    programs = programs.map(program => program.ProgramID);
     records = records.sort((a, b) => {
-        if (programs.indexOf(a.ProgramID) > programs.indexOf(b.ProgramID)) {
-            return -1;
-        } else if (programs.indexOf(a.ProgramID) < programs.indexOf(b.ProgramID)) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return programs.indexOf(a.ProgramID) - programs.indexOf(b.ProgramID);
     });
 
     // console.timeEnd("DataPointsLoader")
@@ -117,10 +112,6 @@ export default function DataPoints() {
             Season: {value: null, matchMode: FilterMatchMode.CUSTOM},
             Final: {value: null, matchMode: FilterMatchMode.EQUALS}
         });
-    };
-
-    const clearFilter = () => {
-        initFilters();
     };
 
     const theme = useTheme();
@@ -216,7 +207,7 @@ export default function DataPoints() {
     const programBodyTemplate = (rowData) => {
         return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <Tooltip title={rowData.ProgramID} arrow>
-                <Chip label={rowData.ProgramID} sx={{maxWidth: "10rem"}}/>
+                <Chip label={rowData.ProgramID} sx={{maxWidth: "9rem"}}/>
             </Tooltip>
             <Tooltip title='查看项目描述' arrow>
                 <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
@@ -240,26 +231,7 @@ export default function DataPoints() {
         return value.includes(filters);
     })
 
-    const renderHeader = () => {
-        return (
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <ButtonGroup>
-                    <Tooltip title="重置所有筛选" arrow>
-                        <IconButton onClick={clearFilter}>
-                            <FilterAltOff/>
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="刷新数据" arrow>
-                        <Form method='post'>
-                            <IconButton type='submit'>
-                                <Refresh/>
-                            </IconButton>
-                        </Form>
-                    </Tooltip>
-                </ButtonGroup>
-            </div>
-        );
-    };
+    const nodeRef = useRef(null);
 
     return (
         <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap}>
@@ -281,7 +253,6 @@ export default function DataPoints() {
                     filters={filters}
                     filterDisplay='row'
                     emptyMessage="未找到任何匹配内容"
-                    header={renderHeader}
                     className='DataTableStyle'
                 >
                     <Column
@@ -358,13 +329,23 @@ export default function DataPoints() {
                     />
                     <Column
                         field='Detail'
-                        header='备注、补充说明'
+                        header='备注、补充说明等'
                         style={{width: '25rem', minWidth: '15rem'}}
                     />
                 </DataTable>
                 <Outlet/>
             </Paper>
+            <Form method='post' style={{position: 'absolute', bottom: '1rem', right: "1rem"}}>
+                <Draggable nodeRef={nodeRef} cancel=".dfsd">
+                    <Tooltip title="刷新表格" arrow ref={nodeRef} id="FAB">
+                        <Fab type='submit' color='primary'>
+                            <Refresh className="dfsd"/>
+                        </Fab>
+                    </Tooltip>
+                </Draggable>
+            </Form>
         </ThemeSwitcherProvider>
+
     )
 }
 
