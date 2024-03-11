@@ -120,6 +120,20 @@ export async function action({params, request}) {
     }
 }
 
+export async function DataPointsAction({params, request}) {
+    const formData = await request.formData();
+    const actionType = formData.get('ActionType');
+    const applicantId = params.applicantId;
+    if (actionType === 'Refresh') {
+        const displayName = applicantId.split("@")[0];
+        await getApplicant(applicantId, true);
+        await getRecordByApplicant(applicantId, true);
+        const metaData = await getMetaData(displayName, true);
+        await getAvatar(metaData?.Avatar, displayName, true);
+        return redirect(`/datapoints/applicant/${applicantId}`);
+    }
+}
+
 const ContentCenteredGrid = styled(Grid2)(() => ({
     display: 'flex',
     alignItems: 'center',
@@ -210,7 +224,7 @@ function GenderIcon({gender}) {
     }
 }
 
-function ControlButtonGroup({applicantId, records}) {
+function ControlButtonGroup({applicantId, records, editable}) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
@@ -228,16 +242,18 @@ function ControlButtonGroup({applicantId, records}) {
                     </IconButton>
                 </Tooltip>
             </Form>
-            <Tooltip title='更改申请人信息' arrow>
-                <IconButton component={Link} to={`/profile/${applicantId}/edit`}>
-                    <Edit/>
-                </IconButton>
-            </Tooltip>
-            <Tooltip title='删除申请人' arrow>
-                <IconButton onClick={handleOpen} color='error'>
-                    <Delete/>
-                </IconButton>
-            </Tooltip>
+            {editable ? <>
+                <Tooltip title='更改申请人信息' arrow>
+                    <IconButton component={Link} to={`/profile/${applicantId}/edit`}>
+                        <Edit/>
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title='删除申请人' arrow>
+                    <IconButton onClick={handleOpen} color='error'>
+                        <Delete/>
+                    </IconButton>
+                </Tooltip>
+            </> : null}
             <Dialog open={open} onClose={() => setOpen(false)}>
                 <DialogTitle>是否要删除{applicantId}？</DialogTitle>
                 <DialogContent>
@@ -320,8 +336,8 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                         </Typography>
                     </ContentCenteredGrid>
                     <ContentCenteredGrid xs={12}>
-                        {editable && isAuth ?
-                            <ControlButtonGroup applicantId={applicant.ApplicantID} records={records}/> : null}
+                        <ControlButtonGroup applicantId={applicant.ApplicantID} records={records}
+                                            editable={editable && isAuth}/>
                     </ContentCenteredGrid>
                 </Grid2>
                 <ContentCenteredGrid xs={12}>
@@ -342,7 +358,8 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                                             alert(`已复制${value}到剪贴板！`)
                                         }}
                                     >
-                                        {["QQ", "WeChat"].includes(key) ? <FontAwesomeIcon icon={Icon}/> : <Icon fontSize="large"/>}
+                                        {["QQ", "WeChat"].includes(key) ? <FontAwesomeIcon icon={Icon}/> :
+                                            <Icon fontSize="large"/>}
                                     </IconButton>
                                 </Tooltip>
                             )
