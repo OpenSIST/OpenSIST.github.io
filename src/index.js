@@ -50,6 +50,7 @@ import {loader as HomeLoader, action as HomeAction} from "./Components/TopBar/St
 import {
     loader as ProfileApplicantLoader,
     DataPointsLoader as ProfileDataPointsLoader,
+    DataPointsAction as ProfileDataPointsAction,
     action as ProfileApplicantAction, ProfileApplicantPage
 } from "./Components/Profile/ProfileApplicant/ProfileApplicantPage";
 import AddModifyApplicant, {
@@ -134,6 +135,7 @@ function OpenSIST() {
                                             path: '/datapoints/applicant/:applicantId',
                                             element: <ApplicantProfileInDataPoints/>,
                                             loader: ProfileDataPointsLoader,
+                                            action: ProfileDataPointsAction,
                                         }, {
                                             path: '/datapoints/program/:programId',
                                             element: <ProgramContentInDataPoints/>,
