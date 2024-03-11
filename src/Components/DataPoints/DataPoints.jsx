@@ -253,7 +253,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     align='center'
                     filterPlaceholder="搜索申请人"
                     className="ApplicantIDColumn"
-                    style={{width: '10rem'}}
+                    style={{minWidth: '10rem'}}
                 />
                 {insideProgramPage ? null : <Column
                     field='ProgramID'
