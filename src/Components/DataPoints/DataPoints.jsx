@@ -7,7 +7,7 @@ import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "rea
 import './DataPoints.css';
 import React, {useEffect, useRef, useState} from "react";
 import {
-    Accordion, AccordionDetails, AccordionSummary,
+    Accordion, AccordionDetails, AccordionSummary, Box,
     Chip, Dialog, DialogActions,
     DialogContent, Fab,
     IconButton, Paper, Tooltip, Typography, useTheme,
@@ -21,7 +21,7 @@ import {InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import {TriStateCheckbox} from 'primereact/tristatecheckbox';
 import {Dropdown} from "primereact/dropdown";
-import Draggable from "react-draggable";
+import Draggable, {DraggableCore} from "react-draggable";
 
 export async function loader() {
     // console.time("DataPointsLoader")
@@ -233,6 +233,8 @@ export default function DataPoints() {
 
     const nodeRef = useRef(null);
 
+    const dragStartPositionXYRef = useRef({ x: 0, y: 0 });
+
     return (
         <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap}>
             <Paper className="DataPointsContent">
@@ -335,18 +337,36 @@ export default function DataPoints() {
                 </DataTable>
                 <Outlet/>
             </Paper>
-            <Form method='post' style={{position: 'absolute', bottom: '1rem', right: "1rem"}}>
-                <Draggable nodeRef={nodeRef} cancel=".dfsd">
-                    <Tooltip title="刷新表格" arrow ref={nodeRef} id="FAB">
-                        <Fab type='submit' color='primary'>
-                            <Refresh className="dfsd"/>
-                        </Fab>
-                    </Tooltip>
+            <Box method='post' style={{position: 'absolute', bottom: '20%', right: "1rem"}}>
+                <Draggable
+                    nodeRef={nodeRef}
+                    onStart={(event, data) => {
+                        dragStartPositionXYRef.current = { x: data.x, y: data.y };
+                    }}
+                    onStop={(event, data) => {
+                        const THRESHOLD = 2;
+                        const { x, y } = dragStartPositionXYRef.current ?? { x: 0, y: 0 };
+                        const wasDragged = Math.abs(data.x - x) > THRESHOLD || Math.abs(data.y - y) > THRESHOLD;
+                        console.log(wasDragged, data.x - x, data.y - y)
+                        if (!wasDragged) {
+                            event.preventDefault();
+                            // document.querySelector(".MuiButtonBase-root.MuiFab-root.MuiFab-circular.MuiFab-sizeLarge.MuiFab-primary.MuiFab-root.MuiFab-circular.MuiFab-sizeLarge.MuiFab-primary.react-draggable").click()
+                            document.querySelector(".HiddenRefreshButton").click()
+                            console.log(document.querySelector(".HiddenRefreshButton"))
+                        }
+                    }}
+                >
+                    <Fab color='primary' ref={nodeRef}>
+                        <Refresh/>
+                    </Fab>
                 </Draggable>
+            </Box>
+            <Form method='post'>
+                <button type="submit" className="HiddenRefreshButton"/>
             </Form>
         </ThemeSwitcherProvider>
 
-    )
+)
 }
 
 function UsageGuidance() {
