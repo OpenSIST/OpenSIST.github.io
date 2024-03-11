@@ -1,7 +1,7 @@
 import {getPrograms} from "../../../Data/ProgramData";
 import React, {useState} from "react";
 import {addModifyRecord, getRecordByRecordIDs} from "../../../Data/RecordData";
-import {Box, Button, Input, Paper, TextField, Tooltip, Typography} from "@mui/material";
+import {Box, Button, Input, Link as MuiLink, Paper, TextField, Tooltip, Typography} from "@mui/material";
 import {Form, redirect, useLoaderData, useNavigate} from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -104,7 +104,7 @@ export default function AddModifyRecord({type}) {
                                                 label={`选择项目 ${type === 'edit' ? ' (不可修改)' : ''}`}
                                                 name='ProgramID'
                                                 size='small'
-                                                helperText='未找到项目？请先前往项目信息表添加项目'
+                                                helperText={<MuiLink href='/programs/new'>未找到项目？请点此前往添加项目信息</MuiLink>}
                                                 required
                                             />
                                     }

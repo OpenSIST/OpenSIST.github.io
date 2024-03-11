@@ -16,7 +16,6 @@ import program from "../../Assets/imgs/program.png";
 import {Link, useLoaderData} from "react-router-dom";
 import {Link as MuiLink} from '@mui/material';
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import {InlineTypography} from "../common";
 
 
 export function HowToUse() {
@@ -45,16 +44,17 @@ function Graduated({loaderData}) {
                 <h5><b>为了给SIST学弟学妹们提供更多海外申请的信息，我们希望你能做三件事情：</b></h5>
                 <ol>
                     <li>
-                        <b>添加自己的申请人信息（可选匿名）</b>，也就是你在申请海外院校时候的申请背景。考虑到有的人也许会申请两次，因此每个用户可添加多个申请人，以申请年份作区分。
+                        <b>贡献自己申请时的背景（可选匿名）</b>。考虑到有的人也许会有多于一年的申请经历，因此每个用户可添加多个申请人，以申请年份作区分。
                     </li>
                     <li>
-                        <b>添加自己的申请记录</b>，也就是你申请的各个项目的admit/reject的结果，最终呈现出来的就像在一亩三分地或opencs上浏览申请结果一样。
+                        <b>贡献自己的申请记录</b>，也就是你申请的各个项目的admit/reject的结果，最终呈现出来的就像在一亩三分地或opencs上浏览申请结果一样。
                     </li>
                     <li>
-                        <b>添加或修改海外graduate program信息</b>，如果你对某些项目有着很深入的了解，我们希望你把你了解到的给写上，这样能为学弟学妹们提供更多insight。
+                        <b>贡献海外高校graduate program信息</b>，如果你对某些项目有着很深入的了解，我们希望你把你了解到的给写上，这样能为学弟学妹们提供更多insight。
                     </li>
                 </ol>
                 <h4><b>上面说的这三件事该咋做？</b></h4>
+                <h5>我们在下方提供了详细的图文教程，但是——</h5>
                 <h6><b>如果您懒得读和申请人相关的详细教程，可以直接前往<MuiLink
                     href='/profile/new-applicant'>添加申请人</MuiLink>。</b></h6>
                 <h6>

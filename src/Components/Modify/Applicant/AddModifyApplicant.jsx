@@ -146,7 +146,7 @@ export default function AddModifyApplicant({type}) {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    let applicantContent = useLoaderData()?.applicant;
+    let applicantContent = loaderData?.applicant;
     if (applicantContent) {
         applicantContent = {
             'Gender': applicantContent.Gender,
