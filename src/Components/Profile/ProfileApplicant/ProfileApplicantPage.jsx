@@ -44,7 +44,7 @@ import {getAvatar, getDisplayName, getMetaData} from "../../../Data/UserData";
 import {grey} from "@mui/material/colors";
 
 import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
-import {HomeRounded, LinkedIn, Link as LinkIcon} from "@mui/icons-material";
+import {HomeRounded, LinkedIn, Link as LinkIcon, Mail} from "@mui/icons-material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {getPrograms} from "../../../Data/ProgramData";
 
@@ -53,7 +53,8 @@ const contactIcons = {
     "WeChat": faWeixin,
     "LinkedIn": LinkedIn,
     "HomePage": HomeRounded,
-    "OtherLink": LinkIcon
+    "OtherLink": LinkIcon,
+    "Email": Mail
 }
 
 export async function loader({params}) {
@@ -358,8 +359,8 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                                             alert(`已复制${value}到剪贴板！`)
                                         }}
                                     >
-                                        {["QQ", "WeChat"].includes(key) ? <FontAwesomeIcon icon={Icon}/> :
-                                            <Icon fontSize="large"/>}
+                                        {["QQ", "WeChat"].includes(key) ? <FontAwesomeIcon icon={Icon} fontSize='medium'/> :
+                                            <Icon/>}
                                     </IconButton>
                                 </Tooltip>
                             )

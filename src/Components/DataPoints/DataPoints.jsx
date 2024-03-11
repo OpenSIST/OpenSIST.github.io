@@ -5,12 +5,11 @@ import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByRecordIDs} from "../../Data/RecordData";
 import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
-    Accordion, AccordionDetails, AccordionSummary,
-    ButtonGroup,
+    Accordion, AccordionDetails, AccordionSummary, Box,
     Chip, Dialog, DialogActions,
-    DialogContent,
+    DialogContent, Fab,
     IconButton, Paper, Tooltip, useTheme,
 } from "@mui/material";
 import {Check, Close, Explore, FilterAltOff, OpenInFull, Refresh} from "@mui/icons-material";
@@ -22,6 +21,7 @@ import {InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import {TriStateCheckbox} from 'primereact/tristatecheckbox';
 import {Dropdown} from "primereact/dropdown";
+import Draggable from "react-draggable";
 
 export async function loader() {
     // console.time("DataPointsLoader")
@@ -29,18 +29,9 @@ export async function loader() {
     programs = Object.values(programs).flat().filter(program => program.Applicants.length > 0);
     const recordIDs = programs.map(program => program.Applicants.map(applicant => applicant + "|" + program.ProgramID)).flat();
     let records = Object.values(await getRecordByRecordIDs(recordIDs));
-    records = records.map(record => {
-        record['Season'] = record.ProgramYear + " " + record.Semester;
-        return record;
-    });
+    programs = programs.map(program => program.ProgramID);
     records = records.sort((a, b) => {
-        if (programs.indexOf(a.ProgramID) > programs.indexOf(b.ProgramID)) {
-            return -1;
-        } else if (programs.indexOf(a.ProgramID) < programs.indexOf(b.ProgramID)) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return programs.indexOf(a.ProgramID) - programs.indexOf(b.ProgramID);
     });
 
     // console.timeEnd("DataPointsLoader")
@@ -100,9 +91,14 @@ export function ProgramContentInDataPoints() {
     )
 }
 
-export default function DataPoints() {
-    const {records} = useLoaderData();
+export function DataGrid({records, insideProgramPage, style = {}}) {
     const navigate = useNavigate();
+    const theme = useTheme();
+    const themeMap = {
+        light: "/TableLight.css",
+        dark: "/TableDark.css"
+    };
+
     const [filters, setFilters] = useState(null);
     useEffect(() => {
         initFilters();
@@ -118,16 +114,6 @@ export default function DataPoints() {
             Final: {value: null, matchMode: FilterMatchMode.EQUALS}
         });
     };
-
-    const clearFilter = () => {
-        initFilters();
-    };
-
-    const theme = useTheme();
-    const themeMap = {
-        light: "./TableLight.css",
-        dark: "./TableDark.css"
-    }
     const getStatusColor = (status) => {
         switch (status) {
             case 'Reject':
@@ -216,7 +202,7 @@ export default function DataPoints() {
     const programBodyTemplate = (rowData) => {
         return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <Tooltip title={rowData.ProgramID} arrow>
-                <Chip label={rowData.ProgramID} sx={{maxWidth: "10rem"}}/>
+                <Chip label={rowData.ProgramID} sx={{maxWidth: "9rem"}}/>
             </Tooltip>
             <Tooltip title='查看项目描述' arrow>
                 <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
@@ -240,130 +226,105 @@ export default function DataPoints() {
         return value.includes(filters);
     })
 
-    const renderHeader = () => {
-        return (
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <ButtonGroup>
-                    <Tooltip title="重置所有筛选" arrow>
-                        <IconButton onClick={clearFilter}>
-                            <FilterAltOff/>
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="刷新数据" arrow>
-                        <Form method='post'>
-                            <IconButton type='submit'>
-                                <Refresh/>
-                            </IconButton>
-                        </Form>
-                    </Tooltip>
-                </ButtonGroup>
-            </div>
-        );
-    };
-
     return (
         <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap}>
-            <Paper className="DataPointsContent">
-                <UsageGuidance/>
-                <DataTable
-                    value={records}
-                    dataKey='RecordID'
-                    rowGroupMode="subheader"
-                    groupRowsBy="ProgramID"
-                    sortMode='multiple'
-                    multiSortMeta={[{field: 'ProgramID', order: 0}, {field: 'Season', order: -1}]}
-                    size='small'
-                    scrollable
-                    scrollHeight="100%"
-                    rowGroupHeaderTemplate={groupSubheaderTemplate}
-                    rowHover
-                    showGridlines
-                    filters={filters}
-                    filterDisplay='row'
-                    emptyMessage="未找到任何匹配内容"
-                    header={renderHeader}
-                    className='DataTableStyle'
-                >
-                    <Column
-                        field='ApplicantID'
-                        header='申请人'
-                        body={applicantBodyTemplate}
-                        filter
-                        align='center'
-                        filterPlaceholder="搜索申请人"
-                        className="ApplicantIDColumn"
-                        style={{width: '10rem'}}
-                    />
-                    <Column
-                        field='ProgramID'
-                        header='申请项目'
-                        body={programBodyTemplate}
-                        align='center'
-                        filter
-                        filterPlaceholder="搜索项目"
-                        className="ProgramIDColumn"
-                        style={{width: '12rem'}}
-                    />
-                    <Column
-                        field='Status'
-                        header='申请结果'
-                        body={statusBodyTemplate}
-                        align='center'
-                        filter
-                        filterElement={statusFilterTemplate}
-                        className="StatusColumn"
-                        style={{width: '6rem'}}
-                    />
-                    <Column
-                        field='Final'
-                        header='最终去向'
-                        body={finalBodyTemplate}
-                        dataType="boolean"
-                        filter
-                        align='center'
-                        filterElement={FinalRowFilterTemplate}
-                        className="FinalColumn"
-                        style={{minWidth: '6rem'}}
-                    />
-                    <Column
-                        field='Season'
-                        header='申请季'
-                        filter
-                        align='center'
-                        filterPlaceholder="搜索申请季"
-                        body={programPeriodBodyTemplate}
-                        className="SeasonColumn"
-                        style={{minWidth: '8rem'}}
-                    />
-                    <Column
-                        field='TimeLine.Decision'
-                        header='结果通知时间'
-                        align='center'
-                        body={timelineBodyTemplate}
-                        style={{minWidth: '9rem'}}
-                    />
-                    <Column
-                        field='TimeLine.Interview'
-                        header='面试时间'
-                        align='center'
-                        body={timelineBodyTemplate}
-                        style={{minWidth: '8rem'}}
-                    />
-                    <Column
-                        field='TimeLine.Submit'
-                        header='网申提交时间'
-                        align='center'
-                        body={timelineBodyTemplate}
-                        style={{minWidth: '9rem'}}
-                    />
-                    <Column
-                        field='Detail'
-                        header='备注、补充说明'
-                        style={{width: '25rem', minWidth: '15rem'}}
-                    />
-                </DataTable>
-                <Outlet/>
-            </Paper>
+            <DataTable
+                value={records}
+                dataKey='RecordID'
+                rowGroupMode={insideProgramPage ? null : "subheader"}
+                groupRowsBy={insideProgramPage ? null : "ProgramID"}
+                sortMode={insideProgramPage ? 'single' : 'multiple'}
+                multiSortMeta={insideProgramPage ? null : [{field: 'ProgramID', order: 0}, {field: 'Season', order: -1}]}
+                size='small'
+                scrollable
+                scrollHeight="100%"
+                rowGroupHeaderTemplate={groupSubheaderTemplate}
+                rowHover
+                showGridlines
+                filters={insideProgramPage ? null : filters}
+                filterDisplay={insideProgramPage ? null : 'row'}
+                emptyMessage={insideProgramPage ? "该项目暂无申请记录" : "未找到任何匹配内容"}
+                className='DataTableStyle'
+                style={{...style}}
+            >
+                <Column
+                    field='ApplicantID'
+                    header='申请人'
+                    body={applicantBodyTemplate}
+                    filter={!insideProgramPage}
+                    align='center'
+                    filterPlaceholder="搜索申请人"
+                    className="ApplicantIDColumn"
+                    style={{width: '10rem'}}
+                />
+                {insideProgramPage ? null : <Column
+                    field='ProgramID'
+                    header='申请项目'
+                    body={programBodyTemplate}
+                    align='center'
+                    filter={!insideProgramPage}
+                    filterPlaceholder="搜索项目"
+                    className="ProgramIDColumn"
+                    style={{width: '12rem'}}
+                />}
+                <Column
+                    field='Status'
+                    header='申请结果'
+                    body={statusBodyTemplate}
+                    align='center'
+                    filter={!insideProgramPage}
+                    filterElement={statusFilterTemplate}
+                    className="StatusColumn"
+                    style={{minWidth: '6rem'}}
+                />
+                <Column
+                    field='Final'
+                    header='最终去向'
+                    body={finalBodyTemplate}
+                    dataType="boolean"
+                    filter={!insideProgramPage}
+                    align='center'
+                    filterElement={FinalRowFilterTemplate}
+                    className="FinalColumn"
+                    style={{minWidth: '6rem'}}
+                />
+                <Column
+                    field='Season'
+                    header='申请季'
+                    filter={!insideProgramPage}
+                    align='center'
+                    filterPlaceholder="搜索申请季"
+                    body={programPeriodBodyTemplate}
+                    className="SeasonColumn"
+                    style={{minWidth: '8rem'}}
+                />
+                <Column
+                    field='TimeLine.Decision'
+                    header='结果通知时间'
+                    align='center'
+                    body={timelineBodyTemplate}
+                    style={{minWidth: '9rem'}}
+                />
+                <Column
+                    field='TimeLine.Interview'
+                    header='面试时间'
+                    align='center'
+                    body={timelineBodyTemplate}
+                    style={{minWidth: '8rem'}}
+                />
+                <Column
+                    field='TimeLine.Submit'
+                    header='网申提交时间'
+                    align='center'
+                    body={timelineBodyTemplate}
+                    style={{minWidth: '9rem'}}
+                />
+                <Column
+                    field='Detail'
+                    header='备注、补充说明等'
+                    style={{width: '25rem', minWidth: '15rem'}}
+                />
+            </DataTable>
         </ThemeSwitcherProvider>
     )
 }
@@ -382,7 +343,8 @@ function UsageGuidance() {
                 <ol>
                     <li>
                         <InlineTypography>
-                            对于<b>申请人</b>和<b>申请项目</b>这两列，可点击单元格右侧<OpenInFull sx={{fontSize: "1rem"}}/>按钮查看申请人或项目的详细信息。
+                            对于<b>申请人</b>和<b>申请项目</b>这两列，可点击单元格右侧<OpenInFull
+                            sx={{fontSize: "1rem"}}/>按钮查看申请人或项目的详细信息。
                         </InlineTypography>
                     </li>
                     <li>本页面为只读模式，想要编辑自己的申请人信息或添加/删除/修改所申请的项目，请点击右上角头像下拉菜单中Profile页面编辑相应信息。</li>
@@ -400,4 +362,50 @@ function UsageGuidance() {
             </AccordionDetails>
         </Accordion>
     );
+}
+
+export default function DataPoints() {
+    const loaderRecords = useLoaderData();
+    const records = loaderRecords.records.map(record => {
+        record['Season'] = record.ProgramYear + " " + record.Semester;
+        return record;
+    });
+
+    const nodeRef = useRef(null);
+
+    const dragStartPositionXYRef = useRef({x: 0, y: 0});
+
+    return (
+        <>
+            <Paper className="DataPointsContent">
+                <UsageGuidance/>
+                <DataGrid records={records} insideProgramPage={false}/>
+                <Outlet/>
+            </Paper>
+            <Box method='post' style={{position: 'absolute', bottom: '20%', right: "1rem"}}>
+                <Draggable
+                    nodeRef={nodeRef}
+                    onStart={(event, data) => {
+                        dragStartPositionXYRef.current = {x: data.x, y: data.y};
+                    }}
+                    onStop={(event, data) => {
+                        const THRESHOLD = 2;
+                        const {x, y} = dragStartPositionXYRef.current ?? {x: 0, y: 0};
+                        const wasDragged = Math.abs(data.x - x) > THRESHOLD || Math.abs(data.y - y) > THRESHOLD;
+                        if (!wasDragged) {
+                            event.preventDefault();
+                            document.querySelector(".HiddenRefreshButton").click()
+                        }
+                    }}
+                >
+                    <Fab color='primary' ref={nodeRef}>
+                        <Refresh/>
+                    </Fab>
+                </Draggable>
+            </Box>
+            <Form method='post'>
+                <button type="submit" style={{display: "none"}} className="HiddenRefreshButton"/>
+            </Form>
+        </>
+    )
 }

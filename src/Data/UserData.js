@@ -38,7 +38,6 @@ export async function login(email, password) {
             expireAt: data.expireAt,
         }
         await setUserInfo(user_info);
-        await getDisplayName();
         return redirect("/");
     }
 }

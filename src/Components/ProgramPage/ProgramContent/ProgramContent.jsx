@@ -1,19 +1,24 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import './ProgramContent.css'
-import {Form, Link, useLoaderData} from "react-router-dom";
+import {Form, Link, redirect, useLoaderData} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
-import {IconButton, Typography} from "@mui/material";
+import {IconButton, Paper, Typography} from "@mui/material";
 import {Edit, Refresh} from "@mui/icons-material";
 import remarkGfm from 'remark-gfm'
+import {getRecordByProgram} from "../../../Data/RecordData";
+import {DataGrid} from "../../DataPoints/DataPoints";
+import {useSmallPage} from "../../common";
 
 export async function loader({params}) {
     // console.time("ProgramContentLoader")
     const programId = params.programId;
+    let records = await getRecordByProgram(programId);
+    records = Object.values(records);
     try {
         const programContent = await getProgramContent(programId);
         // console.timeEnd("ProgramContentLoader")
-        return {programContent};
+        return {programContent, records};
     } catch (e) {
         throw e;
     }
@@ -21,15 +26,17 @@ export async function loader({params}) {
 
 export async function action({params}) {
     const programId = params.programId;
-    return await getProgramDesc(programId, true);
+    await getProgramDesc(programId, true);
+    return await getRecordByProgram(programId, true);
 }
 
 function ProgramContent({editable = true}) {
-    const {programContent} = useLoaderData();
+    const {programContent, records} = useLoaderData();
+    const smallPage = useSmallPage();
     return (
         <>
             <div className="ProgramHeader">
-                <Typography variant='h3' sx={{display: 'flex', position: 'relative'}}>
+                <Typography variant={smallPage ? 'h4' : 'h3'} sx={{display: 'flex', position: 'relative'}}>
                     {programContent.ProgramID}
                 </Typography>
                 {editable ? <div className='ReviseRefreshButtonGroup'>
@@ -43,12 +50,15 @@ function ProgramContent({editable = true}) {
                     </Form>
                 </div> : null}
             </div>
-            <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                className='ProgramDescription'
-            >
-                {programContent.description}
-            </ReactMarkdown>
+            <Paper sx={{p: '1.5rem', height: '100%', overflowY: 'auto'}}>
+                <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    className='ProgramDescription'
+                >
+                    {programContent.description}
+                </ReactMarkdown>
+            </Paper>
+            <DataGrid records={records} style={{padding: '1rem 0 1rem 0', height: '100%'}} insideProgramPage={true}/>
         </>
     );
 }
