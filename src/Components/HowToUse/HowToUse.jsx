@@ -16,6 +16,7 @@ import program from "../../Assets/imgs/program.png";
 import {Link, useLoaderData} from "react-router-dom";
 import {Link as MuiLink} from '@mui/material';
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import {InlineTypography} from "../common";
 
 
 export function HowToUse() {
@@ -54,12 +55,14 @@ function Graduated({loaderData}) {
                     </li>
                 </ol>
                 <h4><b>上面说的这三件事该咋做？</b></h4>
-                <h5><b>申请人信息和申请记录的添加和修改：</b></h5>
-                <h6><b>如果您懒得读下面的详细教程，可以直接前往<MuiLink href='/profile/new-applicant'>添加申请人</MuiLink>。</b></h6>
+                <h6><b>如果您懒得读和申请人相关的详细教程，可以直接前往<MuiLink
+                    href='/profile/new-applicant'>添加申请人</MuiLink>。</b></h6>
                 <h6>
-                    <b style={{display: 'flex'}}>
-                        添加完申请人之后，可进一步为该申请人<MuiLink component='button' onClick={() => setOpen(true)}>添加申请记录</MuiLink>。
+                    <b>
+                        添加完申请人之后，可为该申请人<MuiLink onClick={() => setOpen(true)} style={{cursor: 'pointer'}}>添加申请记录</MuiLink>。
                     </b>
+                </h6>
+                <h6><b>如果您觉得项目信息表的教程也太长，可以直接移步<MuiLink href='/programs'>项目信息表</MuiLink>。</b>
                 </h6>
                 <Dialog open={open} onClose={() => {
                     setOpen(false);
@@ -69,7 +72,8 @@ function Graduated({loaderData}) {
                         {applicantIDs.length > 0 ? applicantIDs.map((applicantID, index) => {
                             return (
                                 <ListItem key={index}>
-                                    <ListItemButton component={Link} to={`/profile/${applicantID}/new-record`} sx={{justifyContent: 'center'}}>
+                                    <ListItemButton component={Link} to={`/profile/${applicantID}/new-record`}
+                                                    sx={{justifyContent: 'center'}}>
                                         <PersonOutlineIcon/> {applicantID}
                                     </ListItemButton>
                                 </ListItem>
@@ -84,6 +88,7 @@ function Graduated({loaderData}) {
                         </Button>
                     </DialogActions>
                 </Dialog>
+                <h4><b>申请人信息和申请记录的添加和修改：</b></h4>
                 <ol style={{paddingLeft: '1rem'}}>
                     <li>点击右上角头像，在下拉菜单中选择Profile。</li>
                     <li>
@@ -100,7 +105,7 @@ function Graduated({loaderData}) {
                         <img src={record} alt='add-modify-record' width='100%'/>
                     </li>
                 </ol>
-                <h5><b>海外graduate program的添加和修改：</b></h5>
+                <h4><b>海外graduate program的添加和修改：</b></h4>
                 <ol style={{paddingLeft: '1rem'}}>
                     <li>点击顶部导航栏的“项目信息表”按钮，即可前往查看各个项目。使用前请先阅读该页面的使用指南。</li>
                     <li>下图展示了该页面的项目添加和修改功能：</li>
