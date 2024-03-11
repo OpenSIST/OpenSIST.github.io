@@ -3,28 +3,25 @@ import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByRecordIDs} from "../../Data/RecordData";
-import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
+import {Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
-    Accordion, AccordionDetails, AccordionSummary, Box,
+    Accordion, AccordionDetails, AccordionSummary,
     Chip, Dialog, DialogActions,
-    DialogContent, Fab,
-    IconButton, Paper, Tooltip, useTheme,
+    DialogContent, IconButton, Paper, Tooltip, useTheme,
 } from "@mui/material";
 import {Check, Close, Explore, FilterAltOff, OpenInFull, Refresh} from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import {recordStatusList} from "../../Data/Schemas";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import {InlineTypography} from "../common";
+import {DraggableFAB, InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import {TriStateCheckbox} from 'primereact/tristatecheckbox';
 import {Dropdown} from "primereact/dropdown";
-import Draggable from "react-draggable";
 
 export async function loader() {
-    // console.time("DataPointsLoader")
     let programs = await getPrograms();
     programs = Object.values(programs).flat().filter(program => program.Applicants.length > 0);
     const recordIDs = programs.map(program => program.Applicants.map(applicant => applicant + "|" + program.ProgramID)).flat();
@@ -33,8 +30,6 @@ export async function loader() {
     records = records.sort((a, b) => {
         return programs.indexOf(a.ProgramID) - programs.indexOf(b.ProgramID);
     });
-
-    // console.timeEnd("DataPointsLoader")
     return {records};
 }
 
@@ -230,11 +225,11 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap}>
             <DataTable
                 value={records}
-                dataKey='RecordID'
+                dataKey="RecordID"
                 rowGroupMode={insideProgramPage ? null : "subheader"}
-                groupRowsBy={insideProgramPage ? null : "ProgramID"}
-                sortMode={insideProgramPage ? 'single' : 'multiple'}
-                multiSortMeta={insideProgramPage ? null : [{field: 'ProgramID', order: 0}, {field: 'Season', order: -1}]}
+                groupRowsBy="ProgramID"
+                sortMode='multiple'
+                multiSortMeta={[{field: 'ProgramID', order: 0}, {field: 'Season', order: -1}]}
                 size='small'
                 scrollable
                 scrollHeight="100%"
@@ -371,10 +366,6 @@ export default function DataPoints() {
         return record;
     });
 
-    const nodeRef = useRef(null);
-
-    const dragStartPositionXYRef = useRef({x: 0, y: 0});
-
     return (
         <>
             <Paper className="DataPointsContent">
@@ -382,30 +373,17 @@ export default function DataPoints() {
                 <DataGrid records={records} insideProgramPage={false}/>
                 <Outlet/>
             </Paper>
-            <Box method='post' style={{position: 'absolute', bottom: '20%', right: "1rem"}}>
-                <Draggable
-                    nodeRef={nodeRef}
-                    onStart={(event, data) => {
-                        dragStartPositionXYRef.current = {x: data.x, y: data.y};
-                    }}
-                    onStop={(event, data) => {
-                        const THRESHOLD = 2;
-                        const {x, y} = dragStartPositionXYRef.current ?? {x: 0, y: 0};
-                        const wasDragged = Math.abs(data.x - x) > THRESHOLD || Math.abs(data.y - y) > THRESHOLD;
-                        if (!wasDragged) {
-                            event.preventDefault();
-                            document.querySelector(".HiddenRefreshButton").click()
-                        }
-                    }}
-                >
-                    <Fab color='primary' ref={nodeRef}>
-                        <Refresh/>
-                    </Fab>
-                </Draggable>
-            </Box>
-            <Form method='post'>
-                <button type="submit" style={{display: "none"}} className="HiddenRefreshButton"/>
-            </Form>
+            <DraggableFAB
+                Icon={<Refresh/>}
+                ActionType="Refresh"
+                ButtonClassName="HiddenRefreshButton"
+                color="primary"
+                style={{
+                    position: 'absolute',
+                    bottom: '20%',
+                    right: "1rem"
+                }}
+            />
         </>
     )
 }
