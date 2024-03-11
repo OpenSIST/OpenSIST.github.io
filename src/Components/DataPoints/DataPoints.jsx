@@ -362,7 +362,7 @@ export default function DataPoints() {
                 </Draggable>
             </Box>
             <Form method='post'>
-                <button type="submit" className="HiddenRefreshButton"/>
+                <button type="submit" style={{display: "none"}} className="HiddenRefreshButton"/>
             </Form>
         </ThemeSwitcherProvider>
 
