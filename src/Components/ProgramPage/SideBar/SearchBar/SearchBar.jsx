@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import "./SearchBar.css"
 import {useSearchParams} from "react-router-dom";
 import Select from "@mui/material/Select";
@@ -22,6 +22,7 @@ export default function SearchBar({query}) {
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
     const [searchParams, setSearchParams] = useSearchParams();
+    const [timeoutId, setTimeoutId] = useState(null);
     useEffect(() => {
         document.getElementById('u').value = query.u;
         document.getElementById('d').value = query.d?.split(',');
@@ -37,7 +38,12 @@ export default function SearchBar({query}) {
         } else {
             newSearchParams.set(e.target.name, value);
         }
-        setSearchParams(newSearchParams, {replace: true});
+        if (timeoutId) clearTimeout(timeoutId);
+        const id = setTimeout(() => {
+            setSearchParams(newSearchParams, {replace: true});
+        }, 500);
+        // setSearchParams(newSearchParams, {replace: true});
+        setTimeoutId(id);
     };
 
     const defaultDegree = degreeList.filter(x => query.d?.split(',').includes(x));

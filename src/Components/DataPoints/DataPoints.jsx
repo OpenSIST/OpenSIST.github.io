@@ -236,6 +236,9 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 rowGroupHeaderTemplate={groupSubheaderTemplate}
                 rowHover
                 showGridlines
+                paginator={insideProgramPage ? null : true}
+                rows={insideProgramPage ? null : 20}
+                filterDelay={insideProgramPage ? null : 300}
                 filters={insideProgramPage ? null : filters}
                 filterDisplay={insideProgramPage ? null : 'row'}
                 emptyMessage={insideProgramPage ? "该项目暂无申请记录" : "未找到任何匹配内容"}
