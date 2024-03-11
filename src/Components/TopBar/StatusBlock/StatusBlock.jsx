@@ -11,11 +11,9 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 export async function loader() {
-    // console.time("HomeLoader")
     const displayName = await getDisplayName();
-    const metaData = await getMetaData();
-    const avatarUrl = await getAvatar(metaData?.Avatar);
-    // console.timeEnd("HomeLoader")
+    const metaData = await getMetaData(displayName);
+    const avatarUrl = await getAvatar(metaData?.Avatar, displayName);
     return {displayName, avatarUrl};
 }
 
