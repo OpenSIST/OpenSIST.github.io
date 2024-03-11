@@ -160,7 +160,10 @@ function BaseListItem({Icon, primary, secondary}) {
             </ListItemIcon>
             <ListItemText
                 primary={
-                    <Typography variant='h6' sx={{fontWeight: 'bold'}}>
+                    <Typography variant='h6' sx={{
+                        color: (theme) => theme.palette.mode === 'dark' ? "#fff" : "#000",
+                        fontWeight: 'bold'
+                    }}>
                         {primary}
                     </Typography>
                 }
@@ -300,15 +303,6 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
     useEffect(() => {
         isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
     }, [applicant.ApplicantID]);
-    const isValidUrl = (urlString) => {
-        const urlPattern = new RegExp('^(https?:\\/\\/)?' + // validate protocol
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // validate domain name
-            '((\\d{1,3}\\.){3}\\d{1,3}))' + // validate OR ip (v4) address
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // validate port and path
-            '(\\?[;&a-z\\d%_.~+=-]*)?' + // validate query string
-            '(\\#[-a-z\\d_]*)?$', 'i'); // validate fragment locator
-        return !!urlPattern.test(urlString);
-    }
     return (
         <BaseItemBlock className="BasicInfoBlock" checkpointProps={{xs: 12}} spacing={2}>
             <Grid2 container xs={12} sm={5} md={6} lg={5} xl={4}>

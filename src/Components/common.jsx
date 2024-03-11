@@ -1,7 +1,17 @@
-import {useNavigation} from "react-router-dom";
-import React, {useState} from "react";
-import {Backdrop, Button, CircularProgress, styled, SwipeableDrawer, Typography, useMediaQuery} from "@mui/material";
+import {Form, useNavigation} from "react-router-dom";
+import React, {useRef, useState} from "react";
+import {
+    Backdrop,
+    Box,
+    Button,
+    CircularProgress, Fab,
+    styled,
+    SwipeableDrawer,
+    Typography,
+    useMediaQuery
+} from "@mui/material";
 import {ChevronRight} from "@mui/icons-material";
+import Draggable from "react-draggable";
 
 export function isEmptyObject(value) {
     return value === '' || value.length === 0;
@@ -75,6 +85,41 @@ export function CollapseSideBar({children, sx}) {
             >
                 <ChevronRight/>
             </Button>
+        </>
+    )
+}
+
+export function DraggableFAB({Icon, DragThreshold, ActionType, ButtonClassName, color, style}) {
+    const nodeRef = useRef(null);
+
+    const dragStartPositionXYRef = useRef({x: 0, y: 0});
+    return (
+        <>
+            <Box method='post' style={{...style}}>
+                <Draggable
+                    nodeRef={nodeRef}
+                    onStart={(event, data) => {
+                        dragStartPositionXYRef.current = {x: data.x, y: data.y};
+                    }}
+                    onStop={(event, data) => {
+                        const THRESHOLD = DragThreshold ?? 2;
+                        const {x, y} = dragStartPositionXYRef.current ?? {x: 0, y: 0};
+                        const wasDragged = Math.abs(data.x - x) > THRESHOLD || Math.abs(data.y - y) > THRESHOLD;
+                        if (!wasDragged) {
+                            event.preventDefault();
+                            document.querySelector(`.${ButtonClassName}`).click()
+                        }
+                    }}
+                >
+                    <Fab color={color} ref={nodeRef}>
+                        {Icon}
+                    </Fab>
+                </Draggable>
+            </Box>
+            <Form method='post'>
+                <button type="submit" style={{display: "none"}} className={ButtonClassName}
+                        name="ActionType" value={ActionType}/>
+            </Form>
         </>
     )
 }
