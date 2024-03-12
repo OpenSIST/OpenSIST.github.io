@@ -30,20 +30,11 @@ import Profile, {
     loader as profileLoader, ProfileIndex
 } from "./Components/Profile/Profile";
 import {createTheme, ThemeProvider, useMediaQuery} from "@mui/material";
-import AdminPage, {AdminIndex} from "./Components/Admin/AdminPage";
-import AdminProgramPage, {
-    loader as AdminProgramLoader,
-    action as AdminProgramAction
-} from "./Components/Admin/AdminProgram/AdminProgramPage";
 import Twemoji from "./Assets/fonts/TwemojiMozilla.ttf";
 import OpenSansRegular from "./Assets/fonts/open-sans-v17-latin-ext_latin-regular.woff2";
 import OpenSansBold from "./Assets/fonts/open-sans-v17-latin-ext_latin-700.woff2";
 import OpenSansItalic from "./Assets/fonts/open-sans-v17-latin-ext_latin-italic.woff2";
 import OpenSansBoldItalic from "./Assets/fonts/open-sans-v17-latin-ext_latin-700italic.woff2";
-import AdminEmailPage, {
-    loader as AdminEmailPageLoader,
-    action as AdminEmailPageAction
-} from "./Components/Admin/AdminEmail/AdminEmailPage";
 import {ProgramIndex} from "./Components/ProgramPage/ProgramPage";
 import localforage from "localforage";
 import {loader as HomeLoader, action as HomeAction} from "./Components/TopBar/StatusBlock/StatusBlock";
