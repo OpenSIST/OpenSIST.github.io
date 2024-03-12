@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import './ProgramContent.css'
-import {Form, Link, useLoaderData} from "react-router-dom";
+import {Form, Link, useLoaderData, useNavigate} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 import {Box, IconButton, Paper, Tooltip, Typography} from "@mui/material";
-import {Edit, Refresh} from "@mui/icons-material";
+import {Add, Edit, Refresh} from "@mui/icons-material";
 import remarkGfm from 'remark-gfm'
 import {getRecordByProgram} from "../../../Data/RecordData";
 import {DataGrid} from "../../DataPoints/DataPoints";
-import {useSmallPage} from "../../common";
+import {DraggableFAB, useSmallPage} from "../../common";
 
 export async function loader({params}) {
     const programId = params.programId;
@@ -35,6 +35,7 @@ export async function action({params, request}) {
 
 function ProgramContent({editable = true}) {
     let {programContent, records} = useLoaderData();
+    const naviagte = useNavigate();
     records = records.map(record => {
         record['Season'] = record.ProgramYear + " " + record.Semester;
         return record;
@@ -69,7 +70,21 @@ function ProgramContent({editable = true}) {
                     {programContent.description}
                 </ReactMarkdown>
             </Paper>
-            {editable ? <DataGrid records={records} style={{padding: '1rem 0 1rem 0', height: '100%'}} insideProgramPage={true}/> : null}
+            {editable ? <>
+                <DataGrid records={records} style={{padding: '1rem 0 1rem 0', height: '100%'}}
+                          insideProgramPage={true}/>
+                <DraggableFAB
+                    Icon={<Add/>}
+                    ActionType="AddRecord"
+                    ButtonClassName="HiddenAddButton"
+                    color="primary"
+                    onClick={() => {
+                        naviagte(`/profile/new-record`, {state: {programID: programContent.ProgramID}});
+                    }}
+                    style={{position: 'absolute', bottom: '20%', right: '1rem'}}
+                />
+            </> : null}
+
         </>
     );
 }

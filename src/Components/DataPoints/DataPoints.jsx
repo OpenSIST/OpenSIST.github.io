@@ -3,7 +3,7 @@ import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByRecordIDs} from "../../Data/RecordData";
-import {Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
+import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
 import {
@@ -378,17 +378,19 @@ export default function DataPoints() {
                 <DataGrid records={records} insideProgramPage={false}/>
                 <Outlet/>
             </Paper>
-            <DraggableFAB
-                Icon={<Refresh/>}
-                ActionType="Refresh"
-                ButtonClassName="HiddenRefreshButton"
-                color="primary"
-                style={{
-                    position: 'absolute',
-                    bottom: '20%',
-                    right: "1rem"
-                }}
-            />
+            <Form method="post">
+                <DraggableFAB
+                    Icon={<Refresh/>}
+                    ActionType="Refresh"
+                    ButtonClassName="HiddenRefreshButton"
+                    color="primary"
+                    style={{
+                        position: 'absolute',
+                        bottom: '20%',
+                        right: "1rem"
+                    }}
+                />
+            </Form>
         </>
     )
 }

@@ -89,7 +89,7 @@ export function CollapseSideBar({children, sx}) {
     )
 }
 
-export function DraggableFAB({Icon, DragThreshold, ActionType, ButtonClassName, color, style}) {
+export function DraggableFAB({Icon, DragThreshold, ActionType, ButtonClassName, color, onClick, style}) {
     const nodeRef = useRef(null);
 
     const dragStartPositionXYRef = useRef({x: 0, y: 0});
@@ -116,10 +116,14 @@ export function DraggableFAB({Icon, DragThreshold, ActionType, ButtonClassName, 
                     </Fab>
                 </Draggable>
             </Box>
-            <Form method='post'>
-                <button type="submit" style={{display: "none"}} className={ButtonClassName}
-                        name="ActionType" value={ActionType}/>
-            </Form>
+            {/*<Form method='post'>*/}
+                <button
+                    onClick={onClick}
+                    type="submit" style={{display: "none"}}
+                    className={ButtonClassName} name="ActionType"
+                    value={ActionType}
+                />
+            {/*</Form>*/}
         </>
     )
 }
