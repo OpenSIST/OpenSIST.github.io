@@ -1,5 +1,5 @@
 import {getRecordByApplicant, removeRecord} from "../../../Data/RecordData";
-import {Form, redirect, useLoaderData} from "react-router-dom";
+import {Form, redirect, useLoaderData, useNavigate} from "react-router-dom";
 import {
     Avatar, Badge, Box, Button, Card, Chip, IconButton,
     Dialog, DialogActions, DialogContent,
@@ -686,12 +686,16 @@ function RecordBlock({Records, ApplicantID, editable}) {
     const handleClose = () => {
         setOpen(false);
     }
+    const navigate = useNavigate();
+
     return (
         <BaseItemBlock className="RecordBlock" checkpointProps={{xs: 12}} spacing={2}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'row', alignItems: 'flex-start'}}>
                 <Typography variant='h6' sx={{fontWeight: 'bold'}}>申请记录</Typography>
                 {editable ? <Tooltip title='添加记录' arrow sx={{marginLeft: '10px'}}>
-                    <Button component={Link} to={`/profile/${ApplicantID}/new-record`} variant='outlined'>
+                    <Button variant='outlined' onClick={() => {
+                        navigate(`/profile/new-record`, { state : { applicantID: ApplicantID, from: `/profile/${ApplicantID}`}});
+                    }}>
                         <Add/>
                     </Button>
                 </Tooltip> : null}

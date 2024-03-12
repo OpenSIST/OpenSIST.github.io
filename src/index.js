@@ -158,11 +158,6 @@ function OpenSIST() {
                                             loader: addModifyApplicantLoader,
                                             action: addModifyApplicantAction
                                         }, {
-                                            path: '/profile/:applicantId/new-record',
-                                            element: <AddModifyRecord key='new' type='new'/>,
-                                            loader: addModifyRecordLoader,
-                                            action: addModifyRecordAction
-                                        }, {
                                             path: '/profile/new-record',
                                             element: <AddModifyRecord key='new' type='new'/>,
                                             loader: addModifyRecordLoader,

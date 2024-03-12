@@ -3,11 +3,9 @@ import {
     Box,
     Button, Divider,
     Paper,
-    TextField,
-    Tooltip
+    TextField
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import {HelpOutline} from "@mui/icons-material";
 import Autocomplete from "@mui/material/Autocomplete";
 import {
     applicationYearOptions,

@@ -1,7 +1,7 @@
 import {getPrograms} from "../../../Data/ProgramData";
 import React, {useState} from "react";
 import {addModifyRecord, getRecordByRecordIDs} from "../../../Data/RecordData";
-import {Box, Button, Input, Link as MuiLink, Paper, TextField, Tooltip, Typography} from "@mui/material";
+import {Box, Button, Input, Link as MuiLink, Paper, TextField, Typography} from "@mui/material";
 import {Form, redirect, useLoaderData, useLocation, useNavigate} from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -80,6 +80,7 @@ export default function AddModifyRecord({type}) {
     const location = useLocation();
     const passedProgramID = location?.state?.programID;
     const fromPath = location?.state?.from;
+    const passedApplicantID = location?.state?.applicantID;
 
     const programOptions = Object.values(programs).reduce((acc, programArray) => {
         programArray.forEach(program => {
@@ -91,8 +92,8 @@ export default function AddModifyRecord({type}) {
     const applicantOptions = list2Options(applicantIDs);
 
     const record = recordsDict ? recordsDict[Object.keys(recordsDict)[0]] : null;
-    const [programOption, setProgramOption] = useState(record ? record.ProgramID : passedProgramID ? passedProgramID : null);
-    const [applicantOption, setApplicantOption] = useState(record ? record.ApplicantID : null);
+    const [programOption, setProgramOption] = useState(record ? record.ProgramID : passedProgramID ?? null);
+    const [applicantOption, setApplicantOption] = useState(record ? record.ApplicantID : passedApplicantID ?? null);
     const [statusOption, setStatusOption] = useState(record ? record.Status : null);
     const [yearOption, setYearOption] = useState(record ? record.ProgramYear : null);
     const [semesterOption, setSemesterOption] = useState(record ? record.Semester : null);
