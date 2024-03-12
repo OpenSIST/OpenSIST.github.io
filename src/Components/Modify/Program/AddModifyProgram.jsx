@@ -14,6 +14,7 @@ import {
     ButtonGroup, Checkbox,
     FormControl, Input, ListItemText,
     MenuItem,
+    Link as MuiLink,
     TextField, Tooltip,
     Typography
 } from "@mui/material";
@@ -76,23 +77,11 @@ export default function AddModifyProgram({type}) {
                     sx={AddMode ? {} : {color: 'gray', cursor: 'not-allowed', pointerEvents: 'none'}}
                     renderInput={(params) =>
                         <>
-                            <TextField {...params} label={"学校名称" + (AddMode ? "" : " (不可修改)")}
+                            <TextField {...params}
+                                       label={"学校名称" + (AddMode ? "" : " (不可修改)")}
                                        variant="standard"
                                        required
-                                       InputProps={{
-                                           ...params.InputProps,
-                                           endAdornment: (
-                                               <>
-                                                   {params.InputProps.endAdornment}
-                                                   <Tooltip
-                                                       title={<>未找到学校？请前往<a href="https://github.com/orgs/OpenSIST/discussions/23">此处</a></>}
-                                                       arrow
-                                                   >
-                                                       <HelpOutline/>
-                                                   </Tooltip>
-                                               </>
-                                           ),
-                                       }}
+                                       helperText={<MuiLink href="https://github.com/orgs/OpenSIST/discussions/23">未找到学校？请到GitHub提交Issue</MuiLink>}
                             />
                             <TextField sx={{display: 'none'}} name="University" value={univ?.value || ""}/>
                         </>}
