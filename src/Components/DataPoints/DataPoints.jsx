@@ -403,6 +403,7 @@ export default function DataPoints() {
                         bottom: '20%',
                         right: "1rem"
                     }}
+                    tooltipTitle='刷新表格'
                 />
             </Form>
         </>

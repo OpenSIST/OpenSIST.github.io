@@ -6,7 +6,7 @@ import {
     Button,
     CircularProgress, Fab,
     styled,
-    SwipeableDrawer,
+    SwipeableDrawer, Tooltip,
     Typography,
     useMediaQuery
 } from "@mui/material";
@@ -89,7 +89,7 @@ export function CollapseSideBar({children, sx}) {
     )
 }
 
-export function DraggableFAB({Icon, DragThreshold, ActionType, ButtonClassName, color, onClick, style}) {
+export function DraggableFAB({Icon, DragThreshold, ActionType, ButtonClassName, color, onClick, style, tooltipTitle}) {
     const nodeRef = useRef(null);
 
     const dragStartPositionXYRef = useRef({x: 0, y: 0});
@@ -111,9 +111,11 @@ export function DraggableFAB({Icon, DragThreshold, ActionType, ButtonClassName, 
                         }
                     }}
                 >
-                    <Fab color={color} ref={nodeRef}>
-                        {Icon}
-                    </Fab>
+                    <Tooltip title={tooltipTitle} arrow enterTouchDelay={0}>
+                        <Fab color={color} ref={nodeRef}>
+                            {Icon}
+                        </Fab>
+                    </Tooltip>
                 </Draggable>
             </Box>
             {/*<Form method='post'>*/}

@@ -3,7 +3,7 @@ import {
     Box,
     Button, Divider,
     Paper,
-    TextField
+    TextField, Tooltip
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -17,6 +17,7 @@ import "../AddModifyApplicant.css";
 import {useNavigate} from "react-router-dom";
 import {Link as MuiLink} from '@mui/material';
 import {useSmallPage} from "../../../common";
+import {HelpOutline} from "@mui/icons-material";
 
 function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData}) {
     let finalOptions = [];
@@ -146,21 +147,22 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
                                         size="small"
                                         variant="outlined"
                                         name="ApplicationYear"
-                                        helperText="例：若申请2024Fall或2024Spring，则统一填2024"
-                                        // InputProps={{
-                                        //     ...params.InputProps,
-                                        //     endAdornment: (
-                                        //         <>
-                                        //             {params.InputProps.endAdornment}
-                                        //             <Tooltip
-                                        //                 title='例：若申请2024Fall或2024Spring，则统一填2024'
-                                        //                 arrow
-                                        //             >
-                                        //                 <HelpOutline/>
-                                        //             </Tooltip>
-                                        //         </>
-                                        //     ),
-                                        // }}
+                                        // helperText="例：若申请2024Fall或2024Spring，则统一填2024"
+                                        InputProps={{
+                                            ...params.InputProps,
+                                            endAdornment: (
+                                                <>
+                                                    {params.InputProps.endAdornment}
+                                                    <Tooltip
+                                                        title='例：若申请2024Fall或2024Spring，则统一填2024'
+                                                        enterTouchDelay={0}
+                                                        arrow
+                                                    >
+                                                        <HelpOutline/>
+                                                    </Tooltip>
+                                                </>
+                                            ),
+                                        }}
                                         required
                                     />
                             }
@@ -227,14 +229,19 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
                             type="number"
                             sx={disableNumberUpDown}
                             error={isGPAError}
-                            helperText={isGPAError ? "GPA应在0-4之间" : '填写在该申请季用于申请的最高学历的GPA'}
-                            // InputProps={{
-                            //     endAdornment: (
-                            //         <Tooltip title={'填写在该申请季用于申请的最高学历的GPA'} arrow sx={{cursor: 'pointer'}}>
-                            //             <HelpOutline/>
-                            //         </Tooltip>
-                            //     ),
-                            // }}
+                            helperText={isGPAError ? "GPA应在0-4之间" : null}
+                            InputProps={{
+                                endAdornment: (
+                                    <Tooltip
+                                        title={'填写在该申请季用于申请的最高学历的GPA'}
+                                        enterTouchDelay={0}
+                                        arrow
+                                        sx={{cursor: 'pointer'}}
+                                    >
+                                        <HelpOutline/>
+                                    </Tooltip>
+                                ),
+                            }}
                         />
                     </Grid2>
                     <Grid2 xs={12} md={6}>

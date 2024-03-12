@@ -87,6 +87,7 @@ function ProgramContent({editable = true}) {
                         });
                     }}
                     style={{position: 'absolute', bottom: '20%', right: '1rem'}}
+                    tooltipTitle="添加记录"
                 />
             </> : null}
 

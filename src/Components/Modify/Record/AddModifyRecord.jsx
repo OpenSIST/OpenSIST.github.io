@@ -1,7 +1,7 @@
 import {getPrograms} from "../../../Data/ProgramData";
 import React, {useState} from "react";
 import {addModifyRecord, getRecordByRecordIDs} from "../../../Data/RecordData";
-import {Box, Button, Input, Link as MuiLink, Paper, TextField, Typography} from "@mui/material";
+import {Box, Button, Input, Link as MuiLink, Paper, TextField, Tooltip, Typography} from "@mui/material";
 import {Form, redirect, useLoaderData, useLocation, useNavigate} from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import {DatePicker} from "@mui/x-date-pickers";
 import {getDisplayName, getMetaData} from "../../../Data/UserData";
 import {useSmallPage} from "../../common";
+import {HelpOutline} from "@mui/icons-material";
 
 export async function loader({params}) {
     const programs = await getPrograms();
@@ -190,21 +191,23 @@ export default function AddModifyRecord({type}) {
                                                 name='Status'
                                                 size='small'
                                                 required
-                                                helperText='此项为项目方而非本人的决定；如果被录取但被项目方延期入学 (如申的2024 Fall但被要求2025 Spring入学)，则选择Defer而非Admit；如果项目方给了你面试但你拒绝了面试，请填写Reject并在最下方一栏备注'
-                                                // InputProps={{
-                                                //     ...params.InputProps,
-                                                //     endAdornment: (
-                                                //         <>
-                                                //             {params.InputProps.endAdornment}
-                                                //             <Tooltip
-                                                //                 title='此项为项目方而非本人的决定；如果被录取但被项目方延期入学 (如申的2024 Fall但被要求2025 Spring入学)，则选择Defer而非Admit；如果项目方给了你面试但你拒绝了面试，请填写Reject并在最下方一栏备注'
-                                                //                 arrow
-                                                //             >
-                                                //                 <HelpOutline/>
-                                                //             </Tooltip>
-                                                //         </>
-                                                //     ),
-                                                // }}
+                                                // helperText='此项为项目方而非本人的决定；如果被录取但被项目方延期入学 (如申的2024 Fall但被要求2025 Spring入学)，则选择Defer而非Admit；如果项目方给了你面试但你拒绝了面试，请填写Reject并在最下方一栏备注'
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    endAdornment: (
+                                                        <>
+                                                            {params.InputProps.endAdornment}
+                                                            <Tooltip
+                                                                title='此项为项目方而非本人的决定；如果被录取但被项目方延期入学 (如申的2024 Fall但被要求2025 Spring入学)，则选择Defer而非Admit；如果项目方给了你面试但你拒绝了面试，请填写Reject并在最下方一栏备注'
+                                                                arrow
+                                                                enterTouchDelay={0}
+                                                                leaveTouchDelay={10000}
+                                                            >
+                                                                <HelpOutline/>
+                                                            </Tooltip>
+                                                        </>
+                                                    ),
+                                                }}
                                             />
                                     }
                                     options={recordStatusOptions}
