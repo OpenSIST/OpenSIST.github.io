@@ -341,7 +341,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                 variant='middle'
                 sx={{marginTop: '10px', fontSize: 20}}
             >
-                <b>论文发表</b>
+                <b>论文发表（包含在投）</b>
             </Divider>
             <Box className='AddModifyForm'>
                 {publications.map((publication, index) => (

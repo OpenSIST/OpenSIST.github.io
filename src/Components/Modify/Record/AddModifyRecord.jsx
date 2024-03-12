@@ -11,7 +11,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from "dayjs";
 import {DatePicker} from "@mui/x-date-pickers";
-import {HelpOutline} from "@mui/icons-material";
 import {getDisplayName, getMetaData} from "../../../Data/UserData";
 import {useSmallPage} from "../../common";
 
@@ -35,7 +34,7 @@ export async function action({request}) {
     const actionType = formData.get('ActionType');
     const applicantID = formData.get('ApplicantID');
     const programID = formData.get('ProgramID');
-    const passedProgramID = formData.get('passedProgramID');
+    const fromPath = formData.get('FromPath');
     const recordID = `${applicantID}|${programID}`;
     const year = formData.get('Year');
     const semester = formData.get('Semester');
@@ -64,8 +63,8 @@ export async function action({request}) {
         }
     }
     await addModifyRecord(requestBody);
-    if (passedProgramID) {
-        return redirect(`/profile/${passedProgramID}`);
+    if (fromPath) {
+        return redirect(fromPath);
     } else {
         return redirect(`/profile/${applicantID}`);
     }
@@ -80,6 +79,7 @@ export default function AddModifyRecord({type}) {
 
     const location = useLocation();
     const passedProgramID = location?.state?.programID;
+    const fromPath = location?.state?.from;
 
     const programOptions = Object.values(programs).reduce((acc, programArray) => {
         programArray.forEach(program => {
@@ -91,7 +91,7 @@ export default function AddModifyRecord({type}) {
     const applicantOptions = list2Options(applicantIDs);
 
     const record = recordsDict ? recordsDict[Object.keys(recordsDict)[0]] : null;
-    const [programOption, setProgramOption] = useState(record ? record.ProgramID : null);
+    const [programOption, setProgramOption] = useState(record ? record.ProgramID : passedProgramID ? passedProgramID : null);
     const [applicantOption, setApplicantOption] = useState(record ? record.ApplicantID : null);
     const [statusOption, setStatusOption] = useState(record ? record.Status : null);
     const [yearOption, setYearOption] = useState(record ? record.ProgramYear : null);
@@ -104,6 +104,7 @@ export default function AddModifyRecord({type}) {
         <Form method='post'>
             <Input type='hidden' value={type} name='ActionType'/>
             <Input type='hidden' value={record ? record.Final : false} name='Final'/>
+            <Input type='hidden' name='FromPath' value={fromPath}/>
             <Box sx={{
                 display: "flex",
                 justifyContent: "center",
@@ -112,14 +113,13 @@ export default function AddModifyRecord({type}) {
             }}>
                 <Paper variant='outlined' sx={{width: smallPage ? '90%' : '70%'}}>
                     <Typography variant="h4" sx={{alignSelf: 'center', marginTop: '10px'}}>{`${mode}申请记录`}</Typography>
-                    <Input type='hidden' name='passedProgramID' value={passedProgramID}/>
                     <Box className='AddModifyForm'>
                         <Grid2
                             container
                             spacing={2}
                             sx={{width: '80%', marginTop: '10px'}}
                         >
-                            <Grid2 xs={12}>
+                            <Grid2 xs={12} md={6}>
                                 {applicantOptions.length === 1 ? <Autocomplete
                                         fullWidth
                                         options={applicantOptions}
@@ -134,7 +134,7 @@ export default function AddModifyRecord({type}) {
                                                     required
                                                 />
                                         }
-                                        defaultValue={applicantOptions[0]}
+                                        value={applicantOptions[0]}
                                     /> :
                                 <Autocomplete
                                     fullWidth
@@ -155,24 +155,7 @@ export default function AddModifyRecord({type}) {
                                     }}
                                 />}
                             </Grid2>
-                            {passedProgramID ? <Grid2 xs={12} md={6}>
-                                <Autocomplete
-                                    fullWidth
-                                    options={programOptions}
-                                    readOnly
-                                    renderInput={
-                                        (params) =>
-                                            <TextField
-                                                {...params}
-                                                label='选择项目 (不可修改)'
-                                                name='ProgramID'
-                                                size='small'
-                                                required
-                                            />
-                                    }
-                                    defaultValue={passedProgramID}
-                                />
-                            </Grid2> : <Grid2 xs={12} md={6}>
+                            <Grid2 xs={12} md={6}>
                                 <Autocomplete
                                     fullWidth
                                     options={programOptions}
@@ -194,8 +177,8 @@ export default function AddModifyRecord({type}) {
                                         setProgramOption(newValue?.value);
                                     }}
                                 />
-                            </Grid2>}
-                            <Grid2 xs={12} md={6}>
+                            </Grid2>
+                            <Grid2 xs={12}>
                                 <Autocomplete
                                     fullWidth
                                     renderInput={
@@ -206,20 +189,21 @@ export default function AddModifyRecord({type}) {
                                                 name='Status'
                                                 size='small'
                                                 required
-                                                InputProps={{
-                                                    ...params.InputProps,
-                                                    endAdornment: (
-                                                        <>
-                                                            {params.InputProps.endAdornment}
-                                                            <Tooltip
-                                                                title='此项为项目方而非本人的决定；如果被录取但被项目方延期入学 (如申的2024 Fall但被要求2025 Spring入学)，则选择Defer而非Admit；如果项目方给了你面试但你拒绝了面试，请填写Reject并在最下方一栏备注'
-                                                                arrow
-                                                            >
-                                                                <HelpOutline/>
-                                                            </Tooltip>
-                                                        </>
-                                                    ),
-                                                }}
+                                                helperText='此项为项目方而非本人的决定；如果被录取但被项目方延期入学 (如申的2024 Fall但被要求2025 Spring入学)，则选择Defer而非Admit；如果项目方给了你面试但你拒绝了面试，请填写Reject并在最下方一栏备注'
+                                                // InputProps={{
+                                                //     ...params.InputProps,
+                                                //     endAdornment: (
+                                                //         <>
+                                                //             {params.InputProps.endAdornment}
+                                                //             <Tooltip
+                                                //                 title='此项为项目方而非本人的决定；如果被录取但被项目方延期入学 (如申的2024 Fall但被要求2025 Spring入学)，则选择Defer而非Admit；如果项目方给了你面试但你拒绝了面试，请填写Reject并在最下方一栏备注'
+                                                //                 arrow
+                                                //             >
+                                                //                 <HelpOutline/>
+                                                //             </Tooltip>
+                                                //         </>
+                                                //     ),
+                                                // }}
                                             />
                                     }
                                     options={recordStatusOptions}
@@ -341,8 +325,8 @@ export default function AddModifyRecord({type}) {
                             sx={{ mr: 1 }}
                             variant='contained'
                             onClick={() => {
-                                if (passedProgramID) {
-                                    navigate(`/profile/${passedProgramID}`);
+                                if (fromPath) {
+                                    navigate(fromPath);
                                 } else if (applicantOptions.length === 1) {
                                     navigate(`/profile/${applicantIDs[0]}`);
                                 } else {

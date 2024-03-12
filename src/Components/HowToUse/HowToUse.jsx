@@ -37,10 +37,10 @@ function Graduated({loaderData}) {
             <AccordionSummary
                 expandIcon={<ArrowDropDownIcon/>}
             >
-                <h3 style={{margin: 0}}><b>毕业生或大四研三请阅读：</b></h3>
+                <h2 style={{margin: 0}}><b>毕业生或大四研三请阅读：</b></h2>
             </AccordionSummary>
             <AccordionDetails>
-                <h4><b>我来这个网站应该干什么？</b></h4>
+                <h3><b>我来这个网站应该干什么？</b></h3>
                 <h5><b>为了给SIST学弟学妹们提供更多海外申请的信息，我们希望你能抽出宝贵的15分钟，做三件事情：</b></h5>
                 <ol>
                     <li>
@@ -53,17 +53,17 @@ function Graduated({loaderData}) {
                         <b>贡献海外高校graduate program信息</b>，如果你对某些项目有着很深入的了解，我们希望你把你了解到的给写上，这样能为学弟学妹们提供更多insight。
                     </li>
                 </ol>
-                <h4><b>上面说的这三件事该咋做？</b></h4>
+                <h3><b>上面说的这三件事该咋做？</b></h3>
                 <h5>我们在下方提供了详细的图文教程，但是——</h5>
-                <h6><b>如果您懒得读和申请人相关的详细教程，可以直接前往<MuiLink
-                    href='/profile/new-applicant'>添加申请人</MuiLink>。</b></h6>
-                <h6>
-                    <b>
+                <h4><b><i>如果您懒得读和申请人相关的详细教程，可以直接前往<MuiLink
+                    href='/profile/new-applicant'>添加申请人</MuiLink>。</i></b></h4>
+                <h4>
+                    <b><i>
                         添加完申请人之后，可为该申请人<MuiLink onClick={() => setOpen(true)} style={{cursor: 'pointer'}}>添加申请记录</MuiLink>。
-                    </b>
-                </h6>
-                <h6><b>如果您觉得项目信息表的教程也太长，可以直接移步<MuiLink href='/programs'>项目信息表</MuiLink>。</b>
-                </h6>
+                    </i></b>
+                </h4>
+                <h4><b><i>如果您觉得项目信息表的教程也太长，可以直接移步<MuiLink href='/programs'>项目信息表</MuiLink>。</i></b>
+                </h4>
                 <Dialog open={open} onClose={() => {
                     setOpen(false);
                 }}>
@@ -88,7 +88,7 @@ function Graduated({loaderData}) {
                         </Button>
                     </DialogActions>
                 </Dialog>
-                <h4><b>申请人信息和申请记录的添加和修改：</b></h4>
+                <h3><b>申请人信息和申请记录的添加和修改：</b></h3>
                 <ol style={{paddingLeft: '1rem'}}>
                     <li>点击右上角头像，在下拉菜单中选择Profile。</li>
                     <li>
@@ -105,7 +105,7 @@ function Graduated({loaderData}) {
                         <img src={record} alt='add-modify-record' width='100%'/>
                     </li>
                 </ol>
-                <h4><b>海外graduate program的添加和修改：</b></h4>
+                <h3><b>海外graduate program的添加和修改：</b></h3>
                 <ol style={{paddingLeft: '1rem'}}>
                     <li>点击顶部导航栏的“项目信息表”按钮，即可前往查看各个项目。使用前请先阅读该页面的使用指南。</li>
                     <li>下图展示了该页面的项目添加和修改功能：</li>
@@ -122,12 +122,12 @@ function Current() {
             <AccordionSummary
                 expandIcon={<ArrowDropDownIcon/>}
             >
-                <h3 style={{margin: 0}}><b>非毕业年级本硕同学请阅读：</b></h3>
+                <h2 style={{margin: 0}}><b>非毕业年级本硕同学请阅读：</b></h2>
             </AccordionSummary>
             <AccordionDetails>
-                <h4><b>这个网站是干什么的？</b></h4>
+                <h3><b>这个网站是干什么的？</b></h3>
                 <h5>这是一个面向上科大信息学院的出国申请信息共享平台，收集了往届学长学姐海外硕博项目的申请案例，以及各个项目的介绍。</h5>
-                <h4><b>我该如何使用这个网站？</b></h4>
+                <h3><b>我该如何使用这个网站？</b></h3>
                 <h5><b>该网站分为两大版块：申请季数据汇总与项目信息表。下面将会为你详细介绍两个板块的功能。</b></h5>
                 <h4><b>申请季数据汇总表</b></h4>
                 <h6>可点击顶部导航栏的<MuiLink href='/datapoints'>申请季数据汇总</MuiLink>按钮跳转到该页面。</h6>
