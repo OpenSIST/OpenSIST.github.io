@@ -13,7 +13,7 @@ import applicant from "../../Assets/imgs/applicant.png";
 import newApplicant from "../../Assets/imgs/new-applicant.png";
 import record from "../../Assets/imgs/record.png";
 import program from "../../Assets/imgs/program.png";
-import {Link, useLoaderData} from "react-router-dom";
+import {Link, useLoaderData, useNavigate} from "react-router-dom";
 import {Link as MuiLink} from '@mui/material';
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
@@ -32,6 +32,7 @@ export function HowToUse() {
 function Graduated({loaderData}) {
     const applicantIDs = loaderData.metaData.ApplicantIDs;
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
     return (
         <Accordion sx={{bgcolor: '#448aff1a'}}>
             <AccordionSummary
@@ -72,8 +73,12 @@ function Graduated({loaderData}) {
                         {applicantIDs.length > 0 ? applicantIDs.map((applicantID, index) => {
                             return (
                                 <ListItem key={index}>
-                                    <ListItemButton component={Link} to={`/profile/${applicantID}/new-record`}
-                                                    sx={{justifyContent: 'center'}}>
+                                    <ListItemButton
+                                        sx={{justifyContent: 'center'}}
+                                        onClick={() => {
+                                            navigate(`/profile/new-record`, { state: {applicantID: applicantID, from: window.location.pathname } })
+                                        }}
+                                    >
                                         <PersonOutlineIcon/> {applicantID}
                                     </ListItemButton>
                                 </ListItem>
