@@ -190,32 +190,34 @@ function OpenSIST() {
                                     ]
                                 }
                             ]
-                        }, {
-                            path: '/admin',
-                            element: <AdminPage/>,
-                            children: [
-                                {
-                                    errorElement: <ErrorPage/>,
-                                    children: [
-                                        {
-                                            index: true,
-                                            element: <AdminIndex/>,
-                                        },
-                                        {
-                                            path: '/admin/programs',
-                                            element: <AdminProgramPage/>,
-                                            loader: AdminProgramLoader,
-                                            action: AdminProgramAction
-                                        }, {
-                                            path: '/admin/emails',
-                                            element: <AdminEmailPage/>,
-                                            loader: AdminEmailPageLoader,
-                                            action: AdminEmailPageAction
-                                        }
-                                    ]
-                                }
-                            ]
-                        }, {
+                        },
+                        // {
+                        //     path: '/admin',
+                        //     element: <AdminPage/>,
+                        //     children: [
+                        //         {
+                        //             errorElement: <ErrorPage/>,
+                        //             children: [
+                        //                 {
+                        //                     index: true,
+                        //                     element: <AdminIndex/>,
+                        //                 },
+                        //                 {
+                        //                     path: '/admin/programs',
+                        //                     element: <AdminProgramPage/>,
+                        //                     loader: AdminProgramLoader,
+                        //                     action: AdminProgramAction
+                        //                 }, {
+                        //                     path: '/admin/emails',
+                        //                     element: <AdminEmailPage/>,
+                        //                     loader: AdminEmailPageLoader,
+                        //                     action: AdminEmailPageAction
+                        //                 }
+                        //             ]
+                        //         }
+                        //     ]
+                        // },
+                        {
                             path: '/login',
                             element: <Login/>,
                             action: loginAction
