@@ -237,6 +237,8 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 rowHover
                 showGridlines
                 paginator={insideProgramPage ? null : true}
+                paginatorTemplate="FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+                currentPageReportTemplate="{first}~{last} of {totalRecords}"
                 rows={insideProgramPage ? null : 20}
                 filterDelay={insideProgramPage ? null : 300}
                 filters={insideProgramPage ? null : filters}

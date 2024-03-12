@@ -115,3 +115,7 @@
 /*.p-checkbox-box {*/
 /*    transition: none;*/
 /*}*/
+
+.p-paginator {
+    justify-content: center;
+}
