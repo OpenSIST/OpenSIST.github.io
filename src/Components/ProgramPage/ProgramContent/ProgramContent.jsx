@@ -79,7 +79,12 @@ function ProgramContent({editable = true}) {
                     ButtonClassName="HiddenAddButton"
                     color="primary"
                     onClick={() => {
-                        naviagte(`/profile/new-record`, {state: {programID: programContent.ProgramID}});
+                        naviagte(`/profile/new-record`, {
+                            state: {
+                                programID: programContent.ProgramID,
+                                from: window.location.pathname
+                            }
+                        });
                     }}
                     style={{position: 'absolute', bottom: '20%', right: '1rem'}}
                 />

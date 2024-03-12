@@ -146,6 +146,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     <ControlPointIcon onClick={() => navigate(`/profile/new-record`, {
                         state: {
                             programID: data.ProgramID,
+                            from: window.location.pathname
                         }
                     })} sx={{
                         cursor: 'pointer',
