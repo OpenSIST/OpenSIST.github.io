@@ -21,6 +21,7 @@ import Select from "@mui/material/Select";
 import "../AddModifyApplicant.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useNavigate} from "react-router-dom";
+import {useSmallPage} from "../../../common";
 
 function SoftBackground({formValues, handleBack, handleChange}) {
     const navigate = useNavigate();
@@ -83,8 +84,10 @@ function SoftBackground({formValues, handleBack, handleChange}) {
         return acc;
     }, {});
 
+    const smallPage = useSmallPage();
+
     return (
-        <Paper variant='outlined' sx={{width: '80%'}}>
+        <Paper variant='outlined' sx={{width: smallPage ? '90%' : '80%'}}>
             <Divider
                 textAlign="center"
                 variant='middle'

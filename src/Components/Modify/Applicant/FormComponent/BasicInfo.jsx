@@ -18,6 +18,7 @@ import {
 import "../AddModifyApplicant.css";
 import {useNavigate} from "react-router-dom";
 import {Link as MuiLink} from '@mui/material';
+import {useSmallPage} from "../../../common";
 
 function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData}) {
     let finalOptions = [];
@@ -67,8 +68,10 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
         return !formValues.Gender || !formValues.CurrentDegree || !formValues.ApplicationYear || !formValues.Major || !formValues.GPA || !formValues.Ranking || !formValues.EnglishOption || !formValues.EnglishTotal || !formValues.R || !formValues.L || !formValues.S || !formValues.W || (isGRETotalRequired && !formValues.GRETotal) || (isGREVRequired && !formValues.V) || (isGREQRequired && !formValues.Q) || (isGREAWRequired && !formValues.AW) || isGPAError || isEnglishTotalError || isReadingError || isListeningError || isSpeakingError || isWritingError || isGRETotalError || isGREVError || isGREQError || isGREAWError;
     }
 
+    const smallPage = useSmallPage();
+
     return (
-        <Paper variant='outlined' sx={{width: '70%'}}>
+        <Paper variant='outlined' sx={{width: smallPage ? '90%' : '70%'}}>
             <Divider
                 textAlign="center"
                 variant='middle'

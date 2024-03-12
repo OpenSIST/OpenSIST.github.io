@@ -69,7 +69,7 @@ function ProgramContent({editable = true}) {
                     {programContent.description}
                 </ReactMarkdown>
             </Paper>
-            <DataGrid records={records} style={{padding: '1rem 0 1rem 0', height: '100%'}} insideProgramPage={true}/>
+            {editable ? <DataGrid records={records} style={{padding: '1rem 0 1rem 0', height: '100%'}} insideProgramPage={true}/> : null}
         </>
     );
 }

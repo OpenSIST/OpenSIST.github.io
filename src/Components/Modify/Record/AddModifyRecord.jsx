@@ -2,29 +2,40 @@ import {getPrograms} from "../../../Data/ProgramData";
 import React, {useState} from "react";
 import {addModifyRecord, getRecordByRecordIDs} from "../../../Data/RecordData";
 import {Box, Button, Input, Link as MuiLink, Paper, TextField, Tooltip, Typography} from "@mui/material";
-import {Form, redirect, useLoaderData, useNavigate} from "react-router-dom";
+import {Form, redirect, useLoaderData, useLocation, useNavigate} from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import Autocomplete from "@mui/material/Autocomplete";
-import {applicationYearOptions, recordSemesterOptions, recordStatusOptions} from "../../../Data/Schemas";
+import {applicationYearOptions, list2Options, recordSemesterOptions, recordStatusOptions} from "../../../Data/Schemas";
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from "dayjs";
 import {DatePicker} from "@mui/x-date-pickers";
 import {HelpOutline} from "@mui/icons-material";
+import {getDisplayName, getMetaData} from "../../../Data/UserData";
+import {useSmallPage} from "../../common";
 
 export async function loader({params}) {
     const programs = await getPrograms();
-    const applicantID = params.applicantId;
-    const recordID = `${applicantID}|${params.programId}`;
-    const recordsDict = params.programId ? await getRecordByRecordIDs([recordID]) : null;
-    return {programs, recordsDict, applicantID};
+    const paramsApplicantID = params?.applicantId;
+    let applicantIDs = null;
+    if (!paramsApplicantID) {
+        const displayName = await getDisplayName();
+        const metaData = await getMetaData(displayName);
+        applicantIDs = metaData.ApplicantIDs;
+        return {programs, applicantIDs};
+    } else {
+        const recordsDict = params.programId ? await getRecordByRecordIDs([`${paramsApplicantID}|${params.programId}`]) : null;
+        const applicantIDs = [paramsApplicantID];
+        return {programs, recordsDict, applicantIDs};
+    }
 }
-export async function action({params, request}) {
+export async function action({request}) {
     const formData = await request.formData();
     const actionType = formData.get('ActionType');
-    const applicantID = params.applicantId;
+    const applicantID = formData.get('ApplicantID');
     const programID = formData.get('ProgramID');
+    const passedProgramID = formData.get('passedProgramID');
     const recordID = `${applicantID}|${programID}`;
     const year = formData.get('Year');
     const semester = formData.get('Semester');
@@ -53,12 +64,22 @@ export async function action({params, request}) {
         }
     }
     await addModifyRecord(requestBody);
-    return redirect(`/profile/${applicantID}`);
+    if (passedProgramID) {
+        return redirect(`/profile/${passedProgramID}`);
+    } else {
+        return redirect(`/profile/${applicantID}`);
+    }
 }
 
 export default function AddModifyRecord({type}) {
-    const {programs, recordsDict, applicantID} = useLoaderData();
+    const loaderData = useLoaderData();
+    const programs = loaderData.programs;
+    const applicantIDs = loaderData.applicantIDs;
+    const recordsDict = loaderData.recordsDict;
     const navigate = useNavigate();
+
+    const location = useLocation();
+    const passedProgramID = location?.state?.programID;
 
     const programOptions = Object.values(programs).reduce((acc, programArray) => {
         programArray.forEach(program => {
@@ -67,12 +88,17 @@ export default function AddModifyRecord({type}) {
         return acc;
     }, []);
 
+    const applicantOptions = list2Options(applicantIDs);
+
     const record = recordsDict ? recordsDict[Object.keys(recordsDict)[0]] : null;
     const [programOption, setProgramOption] = useState(record ? record.ProgramID : null);
+    const [applicantOption, setApplicantOption] = useState(record ? record.ApplicantID : null);
     const [statusOption, setStatusOption] = useState(record ? record.Status : null);
     const [yearOption, setYearOption] = useState(record ? record.ProgramYear : null);
     const [semesterOption, setSemesterOption] = useState(record ? record.Semester : null);
     const mode = type === 'new' ? '添加' : '修改';
+
+    const smallPage = useSmallPage();
 
     return (
         <Form method='post'>
@@ -84,15 +110,69 @@ export default function AddModifyRecord({type}) {
                 alignItems: "center",
                 textAlign: "center"
             }}>
-                <Paper variant='outlined' sx={{width: '70%'}}>
+                <Paper variant='outlined' sx={{width: smallPage ? '90%' : '70%'}}>
                     <Typography variant="h4" sx={{alignSelf: 'center', marginTop: '10px'}}>{`${mode}申请记录`}</Typography>
+                    <Input type='hidden' name='passedProgramID' value={passedProgramID}/>
                     <Box className='AddModifyForm'>
                         <Grid2
                             container
                             spacing={2}
                             sx={{width: '80%', marginTop: '10px'}}
                         >
-                            <Grid2 xs={12} md={6}>
+                            <Grid2 xs={12}>
+                                {applicantOptions.length === 1 ? <Autocomplete
+                                        fullWidth
+                                        options={applicantOptions}
+                                        readOnly
+                                        renderInput={
+                                            (params) =>
+                                                <TextField
+                                                    {...params}
+                                                    label='选择申请人 (不可修改)'
+                                                    name='ApplicantID'
+                                                    size='small'
+                                                    required
+                                                />
+                                        }
+                                        defaultValue={applicantOptions[0]}
+                                    /> :
+                                <Autocomplete
+                                    fullWidth
+                                    options={applicantOptions}
+                                    renderInput={
+                                        (params) =>
+                                            <TextField
+                                                {...params}
+                                                label='选择申请人'
+                                                name='ApplicantID'
+                                                size='small'
+                                                required
+                                            />
+                                    }
+                                    value={applicantOption ? applicantOptions.find(option => option.value === applicantOption) : null}
+                                    onChange={(event, newValue) => {
+                                        setApplicantOption(newValue?.value);
+                                    }}
+                                />}
+                            </Grid2>
+                            {passedProgramID ? <Grid2 xs={12} md={6}>
+                                <Autocomplete
+                                    fullWidth
+                                    options={programOptions}
+                                    readOnly
+                                    renderInput={
+                                        (params) =>
+                                            <TextField
+                                                {...params}
+                                                label='选择项目 (不可修改)'
+                                                name='ProgramID'
+                                                size='small'
+                                                required
+                                            />
+                                    }
+                                    defaultValue={passedProgramID}
+                                />
+                            </Grid2> : <Grid2 xs={12} md={6}>
                                 <Autocomplete
                                     fullWidth
                                     options={programOptions}
@@ -104,7 +184,8 @@ export default function AddModifyRecord({type}) {
                                                 label={`选择项目 ${type === 'edit' ? ' (不可修改)' : ''}`}
                                                 name='ProgramID'
                                                 size='small'
-                                                helperText={<MuiLink href='/programs/new'>未找到项目？请点此前往添加项目信息</MuiLink>}
+                                                helperText={<MuiLink
+                                                    href='/programs/new'>未找到项目？请点此前往添加项目信息</MuiLink>}
                                                 required
                                             />
                                     }
@@ -112,9 +193,8 @@ export default function AddModifyRecord({type}) {
                                     onChange={(event, newValue) => {
                                         setProgramOption(newValue?.value);
                                     }}
-                                >
-                                </Autocomplete>
-                            </Grid2>
+                                />
+                            </Grid2>}
                             <Grid2 xs={12} md={6}>
                                 <Autocomplete
                                     fullWidth
@@ -260,7 +340,15 @@ export default function AddModifyRecord({type}) {
                         <Button
                             sx={{ mr: 1 }}
                             variant='contained'
-                            onClick={() => navigate(`/profile/${applicantID}`)}
+                            onClick={() => {
+                                if (passedProgramID) {
+                                    navigate(`/profile/${passedProgramID}`);
+                                } else if (applicantOptions.length === 1) {
+                                    navigate(`/profile/${applicantIDs[0]}`);
+                                } else {
+                                    navigate(`/profile/${applicantOption}`);
+                                }
+                            }}
                         >
                             取消
                         </Button>

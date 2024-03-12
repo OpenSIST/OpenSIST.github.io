@@ -265,7 +265,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     filter={!insideProgramPage}
                     filterPlaceholder="搜索项目"
                     className="ProgramIDColumn"
-                    style={{width: '12rem'}}
+                    style={{minWidth: '12rem'}}
                 />}
                 <Column
                     field='Status'
