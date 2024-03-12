@@ -20,6 +20,7 @@ import {DraggableFAB, InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import {TriStateCheckbox} from 'primereact/tristatecheckbox';
 import {Dropdown} from "primereact/dropdown";
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 export async function loader() {
     let programs = await getPrograms();
@@ -139,7 +140,19 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     }
     const groupSubheaderTemplate = (data) => {
         return (
-            <b>{data.ProgramID}</b>
+            <InlineTypography sx={{gap: '0.5rem'}}>
+                <b>{data.ProgramID}</b>
+                <Tooltip title="添加申请记录" arrow>
+                    <ControlPointIcon onClick={() => navigate(`/profile/new-record`, {
+                        state: {
+                            programID: data.ProgramID,
+                        }
+                    })} sx={{
+                        cursor: 'pointer',
+                        "&:hover": {color: (theme) => theme.palette.mode === "dark" ? "#a1a1a1" : "#6b6b6b"}
+                    }}/>
+                </Tooltip>
+            </InlineTypography>
         );
     };
 
