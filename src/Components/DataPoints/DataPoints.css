@@ -118,4 +118,9 @@
 
 .p-paginator {
     justify-content: center;
+    padding: 0;
+}
+
+.p-paginator-current {
+    padding: 0;
 }
