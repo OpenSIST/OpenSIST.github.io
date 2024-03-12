@@ -3,11 +3,9 @@ import {
     Box,
     Button, Divider,
     Paper,
-    TextField,
-    Tooltip
+    TextField, Tooltip
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import {HelpOutline} from "@mui/icons-material";
 import Autocomplete from "@mui/material/Autocomplete";
 import {
     applicationYearOptions,
@@ -18,6 +16,8 @@ import {
 import "../AddModifyApplicant.css";
 import {useNavigate} from "react-router-dom";
 import {Link as MuiLink} from '@mui/material';
+import {useSmallPage} from "../../../common";
+import {HelpOutline} from "@mui/icons-material";
 
 function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData}) {
     let finalOptions = [];
@@ -67,8 +67,10 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
         return !formValues.Gender || !formValues.CurrentDegree || !formValues.ApplicationYear || !formValues.Major || !formValues.GPA || !formValues.Ranking || !formValues.EnglishOption || !formValues.EnglishTotal || !formValues.R || !formValues.L || !formValues.S || !formValues.W || (isGRETotalRequired && !formValues.GRETotal) || (isGREVRequired && !formValues.V) || (isGREQRequired && !formValues.Q) || (isGREAWRequired && !formValues.AW) || isGPAError || isEnglishTotalError || isReadingError || isListeningError || isSpeakingError || isWritingError || isGRETotalError || isGREVError || isGREQError || isGREAWError;
     }
 
+    const smallPage = useSmallPage();
+
     return (
-        <Paper variant='outlined' sx={{width: '70%'}}>
+        <Paper variant='outlined' sx={{width: smallPage ? '90%' : '70%'}}>
             <Divider
                 textAlign="center"
                 variant='middle'
@@ -153,6 +155,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
                                                     {params.InputProps.endAdornment}
                                                     <Tooltip
                                                         title='例：若申请2024Fall或2024Spring，则统一填2024'
+                                                        enterTouchDelay={0}
                                                         arrow
                                                     >
                                                         <HelpOutline/>
@@ -229,7 +232,12 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
                             helperText={isGPAError ? "GPA应在0-4之间" : null}
                             InputProps={{
                                 endAdornment: (
-                                    <Tooltip title={'填写在该申请季用于申请的最高学历的GPA'} arrow sx={{cursor: 'pointer'}}>
+                                    <Tooltip
+                                        title={'填写在该申请季用于申请的最高学历的GPA'}
+                                        enterTouchDelay={0}
+                                        arrow
+                                        sx={{cursor: 'pointer'}}
+                                    >
                                         <HelpOutline/>
                                     </Tooltip>
                                 ),

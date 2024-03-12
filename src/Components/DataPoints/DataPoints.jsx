@@ -3,7 +3,7 @@ import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByRecordIDs} from "../../Data/RecordData";
-import {Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
+import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
 import {
@@ -20,6 +20,7 @@ import {DraggableFAB, InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import {TriStateCheckbox} from 'primereact/tristatecheckbox';
 import {Dropdown} from "primereact/dropdown";
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 export async function loader() {
     let programs = await getPrograms();
@@ -139,7 +140,20 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     }
     const groupSubheaderTemplate = (data) => {
         return (
-            <b>{data.ProgramID}</b>
+            <InlineTypography sx={{gap: '0.5rem'}}>
+                <b>{data.ProgramID}</b>
+                <Tooltip title="添加申请记录" arrow>
+                    <ControlPointIcon onClick={() => navigate(`/profile/new-record`, {
+                        state: {
+                            programID: data.ProgramID,
+                            from: window.location.pathname
+                        }
+                    })} sx={{
+                        cursor: 'pointer',
+                        "&:hover": {color: (theme) => theme.palette.mode === "dark" ? "#a1a1a1" : "#6b6b6b"}
+                    }}/>
+                </Tooltip>
+            </InlineTypography>
         );
     };
 
@@ -237,6 +251,8 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 rowHover
                 showGridlines
                 paginator={insideProgramPage ? null : true}
+                paginatorTemplate="FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+                currentPageReportTemplate="{first}~{last} of {totalRecords}"
                 rows={insideProgramPage ? null : 20}
                 filterDelay={insideProgramPage ? null : 300}
                 filters={insideProgramPage ? null : filters}
@@ -253,7 +269,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     align='center'
                     filterPlaceholder="搜索申请人"
                     className="ApplicantIDColumn"
-                    style={{width: '10rem'}}
+                    style={{minWidth: '10rem'}}
                 />
                 {insideProgramPage ? null : <Column
                     field='ProgramID'
@@ -263,7 +279,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     filter={!insideProgramPage}
                     filterPlaceholder="搜索项目"
                     className="ProgramIDColumn"
-                    style={{width: '12rem'}}
+                    style={{minWidth: '12rem'}}
                 />}
                 <Column
                     field='Status'
@@ -376,17 +392,20 @@ export default function DataPoints() {
                 <DataGrid records={records} insideProgramPage={false}/>
                 <Outlet/>
             </Paper>
-            <DraggableFAB
-                Icon={<Refresh/>}
-                ActionType="Refresh"
-                ButtonClassName="HiddenRefreshButton"
-                color="primary"
-                style={{
-                    position: 'absolute',
-                    bottom: '20%',
-                    right: "1rem"
-                }}
-            />
+            <Form method="post">
+                <DraggableFAB
+                    Icon={<Refresh/>}
+                    ActionType="Refresh"
+                    ButtonClassName="HiddenRefreshButton"
+                    color="primary"
+                    style={{
+                        position: 'absolute',
+                        bottom: '20%',
+                        right: "1rem"
+                    }}
+                    tooltipTitle='刷新表格'
+                />
+            </Form>
         </>
     )
 }
