@@ -55,7 +55,7 @@ export async function action({request}) {
             'Semester': semester,
             'Status': status,
             'TimeLine': {
-                'Submit': submit,
+                'Submit': submit.length > 0 ? submit : null,
                 'Interview': interview.length > 0 ? interview : null,
                 'Decision': decision.length > 0 ? decision : null,
             },
@@ -274,8 +274,8 @@ export default function AddModifyRecord({type}) {
                                             label="提交申请时间"
                                             name='Submit'
                                             format='YYYY-MM-DD'
-                                            slotProps={ { textField: {size: 'small', fullWidth: true, required: true} }}
-                                            defaultValue={record ? dayjs(record.TimeLine.Submit.split('T')[0]) : null}
+                                            slotProps={ { textField: {size: 'small', fullWidth: true} }}
+                                            defaultValue={record ? (record.TimeLine.Submit ? dayjs(record.TimeLine.Submit.split('T')[0]) : null) : null}
                                         />
                                     </DemoContainer>
                                 </LocalizationProvider>
@@ -288,7 +288,7 @@ export default function AddModifyRecord({type}) {
                                             name='Interview'
                                             format='YYYY-MM-DD'
                                             slotProps={ { textField: {size: 'small', fullWidth: true} }}
-                                            defaultValue={record ? record.TimeLine.Interview ? dayjs(record.TimeLine.Interview.split('T')[0]) : null : null}
+                                            defaultValue={record ? (record.TimeLine.Interview ? dayjs(record.TimeLine.Interview.split('T')[0]) : null) : null}
                                         />
                                     </DemoContainer>
                                 </LocalizationProvider>
@@ -301,7 +301,7 @@ export default function AddModifyRecord({type}) {
                                             name='Decision'
                                             format='YYYY-MM-DD'
                                             slotProps={ { textField: {size: 'small', fullWidth: true} }}
-                                            defaultValue={record ? record.TimeLine.Decision ? dayjs(record.TimeLine.Decision.split('T')[0]) : null : null}
+                                            defaultValue={record ? (record.TimeLine.Decision ? dayjs(record.TimeLine.Decision.split('T')[0]) : null) : null}
                                         />
                                     </DemoContainer>
                                 </LocalizationProvider>
