@@ -60,6 +60,14 @@ import DataPoints, {
     ProgramContentInDataPoints
 } from "./Components/DataPoints/DataPoints";
 import {HowToUse} from "./Components/HowToUse/HowToUse";
+import PostPage, {
+    PostIndex,
+    loader as PostPageLoader,
+    action as PostPageAction,
+} from "./Components/Post/PostPage";
+import PostContent, {
+    loader as PostContentLoader
+} from "./Components/Post/PostContent/PostContent";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -172,6 +180,27 @@ function OpenSIST() {
                                             element: <AddModifyRecord key='edit' type='edit'/>,
                                             loader: addModifyRecordLoader,
                                             action: addModifyRecordAction
+                                        }
+                                    ]
+                                }
+                            ]
+                        }, {
+                            path: '/posts',
+                            element: <PostPage/>,
+                            loader: PostPageLoader,
+                            action: PostPageAction,
+                            children: [
+                                {
+                                    errorElement: <ErrorPage/>,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <PostIndex/>
+                                        }, {
+                                            path: '/posts/:postId',
+                                            element: <PostContent/>,
+                                            loader: PostContentLoader,
+                                            // action: PostContentAction
                                         }
                                     ]
                                 }

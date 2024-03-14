@@ -73,7 +73,7 @@ export function UnivProgramList({univProgramList, ButtonComponent = ProgramButto
     const darkMode = theme.palette.mode === 'dark';
     return (
         <Paper
-            variant={darkMode ? 'elevation' : 'elevation'}
+            variant='elevation'
             elevation={darkMode ? 0 : 1}
             sx={{
                 bgcolor: darkMode ? grey[800] : '#fff',

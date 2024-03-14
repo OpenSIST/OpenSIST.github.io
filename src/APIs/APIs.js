@@ -29,3 +29,5 @@ export const GET_METADATA = ROOT + "api/user/get_metadata";
 export const GET_AVATAR = ROOT + "api/user/get_avatar";
 export const TOGGLE_NICKNAME = ROOT + "api/my/toggle_nickname";
 export const UPDATE_CONTACT = ROOT + "api/user/update_contact";
+export const POST_LIST = ROOT + "api/list/posts"
+export const GET_POST_CONTENT = ROOT + "api/query/post_content"

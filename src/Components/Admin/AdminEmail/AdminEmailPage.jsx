@@ -14,6 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {useState} from "react";
+import {TimeTick2String} from "../../../Data/Common";
 
 export async function loader() {
     const inboxes = await getEmailList('inbox');
@@ -135,6 +136,15 @@ function Email({email, emailID, selectEmails, setSelectEmails}) {
                             width: "30%",
                             justifyContent: 'flex-end'
                         }}>{
+                            // TimeTick2String(email.time, {
+                            //     hour12: false,
+                            //     year: 'numeric',
+                            //     month: '2-digit',
+                            //     day: '2-digit',
+                            //     hour: '2-digit',
+                            //     minute: '2-digit',
+                            //     second: '2-digit'
+                            // })
                             new Date(email.time).toDateString()
                                 .toLocaleString('en-US', {
                                         hour12: false,
