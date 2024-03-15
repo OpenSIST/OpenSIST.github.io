@@ -85,7 +85,7 @@ export default function PostContent() {
                 </div>
             </Box>
             <Box className="PostContentHeader" sx={{pb: "0.5rem"}}>
-                <Typography sx={{display: 'flex', position: 'relative'}}>
+                <Typography>
                     作者: {postObj.Author}
                 </Typography>
                 <Box>

@@ -37,6 +37,7 @@ export async function action({request, params}) {
     }
     if (ActionType === 'new') {
         requestBody.ApplicantID = formData.get('Author');
+        requestBody.content.type = 'Post';
     } else if (ActionType === 'edit') {
         requestBody.PostID = params.postId;
     }

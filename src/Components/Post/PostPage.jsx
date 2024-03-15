@@ -19,7 +19,8 @@ import "./PostPage.css"
 import React, {Fragment} from "react";
 
 export async function loader() {
-    const posts = await getPosts();
+    let posts = await getPosts();
+    posts = posts.filter((post) => post.type === "Post");
     return {posts};
 }
 

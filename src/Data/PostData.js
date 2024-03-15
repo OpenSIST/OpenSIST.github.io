@@ -123,6 +123,7 @@ export async function deletePostContent(postId) {
 
 export async function addModifyPost(requestBody, type) {
     const API = type === 'new' ? ADD_POST : MODIFY_POST;
+    console.log(requestBody, type, API)
     const response = await fetch(API, {
         method: 'POST',
         credentials: 'include',
@@ -136,6 +137,7 @@ export async function addModifyPost(requestBody, type) {
             Title: requestBody.content.Title,
             PostID: postId,
             Author: requestBody.ApplicantID,
+            type: requestBody.content.type,
             created: Date.now(),
             modified: Date.now()
         };
