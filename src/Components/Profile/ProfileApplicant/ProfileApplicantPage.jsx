@@ -47,6 +47,7 @@ import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
 import {HomeRounded, LinkedIn, Link as LinkIcon, Mail} from "@mui/icons-material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {getPrograms} from "../../../Data/ProgramData";
+import {getPost, getPostContent} from "../../../Data/PostData";
 
 const contactIcons = {
     "QQ": faQq,
@@ -58,7 +59,6 @@ const contactIcons = {
 }
 
 export async function loader({params}) {
-    // console.time("ProfileApplicantLoader")
     const applicantId = params.applicantId;
     const isAuth = await isAuthApplicant(applicantId);
     if (!isAuth) {
@@ -303,6 +303,13 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
     useEffect(() => {
         isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
     }, [applicant.ApplicantID]);
+    async function onDownload(postId) {
+        const file_type = postId.startsWith('CV') ? "CV" : "SoP";
+        const link = document.createElement("a");
+        link.download = `${applicant.ApplicantID}_${file_type}.pdf`;
+        link.href = await getPostContent(postId);
+        link.click();
+    }
     return (
         <BaseItemBlock className="BasicInfoBlock" checkpointProps={{xs: 12}} spacing={2}>
             <Grid2 container xs={12} sm={5} md={6} lg={5} xl={4}>
@@ -369,10 +376,22 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                         申请材料:
                     </Typography>
                     <ButtonGroup>
-                        <Button endIcon={<Download/>} size='small'>
+                        <Button
+                            id={applicant?.Posts?.find(post => post.startsWith('CV')) ?? 'DisabledDownloadButton'}
+                            endIcon={<Download/>}
+                            onClick={() => onDownload(applicant?.Posts?.find(post => post.startsWith('CV')))}
+                            disabled={!applicant?.Posts?.find(post => post.startsWith('CV'))}
+                            size='small'
+                        >
                             CV
                         </Button>
-                        <Button endIcon={<Download/>} size='small'>
+                        <Button
+                            id={applicant?.Posts?.find(post => post.startsWith('SoP')) ?? 'DisabledDownloadButton'}
+                            endIcon={<Download/>}
+                            onClick={() => onDownload(applicant?.Posts?.find(post => post.startsWith('SoP')))}
+                            disabled={!applicant?.Posts?.find(post => post.startsWith('SoP'))}
+                            size='small'
+                        >
                             SoP/PS
                         </Button>
                     </ButtonGroup>
