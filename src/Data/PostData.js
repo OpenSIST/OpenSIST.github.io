@@ -143,6 +143,9 @@ export async function addModifyPost(requestBody, type) {
         };
         await setPostObject(postObj);
         const applicant = await getApplicant(postObj.Author);
+        if (!applicant.Posts) {
+            applicant.Posts = [];
+        }
         applicant.Posts.push(postId);
         await setApplicant(applicant);
     } else if (type === 'edit') {
