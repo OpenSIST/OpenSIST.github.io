@@ -47,12 +47,13 @@ function ProgramContent({editable = true}) {
                 <Typography variant={smallPage ? 'h4' : 'h3'} sx={{display: 'flex', position: 'relative'}}>
                     {programContent.ProgramID}
                 </Typography>
-                {editable ? <div className='ReviseRefreshButtonGroup'>
-                    <Tooltip title="编辑项目简介" arrow>
-                        <IconButton component={Link} to={`edit${window.location.search}`}>
-                            <Edit/>
-                        </IconButton>
-                    </Tooltip>
+                <div className='ReviseRefreshButtonGroup'>
+                    {editable ?
+                        <Tooltip title="编辑项目简介" arrow>
+                            <IconButton component={Link} to={`edit${window.location.search}`}>
+                                <Edit/>
+                            </IconButton>
+                        </Tooltip> : null}
                     <Form method='post' style={{display: 'flex'}}>
                         <Tooltip title="刷新项目内容" arrow>
                             <IconButton type='submit' name="ActionType" value="Refresh">
@@ -60,7 +61,7 @@ function ProgramContent({editable = true}) {
                             </IconButton>
                         </Tooltip>
                     </Form>
-                </div> : null}
+                </div>
             </Box>
             <Paper sx={{p: '1.5rem', height: '100%', overflowY: 'auto'}}>
                 <ReactMarkdown

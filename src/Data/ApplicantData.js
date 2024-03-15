@@ -170,8 +170,9 @@ export async function isAuthApplicant(applicantId) {
     * @param applicantId [String]: applicantId
     * @return: [Boolean]: whether the user is authorized to access the applicant
     */
-    // const authApplicants = await getApplicantIDByDisplayName();
-    // return authApplicants.indexOf(applicantId) !== -1;
+    if (!applicantId) {
+        return false;
+    }
     const displayName = await getDisplayName();
     return applicantId.split('@')[0] === displayName;
 }

@@ -10,6 +10,7 @@ export async function headerGenerator(auth = false, contentType = 'application/j
     const header = {
         'Content-Type': contentType,
         'Connection': 'close',
+        'X-Content-Type-Options': 'nosniff'
     }
     const session = await localforage.getItem('session');
     // console.log(session)

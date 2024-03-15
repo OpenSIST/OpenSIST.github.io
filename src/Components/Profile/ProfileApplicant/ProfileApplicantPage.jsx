@@ -752,7 +752,8 @@ function RecordBlock({Records, ApplicantID, editable}) {
                     <Button onClick={handleClose}>取消</Button>
                     <Form method='post'>
                         <Input type='hidden' name='RecordID' value={deleteRecordID}/>
-                        <Button color='error' type='submit' name='ActionType' value='DeleteRecord'
+                        <Button color='error' type='submit'
+                                name='ActionType' value='DeleteRecord'
                                 onClick={handleClose}>
                             确认
                         </Button>

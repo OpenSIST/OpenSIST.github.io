@@ -269,6 +269,7 @@ export async function toggleAnonymous() {
             await setRecord(content);
         }))
     }))
+    // TODO: update the author of posts
 }
 
 export async function updateContact(contact) {

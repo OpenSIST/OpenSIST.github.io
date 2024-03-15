@@ -15,13 +15,12 @@ import {
     FormControl, Input, ListItemText,
     MenuItem,
     Link as MuiLink,
-    TextField, Tooltip,
+    TextField,
     Typography
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMarkdown} from "@fortawesome/free-brands-svg-icons";
-import {HelpOutline} from "@mui/icons-material";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -77,11 +76,14 @@ export default function AddModifyProgram({type}) {
                     sx={AddMode ? {} : {color: 'gray', cursor: 'not-allowed', pointerEvents: 'none'}}
                     renderInput={(params) =>
                         <>
-                            <TextField {...params}
-                                       label={"学校名称" + (AddMode ? "" : " (不可修改)")}
-                                       variant="standard"
-                                       required
-                                       helperText={<MuiLink href="https://github.com/orgs/OpenSIST/discussions/23">未找到学校？请到GitHub提交Issue</MuiLink>}
+                            <TextField
+                                {...params}
+                                label={"学校名称" + (AddMode ? "" : " (不可修改)")}
+                                variant="standard"
+                                required
+                                helperText={<MuiLink
+                                    href="https://github.com/orgs/OpenSIST/discussions/23">未找到学校？请到GitHub提交Issue
+                                </MuiLink>}
                             />
                             <TextField sx={{display: 'none'}} name="University" value={univ?.value || ""}/>
                         </>}

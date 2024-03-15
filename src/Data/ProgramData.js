@@ -199,8 +199,9 @@ export async function setProgramContent(program) {
     if (!program) {
         return;
     }
-    await setProgram(program);
     await setProgramDesc(program.ProgramID, program.Description);
+    delete program.Description;
+    await setProgram(program);
 }
 
 export async function deleteProgramDesc(programId) {

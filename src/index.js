@@ -66,8 +66,13 @@ import PostPage, {
     action as PostPageAction,
 } from "./Components/Post/PostPage";
 import PostContent, {
-    loader as PostContentLoader
+    loader as PostContentLoader,
+    action as PostContentAction
 } from "./Components/Post/PostContent/PostContent";
+import AddModifyPost, {
+    loader as AddModifyPostLoder,
+    action as AddModifyPostAction
+} from "./Components/Modify/Post/AddModifyPost";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -200,7 +205,17 @@ function OpenSIST() {
                                             path: '/posts/:postId',
                                             element: <PostContent/>,
                                             loader: PostContentLoader,
-                                            // action: PostContentAction
+                                            action: PostContentAction
+                                        }, {
+                                            path: '/posts/:postId/edit',
+                                            element: <AddModifyPost key="edit" type="edit"/>,
+                                            loader: AddModifyPostLoder,
+                                            action: AddModifyPostAction
+                                        }, {
+                                            path: '/posts/new',
+                                            element: <AddModifyPost key="new" type="new"/>,
+                                            loader: AddModifyPostLoder,
+                                            action: AddModifyPostAction
                                         }
                                     ]
                                 }

@@ -1,7 +1,7 @@
 import localforage from "localforage";
-import {GET_POST_CONTENT, POST_LIST} from "../APIs/APIs";
+import {ADD_POST, GET_POST_CONTENT, MODIFY_POST, POST_LIST, REMOVE_POST} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
-import {getApplicants} from "./ApplicantData";
+import {getApplicant, getApplicants, setApplicant} from "./ApplicantData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
@@ -16,8 +16,6 @@ export async function getPosts(isRefresh = false) {
         });
         await handleErrors(response);
         posts = await response.json();
-        console.log(posts.data)
-        posts['data'] = posts['data'].sort((a, b) => new Date(b.modified) - new Date(a.modified));
         posts['data'] = posts['data'].map((post) => {
             const applicant = applicants.find((applicant) => applicant?.Posts?.includes(post.PostID));
             if (applicant) {
@@ -28,7 +26,7 @@ export async function getPosts(isRefresh = false) {
         // TODO: potential problem of asynchronized cache
         await setPosts(posts['data']);
     }
-
+    posts['data'] = posts['data'].sort((a, b) => new Date(b.modified) - new Date(a.modified));
     return posts['data'];
 }
 
@@ -44,6 +42,20 @@ export async function getPost(postId, isRefresh = false) {
     const posts = await getPosts(isRefresh);
     // TODO: when the post is not found
     return posts.find((post) => post.PostID === postId);
+}
+
+export async function setPost(post) {
+    if (!post) {
+        return;
+    }
+    const posts = await getPosts();
+    const index = posts.findIndex((p) => p.PostID === post.PostID);
+    if (index !== -1) {
+        posts[index] = post;
+    } else {
+        posts.push(post);
+    }
+    await setPosts(posts);
 }
 
 export async function getPostContent(postId, isRefresh = false) {
@@ -78,4 +90,64 @@ export async function getPostObject(postId, isRefresh = false) {
         ...post,
         Content: content,
     };
+}
+
+export async function setPostObject(postObj) {
+    if (!postObj) {
+        return;
+    }
+    await setPostContent(postObj.PostID, postObj.Content);
+    delete postObj.Content;
+    await setPost(postObj)
+}
+
+export async function removePost(postId, author) {
+    const response = await fetch(REMOVE_POST, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
+        body: JSON.stringify({PostID: postId}),
+    });
+    await handleErrors(response);
+    await deletePostContent(postId);
+    const applicant = await getApplicant(author);
+    applicant.Posts = applicant.Posts.filter((post) => post !== postId);
+    await setApplicant(applicant);
+    const posts = await getPosts();
+    await setPosts(posts.filter((post) => post.PostID !== postId));
+}
+
+export async function deletePostContent(postId) {
+    await localforage.removeItem(`${postId}-Content`);
+}
+
+export async function addModifyPost(requestBody, type) {
+    const API = type === 'new' ? ADD_POST : MODIFY_POST;
+    const response = await fetch(API, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
+        body: JSON.stringify(requestBody),
+    });
+    await handleErrors(response);
+    if (type === 'new') {
+        const postId = (await response.json()).PostID;
+        const postObj = {
+            Title: requestBody.content.Title,
+            PostID: postId,
+            Author: requestBody.ApplicantID,
+            created: Date.now(),
+            modified: Date.now()
+        };
+        await setPostObject(postObj);
+        const applicant = await getApplicant(postObj.Author);
+        applicant.Posts.push(postId);
+        await setApplicant(applicant);
+    } else if (type === 'edit') {
+        let postObj = await getPostObject(requestBody.PostID);
+        postObj.Title = requestBody.content.Title;
+        postObj.Content = requestBody.content.Content;
+        postObj.modified = Date.now();
+        await setPostObject(postObj);
+    }
 }

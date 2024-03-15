@@ -1,9 +1,20 @@
 import {getPosts} from "../../Data/PostData";
 import {Form, Link, Outlet, useLoaderData} from "react-router-dom";
 import {CollapseSideBar} from "../common";
-import {Divider, IconButton, List, ListItemButton, ListItemText, Paper, useTheme} from "@mui/material";
+import {
+    Box,
+    Button, ButtonGroup,
+    Divider,
+    IconButton,
+    List,
+    ListItemButton,
+    ListItemText,
+    Paper,
+    Tooltip,
+    useTheme
+} from "@mui/material";
 import {grey} from "@mui/material/colors";
-import {Refresh} from "@mui/icons-material";
+import {Add, Refresh} from "@mui/icons-material";
 import "./PostPage.css"
 import React, {Fragment} from "react";
 
@@ -28,41 +39,57 @@ export default function PostPage() {
                     width: '250px',
                     height: 'calc(100vh - 120px)',
                     p: '20px',
-                    mt: '10px'
+                    mt: '10px',
+                    gap: '1rem'
                 }
             }}>
-                <Paper>
-                    <Form method='post'>
-                        <IconButton type="submit">
-                            <Refresh/>
-                        </IconButton>
+                <ButtonGroup fullWidth>
+                    <Form action="/posts/new" style={{width: "100%"}}>
+                        <Tooltip title="撰写新文章" arrow>
+                            <Button type="submit" fullWidth sx={{
+                                transition: 'background-color 0s',
+                                bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
+                            }}>
+                                <Add/>
+                            </Button>
+                        </Tooltip>
                     </Form>
-                    <Paper
-                        variant='elevation'
-                        elevation={darkMode ? 0 : 1}
+                    <Form method='post' style={{width: "100%"}}>
+                        <Tooltip title="刷新列表" arrow>
+                            <Button type="submit" fullWidth sx={{
+                                transition: 'background-color 0s',
+                                bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
+                            }}>
+                                <Refresh/>
+                            </Button>
+                        </Tooltip>
+                    </Form>
+                </ButtonGroup>
+                <Paper
+                    variant='elevation'
+                    elevation={darkMode ? 0 : 1}
+                    sx={{
+                        bgcolor: darkMode ? grey[800] : '#fff',
+                        height: "100%",
+                        overflowY: "auto"
+                    }}
+                >
+                    <List
+                        component='nav'
                         sx={{
-                            bgcolor: darkMode ? grey[800] : '#fff',
-                            height: "100%",
-                            overflowY: "auto"
+                            borderRadius: '5px',
+                            overflowY: 'auto'
                         }}
                     >
-                        <List
-                            component='nav'
-                            sx={{
-                                borderRadius: '5px',
-                                overflowY: 'auto'
-                            }}
-                        >
-                            {posts.map((post) => (
-                                <Fragment key={post.PostID}>
-                                    <ListItemButton component={Link} to={`/posts/${post.PostID}`}>
-                                        <ListItemText primary={post.Title} secondary={post.Author}/>
-                                    </ListItemButton>
-                                    <Divider component="li" light/>
-                                </Fragment>
-                            ))}
-                        </List>
-                    </Paper>
+                        {posts.map((post) => (
+                            <Fragment key={post.PostID}>
+                                <ListItemButton component={Link} to={`/posts/${post.PostID}`}>
+                                    <ListItemText primary={post.Title} secondary={post.Author}/>
+                                </ListItemButton>
+                                <Divider component="li" light/>
+                            </Fragment>
+                        ))}
+                    </List>
                 </Paper>
             </CollapseSideBar>
             <Paper
