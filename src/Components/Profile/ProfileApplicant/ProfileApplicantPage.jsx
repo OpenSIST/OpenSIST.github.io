@@ -7,7 +7,7 @@ import {
     ListItemIcon, ListItemText, TextField,
     Paper, Slider, styled, Typography, Divider, Tooltip, Input, ButtonGroup,
 } from "@mui/material";
-import {Add, Delete, Edit, Refresh} from "@mui/icons-material";
+import {Add, Delete, Download, Edit, Refresh} from "@mui/icons-material";
 import "./ProfileApplicantPage.css";
 import {Link} from 'react-router-dom';
 import {
@@ -362,6 +362,19 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                                 </Tooltip>
                             )
                         }) : "暂无"}
+                    </ButtonGroup>
+                </ContentCenteredGrid>
+                <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
+                    <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>
+                        申请材料:
+                    </Typography>
+                    <ButtonGroup>
+                        <Button endIcon={<Download/>} size='small'>
+                            CV
+                        </Button>
+                        <Button endIcon={<Download/>} size='small'>
+                            SoP/PS
+                        </Button>
                     </ButtonGroup>
                 </ContentCenteredGrid>
                 <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
