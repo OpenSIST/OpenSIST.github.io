@@ -1,6 +1,6 @@
 import {getPosts} from "../../Data/PostData";
 import {Form, Link, Outlet, useLoaderData} from "react-router-dom";
-import {CollapseSideBar, InlineTypography} from "../common";
+import {CollapseSideBar} from "../common";
 import {
     Button, ButtonGroup,
     Divider,
