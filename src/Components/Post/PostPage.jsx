@@ -20,7 +20,7 @@ import SearchBar from "../ProgramPage/SideBar/SearchBar/SearchBar";
 export async function loader({request}) {
     const url = new URL(request.url);
     const searchStr = url.searchParams.get("searchStr");
-    let posts = await getPosts(false, {searchStr: searchStr, type: "Post"});
+    let posts = await getPosts(false, {searchStr});
     return {posts, searchStr};
 }
 

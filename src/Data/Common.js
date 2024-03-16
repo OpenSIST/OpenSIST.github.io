@@ -13,7 +13,6 @@ export async function headerGenerator(auth = false, contentType = 'application/j
         'X-Content-Type-Options': 'nosniff'
     }
     const session = await localforage.getItem('session');
-    // console.log(session)
     if (auth) {
         header['Authorization'] = `Bearer ${session}`;
     }

@@ -23,11 +23,9 @@ export async function loader({params}) {
     let sopPost = null;
     if (params.applicantId) {
         applicant = await getApplicant(params.applicantId);
-        // console.log(applicant.Posts)
         if (applicant.Posts && applicant.Posts.length > 0) {
             for (const postId of applicant.Posts) {
                 const post = await getPost(postId);
-                // console.log(post)
                 if (post.type === 'CV') {
                     cvPost = post;
                     cvPost.Content = await getPostContent(postId);
@@ -277,7 +275,6 @@ export default function AddModifyApplicant({type}) {
         }
     }
     const [formValues, setFormValues] = useState(applicantContent ?? {});
-    // console.log(formValues)
     const handleChange = (event, value, name) => {
         setFormValues({...formValues, [event?.target.name ? event?.target.name : name]: value ? value : event?.target.value});
         if (event?.target.value === "" || (event?.target.name === undefined && (value === "" || value === undefined || value === null || value === '[]'))) {

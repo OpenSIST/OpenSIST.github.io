@@ -90,7 +90,6 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
     const CVNodeRef = useRef(loaderData.cvPost?.Content);
     const SoPNodeRef = useRef(loaderData.sopPost?.Content);
     const checkPDFValidity = (event, fileType) => {
-        // console.log(event.target.files)
         if (event.target.files.length > 0) {
             const file = event.target.files[0];
             if (file.size > 10 * 1024 * 1024) {

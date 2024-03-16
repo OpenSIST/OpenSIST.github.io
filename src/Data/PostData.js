@@ -28,10 +28,7 @@ export async function getPosts(isRefresh = false, query = {}) {
     }
     posts['data'] = posts['data'].sort((a, b) => new Date(b.modified) - new Date(a.modified));
     posts['data'] = posts['data'].filter((post) => {
-        if ((query.type && post.type === query.type) && (post.Title.toLowerCase().includes(query.searchStr?.toLowerCase() ?? '') || post.Author.toLowerCase().includes(query.searchStr?.toLowerCase() ?? ''))) {
-            return true;
-        }
-        return false;
+        return (post.type === "Post") && (post.Title.toLowerCase().includes(query.searchStr?.toLowerCase() ?? '') || post.Author.toLowerCase().includes(query.searchStr?.toLowerCase() ?? ''));
     });
     return posts['data'];
 }
