@@ -33,7 +33,7 @@ export default function SideBar({loaderData}) {
                     }
                 }}
             >
-                <SearchBar query={getQuery(loaderData)}/>
+                <SearchBar query={getQuery(loaderData)} pageName='program'/>
                 <Box sx={{mb: "10px", display: 'flex', gap: "10px"}}>
                     <Form action='/programs/new' style={{width: "100%"}}>
                         <Tooltip title='添加新项目' arrow>

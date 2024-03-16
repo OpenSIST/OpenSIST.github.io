@@ -5,7 +5,7 @@ import {getApplicant, getApplicants, setApplicant} from "./ApplicantData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
-export async function getPosts(isRefresh = false) {
+export async function getPosts(isRefresh = false, query = {}) {
     const applicants = await getApplicants(isRefresh);
     let posts = await localforage.getItem('posts');
     if (isRefresh || posts === null || (Date.now() - posts.Date) > CACHE_EXPIRATION) {
@@ -27,6 +27,9 @@ export async function getPosts(isRefresh = false) {
         await setPosts(posts['data']);
     }
     posts['data'] = posts['data'].sort((a, b) => new Date(b.modified) - new Date(a.modified));
+    posts['data'] = posts['data'].filter((post) => {
+        return !((query.title && !post.Title.toLowerCase().includes(query.title?.toLowerCase() ?? '')) || (query.type && post.type !== query.type));
+    });
     return posts['data'];
 }
 

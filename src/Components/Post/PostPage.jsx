@@ -15,11 +15,13 @@ import {grey} from "@mui/material/colors";
 import {Add, Refresh} from "@mui/icons-material";
 import "./PostPage.css"
 import React, {Fragment} from "react";
+import SearchBar from "../ProgramPage/SideBar/SearchBar/SearchBar";
 
-export async function loader() {
-    let posts = await getPosts();
-    posts = posts.filter((post) => post.type === "Post");
-    return {posts};
+export async function loader({request}) {
+    const url = new URL(request.url);
+    const title = url.searchParams.get("title");
+    let posts = await getPosts(false, {title: title, type: "Post"});
+    return {posts, title};
 }
 
 export async function action() {
@@ -27,7 +29,7 @@ export async function action() {
 }
 
 export default function PostPage() {
-    const {posts} = useLoaderData();
+    const loaderData = useLoaderData();
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
     return (
@@ -42,6 +44,7 @@ export default function PostPage() {
                     gap: '1rem'
                 }
             }}>
+                <SearchBar query={{title: loaderData.title}} pageName='post'/>
                 <ButtonGroup fullWidth>
                     <Form action="/posts/new" style={{width: "100%"}}>
                         <Tooltip title="撰写新文章" arrow>
@@ -80,7 +83,7 @@ export default function PostPage() {
                             overflowY: 'auto'
                         }}
                     >
-                        {posts.map((post) => (
+                        {loaderData.posts.map((post) => (
                             <Fragment key={post.PostID}>
                                 <ListItemButton component={Link} to={`/posts/${post.PostID}`}>
                                     <ListItemText primary={post.Title} secondary={post.Author}/>

@@ -18,17 +18,21 @@ import {isEmptyObject} from "../../../common";
 import {regionFlagMapping} from "../../../../Data/Common";
 import {grey} from "@mui/material/colors";
 
-export default function SearchBar({query}) {
+export default function SearchBar({query, pageName}) {
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
     const [searchParams, setSearchParams] = useSearchParams();
     const [timeoutId, setTimeoutId] = useState(null);
     useEffect(() => {
-        document.getElementById('u').value = query.u;
-        document.getElementById('d').value = query.d?.split(',');
-        document.getElementById('m').value = query.m?.split(',');
-        document.getElementById('r').value = query.r?.split(',');
-    }, [query, searchParams, setSearchParams]);
+        if (pageName === 'program') {
+            document.getElementById('u').value = query.u;
+            document.getElementById('d').value = query.d?.split(',');
+            document.getElementById('m').value = query.m?.split(',');
+            document.getElementById('r').value = query.r?.split(',');
+        } else if (pageName === 'post') {
+            document.getElementById('title').value = query.title;
+        }
+    }, [pageName, query, searchParams, setSearchParams]);
 
     const handleFilterChange = (e) => {
         const newSearchParams = new URLSearchParams(searchParams);
@@ -61,7 +65,7 @@ export default function SearchBar({query}) {
             >
                 <SearchIcon sx={{mx: "10px"}}/>
                 <Divider orientation="vertical" variant="middle" flexItem/>
-                <InputBase
+                {pageName === 'program' ? <InputBase
                     id='u'
                     name='u'
                     placeholder="Search..."
@@ -71,35 +75,47 @@ export default function SearchBar({query}) {
                     defaultValue={query.u}
                     fullWidth
                     size="small"
-                />
+                /> : <InputBase
+                    id='title'
+                    name='title'
+                    placeholder="Search..."
+                    type="search"
+                    className='SearchBar'
+                    onChange={handleFilterChange}
+                    defaultValue={query.title}
+                    fullWidth
+                    size="small"
+                />}
             </Paper>
-            <Filter
-                label='Select Degree'
-                id='d'
-                name='d'
-                value={defaultDegree}
-                handleFilterChange={handleFilterChange}
-                options={degreeList}
-                OptionItem={CheckBoxOptionItem}
-            />
-            <Filter
-                label='Select Major'
-                id='m'
-                name='m'
-                value={defaultMajor}
-                handleFilterChange={handleFilterChange}
-                options={majorList}
-                OptionItem={CheckBoxOptionItem}
-            />
-            <Filter
-                label='Select Region'
-                id='r'
-                name='r'
-                value={defaultRegion}
-                handleFilterChange={handleFilterChange}
-                options={regionList}
-                OptionItem={FlagOptionContent}
-            />
+            {pageName === 'program' ? <>
+                <Filter
+                    label='Select Degree'
+                    id='d'
+                    name='d'
+                    value={defaultDegree}
+                    handleFilterChange={handleFilterChange}
+                    options={degreeList}
+                    OptionItem={CheckBoxOptionItem}
+                />
+                <Filter
+                    label='Select Major'
+                    id='m'
+                    name='m'
+                    value={defaultMajor}
+                    handleFilterChange={handleFilterChange}
+                    options={majorList}
+                    OptionItem={CheckBoxOptionItem}
+                />
+                <Filter
+                    label='Select Region'
+                    id='r'
+                    name='r'
+                    value={defaultRegion}
+                    handleFilterChange={handleFilterChange}
+                    options={regionList}
+                    OptionItem={FlagOptionContent}
+                />
+            </> : null}
         </Box>
     )
 }
