@@ -5,7 +5,7 @@ import SearchBar from "./SearchBar/SearchBar";
 import {regionFlagMapping, univAbbrFullNameMapping} from "../../../Data/Common";
 import {
     Box,
-    Button,
+    Button, ButtonGroup,
     Collapse,
     Divider,
     List,
@@ -29,12 +29,13 @@ export default function SideBar({loaderData}) {
                         width: '250px',
                         height: 'calc(100vh - 120px)',
                         p: '20px',
-                        mt: '10px'
+                        mt: '10px',
+                        gap: '10px',
                     }
                 }}
             >
                 <SearchBar query={getQuery(loaderData)} pageName='program'/>
-                <Box sx={{mb: "10px", display: 'flex', gap: "10px"}}>
+                <ButtonGroup fullWidth>
                     <Form action='/programs/new' style={{width: "100%"}}>
                         <Tooltip title='添加新项目' arrow>
                             <Button fullWidth type='submit' variant="outlined"
@@ -59,8 +60,7 @@ export default function SideBar({loaderData}) {
                             </Button>
                         </Tooltip>
                     </Form>
-                </Box>
-
+                </ButtonGroup>
                 <UnivProgramList univProgramList={univProgramList}/>
             </CollapseSideBar>
         </>

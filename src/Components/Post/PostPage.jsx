@@ -41,7 +41,7 @@ export default function PostPage() {
                     height: 'calc(100vh - 120px)',
                     p: '20px',
                     mt: '10px',
-                    gap: '1rem'
+                    gap: '10px'
                 }
             }}>
                 <SearchBar query={{searchStr: loaderData.searchStr}} pageName='post'/>

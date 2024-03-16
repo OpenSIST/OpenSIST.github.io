@@ -55,7 +55,7 @@ export default function SearchBar({query, pageName}) {
     const defaultRegion = regionList.filter(x => query.r?.split(',').includes(x));
 
     return (
-        <Box sx={{display: 'flex', flexDirection: 'column', gap: "10px", mb: '10px'}}>
+        <Box sx={{display: 'flex', flexDirection: 'column', gap: "10px"}}>
             <Paper
                 role='search'
                 className='searchContainer'
