@@ -1,6 +1,6 @@
 import {getPosts} from "../../Data/PostData";
 import {Form, Link, Outlet, useLoaderData} from "react-router-dom";
-import {CollapseSideBar} from "../common";
+import {CollapseSideBar, InlineTypography} from "../common";
 import {
     Button, ButtonGroup,
     Divider,
@@ -109,7 +109,9 @@ export default function PostPage() {
 export function PostIndex() {
     return (
         <>
-            <h1>Posts</h1>
+            <h1>欢迎来到申请分享帖！</h1>
+            <h4><b>对于已经结束申请的同学而言，您可分享任何关于海外申请的内容，包括但不限于申请策略、选校、套磁、申请总结等等。</b></h4>
+            <h4><b>对于准备申请的同学而言，您可以在此浏览前人留下的宝贵经验。侧边栏顶部有搜索框，可按标题进行筛选。</b></h4>
         </>
     )
 }

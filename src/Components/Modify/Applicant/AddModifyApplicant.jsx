@@ -13,7 +13,7 @@ import SoftBackground from "./FormComponent/SoftBackground";
 import {getDisplayName} from "../../../Data/UserData";
 import {getPrograms} from "../../../Data/ProgramData";
 import {blobToBase64} from "../../../Data/Common";
-import {addModifyPost, deletePostContent, getPost, getPostContent, removePost} from "../../../Data/PostData";
+import {addModifyPost, getPost, getPostContent, removePost} from "../../../Data/PostData";
 
 export async function loader({params}) {
     let programs = await getPrograms();
@@ -23,11 +23,11 @@ export async function loader({params}) {
     let sopPost = null;
     if (params.applicantId) {
         applicant = await getApplicant(params.applicantId);
-        console.log(applicant.Posts)
+        // console.log(applicant.Posts)
         if (applicant.Posts && applicant.Posts.length > 0) {
             for (const postId of applicant.Posts) {
                 const post = await getPost(postId);
-                console.log(post)
+                // console.log(post)
                 if (post.type === 'CV') {
                     cvPost = post;
                     cvPost.Content = await getPostContent(postId);
@@ -179,12 +179,12 @@ export async function action({request}) {
     const sopObject = formValues.SoP;
     if (sopObject.Status === 'delete' && sopObject.InitStatus === 'exist') {
         const postID = sopObject.PostID;
-        await deletePostContent(postID);
+        await removePost(postID, ApplicantID);
     } else if (sopObject.InitStatus === 'new' && sopObject.Status === 'new' && sopObject.Title) {
         const sopFileContent = await blobToBase64(formData.get('SoP'));
         const sopRequestBody = PDFNewRequestBody('SoP', sopFileContent);
         await addModifyPost(sopRequestBody, 'new');
-    } else if (sopObject.InitStatus === 'exist' && sopObject.Status === 'exist'&& sopObject.Title) {
+    } else if (sopObject.InitStatus === 'exist' && sopObject.Status === 'exist' && sopObject.Title) {
         const sopFileContent = await blobToBase64(formData.get('SoP'));
         const sopRequestBody = PDFEditRequestBody('SoP', sopObject.PostID, sopFileContent);
         await addModifyPost(sopRequestBody, 'edit');
