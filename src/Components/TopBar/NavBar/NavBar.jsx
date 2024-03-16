@@ -31,7 +31,7 @@ export default function NavBar() {
             name: "项目信息表",
             path: "/programs",
         }, {
-            name: "申请总结贴",
+            name: "申请分享帖",
             path: "/posts",
         }, {
             name: "关于我们",

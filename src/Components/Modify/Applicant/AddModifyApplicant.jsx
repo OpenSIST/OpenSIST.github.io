@@ -1,5 +1,5 @@
 import {Form, redirect, useLoaderData} from "react-router-dom";
-import {addModifyApplicant} from "../../../Data/ApplicantData";
+import {addModifyApplicant, getApplicant} from "../../../Data/ApplicantData";
 import {
     Box,
     Input,
@@ -12,11 +12,33 @@ import BasicInfo from "./FormComponent/BasicInfo";
 import SoftBackground from "./FormComponent/SoftBackground";
 import {getDisplayName} from "../../../Data/UserData";
 import {getPrograms} from "../../../Data/ProgramData";
+import {blobToBase64} from "../../../Data/Common";
+import {addModifyPost, deletePostContent, getPost, getPostContent, removePost} from "../../../Data/PostData";
 
-export async function loader() {
-    let programs = await getPrograms(true);
+export async function loader({params}) {
+    let programs = await getPrograms();
     programs = Object.values(programs).flat().map(program => program.ProgramID);
-    return programs;
+    let applicant = null;
+    let cvPost = null;
+    let sopPost = null;
+    if (params.applicantId) {
+        applicant = await getApplicant(params.applicantId);
+        console.log(applicant.Posts)
+        if (applicant.Posts && applicant.Posts.length > 0) {
+            for (const postId of applicant.Posts) {
+                const post = await getPost(postId);
+                console.log(post)
+                if (post.type === 'CV') {
+                    cvPost = post;
+                    cvPost.Content = await getPostContent(postId);
+                } else if (post.type === 'SoP') {
+                    sopPost = post;
+                    sopPost.Content = await getPostContent(postId);
+                }
+            }
+        }
+    }
+    return {programs, applicant, cvPost, sopPost};
 }
 
 export async function action({request}) {
@@ -118,6 +140,56 @@ export async function action({request}) {
         }
     };
     await addModifyApplicant(requestBody);
+
+    const PDFNewRequestBody = (type, content) => {
+        return {
+            'ApplicantID': ApplicantID,
+            'content': {
+                'type': type,
+                'Title': `${ApplicantID}_${type}.pdf`,
+                'Content': content
+            }
+        }
+    }
+
+    const PDFEditRequestBody = (type, postID, content) => {
+        return {
+            'PostID': postID,
+            'content': {
+                'Title': `${ApplicantID}_${type}.pdf`,
+                'Content': content
+            }
+        }
+    }
+
+    const cvObject = formValues.CV;
+    if (cvObject.Status === 'delete' && cvObject.InitStatus === 'exist') {
+        const postID = cvObject.PostID;
+        await removePost(postID, ApplicantID);
+    } else if (cvObject.InitStatus === 'new' && cvObject.Status === 'new' && cvObject.Title) {
+        const cvFileContent = await blobToBase64(formData.get('CV'));
+        const cvRequestBody = PDFNewRequestBody('CV', cvFileContent);
+        await addModifyPost(cvRequestBody, 'new');
+    } else if (cvObject.InitStatus === 'exist' && cvObject.Status === 'exist' && cvObject.Title) {
+        const cvFileContent = await blobToBase64(formData.get('CV'));
+        const cvRequestBody = PDFEditRequestBody('CV', cvObject.PostID, cvFileContent);
+        await addModifyPost(cvRequestBody, 'edit');
+    }
+
+    const sopObject = formValues.SoP;
+    if (sopObject.Status === 'delete' && sopObject.InitStatus === 'exist') {
+        const postID = sopObject.PostID;
+        await deletePostContent(postID);
+    } else if (sopObject.InitStatus === 'new' && sopObject.Status === 'new' && sopObject.Title) {
+        const sopFileContent = await blobToBase64(formData.get('SoP'));
+        const sopRequestBody = PDFNewRequestBody('SoP', sopFileContent);
+        await addModifyPost(sopRequestBody, 'new');
+    } else if (sopObject.InitStatus === 'exist' && sopObject.Status === 'exist'&& sopObject.Title) {
+        const sopFileContent = await blobToBase64(formData.get('SoP'));
+        const sopRequestBody = PDFEditRequestBody('SoP', sopObject.PostID, sopFileContent);
+        await addModifyPost(sopRequestBody, 'edit');
+    }
+
     return redirect(`/profile/${ApplicantID}`);
 }
 
@@ -126,7 +198,7 @@ const FormContent = (activeStep, formValues, handleBack, handleNext, handleChang
         case 0:
             return <BasicInfo formValues={formValues} handleNext={handleNext} handleChange={handleChange} actionType={type} loaderData={loaderData}/>;
         case 1:
-            return <SoftBackground formValues={formValues} handleBack={handleBack} handleChange={handleChange}/>;
+            return <SoftBackground formValues={formValues} handleBack={handleBack} handleChange={handleChange} loaderData={loaderData}/>;
         default:
             return null;
     }
@@ -146,7 +218,7 @@ export default function AddModifyApplicant({type}) {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    let applicantContent = loaderData?.applicant;
+    let applicantContent = loaderData.applicant;
     if (applicantContent) {
         applicantContent = {
             'Gender': applicantContent.Gender,
@@ -189,19 +261,32 @@ export default function AddModifyApplicant({type}) {
             'Exchange': applicantContent.Exchange,
             'Publication': applicantContent.Publication,
             'Recommendation': applicantContent.Recommendation,
-            'Final': applicantContent.Final
+            'Final': applicantContent.Final,
+            'CV': {
+                'Title': loaderData.cvPost?.Title,
+                'PostID': loaderData.cvPost?.PostID,
+                'InitStatus': loaderData.cvPost ? 'exist' : 'new',
+                'Status': loaderData.cvPost ? 'exist' : 'new'
+            },
+            'SoP': {
+                'Title': loaderData.sopPost?.Title,
+                'PostID': loaderData.sopPost?.PostID,
+                'InitStatus': loaderData.sopPost ? 'exist' : 'new',
+                'Status': loaderData.sopPost ? 'exist' : 'new'
+            }
         }
     }
     const [formValues, setFormValues] = useState(applicantContent ?? {});
+    // console.log(formValues)
     const handleChange = (event, value, name) => {
-        setFormValues({...formValues, [event?.target.name ?? name]: value ?? event.target.value});
+        setFormValues({...formValues, [event?.target.name ? event?.target.name : name]: value ? value : event?.target.value});
         if (event?.target.value === "" || (event?.target.name === undefined && (value === "" || value === undefined || value === null || value === '[]'))) {
-            const {[event?.target.name ?? name]: _, ...rest} = formValues;
+            const {[event?.target.name ? event?.target.name : name]: _, ...rest} = formValues;
             setFormValues(rest);
         }
     }
     return (
-        <Form method='post'>
+        <Form method='post' encType='multipart/form-data'>
             <Input type='hidden' value={type} name='ActionType'/>
             <Stepper
                 nonLinear

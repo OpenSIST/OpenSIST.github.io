@@ -46,8 +46,7 @@ import {grey} from "@mui/material/colors";
 import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
 import {HomeRounded, LinkedIn, Link as LinkIcon, Mail} from "@mui/icons-material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {getPrograms} from "../../../Data/ProgramData";
-import {getPost, getPostContent} from "../../../Data/PostData";
+import {getPostContent} from "../../../Data/PostData";
 
 const contactIcons = {
     "QQ": faQq,
@@ -77,9 +76,8 @@ export async function loader({params}) {
         // const contact = JSON.stringify(metaData?.Contact);
         const contact = metaData.Contact;
         const avatarUrl = await getAvatar(metaData?.Avatar, displayName);
-        const programs = await getPrograms();
         // console.timeEnd("ProfileApplicantLoader")
-        return {avatarUrl, contact, applicant, records, programs};
+        return {avatarUrl, contact, applicant, records};
     } catch (e) {
         throw e;
     }
@@ -382,6 +380,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                             onClick={() => onDownload(applicant?.Posts?.find(post => post.startsWith('CV')))}
                             disabled={!applicant?.Posts?.find(post => post.startsWith('CV'))}
                             size='small'
+                            sx={{textTransform: 'none'}}
                         >
                             CV
                         </Button>
@@ -391,6 +390,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                             onClick={() => onDownload(applicant?.Posts?.find(post => post.startsWith('SoP')))}
                             disabled={!applicant?.Posts?.find(post => post.startsWith('SoP'))}
                             size='small'
+                            sx={{textTransform: 'none'}}
                         >
                             SoP/PS
                         </Button>

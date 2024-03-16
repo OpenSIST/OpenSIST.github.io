@@ -9,7 +9,7 @@ import {
     TextField
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import {
     authorOrderOptions,
     exchangeDurationOptions, exchangeUnivList,
@@ -20,10 +20,11 @@ import {Add} from "@mui/icons-material";
 import Select from "@mui/material/Select";
 import "../AddModifyApplicant.css";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {useNavigate} from "react-router-dom";
 import {useSmallPage} from "../../../common";
 
-function SoftBackground({formValues, handleBack, handleChange}) {
+function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
     const navigate = useNavigate();
 
     const [exchanges, setExchanges] = useState(formValues.Exchange ?? []);
@@ -86,6 +87,37 @@ function SoftBackground({formValues, handleBack, handleChange}) {
 
     const smallPage = useSmallPage();
 
+    const CVNodeRef = useRef(loaderData.cvPost?.Content);
+    const SoPNodeRef = useRef(loaderData.sopPost?.Content);
+    const checkPDFValidity = (event, fileType) => {
+        // console.log(event.target.files)
+        if (event.target.files.length > 0) {
+            const file = event.target.files[0];
+            if (file.size > 10 * 1024 * 1024) {
+                alert("文件大小不能超过10MB!");
+                return;
+            }
+            if (!(/^[\x00-\x7F]*$/.test(file.name))) {
+                alert("文件名不能包含中文!");
+                return;
+            }
+            if (file.type !== 'application/pdf') {
+                alert("文件格式必须为PDF!");
+                return;
+            }
+            let status = formValues[fileType].Status;
+            if (formValues[fileType].Status === 'delete' && file.name) {
+                status = 'exist';
+            }
+            handleChange(event, {
+                Title: `${file.name}`,
+                PostID: formValues[fileType].PostID,
+                InitStatus: formValues[fileType].InitStatus,
+                Status: status
+            }, `${fileType}`);
+        }
+    };
+
     return (
         <Paper variant='outlined' sx={{width: smallPage ? '90%' : '80%'}}>
             <Divider
@@ -102,7 +134,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
-                        <Grid2 container spacing={2} xs={11}>
+                        <Grid2 container spacing={2} xs={10} sm={11}>
                             <Grid2 xs={12} lg={4}>
                                 <FormControl fullWidth required>
                                     <InputLabel size="small">交换学校</InputLabel>
@@ -149,7 +181,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     value={exchange.Detail}
                                     onChange={(event) => handleExchangeChange(index, event)}
                                     size="small"
-                                    multiline
+                                    // multiline
                                 />
                             </Grid2>
                         </Grid2>
@@ -157,7 +189,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
-                        }} xs={1}>
+                        }} xs={2} sm={1}>
                             <IconButton variant="contained" color='error'
                                         onClick={() => handleRemoveExchange(index)}>
                                 <DeleteIcon/>
@@ -200,7 +232,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             label="研究领域"
                             variant="outlined"
                             size="small"
-                            multiline
+                            // multiline
                             value={formValues.ResearchFocus ?? ""}
                             onChange={(event) => {
                                 handleChange(event)
@@ -228,7 +260,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             label="具体描述"
                             variant="outlined"
                             size="small"
-                            multiline
+                            // multiline
+                            // InputProps={{
+                            //     maxRows: 10,
+                            //     multiline: true,
+                            //     inputComponent: 'textarea'
+                            // }}
                             value={formValues.DomesticResearchDetail ?? ""}
                             onChange={(event) => {
                                 handleChange(event)
@@ -256,7 +293,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             label="具体描述"
                             variant="outlined"
                             size="small"
-                            multiline
+                            // multiline
                             value={formValues.InternationalResearchDetail ?? ""}
                             onChange={(event) => {
                                 handleChange(event)
@@ -299,7 +336,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             label="具体描述"
                             variant="outlined"
                             size="small"
-                            multiline
+                            // multiline
                             value={formValues.DomesticInternDetail ?? ""}
                             onChange={(event) => {
                                 handleChange(event)
@@ -327,7 +364,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             label="具体描述"
                             variant="outlined"
                             size="small"
-                            multiline
+                            // multiline
                             value={formValues.InternationalInternDetail ?? ""}
                             onChange={(event) => {
                                 handleChange(event)
@@ -350,7 +387,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
-                        <Grid2 container spacing={2} xs={11}>
+                        <Grid2 container spacing={2} xs={10} sm={11}>
                             <Grid2 xs={12} sm={6}>
                                 <FormControl fullWidth required>
                                     <InputLabel size="small">发表在</InputLabel>
@@ -375,7 +412,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     fullWidth
                                     name="Name"
                                     label="期刊/会议名称简写"
-                                    multiline
+                                    // multiline
                                     value={publication.Name}
                                     onChange={(event) => handlePublicationChange(index, event)}
                                     size="small"
@@ -425,7 +462,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     fullWidth
                                     name="Detail"
                                     label="具体描述"
-                                    multiline
+                                    // multiline
                                     value={publication.Detail}
                                     onChange={(event) => handlePublicationChange(index, event)}
                                     size="small"
@@ -436,9 +473,9 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
-                        }} xs={1}>
+                        }} xs={2} sm={1}>
                             <IconButton variant="contained" color='error'
-                                    onClick={() => handleRemovePublication(index)}>
+                                        onClick={() => handleRemovePublication(index)}>
                                 <DeleteIcon/>
                             </IconButton>
                         </Grid2>
@@ -473,7 +510,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                         sx={{width: '80%', marginBottom: '15px'}}
                         key={index}
                     >
-                        <Grid2 container spacing={2} xs={11}>
+                        <Grid2 container spacing={2} xs={10} sm={11}>
                             <Grid2 xs={12} sm={4}>
                                 <FormControl fullWidth required>
                                     <InputLabel size="small">推荐信类型</InputLabel>
@@ -501,7 +538,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                                     fullWidth
                                     name="Detail"
                                     label="具体描述（推荐人、强度等）"
-                                    multiline
+                                    // multiline
                                     value={recommendation.Detail}
                                     onChange={(event) => handleRecommendationChange(index, event)}
                                     size="small"
@@ -512,7 +549,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
-                        }} xs={1}>
+                        }} xs={2} sm={1}>
                             <IconButton variant="contained" color='error'
                                         onClick={() => handleRemoveRecommendation(index)}>
                                 <DeleteIcon/>
@@ -555,7 +592,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                             label="竞赛经历描述"
                             variant="outlined"
                             size="small"
-                            multiline
+                            // multiline
                             value={formValues.Competition ?? ""}
                             onChange={(event) => {
                                 handleChange(event)
@@ -564,23 +601,126 @@ function SoftBackground({formValues, handleBack, handleChange}) {
                     </Grid2>
                 </Grid2>
             </Box>
+            <Divider
+                textAlign="center"
+                variant='middle'
+                sx={{marginTop: '10px', fontSize: 20}}
+            >
+                <b>上传申请材料（仅支持PDF）</b>
+            </Divider>
+            <Box className='AddModifyForm'>
+                <Grid2
+                    container
+                    spacing={2}
+                    sx={{width: '80%', marginBottom: '10px'}}
+                >
+                    <Grid2 xs={10} sm={11}>
+                        <Button
+                            component='label'
+                            variant="contained"
+                            fullWidth
+                            startIcon={<CloudUploadIcon/>}
+                            sx={{textTransform: 'none'}}
+                        >
+                            {formValues.CV.Title ?? 'Upload CV/Resume'}
+                            <input
+                                hidden
+                                type='file'
+                                name='CV'
+                                accept='application/pdf'
+                                ref={CVNodeRef}
+                                onChange={(event) => checkPDFValidity(event, 'CV')}
+                            />
+                        </Button>
+                    </Grid2>
+                    <Grid2 xs={2} sm={1} sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <IconButton
+                            variant='contained'
+                            color='error'
+                            sx={{textTransform: 'none'}}
+                            disabled={!formValues.CV.Title}
+                            onClick={() => {
+                                handleChange(undefined, {
+                                    Title: undefined,
+                                    PostID: formValues.CV.PostID ?? undefined,
+                                    InitStatus: formValues.CV.InitStatus,
+                                    Status: 'delete'
+                                }, 'CV');
+                                if (CVNodeRef.current) {
+                                    CVNodeRef.current.value = null;
+                                }
+                            }}
+                        >
+                            <DeleteIcon/>
+                        </IconButton>
+                    </Grid2>
+                    <Grid2 xs={10} sm={11}>
+                        <Button
+                            component='label'
+                            variant="contained"
+                            fullWidth
+                            startIcon={<CloudUploadIcon/>}
+                            sx={{textTransform: 'none'}}
+                        >
+                            {formValues.SoP.Title ?? 'Upload PS/SoP'}
+                            <input
+                                hidden
+                                type='file'
+                                name='SoP'
+                                accept='application/pdf'
+                                ref={SoPNodeRef}
+                                onChange={(event) => checkPDFValidity(event, 'SoP')}
+                            />
+                        </Button>
+                    </Grid2>
+                    <Grid2 xs={2} sm={1} sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <IconButton
+                            variant='contained'
+                            color='error'
+                            sx={{textTransform: 'none'}}
+                            disabled={!formValues.SoP.Title}
+                            onClick={() => {
+                                handleChange(undefined, {
+                                    Title: undefined,
+                                    PostID: formValues.SoP.PostID ?? undefined,
+                                    InitStatus: formValues.SoP.InitStatus,
+                                    Status: 'delete'
+                                }, 'SoP');
+                                if (SoPNodeRef.current) {
+                                    SoPNodeRef.current.value = null;
+                                }
+                            }}
+                        >
+                            <DeleteIcon/>
+                        </IconButton>
+                    </Grid2>
+                </Grid2>
+            </Box>
             <Box sx={{display: "flex", justifyContent: "flex-end", margin: 3}}>
                 <Button
-                    sx={{ mr: 1 }}
+                    sx={{mr: 1}}
                     variant='contained'
                     onClick={() => navigate(-1)}
                 >
                     取消
                 </Button>
                 <Button
-                    sx={{ mr: 1 }}
+                    sx={{mr: 1}}
                     variant='contained'
                     onClick={handleBack}
                 >
                     上一步
                 </Button>
                 <Button
-                    sx={{ mr: 2 }}
+                    sx={{mr: 2}}
                     variant='contained'
                     type="submit"
                     color="success"

@@ -178,7 +178,7 @@ function OpenSIST() {
                                         }, {
                                             path: '/profile/:applicantId/edit',
                                             element: <AddModifyApplicant key='edit' type='edit'/>,
-                                            loader: ProfileApplicantLoader,
+                                            loader: addModifyApplicantLoader,
                                             action: addModifyApplicantAction
                                         }, {
                                             path: '/profile/:applicantId/:programId/edit',
