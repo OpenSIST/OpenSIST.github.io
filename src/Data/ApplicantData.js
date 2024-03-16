@@ -17,7 +17,6 @@ export async function getApplicants(isRefresh = false, query = {}) {
     * }
     * @return: list of applicants
     */
-    // await localforage.removeItem('applicants')  //TODO: remove this line
     let applicants = await localforage.getItem('applicants');
 
     if (isRefresh || applicants === null || (Date.now() - applicants.Date) > CACHE_EXPIRATION) {

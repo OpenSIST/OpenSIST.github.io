@@ -110,7 +110,6 @@ export async function getProgramDesc(programId, isRefresh = false) {
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: description of the program
     */
-    // await localforage.removeItem(`${programId}-Desc`) //TODO: remove this line
     let programDesc = await localforage.getItem(`${programId}-Desc`);
     if (isRefresh || programDesc === null || (Date.now() - programDesc.Date) > CACHE_EXPIRATION) {
         const response = await fetch(PROGRAM_DESC, {

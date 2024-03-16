@@ -30,7 +30,7 @@ export default function SearchBar({query, pageName}) {
             document.getElementById('m').value = query.m?.split(',');
             document.getElementById('r').value = query.r?.split(',');
         } else if (pageName === 'post') {
-            document.getElementById('title').value = query.title;
+            document.getElementById('searchStr').value = query.searchStr;
         }
     }, [pageName, query, searchParams, setSearchParams]);
 
@@ -76,13 +76,13 @@ export default function SearchBar({query, pageName}) {
                     fullWidth
                     size="small"
                 /> : <InputBase
-                    id='title'
-                    name='title'
+                    id='searchStr'
+                    name='searchStr'
                     placeholder="Search..."
                     type="search"
                     className='SearchBar'
                     onChange={handleFilterChange}
-                    defaultValue={query.title}
+                    defaultValue={query.searchStr}
                     fullWidth
                     size="small"
                 />}

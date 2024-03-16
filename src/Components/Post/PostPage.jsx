@@ -19,9 +19,9 @@ import SearchBar from "../ProgramPage/SideBar/SearchBar/SearchBar";
 
 export async function loader({request}) {
     const url = new URL(request.url);
-    const title = url.searchParams.get("title");
-    let posts = await getPosts(false, {title: title, type: "Post"});
-    return {posts, title};
+    const searchStr = url.searchParams.get("searchStr");
+    let posts = await getPosts(false, {searchStr: searchStr, type: "Post"});
+    return {posts, searchStr};
 }
 
 export async function action() {
@@ -44,7 +44,7 @@ export default function PostPage() {
                     gap: '1rem'
                 }
             }}>
-                <SearchBar query={{title: loaderData.title}} pageName='post'/>
+                <SearchBar query={{searchStr: loaderData.searchStr}} pageName='post'/>
                 <ButtonGroup fullWidth>
                     <Form action="/posts/new" style={{width: "100%"}}>
                         <Tooltip title="撰写新文章" arrow>
