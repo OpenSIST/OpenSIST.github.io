@@ -1,10 +1,10 @@
 import {
     Accordion,
     AccordionDetails,
-    AccordionSummary, Button, Dialog, DialogActions,
+    AccordionSummary, Box, Button, Dialog, DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle, ListItem, ListItemButton
+    DialogTitle, ListItem, ListItemButton, Typography
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import React, {useState} from "react";
@@ -16,6 +16,7 @@ import program from "../../Assets/imgs/program.png";
 import {Link, useLoaderData} from "react-router-dom";
 import {Link as MuiLink} from '@mui/material';
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import Grid2 from "@mui/material/Unstable_Grid2";
 
 
 export function HowToUse() {
@@ -41,8 +42,8 @@ function Graduated({loaderData}) {
             </AccordionSummary>
             <AccordionDetails>
                 <h3><b>我来这个网站应该干什么？</b></h3>
-                <h5><b>为了给SIST学弟学妹们提供更多海外申请的信息，我们希望你能抽出宝贵的15分钟，做三件事情：</b></h5>
-                <ol>
+                <h5><b>为了给SIST学弟学妹们提供更多海外申请的信息，我们希望你能抽出宝贵的一点时间，按个人意愿来做至多四件事情：</b></h5>
+                <ol style={{lineHeight: '3rem', fontSize: '1.2rem'}}>
                     <li>
                         <b>贡献自己申请时的背景（可选匿名）</b>。考虑到有的人也许会有多于一年的申请经历，因此每个用户可添加多个申请人，以申请年份作区分。
                     </li>
@@ -52,18 +53,40 @@ function Graduated({loaderData}) {
                     <li>
                         <b>贡献海外高校graduate program信息</b>，如果你对某些项目有着很深入的了解，我们希望你把你了解到的给写上，这样能为学弟学妹们提供更多insight。
                     </li>
+                    <li>
+                        <b>在本站发布申请分享帖</b>，分享你申请过程中的心得体会，包括但不限于选校、套磁、申请总结等。
+                    </li>
                 </ol>
-                <h3><b>上面说的这三件事该咋做？</b></h3>
-                <h5>我们在下方提供了详细的图文教程，但是——</h5>
-                <h4><b><i>如果您懒得读和申请人相关的详细教程，可以直接前往<MuiLink
-                    href='/profile/new-applicant'>添加申请人</MuiLink>。</i></b></h4>
-                <h4>
-                    <b><i>
-                        添加完申请人之后，可为该申请人<MuiLink onClick={() => setOpen(true)} style={{cursor: 'pointer'}}>添加申请记录</MuiLink>。
-                    </i></b>
-                </h4>
-                <h4><b><i>如果您觉得项目信息表的教程也太长，可以直接移步<MuiLink href='/programs'>项目信息表</MuiLink>。</i></b>
-                </h4>
+                <h3><b>上面说的这四件事该怎么做？</b></h3>
+                <h4><b>我们在下方提供了各个功能的入口：</b></h4>
+                <Box sx={{width: '100%'}}>
+                    <Grid2 container spacing={4}>
+                        <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                            <Button component={Link} to='/profile/new-applicant' variant='contained'>
+                                添加申请人
+                            </Button>
+                            <Typography variant='body1' sx={{alignSelf: 'center', fontWeight: 'bold'}}>贡献你申请时的个人背景</Typography>
+                        </Grid2>
+                        <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                            <Button variant='contained' onClick={() => setOpen(true)}>
+                                添加申请记录
+                            </Button>
+                            <Typography variant='body1' sx={{alignSelf: 'center', fontWeight: 'bold'}}>贡献申请项目admit/reject的情况</Typography>
+                        </Grid2>
+                        <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                            <Button component={Link} to='/programs' variant='contained'>
+                                添加项目信息
+                            </Button>
+                            <Typography variant='body1' sx={{alignSelf: 'center', fontWeight: 'bold'}}>贡献你所了解的海外硕博项目细节</Typography>
+                        </Grid2>
+                        <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                            <Button component={Link} to='/posts' variant='contained'>
+                                申请分享帖
+                            </Button>
+                            <Typography variant='body1' sx={{alignSelf: 'center', fontWeight: 'bold'}}>贡献你申请的心得和经验</Typography>
+                        </Grid2>
+                    </Grid2>
+                </Box>
                 <Dialog open={open} onClose={() => {
                     setOpen(false);
                 }}>
