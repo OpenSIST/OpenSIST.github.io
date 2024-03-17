@@ -8,8 +8,8 @@ import localforage from "localforage";
 import {getApplicant, setApplicant} from "./ApplicantData";
 import {getProgram, setProgram} from "./ProgramData";
 
-const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
-// const CACHE_EXPIRATION = 1; // 10 min
+// const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+const CACHE_EXPIRATION = 1; // 10 min
 
 export async function addModifyRecord(requestBody) {
     const response = await fetch(ADD_MODIFY_RECORD, {
@@ -71,14 +71,26 @@ export async function getRecordByRecordIDs(recordIDs, isRefresh = false) {
     })
     let expiredRecords = {data: {}};
     if (expiredIDs.length > 0) {
-        const response = await fetch(GET_RECORD_BY_RECORD_IDs, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-            body: JSON.stringify({IDs: expiredIDs}),
-        });
-        await handleErrors(response);
-        expiredRecords = await response.json()
+        let responses = []
+        const batch_size = 6;
+        for (let i = 0; i < expiredIDs.length; i += batch_size) {
+            responses.push(fetch(GET_RECORD_BY_RECORD_IDs, {
+                method: 'POST',
+                credentials: 'include',
+                headers: await headerGenerator(true),
+                body: JSON.stringify({IDs: expiredIDs.slice(i, i + batch_size)}),
+            }));
+        }
+        responses = await Promise.all(responses);
+        await Promise.all(responses.map(async (response) => {
+            await handleErrors(response);
+        }));
+        expiredRecords = await Promise.all(responses.map(async (response) => {
+            return await response.json();
+        }));
+        expiredRecords.data = expiredRecords.reduce((obj, response) => {
+            return {...obj, ...response.data};
+        }, {});
         await Promise.all(expiredIDs.map(async (recordId) => {
             await setRecord(expiredRecords['data'][recordId])
         }));
