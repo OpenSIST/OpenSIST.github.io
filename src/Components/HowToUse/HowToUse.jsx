@@ -37,55 +37,128 @@ function Graduated({loaderData}) {
         <Accordion sx={{bgcolor: '#448aff1a'}}>
             <AccordionSummary
                 expandIcon={<ArrowDropDownIcon/>}
+                sx={{bgcolor: 'rgba(13,60,136,0.1)'}}
             >
                 <h2 style={{margin: 0}}><b>毕业生或大四研三请阅读：</b></h2>
             </AccordionSummary>
             <AccordionDetails>
                 <h3><b>我来这个网站应该干什么？</b></h3>
-                <h5><b>为了给SIST学弟学妹们提供更多海外申请的信息，我们希望你能抽出宝贵的一点时间，按个人意愿来做至多四件事情：</b></h5>
-                <ol style={{lineHeight: '3rem', fontSize: '1.2rem'}}>
-                    <li>
-                        <b>贡献自己申请时的背景（可选匿名）</b>。考虑到有的人也许会有多于一年的申请经历，因此每个用户可添加多个申请人，以申请年份作区分。
-                    </li>
-                    <li>
-                        <b>尽可能多地贡献自己的申请记录</b>，也就是你申请的各个项目的admit/reject的结果，最终呈现出来的就像在一亩三分地或opencs上浏览申请结果一样。
-                    </li>
-                    <li>
-                        <b>贡献海外高校graduate program信息</b>，如果你对某些项目有着很深入的了解，我们希望你把你了解到的给写上，这样能为学弟学妹们提供更多insight。
-                    </li>
-                    <li>
-                        <b>在本站发布申请分享帖</b>，分享你申请过程中的心得体会，包括但不限于选校、套磁、申请总结等。
-                    </li>
-                </ol>
-                <h3><b>上面说的这四件事该怎么做？</b></h3>
-                <h4><b>我们在下方提供了各个功能的入口：</b></h4>
-                <Box sx={{width: '100%'}}>
-                    <Grid2 container spacing={4}>
+                <h5 style={{marginTop: '2rem'}}>
+                    <b>为了给SIST学弟学妹们提供更多海外申请的信息，我们希望你能抽出宝贵的一点时间，按个人意愿来做至多四件事情：</b>
+                </h5>
+                <Box sx={{width: '90%', margin: '2rem 0 0 0'}}>
+                    <Grid2 container columnSpacing={7} rowSpacing={3}>
                         <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                            <Typography variant='h5' sx={{
+                                alignSelf: 'center',
+                                fontWeight: 'bold'
+                            }}>填写你申请时的个人背景（可匿名）</Typography>
+                            <Typography variant='body1'
+                                        sx={{alignSelf: 'center'}}>考虑到有的人也许会有多于一年的申请经历，因此每个用户可添加多个申请人，以申请年份作区分</Typography>
                             <Button component={Link} to='/profile/new-applicant' variant='contained'>
                                 添加申请人
                             </Button>
-                            <Typography variant='body1' sx={{alignSelf: 'center', fontWeight: 'bold'}}>贡献你申请时的个人背景</Typography>
                         </Grid2>
                         <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                            <Typography variant='h5' sx={{
+                                alignSelf: 'center',
+                                fontWeight: 'bold'
+                            }}>填写申请项目admit/reject的情况</Typography>
+                            <Typography variant='body1'
+                                        sx={{alignSelf: 'center'}}>尽可能多地填写自己的申请记录，也就是你申请的各个项目的admit/reject的结果</Typography>
                             <Button variant='contained' onClick={() => setOpen(true)}>
                                 添加申请记录
                             </Button>
-                            <Typography variant='body1' sx={{alignSelf: 'center', fontWeight: 'bold'}}>贡献申请项目admit/reject的情况</Typography>
                         </Grid2>
                         <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                            <Typography variant='h5' sx={{
+                                alignSelf: 'center',
+                                fontWeight: 'bold'
+                            }}>分享你所了解的海外硕博项目细节</Typography>
+                            <Typography variant='body1'
+                                        sx={{alignSelf: 'center'}}>如果你对某些项目有着很深入的了解，我们希望你把你了解到的给写上，这样能为学弟学妹们提供更多insight</Typography>
                             <Button component={Link} to='/programs' variant='contained'>
                                 添加项目信息
                             </Button>
-                            <Typography variant='body1' sx={{alignSelf: 'center', fontWeight: 'bold'}}>贡献你所了解的海外硕博项目细节</Typography>
                         </Grid2>
                         <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                            <Typography variant='h5' sx={{
+                                alignSelf: 'center',
+                                fontWeight: 'bold'
+                            }}>分享你的申请经验</Typography>
+                            <Typography variant='body1'
+                                        sx={{alignSelf: 'center'}}>在本站发布申请分享帖，分享你申请过程中的心得体会，包括但不限于选校、套磁、申请总结等方面</Typography>
                             <Button component={Link} to='/posts' variant='contained'>
                                 申请分享帖
                             </Button>
-                            <Typography variant='body1' sx={{alignSelf: 'center', fontWeight: 'bold'}}>贡献你申请的心得和经验</Typography>
                         </Grid2>
                     </Grid2>
+                    {/*<Grid2 container columnSpacing={7} rowSpacing={2}>*/}
+                    {/*    <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', justifyContent: 'center'}}>*/}
+                    {/*        <Typography variant='h5' sx={{*/}
+                    {/*            alignSelf: 'center',*/}
+                    {/*            fontWeight: 'bold',*/}
+                    {/*            width: '80%'*/}
+                    {/*        }}>填写你申请时的<br/>个人背景（可匿名）</Typography>*/}
+                    {/*    </Grid2>*/}
+                    {/*    <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', justifyContent: 'center'}}>*/}
+                    {/*        <Typography variant='h5' sx={{*/}
+                    {/*            alignSelf: 'center',*/}
+                    {/*            fontWeight: 'bold',*/}
+                    {/*            width: '80%'*/}
+                    {/*        }}>填写申请项目admit/reject的情况</Typography>*/}
+                    {/*    </Grid2>*/}
+                    {/*    <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', justifyContent: 'center'}}>*/}
+                    {/*        <Typography variant='h5' sx={{*/}
+                    {/*            alignSelf: 'center',*/}
+                    {/*            fontWeight: 'bold',*/}
+                    {/*            width: '80%'*/}
+                    {/*        }}>分享你所了解的海外硕博项目细节</Typography>*/}
+                    {/*    </Grid2>*/}
+                    {/*    <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', justifyContent: 'center'}}>*/}
+                    {/*        <Typography variant='h5' sx={{*/}
+                    {/*            alignSelf: 'center',*/}
+                    {/*            fontWeight: 'bold',*/}
+                    {/*            width: '80%'*/}
+                    {/*        }}>分享你申请的心得和经验</Typography>*/}
+                    {/*    </Grid2>*/}
+                    {/*    <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', justifyContent: 'center'}}>*/}
+                    {/*        <Typography variant='body1'*/}
+                    {/*                    sx={{width: '80%'}}>考虑到有的人也许会有多于一年的申请经历，因此每个用户可添加多个申请人，以申请年份作区分</Typography>*/}
+                    {/*    </Grid2>*/}
+                    {/*    <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', justifyContent: 'center'}}>*/}
+                    {/*        <Typography variant='body1'*/}
+                    {/*                    sx={{width: '80%'}}>尽可能多地填写自己的申请记录，也就是你申请的各个项目的admit/reject的结果，最终呈现出来的就像在一亩三分地或opencs上浏览申请结果一样</Typography>*/}
+                    {/*    </Grid2>*/}
+                    {/*    <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', justifyContent: 'center'}}>*/}
+                    {/*        <Typography variant='body1'*/}
+                    {/*                    sx={{width: '80%'}}>如果你对某些项目有着很深入的了解，我们希望你把你了解到的给写上，这样能为学弟学妹们提供更多insight</Typography>*/}
+                    {/*    </Grid2>*/}
+                    {/*    <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', justifyContent: 'center'}}>*/}
+                    {/*        <Typography variant='body1'*/}
+                    {/*                    sx={{width: '80%'}}>分享帖的内容包括但不限于选校、套磁、申请总结等</Typography>*/}
+                    {/*    </Grid2>*/}
+                    {/*    <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>*/}
+                    {/*        <Button component={Link} to='/profile/new-applicant' variant='contained' sx={{width: '80%'}}>*/}
+                    {/*            添加申请人*/}
+                    {/*        </Button>*/}
+                    {/*    </Grid2>*/}
+                    {/*    <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>*/}
+                    {/*        <Button variant='contained' onClick={() => setOpen(true)} sx={{width: '80%'}}>*/}
+                    {/*            添加申请记录*/}
+                    {/*        </Button>*/}
+                    {/*    </Grid2>*/}
+                    {/*    <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>*/}
+                    {/*        <Button component={Link} to='/programs' variant='contained' sx={{width: '80%'}}>*/}
+                    {/*            添加项目信息*/}
+                    {/*        </Button>*/}
+                    {/*    </Grid2>*/}
+                    {/*    <Grid2 xs={12} sm={6} md={3} sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>*/}
+                    {/*        <Button component={Link} to='/posts/new' variant='contained' sx={{width: '80%'}}>*/}
+                    {/*            添加帖子*/}
+                    {/*        </Button>*/}
+                    {/*    </Grid2>*/}
+                    {/*</Grid2>*/}
                 </Box>
                 <Dialog open={open} onClose={() => {
                     setOpen(false);
