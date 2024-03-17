@@ -71,14 +71,26 @@ export async function getRecordByRecordIDs(recordIDs, isRefresh = false) {
     })
     let expiredRecords = {data: {}};
     if (expiredIDs.length > 0) {
-        const response = await fetch(GET_RECORD_BY_RECORD_IDs, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-            body: JSON.stringify({IDs: expiredIDs}),
-        });
-        await handleErrors(response);
-        expiredRecords = await response.json()
+        let responses = []
+        const batch_size = 6;
+        for (let i = 0; i < expiredIDs.length; i += batch_size) {
+            responses.push(fetch(GET_RECORD_BY_RECORD_IDs, {
+                method: 'POST',
+                credentials: 'include',
+                headers: await headerGenerator(true),
+                body: JSON.stringify({IDs: expiredIDs.slice(i, i + batch_size)}),
+            }));
+        }
+        responses = await Promise.all(responses);
+        await Promise.all(responses.map(async (response) => {
+            await handleErrors(response);
+        }));
+        expiredRecords = await Promise.all(responses.map(async (response) => {
+            return await response.json();
+        }));
+        expiredRecords.data = expiredRecords.reduce((obj, response) => {
+            return {...obj, ...response.data};
+        }, {});
         await Promise.all(expiredIDs.map(async (recordId) => {
             await setRecord(expiredRecords['data'][recordId])
         }));
