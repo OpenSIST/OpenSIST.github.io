@@ -101,7 +101,6 @@ export async function setApplicant(applicant) {
     if (!applicant) {
         return;
     }
-    console.log(applicant)
     const applicants = await getApplicants();
     const ori_applicant = applicants.filter(p => p.ApplicantID === applicant.ApplicantID)[0];
     const ori_final_record_id = ori_applicant?.ApplicantID + "|" + ori_applicant?.Final;

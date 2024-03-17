@@ -4,16 +4,11 @@ import {
     AccordionSummary, Box, Button, Dialog, DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle, Divider, ListItem, ListItemButton, Paper, Typography
+    DialogTitle, Divider, ListItem, ListItemButton, Typography
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import React, {useState} from "react";
-import profile from "../../Assets/imgs/profile.png";
-import applicant from "../../Assets/imgs/applicant.png";
-import newApplicant from "../../Assets/imgs/new-applicant.png";
-import record from "../../Assets/imgs/record.png";
-import program from "../../Assets/imgs/program.png";
-import {Link, useLoaderData, useNavigate} from "react-router-dom";
+import {Link, useLoaderData} from "react-router-dom";
 import {Link as MuiLink} from '@mui/material';
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import Grid2 from "@mui/material/Unstable_Grid2";
@@ -67,7 +62,6 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
 function Graduated({loaderData}) {
     const applicantIDs = loaderData.metaData.ApplicantIDs;
     const [open, setOpen] = useState(false);
-    const navigate = useNavigate();
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', gap: "2rem", m: '2rem'}}>
             <BoldTypography variant="h5">我来这个网站应该干什么？</BoldTypography>
