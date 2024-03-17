@@ -27,9 +27,9 @@ export async function loader() {
     programs = Object.values(programs).flat().filter(program => program.Applicants.length > 0);
     const recordIDs = programs.map(program => program.Applicants.map(applicant => applicant + "|" + program.ProgramID)).flat();
     let records = Object.values(await getRecordByRecordIDs(recordIDs));
-    programs = programs.map(program => program.ProgramID);
+    const programIDs = programs.map(program => program.ProgramID);
     records = records.sort((a, b) => {
-        return programs.indexOf(a.ProgramID) - programs.indexOf(b.ProgramID);
+        return programIDs.indexOf(a.ProgramID) - programIDs.indexOf(b.ProgramID);
     });
     return {records};
 }

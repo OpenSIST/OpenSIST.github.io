@@ -124,6 +124,22 @@ export default function AddModifyProgram({type}) {
                                 name="Degree"
                                 label="项目学位"
                                 variant="standard"
+                                InputProps={{
+                                    ...params.InputProps,
+                                    endAdornment: (
+                                        <>
+                                            {params.InputProps.endAdornment}
+                                            <Tooltip
+                                                title='只填写项目最终学位，但若涉及中间学位授予，请在项目介绍中说明'
+                                                arrow
+                                                enterTouchDelay={0}
+                                                leaveTouchDelay={4000}
+                                            >
+                                                <HelpOutline/>
+                                            </Tooltip>
+                                        </>
+                                    ),
+                                }}
                                 required
                             />
                     }
