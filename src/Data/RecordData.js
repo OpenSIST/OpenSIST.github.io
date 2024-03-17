@@ -72,7 +72,7 @@ export async function getRecordByRecordIDs(recordIDs, isRefresh = false) {
     let expiredRecords = {data: {}};
     if (expiredIDs.length > 0) {
         let responses = []
-        const batch_size = 6;
+        const batch_size = 30;
         for (let i = 0; i < expiredIDs.length; i += batch_size) {
             responses.push(fetch(GET_RECORD_BY_RECORD_IDs, {
                 method: 'POST',
