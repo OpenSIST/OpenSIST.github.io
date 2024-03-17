@@ -96,7 +96,7 @@ function Graduated({loaderData}) {
                     TitlePrime='分享你所了解的'
                     TitleSecond='海外硕博项目细节'
                     Content='如果你对某些项目有着很深入的了解，我们希望你能够把你所了解的内容进行分享，为学弟学妹们提供更多insight'
-                    ButtonLink='/programs'
+                    ButtonLink='/programs/new'
                     ButtonContent='添加项目信息'
                 />
                 <GuidanceGrid

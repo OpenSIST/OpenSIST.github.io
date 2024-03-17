@@ -279,7 +279,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     filter={!insideProgramPage}
                     filterPlaceholder="搜索项目"
                     className="ProgramIDColumn"
-                    style={{minWidth: '12rem'}}
+                    style={{width: '10rem'}}
                 />}
                 <Column
                     field='Status'
@@ -310,7 +310,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     filterPlaceholder="搜索申请季"
                     body={programPeriodBodyTemplate}
                     className="SeasonColumn"
-                    style={{minWidth: '8rem'}}
+                    style={{width: '7rem'}}
                 />
                 <Column
                     field='TimeLine.Decision'
