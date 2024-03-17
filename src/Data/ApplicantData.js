@@ -110,21 +110,19 @@ export async function setApplicant(applicant) {
     const final_record = records[final_record_id];
     if (ori_final_record) {
         ori_final_record.Final = false;
+        await setRecord(ori_final_record);
     }
     if (final_record) {
         final_record.Final = true;
+        await setRecord(final_record);
     }
-    await setRecord(ori_final_record);
-    await setRecord(final_record);
     if (ori_applicant) {
-        applicant.Posts = ori_applicant.Posts;
         applicants[applicants.indexOf(ori_applicant)] = applicant;
     } else {
         applicants.push(applicant);
     }
     await setApplicants(applicants);
-    const displayName = await getDisplayName();
-    if (applicant.ApplicantID.split('@')[0] === displayName) {
+    if (await isAuthApplicant(applicant.ApplicantID)) {
         const applicants = await getApplicantIDByDisplayName();
         if (applicants.indexOf(applicant.ApplicantID) === -1) {
             applicants.push(applicant.ApplicantID);
