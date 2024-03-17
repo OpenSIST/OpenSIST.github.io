@@ -16,11 +16,12 @@ import {
     MenuItem,
     Link as MuiLink,
     TextField,
-    Typography
+    Typography, Tooltip
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMarkdown} from "@fortawesome/free-brands-svg-icons";
+import {HelpOutline} from "@mui/icons-material";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -124,6 +125,22 @@ export default function AddModifyProgram({type}) {
                                 name="Degree"
                                 label="项目学位"
                                 variant="standard"
+                                InputProps={{
+                                    ...params.InputProps,
+                                    endAdornment: (
+                                        <>
+                                            {params.InputProps.endAdornment}
+                                            <Tooltip
+                                                title='只填写项目最终学位，但若涉及中间学位授予，请在项目介绍中说明'
+                                                arrow
+                                                enterTouchDelay={0}
+                                                leaveTouchDelay={4000}
+                                            >
+                                                <HelpOutline/>
+                                            </Tooltip>
+                                        </>
+                                    ),
+                                }}
                                 required
                             />
                     }

@@ -343,32 +343,47 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                                             editable={editable && isAuth}/>
                     </ContentCenteredGrid>
                 </Grid2>
-                <ContentCenteredGrid xs={12}>
+                <ContentCenteredGrid xs={12} sx={{gap: Object.entries(contact).length ? 0 : '1rem'}}>
                     <BoldTypography variant="subtitle1">
                         联系方式:
                     </BoldTypography>
-                    <ButtonGroup>
-                        {Object.entries(contact).length ? Object.entries(contact).map(([key, value]) => {
-                            const Icon = contactIcons[key];
-                            if (value === "") {
-                                return null;
-                            }
-                            return (
-                                <Tooltip title={key} key={key} arrow>
-                                    <IconButton
-                                        onClick={async () => {
-                                            await navigator.clipboard.writeText(value)
-                                            alert(`已复制${value}到剪贴板！`)
-                                        }}
-                                    >
-                                        {["QQ", "WeChat"].includes(key) ? <FontAwesomeIcon icon={Icon} fontSize='medium'/> :
-                                            <Icon/>}
-                                    </IconButton>
-                                </Tooltip>
-                            )
-                        }) : "暂无"}
-                    </ButtonGroup>
+                    {Object.entries(contact).length ?
+                        <ButtonGroup>
+                            {Object.entries(contact).map(([key, value]) => {
+                                const Icon = contactIcons[key];
+                                if (value === "") {
+                                    return null;
+                                }
+                                return (
+                                    <Tooltip title={key} key={key} arrow>
+                                        <IconButton
+                                            onClick={async () => {
+                                                await navigator.clipboard.writeText(value)
+                                                alert(`已复制${value}到剪贴板！`)
+                                            }}
+                                        >
+                                            {["QQ", "WeChat"].includes(key) ?
+                                                <FontAwesomeIcon icon={Icon} fontSize='medium'/> :
+                                                <Icon/>}
+                                        </IconButton>
+                                    </Tooltip>
+                                )
+                            })}
+                    </ButtonGroup> : "暂无"}
                 </ContentCenteredGrid>
+                {/*<ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>*/}
+                {/*    <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>*/}
+                {/*        申请材料:*/}
+                {/*    </Typography>*/}
+                {/*    <ButtonGroup>*/}
+                {/*        <Button endIcon={<Download/>} size='small'>*/}
+                {/*            CV*/}
+                {/*        </Button>*/}
+                {/*        <Button endIcon={<Download/>} size='small'>*/}
+                {/*            SoP/PS*/}
+                {/*        </Button>*/}
+                {/*    </ButtonGroup>*/}
+                {/*</ContentCenteredGrid>*/}
                 <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
                     <BoldTypography variant="subtitle1">
                         申请材料:
