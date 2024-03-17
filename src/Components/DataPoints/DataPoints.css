@@ -66,7 +66,6 @@
     display: flex;
     height: 30px;
     align-items: center;
-    box-sizing: content-box;
 }
 
 .p-fluid.p-column-filter-element {
@@ -102,13 +101,13 @@
     max-width: 8rem;
 }
 
-.ApplicantIDColumn .p-column-filter,
-.ProgramIDColumn .p-column-filter,
-.StatusColumn .p-column-filter,
-.FinalColumn .p-column-filter,
-.SeasonColumn .p-column-filter {
-    margin: auto
-}
+/*.ApplicantIDColumn .p-column-filter,*/
+/*.ProgramIDColumn .p-column-filter,*/
+/*.StatusColumn .p-column-filter,*/
+/*.FinalColumn .p-column-filter,*/
+/*.SeasonColumn .p-column-filter {*/
+/*    margin: auto*/
+/*}*/
 
 /*.p-column-filter.p-dropdown.p-component.p-inputwrapper.p-dropdown-clearable,*/
 /*.p-inputtext,*/
@@ -123,4 +122,8 @@
 
 .p-paginator-current {
     padding: 0;
+}
+
+.p-inputtext {
+    padding: 0 1rem 0 1rem;
 }

@@ -2,7 +2,7 @@ import localforage from "localforage";
 import {ADD_MODIFY_APPLICANT, APPLICANT_LIST, REMOVE_APPLICANT} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
 import {getDisplayName, getMetaData, setMetaData} from "./UserData";
-import {deleteRecord, getRecordByApplicant} from "./RecordData";
+import {deleteRecord, getRecordByApplicant, getRecordByRecordIDs, setRecord} from "./RecordData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 // const CACHE_EXPIRATION = 1; // 10 min
@@ -101,16 +101,31 @@ export async function setApplicant(applicant) {
     if (!applicant) {
         return;
     }
-    const applicants = await getApplicants(true);
-    if (applicants.find(p => p.ApplicantID === applicant.ApplicantID) !== undefined) {
-        applicants[applicants.indexOf(applicant)] = applicant;
+    const applicants = await getApplicants();
+    const ori_applicant = applicants.filter(p => p.ApplicantID === applicant.ApplicantID)[0];
+    const ori_final_record_id = ori_applicant?.ApplicantID + "|" + ori_applicant?.Final;
+    const final_record_id = applicant?.ApplicantID + "|" + applicant?.Final;
+    const records = await getRecordByRecordIDs([ori_final_record_id, final_record_id]);
+    const ori_final_record = records[ori_final_record_id];
+    const final_record = records[final_record_id];
+    if (ori_final_record) {
+        ori_final_record.Final = false;
+    }
+    if (final_record) {
+        final_record.Final = true;
+    }
+    await setRecord(ori_final_record);
+    await setRecord(final_record);
+    if (ori_applicant) {
+        applicant.Posts = ori_applicant.Posts;
+        applicants[applicants.indexOf(ori_applicant)] = applicant;
     } else {
         applicants.push(applicant);
     }
     await setApplicants(applicants);
     const displayName = await getDisplayName();
     if (applicant.ApplicantID.split('@')[0] === displayName) {
-        const applicants = await getApplicantIDByDisplayName(true);
+        const applicants = await getApplicantIDByDisplayName();
         if (applicants.indexOf(applicant.ApplicantID) === -1) {
             applicants.push(applicant.ApplicantID);
             await setApplicantIDByDisplayName(applicants);

@@ -371,19 +371,6 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                             })}
                     </ButtonGroup> : "暂无"}
                 </ContentCenteredGrid>
-                {/*<ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>*/}
-                {/*    <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>*/}
-                {/*        申请材料:*/}
-                {/*    </Typography>*/}
-                {/*    <ButtonGroup>*/}
-                {/*        <Button endIcon={<Download/>} size='small'>*/}
-                {/*            CV*/}
-                {/*        </Button>*/}
-                {/*        <Button endIcon={<Download/>} size='small'>*/}
-                {/*            SoP/PS*/}
-                {/*        </Button>*/}
-                {/*    </ButtonGroup>*/}
-                {/*</ContentCenteredGrid>*/}
                 <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
                     <BoldTypography variant="subtitle1">
                         申请材料:
