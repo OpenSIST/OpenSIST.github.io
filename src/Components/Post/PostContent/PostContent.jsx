@@ -19,6 +19,7 @@ import {BoldTypography, useSmallPage} from "../../common";
 import {isAuthApplicant} from "../../../Data/ApplicantData";
 import "./PostContent.css"
 import {getAvatar, getMetaData} from "../../../Data/UserData";
+import Grid2 from "@mui/material/Unstable_Grid2";
 
 export async function loader({params}) {
     const postId = params.postId;
@@ -60,26 +61,26 @@ export default function PostContent() {
         <>
             <Box className="PostContentHeader" sx={{pb: "0.5rem"}}>
                 <Box sx={{pb: "0.5rem", display: 'flex', gap: '1rem'}}>
-                    <Avatar src={avatar} sx={{height: "4rem", width: "4rem", cursor: 'pointer'}} component={Link}
+                    <Avatar src={avatar} sx={{height: (smallPage ? "5rem" : "4rem"), width: (smallPage ? "5rem" : "4rem"), cursor: 'pointer'}} component={Link}
                             to={`/datapoints/applicant/${postObj.Author}`}/>
-                    <Box>
-                        <BoldTypography variant="h6" component={Link} to={`/datapoints/applicant/${postObj.Author}`}
-                                        sx={{
-                                            cursor: 'pointer',
-                                            textDecoration: "none",
-                                        }}
-                        >
-                            {postObj.Author}
-                        </BoldTypography>
-                        <Box sx={{display: 'flex', gap: "10px"}}>
-                            <Typography>
-                                创建于: {new Date(postObj.created).toISOString().split('T')[0]}
-                            </Typography>
-                            <Typography>
-                                最后修改时间: {new Date(postObj.modified).toISOString().split('T')[0]}
-                            </Typography>
-                        </Box>
-                    </Box>
+                    <Grid2 container>
+                        <Grid2 xs={12}>
+                            <BoldTypography variant="h6" component={Link} to={`/datapoints/applicant/${postObj.Author}`}
+                                            sx={{
+                                                cursor: 'pointer',
+                                                textDecoration: "none",
+                                            }}
+                            >
+                                {postObj.Author}
+                            </BoldTypography>
+                        </Grid2>
+                        <Grid2 component={Typography} xs={12} md={5}>
+                            创建于: {new Date(postObj.created).toISOString().split('T')[0]}
+                        </Grid2>
+                        <Grid2 component={Typography} xs={12} md={7}>
+                            最后修改于: {new Date(postObj.modified).toISOString().split('T')[0]}
+                        </Grid2>
+                    </Grid2>
                 </Box>
                 <Box className='ReviseRefreshButtonGroup'>
                     {editable ?
