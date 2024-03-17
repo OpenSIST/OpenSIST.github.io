@@ -110,9 +110,10 @@ export async function action({request}) {
     const Competition = formValues.Competition;
     const Final = formValues.Final;
     const Programs = formValues.Programs;
+    const Posts = formValues.Posts;
     const displayName = await getDisplayName();
     const ApplicantID = `${displayName}@${ApplicationYear}`;
-    const requestBody = {
+    let requestBody = {
         'newApplicant': ActionType === 'new',
         'content': {
             'ApplicantID': ApplicantID,
@@ -132,6 +133,7 @@ export async function action({request}) {
             ...(Competition !== undefined && { 'Competition': Competition }),
             'Programs': ActionType === 'new' ? {} : Programs,
             'Final': Final === undefined ? "" : Final,
+            'Posts': ActionType === 'new' ? [] : Posts
         }
     };
     await addModifyApplicant(requestBody);
@@ -158,11 +160,16 @@ export async function action({request}) {
     }
 
     async function PDFRequesting(type) {
+        // TODO: Use applicant.Posts and pdfObject to determine `new` / `modify` / `remove`
+        // App.Posts.includes(PDF) && PDF -> edit
+        // App.Posts.includes(PDF) && !PDF -> remove
+        // !App.Posts.includes(PDF) && PDF -> new
+        // !App.Posts.includes(PDF) && !PDF -> nothing
         const pdfObject = formValues[type];
         if (pdfObject.Status === 'delete' && pdfObject.InitStatus === 'exist') {
             const postID = pdfObject.PostID;
             await removePost(postID, ApplicantID);
-        } else if (pdfObject.InitStatus === 'new' && pdfObject.Status === 'new' && pdfObject.Title) {
+        } else if (pdfObject.InitStatus === 'new' && pdfObject.Status === 'exist' && pdfObject.Title) {
             const fileContent = await blobToBase64(formData.get(type));
             const requestBody = PDFNewRequestBody(type, fileContent);
             await addModifyPost(requestBody, 'new');
@@ -248,6 +255,7 @@ export default function AddModifyApplicant({type}) {
             'Publication': applicantContent.Publication,
             'Recommendation': applicantContent.Recommendation,
             'Final': applicantContent.Final,
+            'Posts': applicantContent.Posts,
             'CV': {
                 'Title': loaderData.cvPost?.Title,
                 'PostID': loaderData.cvPost?.PostID,
