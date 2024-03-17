@@ -151,39 +151,30 @@ export async function action({request}) {
         return {
             'PostID': postID,
             'content': {
-                'Title': `${ApplicantID}_${type}.pdf`,
+                'Title': `${type}.pdf`,
                 'Content': content
             }
         }
     }
 
-    const cvObject = formValues.CV;
-    if (cvObject.Status === 'delete' && cvObject.InitStatus === 'exist') {
-        const postID = cvObject.PostID;
-        await removePost(postID, ApplicantID);
-    } else if (cvObject.InitStatus === 'new' && cvObject.Status === 'new' && cvObject.Title) {
-        const cvFileContent = await blobToBase64(formData.get('CV'));
-        const cvRequestBody = PDFNewRequestBody('CV', cvFileContent);
-        await addModifyPost(cvRequestBody, 'new');
-    } else if (cvObject.InitStatus === 'exist' && cvObject.Status === 'exist' && cvObject.Title) {
-        const cvFileContent = await blobToBase64(formData.get('CV'));
-        const cvRequestBody = PDFEditRequestBody('CV', cvObject.PostID, cvFileContent);
-        await addModifyPost(cvRequestBody, 'edit');
+    async function PDFRequesting(type) {
+        const pdfObject = formValues[type];
+        if (pdfObject.Status === 'delete' && pdfObject.InitStatus === 'exist') {
+            const postID = pdfObject.PostID;
+            await removePost(postID, ApplicantID);
+        } else if (pdfObject.InitStatus === 'new' && pdfObject.Status === 'new' && pdfObject.Title) {
+            const fileContent = await blobToBase64(formData.get(type));
+            const requestBody = PDFNewRequestBody(type, fileContent);
+            await addModifyPost(requestBody, 'new');
+        } else if (pdfObject.InitStatus === 'exist' && pdfObject.Status === 'exist' && pdfObject.Title) {
+            const fileContent = await blobToBase64(formData.get(type));
+            const requestBody = PDFEditRequestBody(type, pdfObject.PostID, fileContent);
+            await addModifyPost(requestBody, 'edit');
+        }
     }
-    // TODO: deal with the case when the user didn't modify CV/SoP
-    const sopObject = formValues.SoP;
-    if (sopObject.Status === 'delete' && sopObject.InitStatus === 'exist') {
-        const postID = sopObject.PostID;
-        await removePost(postID, ApplicantID);
-    } else if (sopObject.InitStatus === 'new' && sopObject.Status === 'new' && sopObject.Title) {
-        const sopFileContent = await blobToBase64(formData.get('SoP'));
-        const sopRequestBody = PDFNewRequestBody('SoP', sopFileContent);
-        await addModifyPost(sopRequestBody, 'new');
-    } else if (sopObject.InitStatus === 'exist' && sopObject.Status === 'exist' && sopObject.Title) {
-        const sopFileContent = await blobToBase64(formData.get('SoP'));
-        const sopRequestBody = PDFEditRequestBody('SoP', sopObject.PostID, sopFileContent);
-        await addModifyPost(sopRequestBody, 'edit');
-    }
+
+    await PDFRequesting('CV');
+    await PDFRequesting('SoP');
 
     return redirect(`/profile/${ApplicantID}`);
 }
@@ -261,13 +252,13 @@ export default function AddModifyApplicant({type}) {
                 'Title': loaderData.cvPost?.Title,
                 'PostID': loaderData.cvPost?.PostID,
                 'InitStatus': loaderData.cvPost ? 'exist' : 'new',
-                'Status': loaderData.cvPost ? 'exist' : 'new'
+                'Status': 'new'
             },
             'SoP': {
                 'Title': loaderData.sopPost?.Title,
                 'PostID': loaderData.sopPost?.PostID,
                 'InitStatus': loaderData.sopPost ? 'exist' : 'new',
-                'Status': loaderData.sopPost ? 'exist' : 'new'
+                'Status': 'new'
             }
         }
     }

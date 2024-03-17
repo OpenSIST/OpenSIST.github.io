@@ -89,7 +89,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
 
     const CVNodeRef = useRef(loaderData.cvPost?.Content);
     const SoPNodeRef = useRef(loaderData.sopPost?.Content);
-    const checkPDFValidity = (event, fileType) => {
+    const onPDFChange = (event, fileType) => {
         if (event.target.files.length > 0) {
             const file = event.target.files[0];
             if (file.size > 10 * 1024 * 1024) {
@@ -105,7 +105,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                 return;
             }
             let status = formValues[fileType].Status;
-            if (formValues[fileType].Status === 'delete' && file.name) {
+            if ((formValues[fileType].Status === 'delete' || formValues[fileType].Status === 'new') && file.name) {
                 status = 'exist';
             }
             handleChange(event, {
@@ -628,7 +628,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                                 name='CV'
                                 accept='application/pdf'
                                 ref={CVNodeRef}
-                                onChange={(event) => checkPDFValidity(event, 'CV')}
+                                onChange={(event) => onPDFChange(event, 'CV')}
                             />
                         </Button>
                     </Grid2>
@@ -672,7 +672,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                                 name='SoP'
                                 accept='application/pdf'
                                 ref={SoPNodeRef}
-                                onChange={(event) => checkPDFValidity(event, 'SoP')}
+                                onChange={(event) => onPDFChange(event, 'SoP')}
                             />
                         </Button>
                     </Grid2>

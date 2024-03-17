@@ -331,11 +331,14 @@ export default function AddModifyRecord({type}) {
                             onClick={() => {
                                 if (fromPath) {
                                     navigate(fromPath);
-                                } else if (applicantOptions.length === 1) {
-                                    navigate(`/profile/${applicantIDs[0]}`);
                                 } else {
-                                    navigate(`/profile/${applicantOption}`);
+                                    navigate(-1);
                                 }
+                                // else if (applicantOptions.length === 1) {
+                                //     navigate(`/profile/${applicantIDs[0]}`);
+                                // } else {
+                                //     navigate(`/profile/${applicantOption}`);
+                                // }
                             }}
                         >
                             取消
