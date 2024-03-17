@@ -34,6 +34,10 @@ export const InlineTypography = styled(Typography)(() => ({
     flexWrap: "wrap"
 }));
 
+export const BoldTypography = styled(Typography)(() => ({
+    fontWeight: 'bold',
+}));
+
 export function useSmallPage() {
     return useMediaQuery('(max-width:900px)');
 }

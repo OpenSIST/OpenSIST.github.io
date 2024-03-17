@@ -13,7 +13,7 @@ import SoftBackground from "./FormComponent/SoftBackground";
 import {getDisplayName} from "../../../Data/UserData";
 import {getPrograms} from "../../../Data/ProgramData";
 import {blobToBase64} from "../../../Data/Common";
-import {addModifyPost, getPost, getPostContent, getPostObject, removePost} from "../../../Data/PostData";
+import {addModifyPost, getPostObject, removePost} from "../../../Data/PostData";
 
 export async function loader({params}) {
     let programs = await getPrograms();

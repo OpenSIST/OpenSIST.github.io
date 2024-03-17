@@ -1,4 +1,4 @@
-import {getPosts, getPostsWithTypePost} from "../../Data/PostData";
+import {getPosts} from "../../Data/PostData";
 import {Form, Link, Outlet, useLoaderData} from "react-router-dom";
 import {CollapseSideBar} from "../common";
 import {

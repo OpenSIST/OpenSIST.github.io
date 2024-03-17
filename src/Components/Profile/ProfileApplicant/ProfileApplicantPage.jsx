@@ -47,6 +47,7 @@ import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
 import {HomeRounded, LinkedIn, Link as LinkIcon, Mail} from "@mui/icons-material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {getPostContent} from "../../../Data/PostData";
+import {BoldTypography} from "../../common";
 
 const contactIcons = {
     "QQ": faQq,
@@ -158,12 +159,11 @@ function BaseListItem({Icon, primary, secondary}) {
             </ListItemIcon>
             <ListItemText
                 primary={
-                    <Typography variant='h6' sx={{
+                    <BoldTypography variant='h6' sx={{
                         color: (theme) => theme.palette.mode === 'dark' ? "#fff" : "#000",
-                        fontWeight: 'bold'
                     }}>
                         {primary}
-                    </Typography>
+                    </BoldTypography>
                 }
                 secondary={
                     <Box component='span' sx={{display: 'flex', flexDirection: 'column'}}>
@@ -329,9 +329,9 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                 </ContentCenteredGrid>
                 <Grid2 container xs spacing={0}>
                     <ContentCenteredGrid xs={12}>
-                        <Typography variant="h5" color="primary" sx={{fontWeight: 'bold'}}>
+                        <BoldTypography variant="h5" color="primary">
                             {applicant.ApplicantID.replace("@", " ")}
-                        </Typography>
+                        </BoldTypography>
                     </ContentCenteredGrid>
                     <ContentCenteredGrid xs={12}>
                         <Typography variant="subtitle1" sx={{pt: '8px'}}>
@@ -344,9 +344,9 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                     </ContentCenteredGrid>
                 </Grid2>
                 <ContentCenteredGrid xs={12}>
-                    <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>
+                    <BoldTypography variant="subtitle1">
                         联系方式:
-                    </Typography>
+                    </BoldTypography>
                     <ButtonGroup>
                         {Object.entries(contact).length ? Object.entries(contact).map(([key, value]) => {
                             const Icon = contactIcons[key];
@@ -370,9 +370,9 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                     </ButtonGroup>
                 </ContentCenteredGrid>
                 <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
-                    <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>
+                    <BoldTypography variant="subtitle1">
                         申请材料:
-                    </Typography>
+                    </BoldTypography>
                     <ButtonGroup>
                         <Button
                             id={applicant?.Posts?.find(post => post.startsWith('CV')) ?? 'DisabledDownloadButton'}
@@ -397,9 +397,9 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                     </ButtonGroup>
                 </ContentCenteredGrid>
                 <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
-                    <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>
+                    <BoldTypography variant="subtitle1">
                         最终去向:
-                    </Typography>
+                    </BoldTypography>
                     <Chip label={applicant.Final === "" ? "暂无/未知" : applicant.Final}/>
                 </ContentCenteredGrid>
             </Grid2>
@@ -438,8 +438,7 @@ function GradeBar({ranking, GPA}) {
     return (
         <Grid2 container xs={12} spacing={2}>
             <ContentCenteredGrid xs={12} sx={{mb: '0.5rem'}}>
-                <Typography variant="subtitle1"
-                            sx={{fontWeight: 'bold'}}>申请时最高学位GPA以及对应学院/专业排名：</Typography>
+                <BoldTypography variant="subtitle1">申请时最高学位GPA以及对应学院/专业排名：</BoldTypography>
             </ContentCenteredGrid>
             <ContentCenteredGrid xs={12}>
                 <Slider
@@ -467,7 +466,7 @@ function GREBlock({GRE}) {
     return (
         <Grid2 container xs={12}>
             <ContentCenteredGrid xs={12 / 5} sx={{flexDirection: 'column', justifyContent: 'center'}}>
-                <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>GRE</Typography>
+                <BoldTypography variant="subtitle1">GRE</BoldTypography>
                 <Typography>{GRE.Total}</Typography>
             </ContentCenteredGrid>
             {Object.entries(GRE).map(([key, value]) => {
@@ -477,8 +476,7 @@ function GREBlock({GRE}) {
                 return (
                     <ContentCenteredGrid xs={12 / 5} key={key}
                                          sx={{flexDirection: 'column', justifyContent: 'center'}}>
-                        <Typography variant="subtitle1"
-                                    sx={{fontWeight: 'bold'}}>{EnglishExamMapping["GRE"][key]}</Typography>
+                        <BoldTypography variant="subtitle1">{EnglishExamMapping["GRE"][key]}</BoldTypography>
                         <Typography>{value}</Typography>
                     </ContentCenteredGrid>
                 )
@@ -508,7 +506,7 @@ function EnglishExamBlock({EnglishProficiency}) {
                     <Grid2 container xs={12} key={examType}>
                         <ContentCenteredGrid xs={12 / 5}
                                              sx={{flexDirection: 'column', justifyContent: 'center'}}>
-                            <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>{examType}</Typography>
+                            <BoldTypography variant="subtitle1">{examType}</BoldTypography>
                             <Typography>{grade.Total}</Typography>
                         </ContentCenteredGrid>
                         {Object.entries(grade).map(([key, value]) => {
@@ -518,8 +516,7 @@ function EnglishExamBlock({EnglishProficiency}) {
                             return (
                                 <ContentCenteredGrid xs={12 / 5} key={key}
                                                      sx={{flexDirection: 'column', justifyContent: 'center'}}>
-                                    <Typography variant="subtitle1"
-                                                sx={{fontWeight: 'bold'}}>{EnglishExamMapping[examType][key]}</Typography>
+                                    <BoldTypography variant="subtitle1">{EnglishExamMapping[examType][key]}</BoldTypography>
                                     <Typography>{value}</Typography>
                                 </ContentCenteredGrid>
                             )
@@ -545,7 +542,7 @@ function ExchangeBlock({Exchanges}) {
     return (
         <BaseItemBlock className="ExchangeBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
-                <Typography variant='h6' sx={{fontWeight: 'bold'}}>交换经历</Typography>
+                <BoldTypography variant='h6'>交换经历</BoldTypography>
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
                 {Exchanges.map((exchange, index) => {
@@ -572,7 +569,7 @@ function ResearchBlock({Researches}) {
     return (
         <BaseItemBlock className="ResearchBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
-                <Typography variant='h6' sx={{fontWeight: 'bold'}}>科研经历</Typography>
+                <BoldTypography variant='h6'>科研经历</BoldTypography>
                 <Typography variant="subtitle1">{Researches.Focus}</Typography>
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
@@ -596,7 +593,7 @@ function InternshipBlock({Internships}) {
     return (
         <BaseItemBlock className="InternshipBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
-                <Typography variant='h6' sx={{fontWeight: 'bold'}}>实习经历</Typography>
+                <BoldTypography variant='h6'>实习经历</BoldTypography>
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
                 <BaseListItem
@@ -630,7 +627,7 @@ function PublicationBlock({Publications}) {
     return (
         <BaseItemBlock className="PublicationBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
-                <Typography variant='h6' sx={{fontWeight: 'bold'}}>发表论文</Typography>
+                <BoldTypography variant='h6'>发表论文</BoldTypography>
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
                 {Publications.map((publication, index) => {
@@ -666,7 +663,7 @@ function RecommendationBlock({Recommendations}) {
     return (
         <BaseItemBlock className="RecommendationBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
-                <Typography variant='h6' sx={{fontWeight: 'bold'}}>推荐信</Typography>
+                <BoldTypography variant='h6'>推荐信</BoldTypography>
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
                 {Recommendations.map((recommendation, index) => {
@@ -695,7 +692,7 @@ function CompetitionBlock({Competitions}) {
     return (
         <BaseItemBlock className="CompetitionBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
-                <Typography variant='h6' sx={{fontWeight: 'bold'}}>竞赛</Typography>
+                <BoldTypography variant='h6'>竞赛</BoldTypography>
             </ContentCenteredGrid>
             <List sx={{width: '100%'}}>
                 <BaseListItem
@@ -723,7 +720,7 @@ function RecordBlock({Records, ApplicantID, editable}) {
     return (
         <BaseItemBlock className="RecordBlock" checkpointProps={{xs: 12}} spacing={2}>
             <ContentCenteredGrid xs={12} sx={{flexDirection: 'row', alignItems: 'flex-start'}}>
-                <Typography variant='h6' sx={{fontWeight: 'bold'}}>申请记录</Typography>
+                <BoldTypography variant='h6'>申请记录</BoldTypography>
                 {editable ? <Tooltip title='添加记录' arrow sx={{marginLeft: '10px'}}>
                     <Button variant='outlined' onClick={() => {
                         navigate(`/profile/new-record`, { state : { applicantID: ApplicantID, from: `/profile/${ApplicantID}`}});

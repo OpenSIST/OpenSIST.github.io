@@ -6,6 +6,7 @@ body,html {
 }
 
 * {
+    /*line-height: 2rem;*/
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-color) transparent;
 }
@@ -29,7 +30,7 @@ body,html {
     --scrollbar-color: #fff;
     --bg-color: #fff;
     user-select: none;
-    font-size: clamp(14px, 1.5vw, 16px);
+    font-size: clamp(14px, 1.5vw, 18px);
     background-color: var(--bg-color);
 }
 
