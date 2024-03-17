@@ -17,7 +17,6 @@ export async function getApplicants(isRefresh = false, query = {}) {
     * }
     * @return: list of applicants
     */
-    // await localforage.removeItem('applicants')  //TODO: remove this line
     let applicants = await localforage.getItem('applicants');
 
     if (isRefresh || applicants === null || (Date.now() - applicants.Date) > CACHE_EXPIRATION) {
@@ -170,8 +169,9 @@ export async function isAuthApplicant(applicantId) {
     * @param applicantId [String]: applicantId
     * @return: [Boolean]: whether the user is authorized to access the applicant
     */
-    // const authApplicants = await getApplicantIDByDisplayName();
-    // return authApplicants.indexOf(applicantId) !== -1;
+    if (!applicantId) {
+        return false;
+    }
     const displayName = await getDisplayName();
     return applicantId.split('@')[0] === displayName;
 }

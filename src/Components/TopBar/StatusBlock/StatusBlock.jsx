@@ -56,18 +56,6 @@ export function StatusBlock() {
                     <Avatar src={avatarUrl} sx={{bgcolor: blue[500]}}>{displayName?.slice(0, 1).toUpperCase()}</Avatar>
                 </IconButton>
             </Tooltip>
-            {/*<Suspense fallback={() => console.log('loading...')}>*/}
-            {/*    <Await*/}
-            {/*        resolve={avatarUrl}*/}
-            {/*    >*/}
-            {/*        {(avatarUrl) => (*/}
-            {/*            <IconButton onClick={handleMenu}>*/}
-            {/*                <Avatar src={avatarUrl}*/}
-            {/*                        sx={{bgcolor: blue[500]}}>{displayName?.slice(0, 1).toUpperCase()}</Avatar>*/}
-            {/*            </IconButton>*/}
-            {/*        )}*/}
-            {/*    </Await>*/}
-            {/*</Suspense>*/}
             <Menu
                 id="user-menu"
                 anchorEl={anchorEl}

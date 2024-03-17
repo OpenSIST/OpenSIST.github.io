@@ -14,6 +14,7 @@ import {blobToBase64, handleErrors, headerGenerator} from "./Common";
 import {useState} from "react";
 import {getApplicants, setApplicants} from "./ApplicantData";
 import {getRecordByApplicant, setRecord} from "./RecordData";
+import {getPosts, setPosts} from "./PostData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 // const CACHE_EXPIRATION = 1; // 10 min
@@ -234,6 +235,7 @@ export async function toggleAnonymous() {
     let ori_applicant_records = await Promise.all(ori_applicants.map(async (applicant) => {
         return await getRecordByApplicant(applicant);
     }))
+    let ori_posts = await getPosts();
 
     const response = await fetch(TOGGLE_NICKNAME, {
         method: 'POST',
@@ -269,6 +271,14 @@ export async function toggleAnonymous() {
             await setRecord(content);
         }))
     }))
+    const new_posts = ori_posts.map((post) => {
+        if (post?.Author?.split("@")[0] === ori_displayName) {
+            post.Author = `${displayName}@${post.Author.split('@')[1]}`;
+        }
+        return post;
+    })
+    await setPosts(new_posts);
+
 }
 
 export async function updateContact(contact) {

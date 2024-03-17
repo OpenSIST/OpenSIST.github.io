@@ -60,6 +60,19 @@ import DataPoints, {
     ProgramContentInDataPoints
 } from "./Components/DataPoints/DataPoints";
 import {HowToUse} from "./Components/HowToUse/HowToUse";
+import PostPage, {
+    PostIndex,
+    loader as PostPageLoader,
+    action as PostPageAction,
+} from "./Components/Post/PostPage";
+import PostContent, {
+    loader as PostContentLoader,
+    action as PostContentAction
+} from "./Components/Post/PostContent/PostContent";
+import AddModifyPost, {
+    loader as AddModifyPostLoder,
+    action as AddModifyPostAction
+} from "./Components/Modify/Post/AddModifyPost";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -165,13 +178,44 @@ function OpenSIST() {
                                         }, {
                                             path: '/profile/:applicantId/edit',
                                             element: <AddModifyApplicant key='edit' type='edit'/>,
-                                            loader: ProfileApplicantLoader,
+                                            loader: addModifyApplicantLoader,
                                             action: addModifyApplicantAction
                                         }, {
                                             path: '/profile/:applicantId/:programId/edit',
                                             element: <AddModifyRecord key='edit' type='edit'/>,
                                             loader: addModifyRecordLoader,
                                             action: addModifyRecordAction
+                                        }
+                                    ]
+                                }
+                            ]
+                        }, {
+                            path: '/posts',
+                            element: <PostPage/>,
+                            loader: PostPageLoader,
+                            action: PostPageAction,
+                            children: [
+                                {
+                                    errorElement: <ErrorPage/>,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <PostIndex/>
+                                        }, {
+                                            path: '/posts/:postId',
+                                            element: <PostContent/>,
+                                            loader: PostContentLoader,
+                                            action: PostContentAction
+                                        }, {
+                                            path: '/posts/:postId/edit',
+                                            element: <AddModifyPost key="edit" type="edit"/>,
+                                            loader: AddModifyPostLoder,
+                                            action: AddModifyPostAction
+                                        }, {
+                                            path: '/posts/new',
+                                            element: <AddModifyPost key="new" type="new"/>,
+                                            loader: AddModifyPostLoder,
+                                            action: AddModifyPostAction
                                         }
                                     ]
                                 }

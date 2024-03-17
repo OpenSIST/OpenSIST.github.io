@@ -39,8 +39,8 @@ export async function getPrograms(isRefresh = false, query = {}) {
             credentials: 'include',
             headers: await headerGenerator(true),
         });
-        await handleErrors(response)
-        programs = (await response.json());
+        await handleErrors(response);
+        programs = await response.json();
         await setPrograms(programs['data'])
     }
 
@@ -110,7 +110,6 @@ export async function getProgramDesc(programId, isRefresh = false) {
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: description of the program
     */
-    // await localforage.removeItem(`${programId}-Desc`) //TODO: remove this line
     let programDesc = await localforage.getItem(`${programId}-Desc`);
     if (isRefresh || programDesc === null || (Date.now() - programDesc.Date) > CACHE_EXPIRATION) {
         const response = await fetch(PROGRAM_DESC, {
@@ -127,7 +126,7 @@ export async function getProgramDesc(programId, isRefresh = false) {
             }
             throw e;
         }
-        programDesc = (await response.json());
+        programDesc = await response.json();
         await setProgramDesc(programId, programDesc['description'])
     }
     return programDesc['description'];
@@ -187,7 +186,7 @@ export async function setProgramDesc(programId, programDesc) {
     if (!programDesc) {
         return;
     }
-    programDesc = {'description': programDesc, 'Date': Date.now()}
+    programDesc = {'description': programDesc, 'Date': Date.now()};
     await localforage.setItem(`${programId}-Desc`, programDesc);
 }
 
@@ -199,8 +198,9 @@ export async function setProgramContent(program) {
     if (!program) {
         return;
     }
-    await setProgram(program);
     await setProgramDesc(program.ProgramID, program.Description);
+    delete program.Description;
+    await setProgram(program);
 }
 
 export async function deleteProgramDesc(programId) {

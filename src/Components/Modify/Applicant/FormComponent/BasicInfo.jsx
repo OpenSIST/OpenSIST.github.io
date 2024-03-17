@@ -20,14 +20,7 @@ import {useSmallPage} from "../../../common";
 import {HelpOutline} from "@mui/icons-material";
 
 function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData}) {
-    let finalOptions = [];
-    if (loaderData.programs) {
-        finalOptions = Object.values(loaderData.programs).flat().map((program) => {
-            return program.ProgramID;
-        });
-    } else {
-        finalOptions = loaderData;
-    }
+    let finalOptions = loaderData.programs;
     finalOptions = list2Options(finalOptions);
 
     const [englishOption, setEnglishOption] = useState('');

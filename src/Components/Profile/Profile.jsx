@@ -71,11 +71,10 @@ export function ProfileIndex() {
     return (
         <div>
             <h1>User Profile使用指南</h1>
-            本页面供OpenSIST用户创建/编辑/查看自己的申请人信息。
-            <ul>
+            <ul style={{lineHeight: '3rem'}}>
                 <li>
-                    侧边栏使用说明
-                    <ul>
+                    <h4><b>侧边栏使用说明</b></h4>
+                    <ul style={{lineHeight: '3rem'}}>
                         <li>
                             <InlineTypography>
                                 点击侧边栏<PersonAddAltIcon/>按钮可添加申请人。填写信息时，表单当中所有带*的字段为必填项。
@@ -115,7 +114,7 @@ export function ProfileIndex() {
                 </li>
                 <li>
                     申请人页面使用说明
-                    <ul>
+                    <ul style={{lineHeight: '3rem'}}>
                         <li>
                             <InlineTypography>
                                 申请人页面包括申请人的专业、申请年份、三维、软背景等信息，用户可点击页面上部基本信息栏的<Edit/>编辑申请人信息，点击<Delete/>删除该申请人。

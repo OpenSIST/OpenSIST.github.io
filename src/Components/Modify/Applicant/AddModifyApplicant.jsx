@@ -1,5 +1,5 @@
 import {Form, redirect, useLoaderData} from "react-router-dom";
-import {addModifyApplicant} from "../../../Data/ApplicantData";
+import {addModifyApplicant, getApplicant} from "../../../Data/ApplicantData";
 import {
     Box,
     Input,
@@ -12,11 +12,28 @@ import BasicInfo from "./FormComponent/BasicInfo";
 import SoftBackground from "./FormComponent/SoftBackground";
 import {getDisplayName} from "../../../Data/UserData";
 import {getPrograms} from "../../../Data/ProgramData";
+import {blobToBase64} from "../../../Data/Common";
+import {addModifyPost, getPostObject, removePost} from "../../../Data/PostData";
 
-export async function loader() {
-    let programs = await getPrograms(true);
+export async function loader({params}) {
+    let programs = await getPrograms();
     programs = Object.values(programs).flat().map(program => program.ProgramID);
-    return programs;
+    let applicant = null;
+    let cvPost = null;
+    let sopPost = null;
+    if (params.applicantId) {
+        applicant = await getApplicant(params.applicantId);
+        if (applicant.Posts && applicant.Posts.length > 0) {
+            for (const postId of applicant.Posts) {
+                if (postId.startsWith("CV")) {
+                    cvPost = await getPostObject(postId);
+                } else if (postId.startsWith("SoP")) {
+                    sopPost = await getPostObject(postId);
+                }
+            }
+        }
+    }
+    return {programs, applicant, cvPost, sopPost};
 }
 
 export async function action({request}) {
@@ -118,6 +135,47 @@ export async function action({request}) {
         }
     };
     await addModifyApplicant(requestBody);
+
+    const PDFNewRequestBody = (type, content) => {
+        return {
+            'ApplicantID': ApplicantID,
+            'content': {
+                'type': type,
+                'Title': `${type}.pdf`,
+                'Content': content
+            }
+        }
+    }
+
+    const PDFEditRequestBody = (type, postID, content) => {
+        return {
+            'PostID': postID,
+            'content': {
+                'Title': `${type}.pdf`,
+                'Content': content
+            }
+        }
+    }
+
+    async function PDFRequesting(type) {
+        const pdfObject = formValues[type];
+        if (pdfObject.Status === 'delete' && pdfObject.InitStatus === 'exist') {
+            const postID = pdfObject.PostID;
+            await removePost(postID, ApplicantID);
+        } else if (pdfObject.InitStatus === 'new' && pdfObject.Status === 'new' && pdfObject.Title) {
+            const fileContent = await blobToBase64(formData.get(type));
+            const requestBody = PDFNewRequestBody(type, fileContent);
+            await addModifyPost(requestBody, 'new');
+        } else if (pdfObject.InitStatus === 'exist' && pdfObject.Status === 'exist' && pdfObject.Title) {
+            const fileContent = await blobToBase64(formData.get(type));
+            const requestBody = PDFEditRequestBody(type, pdfObject.PostID, fileContent);
+            await addModifyPost(requestBody, 'edit');
+        }
+    }
+
+    await PDFRequesting('CV');
+    await PDFRequesting('SoP');
+
     return redirect(`/profile/${ApplicantID}`);
 }
 
@@ -126,7 +184,7 @@ const FormContent = (activeStep, formValues, handleBack, handleNext, handleChang
         case 0:
             return <BasicInfo formValues={formValues} handleNext={handleNext} handleChange={handleChange} actionType={type} loaderData={loaderData}/>;
         case 1:
-            return <SoftBackground formValues={formValues} handleBack={handleBack} handleChange={handleChange}/>;
+            return <SoftBackground formValues={formValues} handleBack={handleBack} handleChange={handleChange} loaderData={loaderData}/>;
         default:
             return null;
     }
@@ -146,7 +204,7 @@ export default function AddModifyApplicant({type}) {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    let applicantContent = loaderData?.applicant;
+    let applicantContent = loaderData.applicant;
     if (applicantContent) {
         applicantContent = {
             'Gender': applicantContent.Gender,
@@ -189,19 +247,31 @@ export default function AddModifyApplicant({type}) {
             'Exchange': applicantContent.Exchange,
             'Publication': applicantContent.Publication,
             'Recommendation': applicantContent.Recommendation,
-            'Final': applicantContent.Final
+            'Final': applicantContent.Final,
+            'CV': {
+                'Title': loaderData.cvPost?.Title,
+                'PostID': loaderData.cvPost?.PostID,
+                'InitStatus': loaderData.cvPost ? 'exist' : 'new',
+                'Status': 'new'
+            },
+            'SoP': {
+                'Title': loaderData.sopPost?.Title,
+                'PostID': loaderData.sopPost?.PostID,
+                'InitStatus': loaderData.sopPost ? 'exist' : 'new',
+                'Status': 'new'
+            }
         }
     }
     const [formValues, setFormValues] = useState(applicantContent ?? {});
     const handleChange = (event, value, name) => {
-        setFormValues({...formValues, [event?.target.name ?? name]: value ?? event.target.value});
+        setFormValues({...formValues, [event?.target.name ? event?.target.name : name]: value ? value : event?.target.value});
         if (event?.target.value === "" || (event?.target.name === undefined && (value === "" || value === undefined || value === null || value === '[]'))) {
-            const {[event?.target.name ?? name]: _, ...rest} = formValues;
+            const {[event?.target.name ? event?.target.name : name]: _, ...rest} = formValues;
             setFormValues(rest);
         }
     }
     return (
-        <Form method='post'>
+        <Form method='post' encType='multipart/form-data'>
             <Input type='hidden' value={type} name='ActionType'/>
             <Stepper
                 nonLinear

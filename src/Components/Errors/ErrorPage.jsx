@@ -19,13 +19,13 @@ export default function ErrorPage() {
                     </p>
                 ))}
             </div>
-            {/*<div className="error-stack">*/}
-            {/*    {stackLines.map((line, index) => (*/}
-            {/*        <p key={index} className="stack-line">*/}
-            {/*            <small>{line}</small>*/}
-            {/*        </p>*/}
-            {/*    ))}*/}
-            {/*</div>*/}
+            <div className="error-stack">
+                {stackLines.map((line, index) => (
+                    <p key={index} className="stack-line">
+                        <small>{line}</small>
+                    </p>
+                ))}
+            </div>
         </div>
     );
 }
