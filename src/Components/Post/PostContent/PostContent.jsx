@@ -10,9 +10,13 @@ import "./PostContent.css"
 
 export async function loader({params}) {
     const postId = params.postId;
-    const postObj = await getPostObject(postId);
-    const editable = await isAuthApplicant(postObj?.Author)
-    return {postObj, editable};
+    try {
+        const postObj = await getPostObject(postId);
+        const editable = await isAuthApplicant(postObj?.Author)
+        return {postObj, editable};
+    } catch (e) {
+        throw e;
+    }
 }
 
 export async function action({request, params}) {

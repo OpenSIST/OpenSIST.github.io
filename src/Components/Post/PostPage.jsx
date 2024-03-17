@@ -1,4 +1,4 @@
-import {getPosts} from "../../Data/PostData";
+import {getPosts, getPostsWithTypePost} from "../../Data/PostData";
 import {Form, Link, Outlet, useLoaderData} from "react-router-dom";
 import {CollapseSideBar} from "../common";
 import {
@@ -21,6 +21,8 @@ export async function loader({request}) {
     const url = new URL(request.url);
     const searchStr = url.searchParams.get("searchStr");
     let posts = await getPosts(false, {searchStr});
+    posts = posts.filter((post) => post.type === 'Post');
+    // const posts = await getPostsWithTypePost(false, {searchStr});
     return {posts, searchStr};
 }
 

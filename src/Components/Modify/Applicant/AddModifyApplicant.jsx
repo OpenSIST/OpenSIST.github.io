@@ -13,7 +13,7 @@ import SoftBackground from "./FormComponent/SoftBackground";
 import {getDisplayName} from "../../../Data/UserData";
 import {getPrograms} from "../../../Data/ProgramData";
 import {blobToBase64} from "../../../Data/Common";
-import {addModifyPost, getPost, getPostContent, removePost} from "../../../Data/PostData";
+import {addModifyPost, getPost, getPostContent, getPostObject, removePost} from "../../../Data/PostData";
 
 export async function loader({params}) {
     let programs = await getPrograms();
@@ -25,13 +25,10 @@ export async function loader({params}) {
         applicant = await getApplicant(params.applicantId);
         if (applicant.Posts && applicant.Posts.length > 0) {
             for (const postId of applicant.Posts) {
-                const post = await getPost(postId);
-                if (post.type === 'CV') {
-                    cvPost = post;
-                    cvPost.Content = await getPostContent(postId);
-                } else if (post.type === 'SoP') {
-                    sopPost = post;
-                    sopPost.Content = await getPostContent(postId);
+                if (postId.startsWith("CV")) {
+                    cvPost = await getPostObject(postId);
+                } else if (postId.startsWith("SoP")) {
+                    sopPost = await getPostObject(postId);
                 }
             }
         }
@@ -144,7 +141,7 @@ export async function action({request}) {
             'ApplicantID': ApplicantID,
             'content': {
                 'type': type,
-                'Title': `${ApplicantID}_${type}.pdf`,
+                'Title': `${type}.pdf`,
                 'Content': content
             }
         }
@@ -173,7 +170,7 @@ export async function action({request}) {
         const cvRequestBody = PDFEditRequestBody('CV', cvObject.PostID, cvFileContent);
         await addModifyPost(cvRequestBody, 'edit');
     }
-
+    // TODO: deal with the case when the user didn't modify CV/SoP
     const sopObject = formValues.SoP;
     if (sopObject.Status === 'delete' && sopObject.InitStatus === 'exist') {
         const postID = sopObject.PostID;

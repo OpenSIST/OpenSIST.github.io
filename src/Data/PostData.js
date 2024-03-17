@@ -28,7 +28,7 @@ export async function getPosts(isRefresh = false, query = {}) {
     }
     posts['data'] = posts['data'].sort((a, b) => new Date(b.modified) - new Date(a.modified));
     posts['data'] = posts['data'].filter((post) => {
-        return (post.type === "Post") && (post.Title.toLowerCase().includes(query.searchStr?.toLowerCase() ?? '') || post.Author.toLowerCase().includes(query.searchStr?.toLowerCase() ?? ''));
+        return (post.Title.toLowerCase().includes(query.searchStr?.toLowerCase() ?? '') || post.Author.toLowerCase().includes(query.searchStr?.toLowerCase() ?? ''));
     });
     return posts['data'];
 }
@@ -43,7 +43,9 @@ export async function setPosts(posts) {
 
 export async function getPost(postId, isRefresh = false) {
     const posts = await getPosts(isRefresh);
-    // TODO: when the post is not found
+    if (!posts) {
+        throw new Error('Post not found');
+    }
     return posts.find((post) => post.PostID === postId);
 }
 
@@ -70,8 +72,14 @@ export async function getPostContent(postId, isRefresh = false) {
             headers: await headerGenerator(true),
             body: JSON.stringify({PostID: postId}),
         });
-        // TODO: follow the same pattern as getProgramDesc
-        await handleErrors(response);
+        try {
+            await handleErrors(response);
+        } catch (e) {
+            if (e.status === 404) {
+                await getPosts(true);
+            }
+            throw e;
+        }
         postContent = await response.json();
         await setPostContent(postId, postContent['content']);
     }
