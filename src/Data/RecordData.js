@@ -8,8 +8,8 @@ import localforage from "localforage";
 import {getApplicant, setApplicant} from "./ApplicantData";
 import {getProgram, setProgram} from "./ProgramData";
 
-// const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
-const CACHE_EXPIRATION = 1; // 10 min
+const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+// const CACHE_EXPIRATION = 1; // 10 min
 
 export async function addModifyRecord(requestBody) {
     const response = await fetch(ADD_MODIFY_RECORD, {
