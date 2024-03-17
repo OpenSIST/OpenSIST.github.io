@@ -297,6 +297,7 @@ function ControlButtonGroup({applicantId, records, editable}) {
 }
 
 function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
+    console.log(applicant)
     const [isAuth, setIsAuth] = useState(false);
     useEffect(() => {
         isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
