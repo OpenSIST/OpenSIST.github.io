@@ -1,19 +1,33 @@
 import {getPostObject, removePost} from "../../../Data/PostData";
 import {Form, Link, redirect, useLoaderData} from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import {Box, Button, Dialog, DialogActions, DialogTitle, IconButton, Input, Tooltip, Typography} from "@mui/material";
+import {
+    Box,
+    Avatar,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogTitle,
+    IconButton,
+    Input,
+    Tooltip,
+    Typography, Paper
+} from "@mui/material";
 import {Delete, Edit, Refresh} from "@mui/icons-material";
 import React, {useState} from "react";
-import {useSmallPage} from "../../common";
+import {BoldTypography, useSmallPage} from "../../common";
 import {isAuthApplicant} from "../../../Data/ApplicantData";
 import "./PostContent.css"
+import {getAvatar, getMetaData} from "../../../Data/UserData";
 
 export async function loader({params}) {
     const postId = params.postId;
     try {
         const postObj = await getPostObject(postId);
-        const editable = await isAuthApplicant(postObj?.Author)
-        return {postObj, editable};
+        const editable = await isAuthApplicant(postObj?.Author);
+        const metaData = postObj?.Author ? await getMetaData(postObj?.Author.split("@")[0]) : {};
+        const avatar = await getAvatar(metaData?.Avatar, postObj?.Author);
+        return {postObj, editable, avatar};
     } catch (e) {
         throw e;
     }
@@ -33,7 +47,7 @@ export async function action({request, params}) {
 }
 
 export default function PostContent() {
-    const {postObj, editable} = useLoaderData();
+    const {postObj, editable, avatar} = useLoaderData();
     const smallPage = useSmallPage();
     const [open, setOpen] = useState(false);
     const handleClose = () => {
@@ -45,10 +59,29 @@ export default function PostContent() {
     return (
         <>
             <Box className="PostContentHeader" sx={{pb: "0.5rem"}}>
-                <Typography variant={smallPage ? 'h4' : 'h3'} sx={{display: 'flex', position: 'relative'}}>
-                    {postObj.Title}
-                </Typography>
-                <div className='ReviseRefreshButtonGroup'>
+                <Box sx={{pb: "0.5rem", display: 'flex', gap: '1rem'}}>
+                    <Avatar src={avatar} sx={{height: "4rem", width: "4rem", cursor: 'pointer'}} component={Link}
+                            to={`/datapoints/applicant/${postObj.Author}`}/>
+                    <Box>
+                        <BoldTypography variant="h6" component={Link} to={`/datapoints/applicant/${postObj.Author}`}
+                                        sx={{
+                                            cursor: 'pointer',
+                                            textDecoration: "none",
+                                        }}
+                        >
+                            {postObj.Author}
+                        </BoldTypography>
+                        <Box sx={{display: 'flex', gap: "10px"}}>
+                            <Typography>
+                                创建于: {new Date(postObj.created).toISOString().split('T')[0]}
+                            </Typography>
+                            <Typography>
+                                最后修改时间: {new Date(postObj.modified).toISOString().split('T')[0]}
+                            </Typography>
+                        </Box>
+                    </Box>
+                </Box>
+                <Box className='ReviseRefreshButtonGroup'>
                     {editable ?
                         <>
                             <Tooltip title="编辑内容" arrow>
@@ -86,24 +119,16 @@ export default function PostContent() {
                             </IconButton>
                         </Tooltip>
                     </Form>
-                </div>
-            </Box>
-            <Box className="PostContentHeader" sx={{pb: "0.5rem"}}>
-                <Typography>
-                    作者: {postObj.Author}
-                </Typography>
-                <Box>
-                    <Typography>
-                        创建于: {new Date(postObj.created).toISOString().split('T')[0]}
-                    </Typography>
-                    <Typography>
-                        最后更改于: {new Date(postObj.modified).toISOString().split('T')[0]}
-                    </Typography>
                 </Box>
             </Box>
-            <ReactMarkdown>
-                {postObj.Content}
-            </ReactMarkdown>
+            <Paper sx={{display: 'flex', flexDirection: 'column', p: '1rem', height: '100%', overflowY: 'auto'}}>
+                <Typography variant={smallPage ? 'h4' : 'h3'} sx={{display: 'flex', position: 'relative'}}>
+                    {postObj.Title}
+                </Typography>
+                <ReactMarkdown>
+                    {postObj.Content}
+                </ReactMarkdown>
+            </Paper>
         </>
     )
 }

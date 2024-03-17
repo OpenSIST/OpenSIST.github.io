@@ -22,7 +22,6 @@ export async function loader({request}) {
     const searchStr = url.searchParams.get("searchStr");
     let posts = await getPosts(false, {searchStr});
     posts = posts.filter((post) => post.type === 'Post');
-    // const posts = await getPostsWithTypePost(false, {searchStr});
     return {posts, searchStr};
 }
 
@@ -99,6 +98,8 @@ export default function PostPage() {
             <Paper
                 className="PostContent"
                 sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
                     bgcolor: (theme) => theme.palette.mode === "dark" ? grey[900] : grey[50],
                 }}
             >
