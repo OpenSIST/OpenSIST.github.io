@@ -1,9 +1,12 @@
 import {
     Box,
-    Button, Checkbox,
+    Button,
+    Checkbox,
     Divider,
-    FormControl, IconButton,
-    InputLabel, ListItemText,
+    FormControl,
+    IconButton,
+    InputLabel,
+    ListItemText,
     MenuItem,
     Paper,
     TextField
@@ -12,9 +15,11 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import React, {useRef, useState} from "react";
 import {
     authorOrderOptions,
-    exchangeDurationOptions, exchangeUnivList,
+    exchangeDurationOptions,
+    exchangeUnivList,
     publicationStatusOptions,
-    publicationTypeOptions, recommendationTypeOptions
+    publicationTypeOptions,
+    recommendationTypeOptions
 } from "../../../../Data/Schemas";
 import {Add} from "@mui/icons-material";
 import Select from "@mui/material/Select";
@@ -89,7 +94,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
 
     const CVNodeRef = useRef(loaderData.cvPost?.Content);
     const SoPNodeRef = useRef(loaderData.sopPost?.Content);
-    const onPDFChange = (event, fileType) => {
+    const onPDFUpload = (event, fileType) => {
         if (event.target.files.length > 0) {
             const file = event.target.files[0];
             if (file.size > 10 * 1024 * 1024) {
@@ -104,15 +109,9 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                 alert("文件格式必须为PDF!");
                 return;
             }
-            let status = formValues[fileType].Status;
-            if ((formValues[fileType].Status === 'delete' || formValues[fileType].Status === 'new') && file.name) {
-                status = 'exist';
-            }
             handleChange(event, {
-                Title: `${file.name}`,
-                PostID: formValues[fileType].PostID,
-                InitStatus: formValues[fileType].InitStatus,
-                Status: status
+                Title: `Uploaded_${file.name}`,
+                PostID: formValues[fileType]?.PostID,
             }, `${fileType}`);
         }
     };
@@ -628,7 +627,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                                 name='CV'
                                 accept='application/pdf'
                                 ref={CVNodeRef}
-                                onChange={(event) => onPDFChange(event, 'CV')}
+                                onChange={(event) => onPDFUpload(event, 'CV')}
                             />
                         </Button>
                     </Grid2>
@@ -645,9 +644,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                             onClick={() => {
                                 handleChange(undefined, {
                                     Title: undefined,
-                                    PostID: formValues.CV.PostID ?? undefined,
-                                    InitStatus: formValues.CV.InitStatus,
-                                    Status: 'delete'
+                                    PostID: formValues.CV.PostID ?? undefined
                                 }, 'CV');
                                 if (CVNodeRef.current) {
                                     CVNodeRef.current.value = null;
@@ -672,7 +669,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                                 name='SoP'
                                 accept='application/pdf'
                                 ref={SoPNodeRef}
-                                onChange={(event) => onPDFChange(event, 'SoP')}
+                                onChange={(event) => onPDFUpload(event, 'SoP')}
                             />
                         </Button>
                     </Grid2>
@@ -689,9 +686,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                             onClick={() => {
                                 handleChange(undefined, {
                                     Title: undefined,
-                                    PostID: formValues.SoP.PostID ?? undefined,
-                                    InitStatus: formValues.SoP.InitStatus,
-                                    Status: 'delete'
+                                    PostID: formValues.SoP.PostID ?? undefined
                                 }, 'SoP');
                                 if (SoPNodeRef.current) {
                                     SoPNodeRef.current.value = null;
