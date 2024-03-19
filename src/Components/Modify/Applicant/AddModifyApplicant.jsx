@@ -138,45 +138,48 @@ export async function action({request}) {
     };
     await addModifyApplicant(requestBody);
 
-    const PDFNewRequestBody = (type, content) => {
+    const PDFNewRequestBody = (type, content, title) => {
         return {
             'ApplicantID': ApplicantID,
             'content': {
                 'type': type,
-                'Title': `${type}.pdf`,
+                'Title': `${title}`,
                 'Content': content
             }
         }
     }
 
-    const PDFEditRequestBody = (type, postID, content) => {
+    const PDFEditRequestBody = (type, postID, content, title) => {
         return {
             'PostID': postID,
             'content': {
-                'Title': `${type}.pdf`,
+                'Title': `${title}`,
                 'Content': content
             }
         }
     }
 
     async function PDFRequesting(type) {
-        // TODO: Use applicant.Posts and pdfObject to determine `new` / `modify` / `remove`
         // App.Posts.includes(PDF) && PDF -> edit
         // App.Posts.includes(PDF) && !PDF -> remove
         // !App.Posts.includes(PDF) && PDF -> new
         // !App.Posts.includes(PDF) && !PDF -> nothing
-        const pdfObject = formValues[type];
-        if (pdfObject.Status === 'delete' && pdfObject.InitStatus === 'exist') {
-            const postID = pdfObject.PostID;
-            await removePost(postID, ApplicantID);
-        } else if (pdfObject.InitStatus === 'new' && pdfObject.Status === 'exist' && pdfObject.Title) {
-            const fileContent = await blobToBase64(formData.get(type));
-            const requestBody = PDFNewRequestBody(type, fileContent);
-            await addModifyPost(requestBody, 'new');
-        } else if (pdfObject.InitStatus === 'exist' && pdfObject.Status === 'exist' && pdfObject.Title) {
-            const fileContent = await blobToBase64(formData.get(type));
-            const requestBody = PDFEditRequestBody(type, pdfObject.PostID, fileContent);
+        const postID = formValues[type].PostID;
+        const title = formValues[type].Title;
+        const file = formData.get(type);
+        // when file.name === '', only two possible conditions: 1. existed before, user did nothing. 2. existed before, user deleted it. 3. not existed before, user did nothing
+        let pdfContent = await blobToBase64(file);
+        if (Posts.includes(postID) && title) {
+            if (file.name === '') {
+                return;
+            }
+            const requestBody = PDFEditRequestBody(type, postID, pdfContent, title);
             await addModifyPost(requestBody, 'edit');
+        } else if (Posts.includes(postID) && !title) {
+            await removePost(postID, ApplicantID);
+        } else if (!Posts.includes(postID) && title) {
+            const requestBody = PDFNewRequestBody(type, pdfContent, title);
+            await addModifyPost(requestBody, 'new');
         }
     }
 
@@ -257,16 +260,12 @@ export default function AddModifyApplicant({type}) {
             'Final': applicantContent.Final,
             'Posts': applicantContent.Posts,
             'CV': {
-                'Title': loaderData.cvPost?.Title,
-                'PostID': loaderData.cvPost?.PostID,
-                'InitStatus': loaderData.cvPost ? 'exist' : 'new',
-                'Status': 'new'
+                PostID: loaderData.cvPost?.PostID,
+                Title: loaderData.cvPost?.Title
             },
             'SoP': {
-                'Title': loaderData.sopPost?.Title,
-                'PostID': loaderData.sopPost?.PostID,
-                'InitStatus': loaderData.sopPost ? 'exist' : 'new',
-                'Status': 'new'
+                PostID: loaderData.sopPost?.PostID,
+                Title: loaderData.sopPost?.Title
             }
         }
     }
