@@ -1,0 +1,14 @@
+.FAQPage {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 120px);
+    padding: 2rem;
+    border-radius: 5px;
+    user-select: text;
+    overflow-y: auto;
+}
+
+.FAQContent {
+    line-height: 3rem;
+}

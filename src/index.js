@@ -73,6 +73,7 @@ import AddModifyPost, {
     loader as AddModifyPostLoder,
     action as AddModifyPostAction
 } from "./Components/Modify/Post/AddModifyPost";
+import FAQPage from "./Components/FAQ/FAQPage";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -220,6 +221,9 @@ function OpenSIST() {
                                     ]
                                 }
                             ]
+                        }, {
+                            path: '/FAQ',
+                            element: <FAQPage/>,
                         },
                         // {
                         //     path: '/admin',
