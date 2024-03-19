@@ -221,8 +221,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         </div>
     };
 
-    const FinalRowFilterTemplate = (options) => {
-        // return <Checkbox onChange={(e) => options.filterApplyCallback(e.checked)} checked={options.value}/>;
+    const finalRowFilterTemplate = (options) => {
         return <TriStateCheckbox onChange={(e) => options.filterApplyCallback(e.value)} value={options.value}/>
     };
 
@@ -298,7 +297,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     dataType="boolean"
                     filter={!insideProgramPage}
                     align='center'
-                    filterElement={FinalRowFilterTemplate}
+                    filterElement={finalRowFilterTemplate}
                     className="FinalColumn"
                     style={{minWidth: '6rem'}}
                 />

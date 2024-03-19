@@ -12,7 +12,6 @@ export default function FAQPage() {
             .then((response) => response.text())
             .then((text) => setMarkDown(text));
     }, []);
-    console.log(markDown)
     return (
         <Paper className="FAQPage">
             <Typography variant="h3" sx={{alignSelf: 'center'}}>常见问题</Typography>

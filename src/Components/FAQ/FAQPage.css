@@ -1,13 +1,14 @@
 .FAQPage {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 70%;
     height: calc(100vh - 80px - 2 * 2rem);
     padding: 2rem;
     margin: 10px;
     border-radius: 5px;
     user-select: text;
     overflow-y: auto;
+    align-items: center;
 }
 
 .FAQContent {

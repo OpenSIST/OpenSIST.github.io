@@ -164,7 +164,7 @@ export async function setProgram(program) {
     if (!program) {
         return;
     }
-    const programs = await getPrograms(true);
+    const programs = await getPrograms();
     const univName = program.University;
     if (programs[univName] === undefined) {
         programs[univName] = []
