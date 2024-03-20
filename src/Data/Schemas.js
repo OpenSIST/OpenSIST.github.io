@@ -225,34 +225,3 @@ export const RecordStatusPaltette = {
     'Waitlist': 'default',
     'Defer': 'warning',
 }
-
-// export const PublicationTypeChipPalette = {
-//     'Conference': pink,
-//     'Journal': red,
-//     'Workshop': lime,
-// }
-//
-// export const PublicationAuthorOrderChipPalette = {
-//     'First': purple,
-//     'Co-first': green,
-//     'Second': indigo,
-//     'Co-second': blue,
-//     'Other': grey,
-// }
-//
-// export const PublicationStateChipPalette = {
-//     'Accepted': teal,
-//     'UnderReview': amber,
-// }
-//
-// export function PublicationTypeChipColor(dark, type) {
-//     return PublicationTypeChipPalette[type][dark ? 700 : 300];
-// }
-//
-// export function PublicationAuthorOrderChipColor(dark, order) {
-//     return PublicationAuthorOrderChipPalette[order][dark ? 700 : 300];
-// }
-//
-// export function PublicationStateChipColor(dark, state) {
-//     return PublicationStateChipPalette[state][dark ? 700 : 300];
-// }
