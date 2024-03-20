@@ -127,29 +127,6 @@ function Graduated({loaderData}) {
                     </Button>
                 </DialogActions>
             </Dialog>
-            {/*<h3><b>申请人信息和申请记录的添加和修改：</b></h3>*/}
-            {/*<ol style={{paddingLeft: '1rem'}}>*/}
-            {/*    <li>点击右上角头像，在下拉菜单中选择Profile。</li>*/}
-            {/*    <li>*/}
-            {/*        在Profile页面，下图介绍了该页面的一些按钮功能，你也可以阅读页面右侧使用指南来获取更详细的信息。*/}
-            {/*        <img src={profile} alt='profile' width='100%'/>*/}
-            {/*    </li>*/}
-            {/*    <li>*/}
-            {/*        点击左侧“添加申请人”按钮，可以在右侧界面填写你的申请人信息。*/}
-            {/*        <img src={newApplicant} alt='new-applicant' width='100%'/>*/}
-            {/*    </li>*/}
-            {/*    <li>*/}
-            {/*        添加完申请人信息后，你可以打开自己的申请人信息页，添加自己的申请记录。*/}
-            {/*        <img src={applicant} alt='applicant' width='100%'/>*/}
-            {/*        <img src={record} alt='add-modify-record' width='100%'/>*/}
-            {/*    </li>*/}
-            {/*</ol>*/}
-            {/*<h3><b>海外graduate program的添加和修改：</b></h3>*/}
-            {/*<ol style={{paddingLeft: '1rem'}}>*/}
-            {/*    <li>点击顶部导航栏的“项目信息表”按钮，即可前往查看各个项目。使用前请先阅读该页面的使用指南。</li>*/}
-            {/*    <li>下图展示了该页面的项目添加和修改功能：</li>*/}
-            {/*    <img src={program} alt='program' width='100%'/>*/}
-            {/*</ol>*/}
         </Box>
     )
 }

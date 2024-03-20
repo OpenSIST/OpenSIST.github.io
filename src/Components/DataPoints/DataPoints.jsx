@@ -138,7 +138,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 return null;
         }
     }
-    const groupSubheaderTemplate = (data) => {
+    const GroupSubheaderTemplate = (data) => {
         return (
             <InlineTypography sx={{gap: '0.5rem'}}>
                 <b>{data.ProgramID}</b>
@@ -157,43 +157,43 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         );
     };
 
-    const statusBodyTemplate = (rowData) => {
+    const StatusBodyTemplate = (rowData) => {
         return <Chip label={rowData.Status} color={getStatusColor(rowData.Status)}/>
     };
 
-    const statusFilterItemTemplate = (option) => {
+    const StatusFilterItemTemplate = (option) => {
         return <Chip label={option} color={getStatusColor(option)}/>
     };
 
-    const statusFilterTemplate = (options) => {
+    const StatusFilterTemplate = (options) => {
         return (
             <Dropdown
                 value={options.value}
                 options={recordStatusList}
                 onChange={(e) => options.filterApplyCallback(e.value)}
-                itemTemplate={statusFilterItemTemplate}
+                itemTemplate={StatusFilterItemTemplate}
                 className="p-column-filter"
                 showClear
             />
         );
     };
 
-    const finalBodyTemplate = (rowData) => {
+    const FinalBodyTemplate = (rowData) => {
         return <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             {rowData.Final ? <Check color='success'/> : null}
         </div>
     };
-    const programPeriodBodyTemplate = (rowData) => {
+    const SeasonBodyTemplate = (rowData) => {
         return <Chip label={`${rowData.ProgramYear} ${rowData.Semester}`} color={getSemesterColor(rowData.Semester)}/>
     };
-    const timelineBodyTemplate = (rowData, columnBodyOption) => {
+    const TimelineBodyTemplate = (rowData, columnBodyOption) => {
         const field = columnBodyOption.field;
         const timelineKey = field.split('.')[1];
         return <>
             {rowData.TimeLine[timelineKey]?.split('T')[0]}
         </>
     };
-    const applicantBodyTemplate = (rowData) => {
+    const ApplicantBodyTemplate = (rowData) => {
         return (
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                 <Tooltip title={rowData.ApplicantID} arrow>
@@ -208,20 +208,22 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         )
     };
 
-    const programBodyTemplate = (rowData) => {
-        return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Tooltip title={rowData.ProgramID} arrow>
-                <Chip label={rowData.ProgramID} sx={{maxWidth: "9rem"}}/>
-            </Tooltip>
-            <Tooltip title='查看项目描述' arrow>
-                <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
-                    <OpenInFull sx={{fontSize: "0.8rem"}}/>
-                </IconButton>
-            </Tooltip>
-        </div>
+    const ProgramBodyTemplate = (rowData) => {
+        return (
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <Tooltip title={rowData.ProgramID} arrow>
+                    <Chip label={rowData.ProgramID} sx={{maxWidth: "9rem"}}/>
+                </Tooltip>
+                <Tooltip title='查看项目描述' arrow>
+                    <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
+                        <OpenInFull sx={{fontSize: "0.8rem"}}/>
+                    </IconButton>
+                </Tooltip>
+            </div>
+        )
     };
 
-    const finalRowFilterTemplate = (options) => {
+    const FinalRowFilterTemplate = (options) => {
         return <TriStateCheckbox onChange={(e) => options.filterApplyCallback(e.value)} value={options.value}/>
     };
 
@@ -246,7 +248,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 size='small'
                 scrollable
                 scrollHeight="100%"
-                rowGroupHeaderTemplate={groupSubheaderTemplate}
+                rowGroupHeaderTemplate={GroupSubheaderTemplate}
                 rowHover
                 showGridlines
                 paginator={insideProgramPage ? null : true}
@@ -263,7 +265,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 <Column
                     field='ApplicantID'
                     header='申请人'
-                    body={applicantBodyTemplate}
+                    body={ApplicantBodyTemplate}
                     filter={!insideProgramPage}
                     align='center'
                     filterPlaceholder="搜索申请人"
@@ -273,7 +275,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 {insideProgramPage ? null : <Column
                     field='ProgramID'
                     header='申请项目'
-                    body={programBodyTemplate}
+                    body={ProgramBodyTemplate}
                     align='center'
                     filter={!insideProgramPage}
                     filterPlaceholder="搜索项目"
@@ -283,21 +285,21 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 <Column
                     field='Status'
                     header='申请结果'
-                    body={statusBodyTemplate}
+                    body={StatusBodyTemplate}
                     align='center'
                     filter={!insideProgramPage}
-                    filterElement={statusFilterTemplate}
+                    filterElement={StatusFilterTemplate}
                     className="StatusColumn"
                     style={{minWidth: '6rem'}}
                 />
                 <Column
                     field='Final'
                     header='最终去向'
-                    body={finalBodyTemplate}
+                    body={FinalBodyTemplate}
                     dataType="boolean"
                     filter={!insideProgramPage}
                     align='center'
-                    filterElement={finalRowFilterTemplate}
+                    filterElement={FinalRowFilterTemplate}
                     className="FinalColumn"
                     style={{minWidth: '6rem'}}
                 />
@@ -307,7 +309,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     filter={!insideProgramPage}
                     align='center'
                     filterPlaceholder="搜索申请季"
-                    body={programPeriodBodyTemplate}
+                    body={SeasonBodyTemplate}
                     className="SeasonColumn"
                     style={{width: '7rem'}}
                 />
@@ -315,21 +317,21 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     field='TimeLine.Decision'
                     header='结果通知时间'
                     align='center'
-                    body={timelineBodyTemplate}
+                    body={TimelineBodyTemplate}
                     style={{minWidth: '9rem'}}
                 />
                 <Column
                     field='TimeLine.Interview'
                     header='面试时间'
                     align='center'
-                    body={timelineBodyTemplate}
+                    body={TimelineBodyTemplate}
                     style={{minWidth: '8rem'}}
                 />
                 <Column
                     field='TimeLine.Submit'
                     header='网申提交时间'
                     align='center'
-                    body={timelineBodyTemplate}
+                    body={TimelineBodyTemplate}
                     style={{minWidth: '9rem'}}
                 />
                 <Column
