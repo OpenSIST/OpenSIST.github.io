@@ -50,12 +50,12 @@ import {getPostContent} from "../../../Data/PostData";
 import {BoldTypography} from "../../common";
 
 const contactIcons = {
-    "QQ": faQq,
-    "WeChat": faWeixin,
-    "LinkedIn": LinkedIn,
-    "HomePage": HomeRounded,
-    "OtherLink": LinkIcon,
-    "Email": Mail
+    "QQ": <FontAwesomeIcon icon={faQq} fontSize='medium'/>,
+    "WeChat": <FontAwesomeIcon icon={faWeixin} fontSize='medium'/>,
+    "LinkedIn": <LinkedIn/>,
+    "HomePage": <HomeRounded/>,
+    "OtherLink": <LinkIcon/>,
+    "Email": <Mail/>
 }
 
 export async function loader({params}) {
@@ -74,10 +74,8 @@ export async function loader({params}) {
         const displayName = applicant.ApplicantID.split('@')[0];
         const records = await getRecordByApplicant(applicantId);
         const metaData = await getMetaData(displayName);
-        // const contact = JSON.stringify(metaData?.Contact);
         const contact = metaData.Contact;
         const avatarUrl = await getAvatar(metaData?.Avatar, displayName);
-        // console.timeEnd("ProfileApplicantLoader")
         return {avatarUrl, contact, applicant, records};
     } catch (e) {
         throw e;
@@ -239,7 +237,7 @@ function ControlButtonGroup({applicantId, records, editable}) {
         <>
             <Form method='post'>
                 <Tooltip title='刷新申请人信息' arrow>
-                    <IconButton type='submit' variant="outlined" name='ActionType' value='Refresh' sx={{pl: 0}}>
+                    <IconButton type='submit' variant="outlined" name='ActionType' value='Refresh'>
                         <Refresh/>
                     </IconButton>
                 </Tooltip>
@@ -301,6 +299,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
     useEffect(() => {
         isAuthApplicant(applicant.ApplicantID).then(setIsAuth);
     }, [applicant.ApplicantID]);
+
     async function onDownload(postId) {
         const file_type = postId.startsWith('CV') ? "CV" : "SoP";
         const link = document.createElement("a");
@@ -308,33 +307,28 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
         link.href = await getPostContent(postId);
         link.click();
     }
+
     return (
         <BaseItemBlock className="BasicInfoBlock" checkpointProps={{xs: 12}} spacing={2}>
             <Grid2 container xs={12} sm={5} md={6} lg={5} xl={4}>
                 <ContentCenteredGrid>
                     <Badge
                         badgeContent={<GenderIcon gender={applicant.Gender}/>}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'right',
-                        }}
+                        anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
                         overlap='circular'
                         color="primary"
                     >
-                        <Avatar src={avatarUrl}
-                                sx={{width: "7rem", height: "7rem"}}
-                                // sx={{width: "100px", height: "100px"}}
-                        />
+                        <Avatar src={avatarUrl} sx={{width: "7rem", height: "7rem"}}/>
                     </Badge>
                 </ContentCenteredGrid>
                 <Grid2 container xs spacing={0}>
                     <ContentCenteredGrid xs={12}>
-                        <BoldTypography variant="h5" color="primary">
+                        <BoldTypography variant="h5" color="primary" sx={{pl: '8px'}}>
                             {applicant.ApplicantID.replace("@", " ")}
                         </BoldTypography>
                     </ContentCenteredGrid>
                     <ContentCenteredGrid xs={12}>
-                        <Typography variant="subtitle1" sx={{pt: '8px'}}>
+                        <Typography variant="subtitle1" sx={{pt: '8px', pl: '8px'}}>
                             {`${applicant.Major} ${currentDegreeMapping[applicant.CurrentDegree]}`}
                         </Typography>
                     </ContentCenteredGrid>
@@ -344,64 +338,50 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                     </ContentCenteredGrid>
                 </Grid2>
                 <ContentCenteredGrid xs={12} sx={{gap: Object.entries(contact).length ? 0 : '1rem'}}>
-                    <BoldTypography variant="subtitle1">
-                        联系方式:
-                    </BoldTypography>
+                    <BoldTypography variant="subtitle1"> 联系方式: </BoldTypography>
                     {Object.entries(contact).length ?
                         <ButtonGroup>
                             {Object.entries(contact).map(([key, value]) => {
                                 const Icon = contactIcons[key];
-                                if (value === "") {
-                                    return null;
-                                }
+                                if (value === "") return null;
                                 return (
                                     <Tooltip title={key} key={key} arrow>
                                         <IconButton
                                             onClick={async () => {
-                                                await navigator.clipboard.writeText(value)
-                                                alert(`已复制${value}到剪贴板！`)
+                                                await navigator.clipboard.writeText(value);
+                                                alert(`已复制${value}到剪贴板！`);
                                             }}
                                         >
-                                            {["QQ", "WeChat"].includes(key) ?
-                                                <FontAwesomeIcon icon={Icon} fontSize='medium'/> :
-                                                <Icon/>}
+                                            {Icon}
                                         </IconButton>
                                     </Tooltip>
                                 )
                             })}
-                    </ButtonGroup> : "暂无"}
+                        </ButtonGroup> : "暂无"}
                 </ContentCenteredGrid>
                 <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
-                    <BoldTypography variant="subtitle1">
-                        申请材料:
-                    </BoldTypography>
+                    <BoldTypography variant="subtitle1"> 申请材料: </BoldTypography>
                     <ButtonGroup>
                         <Button
-                            id={applicant?.Posts?.find(post => post.startsWith('CV')) ?? 'DisabledDownloadButton'}
                             endIcon={<Download/>}
                             onClick={() => onDownload(applicant?.Posts?.find(post => post.startsWith('CV')))}
                             disabled={!applicant?.Posts?.find(post => post.startsWith('CV'))}
                             size='small'
-                            sx={{textTransform: 'none'}}
                         >
                             CV
                         </Button>
                         <Button
-                            id={applicant?.Posts?.find(post => post.startsWith('SoP')) ?? 'DisabledDownloadButton'}
                             endIcon={<Download/>}
                             onClick={() => onDownload(applicant?.Posts?.find(post => post.startsWith('SoP')))}
                             disabled={!applicant?.Posts?.find(post => post.startsWith('SoP'))}
                             size='small'
-                            sx={{textTransform: 'none'}}
                         >
                             SoP/PS
                         </Button>
                     </ButtonGroup>
                 </ContentCenteredGrid>
                 <ContentCenteredGrid xs={12} sx={{gap: '1rem'}}>
-                    <BoldTypography variant="subtitle1">
-                        最终去向:
-                    </BoldTypography>
+                    <BoldTypography variant="subtitle1"> 最终去向: </BoldTypography>
                     <Chip label={applicant.Final === "" ? "暂无/未知" : applicant.Final}/>
                 </ContentCenteredGrid>
             </Grid2>
@@ -425,8 +405,7 @@ function GradeBar({ranking, GPA}) {
         {
             value: 2,
             label: '1.7',
-        },
-        {
+        }, {
             value: sliderValue,
             label: GPA,
         },
@@ -518,7 +497,8 @@ function EnglishExamBlock({EnglishProficiency}) {
                             return (
                                 <ContentCenteredGrid xs={12 / 5} key={key}
                                                      sx={{flexDirection: 'column', justifyContent: 'center'}}>
-                                    <BoldTypography variant="subtitle1">{EnglishExamMapping[examType][key]}</BoldTypography>
+                                    <BoldTypography
+                                        variant="subtitle1">{EnglishExamMapping[examType][key]}</BoldTypography>
                                     <Typography>{value}</Typography>
                                 </ContentCenteredGrid>
                             )
@@ -725,7 +705,12 @@ function RecordBlock({Records, ApplicantID, editable}) {
                 <BoldTypography variant='h6'>申请记录</BoldTypography>
                 {editable ? <Tooltip title='添加记录' arrow sx={{marginLeft: '10px'}}>
                     <Button variant='outlined' onClick={() => {
-                        navigate(`/profile/new-record`, { state : { applicantID: ApplicantID, from: `/profile/${ApplicantID}`}});
+                        navigate(`/profile/new-record`, {
+                            state: {
+                                applicantID: ApplicantID,
+                                from: `/profile/${ApplicantID}`
+                            }
+                        });
                     }}>
                         <Add/>
                     </Button>

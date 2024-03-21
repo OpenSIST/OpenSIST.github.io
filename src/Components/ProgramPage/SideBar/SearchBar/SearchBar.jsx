@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {majorList, degreeList, regionList} from "../../../../Data/Schemas";
-import {isEmptyObject} from "../../../common";
 import {regionFlagMapping} from "../../../../Data/Common";
 import {grey} from "@mui/material/colors";
 
@@ -37,7 +36,7 @@ export default function SearchBar({query, pageName}) {
     const handleFilterChange = (e) => {
         const newSearchParams = new URLSearchParams(searchParams);
         const value = e.target.value;
-        if (isEmptyObject(value)) {
+        if (value === '' || value.length === 0) {
             newSearchParams.delete(e.target.name);
         } else {
             newSearchParams.set(e.target.name, value);

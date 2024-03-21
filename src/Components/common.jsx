@@ -13,10 +13,6 @@ import {
 import {ChevronRight} from "@mui/icons-material";
 import Draggable from "react-draggable";
 
-export function isEmptyObject(value) {
-    return value === '' || value.length === 0;
-}
-
 export function LoadingBackdrop() {
     const navigation = useNavigation()
     const loading = navigation.state !== 'idle';
@@ -122,14 +118,12 @@ export function DraggableFAB({Icon, DragThreshold, ActionType, ButtonClassName, 
                     </Tooltip>
                 </Draggable>
             </Box>
-            {/*<Form method='post'>*/}
-                <button
-                    onClick={onClick}
-                    type="submit" style={{display: "none"}}
-                    className={ButtonClassName} name="ActionType"
-                    value={ActionType}
-                />
-            {/*</Form>*/}
+            <button
+                onClick={onClick}
+                type="submit" style={{display: "none"}}
+                className={ButtonClassName} name="ActionType"
+                value={ActionType}
+            />
         </>
     )
 }

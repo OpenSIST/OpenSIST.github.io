@@ -36,7 +36,10 @@ export default function NavBar() {
         }, {
             name: "关于我们",
             path: "/about-us",
-        },
+        }, {
+            name: "常见问题",
+            path: "/FAQ",
+        }
     ]
     const routeMatch = useRouteMatch(navItems.map((item) => item.path));
     const currentTab = routeMatch ?? false;

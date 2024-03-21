@@ -183,7 +183,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
             {rowData.Final ? <Check color='success'/> : null}
         </div>
     };
-    const programPeriodBodyTemplate = (rowData) => {
+    const seasonBodyTemplate = (rowData) => {
         return <Chip label={`${rowData.ProgramYear} ${rowData.Semester}`} color={getSemesterColor(rowData.Semester)}/>
     };
     const timelineBodyTemplate = (rowData, columnBodyOption) => {
@@ -209,20 +209,21 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     };
 
     const programBodyTemplate = (rowData) => {
-        return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Tooltip title={rowData.ProgramID} arrow>
-                <Chip label={rowData.ProgramID} sx={{maxWidth: "9rem"}}/>
-            </Tooltip>
-            <Tooltip title='查看项目描述' arrow>
-                <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
-                    <OpenInFull sx={{fontSize: "0.8rem"}}/>
-                </IconButton>
-            </Tooltip>
-        </div>
+        return (
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <Tooltip title={rowData.ProgramID} arrow>
+                    <Chip label={rowData.ProgramID} sx={{maxWidth: "9rem"}}/>
+                </Tooltip>
+                <Tooltip title='查看项目描述' arrow>
+                    <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>
+                        <OpenInFull sx={{fontSize: "0.8rem"}}/>
+                    </IconButton>
+                </Tooltip>
+            </div>
+        )
     };
 
-    const FinalRowFilterTemplate = (options) => {
-        // return <Checkbox onChange={(e) => options.filterApplyCallback(e.checked)} checked={options.value}/>;
+    const finalRowFilterTemplate = (options) => {
         return <TriStateCheckbox onChange={(e) => options.filterApplyCallback(e.value)} value={options.value}/>
     };
 
@@ -298,7 +299,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     dataType="boolean"
                     filter={!insideProgramPage}
                     align='center'
-                    filterElement={FinalRowFilterTemplate}
+                    filterElement={finalRowFilterTemplate}
                     className="FinalColumn"
                     style={{minWidth: '6rem'}}
                 />
@@ -308,7 +309,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     filter={!insideProgramPage}
                     align='center'
                     filterPlaceholder="搜索申请季"
-                    body={programPeriodBodyTemplate}
+                    body={seasonBodyTemplate}
                     className="SeasonColumn"
                     style={{width: '7rem'}}
                 />

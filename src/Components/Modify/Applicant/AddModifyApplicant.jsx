@@ -160,14 +160,22 @@ export async function action({request}) {
     }
 
     async function PDFRequesting(type) {
-        // App.Posts.includes(PDF) && PDF -> edit
-        // App.Posts.includes(PDF) && !PDF -> remove
-        // !App.Posts.includes(PDF) && PDF -> new
-        // !App.Posts.includes(PDF) && !PDF -> nothing
+        /*
+        * App.Posts.includes(PDF) && PDF -> edit
+        * App.Posts.includes(PDF) && !PDF -> remove
+        * !App.Posts.includes(PDF) && PDF -> new
+        * !App.Posts.includes(PDF) && !PDF -> nothing
+        */
         const postID = formValues[type].PostID;
         const title = formValues[type].Title;
         const file = formData.get(type);
-        // when file.name === '', only two possible conditions: 1. existed before, user did nothing. 2. existed before, user deleted it. 3. not existed before, user did nothing
+        /*
+        * when file.name === ''
+        * only three possible conditions:
+        * 1. existed before, user did nothing.
+        * 2. existed before, user deleted it.
+        * 3. not existed before, user did nothing
+        */
         let pdfContent = await blobToBase64(file);
         if (Posts.includes(postID) && title) {
             if (file.name === '') {

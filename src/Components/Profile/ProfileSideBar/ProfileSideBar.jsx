@@ -19,7 +19,7 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import "./ProfileHeader.css";
+import "./ProfileSideBar.css";
 import {Form, Link} from "react-router-dom";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
@@ -31,7 +31,7 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
 
-export function ProfileHeader({loaderData}) {
+export function ProfileSideBar({loaderData}) {
     const applicants = loaderData.metaData.ApplicantIDs;
     const avatar = loaderData.avatarUrl;
     const displayName = loaderData.displayName;
@@ -54,9 +54,8 @@ export function ProfileHeader({loaderData}) {
                 },
             }}
         >
-            <Box className="ProfileHeader">
+            <Box className="ProfileSideBar">
                 <Badge
-                    className="ProfileHeaderAvatarBadge"
                     badgeContent={
                         <Form method="post" encType="multipart/form-data">
                             <IconButton

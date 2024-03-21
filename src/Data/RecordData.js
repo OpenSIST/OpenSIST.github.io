@@ -123,24 +123,6 @@ export async function removeRecord(recordId) {
     });
     await handleErrors(response);
     await deleteRecord(recordId);
-    //
-    // await localforage.removeItem(`record-${recordId}`);
-    //
-    // const applicantID = recordId.split('|')[0];
-    // const programID = recordId.split('|')[1];
-    //
-    // let applicant = await getApplicant(applicantID);
-    // applicant.Programs = Object.entries(applicant.Programs).reduce((obj, [key, value]) => {
-    //     if (key !== programID) {
-    //         obj[key] = value;
-    //     }
-    //     return obj;
-    // }, {});
-    // await setApplicant(applicant);
-    //
-    // let program = await getProgram(programID);
-    // program.Applicants = program.Applicants.filter(applicant => applicant !== applicantID);
-    // await setProgram(program);
 }
 
 export async function deleteRecord(recordId) {
