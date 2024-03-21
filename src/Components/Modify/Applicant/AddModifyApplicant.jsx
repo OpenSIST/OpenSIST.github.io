@@ -110,7 +110,7 @@ export async function action({request}) {
     const Competition = formValues.Competition;
     const Final = formValues.Final;
     const Programs = formValues.Programs;
-    const Posts = formValues.Posts;
+    const Posts = ActionType === 'new' ? [] : formValues.Posts;
     const displayName = await getDisplayName();
     const ApplicantID = `${displayName}@${ApplicationYear}`;
     let requestBody = {
@@ -133,7 +133,7 @@ export async function action({request}) {
             ...(Competition !== undefined && { 'Competition': Competition }),
             'Programs': ActionType === 'new' ? {} : Programs,
             'Final': Final === undefined ? "" : Final,
-            'Posts': ActionType === 'new' ? [] : Posts
+            'Posts': Posts
         }
     };
     await addModifyApplicant(requestBody);
@@ -166,8 +166,8 @@ export async function action({request}) {
         * !App.Posts.includes(PDF) && PDF -> new
         * !App.Posts.includes(PDF) && !PDF -> nothing
         */
-        const postID = formValues[type].PostID;
-        const title = formValues[type].Title;
+        const postID = formValues[type]?.PostID;
+        const title = formValues[type]?.Title;
         const file = formData.get(type);
         /*
         * when file.name === ''
