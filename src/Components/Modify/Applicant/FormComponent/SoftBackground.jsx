@@ -620,7 +620,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                             startIcon={<CloudUploadIcon/>}
                             sx={{textTransform: 'none'}}
                         >
-                            {formValues.CV.Title ?? 'Upload CV/Resume'}
+                            {formValues.CV?.Title ?? 'Upload CV/Resume'}
                             <input
                                 hidden
                                 type='file'
@@ -640,7 +640,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                             variant='contained'
                             color='error'
                             sx={{textTransform: 'none'}}
-                            disabled={!formValues.CV.Title}
+                            disabled={!formValues.CV?.Title}
                             onClick={() => {
                                 handleChange(undefined, {
                                     Title: undefined,
@@ -662,7 +662,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                             startIcon={<CloudUploadIcon/>}
                             sx={{textTransform: 'none'}}
                         >
-                            {formValues.SoP.Title ?? 'Upload PS/SoP'}
+                            {formValues.SoP?.Title ?? 'Upload PS/SoP'}
                             <input
                                 hidden
                                 type='file'
@@ -682,7 +682,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                             variant='contained'
                             color='error'
                             sx={{textTransform: 'none'}}
-                            disabled={!formValues.SoP.Title}
+                            disabled={!formValues.SoP?.Title}
                             onClick={() => {
                                 handleChange(undefined, {
                                     Title: undefined,
