@@ -43,6 +43,7 @@ export async function action({request}) {
             'Degree': Degree,
             'TargetApplicantMajor': targetApplicantMajor,
             'Description': Description,
+            'Applicants': []
         }
     };
     await addModifyProgram(requestBody);
