@@ -204,7 +204,7 @@ const router = createBrowserRouter([
                     }, {
                         path: '/how-to-use',
                         element: <HowToUse/>,
-                        loader: profileLoader,
+                        // loader: profileLoader,
                     }
                 ]
             }
