@@ -1,26 +1,18 @@
 import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary, Box, Button, Dialog, DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle, Divider, ListItem, ListItemButton, Typography
+    Box, Button, Divider, Typography
 } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import React, {useState} from "react";
-import {Link, useLoaderData} from "react-router-dom";
-import {Link as MuiLink} from '@mui/material';
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import React from "react";
+import {Link} from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {BoldTypography} from "../common";
 
 
 export function HowToUse() {
-    const loaderData = useLoaderData();
     return (
         <Box sx={{p: '1rem'}}>
             <BoldTypography variant="h4" sx={{textAlign: 'center'}}>OpenSIST使用指南</BoldTypography>
-            <Graduated loaderData={loaderData}/>
+            <Graduated/>
+            <Divider variant='large'/>
             <Current/>
         </Box>
     )
@@ -59,14 +51,13 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
 
 }
 
-function Graduated({loaderData}) {
-    const applicantIDs = loaderData.metaData.ApplicantIDs;
-    const [open, setOpen] = useState(false);
+function Graduated() {
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', gap: "2rem", m: '2rem'}}>
+            <BoldTypography variant='h4'>毕业生、大四、研三请阅读：</BoldTypography>
             <BoldTypography variant="h5">我来这个网站应该干什么？</BoldTypography>
             <BoldTypography variant="subtitl1">
-                为了给SIST学弟学妹们提供更多海外申请的信息，我们希望你能抽出宝贵的一点时间，按个人意愿来做至多四件事情：
+                为了给SIST学弟学妹们提供更多海外申请的信息，我们希望你能抽出一点宝贵的时间，按个人意愿来做至多四件事情：
             </BoldTypography>
             <Divider variant='middle'/>
             <Grid2 container columnSpacing={7} rowSpacing={3}>
@@ -103,61 +94,53 @@ function Graduated({loaderData}) {
                     ButtonContent='添加申请分享帖'
                 />
             </Grid2>
-            <Dialog open={open} onClose={() => {
-                setOpen(false);
-            }}>
-                <DialogTitle>请选择要添加记录的申请人</DialogTitle>
-                <DialogContent>
-                    {applicantIDs.length > 0 ? applicantIDs.map((applicantID, index) => {
-                        return (
-                            <ListItem key={index}>
-                                <ListItemButton component={Link} to={`/profile/${applicantID}/new-record`}
-                                                sx={{justifyContent: 'center'}}>
-                                    <PersonOutlineIcon/> {applicantID}
-                                </ListItemButton>
-                            </ListItem>
-                        )
-                    }) : <DialogContentText>您还没有申请人，请先添加申请人信息</DialogContentText>}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => {
-                        setOpen(false);
-                    }}>
-                        取消
-                    </Button>
-                </DialogActions>
-            </Dialog>
         </Box>
     )
 }
 
 function Current() {
     return (
-        <Accordion sx={{bgcolor: 'rgba(164,245,177,0.5)'}} disableGutters>
-            <AccordionSummary
-                expandIcon={<ArrowDropDownIcon/>}
-            >
-                <h2 style={{margin: 0}}><b>非毕业年级本硕同学请阅读：</b></h2>
-            </AccordionSummary>
-            <AccordionDetails>
-                <h3><b>这个网站是干什么的？</b></h3>
-                <h5>这是一个面向上科大信息学院的出国申请信息共享平台，收集了往届学长学姐海外硕博项目的申请案例，以及各个项目的介绍。</h5>
-                <h3><b>我该如何使用这个网站？</b></h3>
-                <h5><b>该网站分为两大版块：申请季数据汇总与项目信息表。下面将会为你详细介绍两个板块的功能。</b></h5>
-                <h4><b>申请季数据汇总表</b></h4>
-                <h6>可点击顶部导航栏的<MuiLink href='/datapoints'>申请季数据汇总</MuiLink>按钮跳转到该页面。</h6>
-                <ol>
-                    <li>
-                        该表详细展示了每个项目下面都有谁申请、申请结果如何、申请时间线如何等信息。
-                    </li>
-                    <li>
-                        你可以通过点击申请人和申请项目单元格右侧的扩展按钮，查看当前申请人或项目的信息。
-                    </li>
-                    <li>
-                        表格上方有筛选栏，你可以筛选出你感兴趣的项目或申请人。
-                    </li>
-                </ol>
-            </AccordionDetails>
-        </Accordion>
+        <Box sx={{display: 'flex', flexDirection: 'column', gap: "2rem", m: '2rem'}}>
+            <BoldTypography variant='h4'>非毕业年级本硕同学请阅读：</BoldTypography>
+            <BoldTypography variant="h5">这个网站能怎么帮助我申请？</BoldTypography>
+            <BoldTypography variant="subtitl1">
+                OpenSIST是一个面向信息学院的出国申请信息共享平台，收集了往届海外硕博项目的申请案例、各个项目的介绍、学长学姐的申请经验帖等等。希望这些信息能为你的申请规划起到参考作用。
+            </BoldTypography>
+            <Divider variant='middle'/>
+            <Grid2 container columnSpacing={7} rowSpacing={3}>
+                <GuidanceGrid
+                    Index={1}
+                    TitlePrime='申请季的'
+                    TitleSecond='申请记录一览表'
+                    Content='该表记录了信息学院往届本科生、硕士生申请各个海外项目被admit/reject的情况'
+                    ButtonLink='/datapoints'
+                    ButtonContent='前往数据汇总表'
+                />
+                <GuidanceGrid
+                    Index={2}
+                    TitlePrime='申请人的'
+                    TitleSecond='个人背景信息'
+                    Content='在数据汇总表里可点击查看每位申请人在申请时的背景，包括但不限于三维、科研实习、推荐信等等'
+                    ButtonLink='/datapoints'
+                    ButtonContent='前往数据汇总表'
+                />
+                <GuidanceGrid
+                    Index={3}
+                    TitlePrime='海外硕博'
+                    TitleSecond='项目信息表'
+                    Content='该页面包含了许多海外硕博项目的项目信息，包括但不限于项目介绍、录取偏好、其他注意事项等'
+                    ButtonLink='/programs'
+                    ButtonContent='前往项目信息表'
+                />
+                <GuidanceGrid
+                    Index={4}
+                    TitlePrime='学长学姐的'
+                    TitleSecond='申请经验心得'
+                    Content='该页面包含了许多学长学姐们在申请季的心得帖子，能以大段的文字为你提供丰富的insight'
+                    ButtonLink='/posts'
+                    ButtonContent='前往申请分享帖'
+                />
+            </Grid2>
+        </Box>
     )
 }

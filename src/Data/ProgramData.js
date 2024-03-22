@@ -43,7 +43,6 @@ export async function getPrograms(isRefresh = false, query = {}) {
     }
 
     programs = programs['data'];
-
     const univAbbrOrder = univListOrder.map((univ) => univ.abbr);
     programs = Object.entries(programs).sort(([univ1, _], [univ2, __]) => {
         return univAbbrOrder.indexOf(univ1) - univAbbrOrder.indexOf(univ2);
@@ -206,16 +205,16 @@ export async function addModifyProgram(requestBody) {
     * Set the program (with description) to the local storage (i.e. localforage.getItem('programs') and localforage.getItem(`${programId}-Desc`), and post to the server.
     * @param program [Object]: program (with description)
     */
-
     const response = await fetch(ADD_MODIFY_PROGRAM, {
         method: 'POST',
         credentials: 'include',
         headers: await headerGenerator(true),
         body: JSON.stringify({
             newProgram: requestBody.newProgram,
-            content: {...(requestBody.content), Applicants: []},
+            content: {...(requestBody.content)},
         }),
     });
     await handleErrors(response)
+    console.log(requestBody.content)
     await setProgramContent(requestBody.content);
 }
