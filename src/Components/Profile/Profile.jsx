@@ -12,10 +12,6 @@ import {
     uploadAvatar
 } from "../../Data/UserData";
 import localforage from "localforage";
-import {InlineTypography} from "../common";
-import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
-import {Add, ConnectWithoutContact, Delete, Edit, Refresh} from "@mui/icons-material";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import MDPath from "../../Data/ProfileIndex.md";
 import ReactMarkdown from "react-markdown";
 import "./Profile.css"
