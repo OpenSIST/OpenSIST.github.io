@@ -13,8 +13,7 @@ import {
     OutlinedInput, Paper, useTheme
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import {majorList, degreeList, regionList} from "../../../../Data/Schemas";
-import {regionFlagMapping} from "../../../../Data/Common";
+import {majorList, degreeList, regionList, regionFlagMapping} from "../../../../Data/Schemas";
 import {grey} from "@mui/material/colors";
 
 export default function SearchBar({query, pageName}) {

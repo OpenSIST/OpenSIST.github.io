@@ -2,9 +2,8 @@ import React from "react";
 import {Form, Link} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
-import {regionFlagMapping, univAbbrFullNameMapping} from "../../../Data/Common";
+import {univAbbrFullNameMapping} from "../../../Data/Common";
 import {
-    Box,
     Button, ButtonGroup,
     Collapse,
     Divider,
@@ -17,6 +16,7 @@ import {
 import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
 import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
+import {regionFlagMapping} from "../../../Data/Schemas";
 
 export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
