@@ -10,7 +10,7 @@
 
 * 左方侧边栏中提供搜索框和筛选栏，可快速筛选目标学校或项目
 
-* 每个项目卡片中CS/EE/IE等专业名的含义是**哪些专业的学生可申请该项目**，其中IE对应信院的Information Engineering硕士专业
+* 每个项目卡片中CS/EE/IE/BME等专业名的含义是**哪些专业的学生可申请该项目**，其中IE对应信院的Information Engineering硕士专业
 
 ---
 
