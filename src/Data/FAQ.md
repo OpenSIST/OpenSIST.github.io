@@ -12,3 +12,32 @@
 * 如果你发现你的项目所属的学校不在学校列表中，请到GitHub的[Discussion](https://github.com/orgs/OpenSIST/discussions/23)中提出你需要添加的学校名称，我们会尽快处理。
 #### 6. 我是一名小白，我觉得网站上数据不足够帮助我选校，希望能够咨询一些学长学姐，怎么办？
 * 我们提供了QQ群，你可以加入QQ群进行交流。群号：[132055126](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=8WAM3ZWxdfZYR0RsfOYBkvqyZMGIe6OY&authKey=wdhr9%2FDihgHL4iFbUTjw8x0h6R2SNyVNfxszrzKtRMV3Ytr10IC8kZpPU7e%2Bwdwx&noverify=0&group_code=132055126)。
+#### 7. 常用词缩写 (Random Order)
+* dp: datapoints 
+* AD: Admission 
+* Rej: Rejection 
+* PoI: Professor of Interest
+* LoR: Letter of Recommendation
+* Pub: Publication
+* ap: assistant professor 
+* ao: admission officer
+* vo: visa officer
+* com/comm: committee
+* IRCC: Immigration, Refugees and Citizenship Canada
+* STEM: Science, Technology, Engineering, and Math
+* SDE: Software Development Engineer
+* MLE: Machine Learning Engineer
+* RS: Research Scientist
+* DS: Data Science
+* MS/MSc: Master of Science
+* MASc: Master of Applied Science
+* MEng: Master of Engineering
+* ScM: Science Master
+* MPhil: Master of Philosophy
+* PhD: Doctor of Philosophy
+* decline/accept: 拒绝/接受offer
+* deposit: 入学前的押金/占位费
+* Cong: Congratulations
+* I20: 接offer之后学校签发的文件，用于办签证
+* bar: 准入门槛，指录取难度
+* co-op: Cooperative education，学期内官方带薪实习。

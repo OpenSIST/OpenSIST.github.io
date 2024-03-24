@@ -31,14 +31,13 @@ export function dict2Options(dict) {
     })
 }
 
-export const majorList = ['CS', 'EE', 'IE'];
+export const majorList = ['CS', 'EE', 'IE', 'BME'];
 export const majorOptions = list2Options(majorList);
 
 export const degreeList = ['Master', 'PhD'];
 export const degreeOptions = list2Options(degreeList);
 
 export const regionList = ['US', 'CA', 'EU', 'UK', 'HK', 'SG', 'Others']
-export const regionOptions = list2Options(regionList);
 
 const sortedUnivList = [...univList].sort((a, b) => {
     return a['fullName'].localeCompare(b['fullName']);
@@ -224,4 +223,13 @@ export const RecordStatusPaltette = {
     'Reject': 'error',
     'Waitlist': 'default',
     'Defer': 'warning',
+}
+export const regionFlagMapping = {
+    "US": "\u{1F1FA}\u{1F1F8}",
+    "EU": "\u{1F1EA}\u{1F1FA}",
+    "UK": "\u{1F1EC}\u{1F1E7}",
+    "CA": "\u{1F1E8}\u{1F1E6}",
+    "HK": "\u{1F1ED}\u{1F1F0}",
+    "SG": "\u{1F1F8}\u{1F1EC}",
+    'Others': ''
 }

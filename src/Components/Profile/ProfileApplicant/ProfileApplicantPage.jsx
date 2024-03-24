@@ -337,7 +337,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                                             editable={editable && isAuth}/>
                     </ContentCenteredGrid>
                 </Grid2>
-                <ContentCenteredGrid xs={12} sx={{gap: Object.entries(contact).length ? 0 : '1rem'}}>
+                <ContentCenteredGrid xs={12} sx={{gap: Object.entries(contact).length ? '0.4rem' : '1rem'}}>
                     <BoldTypography variant="subtitle1"> 联系方式: </BoldTypography>
                     {Object.entries(contact).length ?
                         <ButtonGroup>
