@@ -26,6 +26,7 @@
     "dayjs": "1.11.10",
     "localforage": "1.10.0",
     "match-sorter": "6.3.1",
+    "parse5": "^7.1.2",
     "postal-mime": "2.0.2",
     "primereact": "10.5.1",
     "react": "18.2.0",
