@@ -215,6 +215,5 @@ export async function addModifyProgram(requestBody) {
         }),
     });
     await handleErrors(response)
-    console.log(requestBody.content)
     await setProgramContent(requestBody.content);
 }

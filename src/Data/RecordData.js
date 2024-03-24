@@ -48,7 +48,6 @@ export async function getRecordByApplicant(applicantId, isRefresh = false) {
 
 export async function getRecordByProgram(programId, isRefresh = false) {
     const program = await getProgram(programId, isRefresh);
-    console.log(program)
     const recordIDs = program.Applicants.map(applicantID => {
         return applicantID + '|' + programId;
     }).flat();
