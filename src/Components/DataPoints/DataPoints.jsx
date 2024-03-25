@@ -141,9 +141,9 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     const groupSubheaderTemplate = (data) => {
         return (
             <InlineTypography sx={{gap: '0.5rem'}}>
-                <b>{data.ProgramID}</b>
+                <b style={{fontSize: 'clamp(14px, 1.5vw, 16px)'}}>{data.ProgramID}</b>
                 <Tooltip title="添加申请记录" arrow>
-                    <ControlPointIcon onClick={() => navigate(`/profile/new-record`, {
+                    <ControlPointIcon fontSize='small' onClick={() => navigate(`/profile/new-record`, {
                         state: {
                             programID: data.ProgramID,
                             from: window.location.pathname
@@ -180,7 +180,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
     const finalBodyTemplate = (rowData) => {
         return <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            {rowData.Final ? <Check color='success'/> : null}
+            {rowData.Final ? <Check color='success' fontSize="small"/> : null}
         </div>
     };
     const seasonBodyTemplate = (rowData) => {
@@ -236,7 +236,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 scrollHeight="100%"
                 rowGroupHeaderTemplate={groupSubheaderTemplate}
                 rowHover
-                showGridlines
+                // showGridlines
                 paginator={insideProgramPage ? null : true}
                 paginatorTemplate="FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
                 currentPageReportTemplate="{first}~{last} of {totalRecords}"
@@ -246,14 +246,14 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 filterDisplay={insideProgramPage ? null : 'row'}
                 emptyMessage={insideProgramPage ? "该项目暂无申请记录" : "未找到任何匹配内容"}
                 className='DataTableStyle'
-                style={{...style}}
+                style={{...style, fontSize: 'clamp(14px, 1.5vw, 16px)'}}
             >
                 <Column
                     field='ApplicantID'
                     header='申请人'
                     body={applicantBodyTemplate}
                     filter={!insideProgramPage}
-                    align='center'
+                    // align='center'
                     filterPlaceholder="搜索申请人"
                     className="ApplicantIDColumn"
                     style={{minWidth: '10rem'}}
@@ -262,7 +262,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     field='ProgramID'
                     header='申请项目'
                     body={programBodyTemplate}
-                    align='center'
+                    // align='center'
                     filter={!insideProgramPage}
                     filterPlaceholder="搜索项目"
                     className="ProgramIDColumn"
@@ -272,9 +272,10 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     field='Status'
                     header='申请结果'
                     body={statusBodyTemplate}
-                    align='center'
+                    // align='center'
                     filter={!insideProgramPage}
                     filterElement={statusFilterTemplate}
+                    filterMenuStyle={{fontSize: 'clamp(14px, 1.5vw, 16px)'}}
                     className="StatusColumn"
                     style={{minWidth: '7rem'}}
                 />
@@ -293,7 +294,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     field='Season'
                     header='申请季'
                     filter={!insideProgramPage}
-                    align='center'
+                    // align='center'
                     filterPlaceholder="搜索申请季"
                     body={seasonBodyTemplate}
                     className="SeasonColumn"
@@ -302,23 +303,23 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 <Column
                     field='TimeLine.Decision'
                     header='结果通知时间'
-                    align='center'
+                    // align='center'
                     body={timelineBodyTemplate}
-                    style={{minWidth: '9rem'}}
+                    style={{minWidth: '8rem'}}
                 />
                 <Column
                     field='TimeLine.Interview'
                     header='面试时间'
-                    align='center'
+                    // align='center'
                     body={timelineBodyTemplate}
-                    style={{minWidth: '9rem'}}
+                    style={{minWidth: '8rem'}}
                 />
                 <Column
                     field='TimeLine.Submit'
                     header='网申提交时间'
-                    align='center'
+                    // align='center'
                     body={timelineBodyTemplate}
-                    style={{minWidth: '9rem'}}
+                    style={{minWidth: '8rem'}}
                 />
                 <Column
                     field='Detail'
