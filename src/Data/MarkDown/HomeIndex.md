@@ -29,6 +29,7 @@ OpenSIST是一个由上海科技大学2020级信息学院同学自发创建的�
 * 海本申请信息共享平台：[GradCafe](https://www.thegradcafe.com/)
 #### 校内链接
 * 本科生课评网站：[Coursebench](https://coursebench.geekpie.club/)
+* 学校ACM社团：[ACM@SIST](https://acm.shanghaitech.edu.cn/)
 
 ---
 

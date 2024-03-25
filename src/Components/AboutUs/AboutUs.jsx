@@ -1,7 +1,18 @@
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {Avatar, List, ListItem, ListItemAvatar, ListItemText} from "@mui/material";
+import {
+    Avatar,
+    Card,
+    CardActionArea,
+    CardActions,
+    CardHeader,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText
+} from "@mui/material";
 import {useSmallPage} from "../common";
+import Grid2 from "@mui/material/Unstable_Grid2";
 
 async function getUser(usernames) {
     return Promise.all(usernames.map(username => fetch(`https://api.github.com/users/${username}`)
@@ -12,24 +23,18 @@ async function getUser(usernames) {
 }
 
 export function AboutUs() {
-    const [developers, setDevelopers] = useState([]);
-    useEffect(() => {
-        getUser(['boynextdoor-cze', 'cuttle-fish-my', 'caoster', 'Fan-Runming']).then(users => {
-            setDevelopers(users);
-        })
-    }, []);
-    // console.log(developers)
+    const developers = ['cst', 'cze', 'frm', 'lbn'];
 
     const displayRealName = (username) => {
         switch (username) {
-            case 'boynextdoor-cze':
-                return '迟择恩'
-            case 'cuttle-fish-my':
-                return '李炳楠'
-            case 'caoster':
-                return '陈溯汀'
-            case 'Fan-Runming':
-                return '范润铭'
+            case 'cze':
+                return '迟择恩 - 前端开发'
+            case 'lbn':
+                return '李炳楠 - 前端开发'
+            case 'cst':
+                return '陈溯汀 - 后端开发'
+            case 'frm':
+                return '范润铭 - 设计师'
             default:
                 return '未知'
         }
@@ -37,38 +42,60 @@ export function AboutUs() {
 
     const displayMajor = (username) => {
         switch (username) {
-            case 'boynextdoor-cze':
-                return '2020级CS本科生 - 前端开发'
-            case 'cuttle-fish-my':
-                return '2020级CS本科生 - 前端开发'
-            case 'caoster':
-                return '2020级CS本科生 - 后端开发'
-            case 'Fan-Runming':
-                return '2021级创艺本科生 - 设计师'
+            case 'cze':
+                return '2020级CS本科生'
+            case 'lbn':
+                return '2020级CS本科生'
+            case 'cst':
+                return '2020级CS本科生'
+            case 'frm':
+                return '2021级创艺本科生'
             default:
                 return '未知'
         }
     }
 
-    const smallPage = useSmallPage();
+    const getHyperlink = (username) => {
+        switch (username) {
+            case 'cze':
+                return 'https://www.harrychi.com';
+            case 'lbn':
+                return 'https://www.bingnanli.com';
+            case 'cst':
+                return 'https://github.com/caoster';
+            case 'frm':
+                return 'https://github.com/Fan-runming';
+            default:
+                return 'https://sist.shanghaitech.edu.cn';
+        }
+    }
 
     return (
         <div style={{width: '70%'}}>
             <h1 style={{textAlign: 'center'}}><b>关于我们</b></h1>
             <h3>我们是谁？</h3>
-            <List sx={{display: 'flex', flexDirection: smallPage ? 'column' : 'row', justifyContent: 'center'}}>
+            <Grid2
+                container
+                spacing={2}
+            >
                 {developers.map(developer =>
-                    <ListItem key={developer.login} component={Link} to={developer.html_url}>
-                        <ListItemAvatar>
-                            <Avatar alt={developer.login} src={developer.avatar_url} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={displayRealName(developer.login)}
-                            secondary={displayMajor(developer.login)}
-                        />
-                    </ListItem>
+                    <Grid2 key={developer} xs={12} sm={6} lg={3}>
+                        <Card>
+                            <CardActionArea
+                                component={Link}
+                                to={getHyperlink(developer)}
+                            >
+                                <CardHeader
+                                    avatar={
+                                        <Avatar alt={developer} src={developer === 'frm' ? `/avatars/${developer}.png` : `/avatars/${developer}.jpeg`}/>}
+                                    title={displayRealName(developer)}
+                                    subheader={displayMajor(developer)}
+                                />
+                            </CardActionArea>
+                        </Card>
+                    </Grid2>
                 )}
-            </List>
+            </Grid2>
             <h3>为何创立OpenSIST？</h3>
             <p>
                 上科大作为一所新兴高校，在我们开发这个项目的时候仅有6届本科毕业生，其中出国申请的人每届有1/3左右。尽管学院负责学生生涯发展的倪鹤南老师近几年为搭建信息学院出国留学信息交流平台做出过努力，例如组建出国交流群、统计出国留学去向等，上道书院从2023年开始也推出了飞跃手册，但这些努力由于一些客观因素，仍然未能很大程度上解决同学们申请季的痛点：<b>往年信院申请admit/reject情况不明朗。</b>
