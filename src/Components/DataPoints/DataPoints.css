@@ -75,6 +75,12 @@
 .p-column-filter.p-inputtext.p-component.p-column-filter {
     /*transition: none;*/
     height: inherit;
+    font-size: clamp(13px, 1.5vw, 15px);
+}
+
+.p-icon.p-dropdown-trigger-icon.p-clickable {
+    height: 0.9rem;
+    width: 0.9rem;
 }
 
 .p-fluid.p-column-filter-element {
