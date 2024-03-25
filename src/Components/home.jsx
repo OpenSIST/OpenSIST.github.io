@@ -6,7 +6,7 @@ import {Paper} from "@mui/material";
 
 function Home() {
     return (
-        <Paper elevation={0}>
+        <Paper elevation={0} >
             <TopBar/>
             <Paper
                 className="ContentBlock"

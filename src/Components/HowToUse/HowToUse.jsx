@@ -1,54 +1,116 @@
 import {
-    Box, Button, Divider, Typography
+    Box, Button, Card, CardActionArea, CardContent, CardMedia, Divider, Fab, Paper, Typography, useTheme
 } from "@mui/material";
 import React from "react";
 import {Link} from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import {BoldTypography} from "../common";
+import {BoldTypography, useSmallPage} from "../common";
+import DatapointsDark from "../../Assets/images/HowToUse/dark/datapoints.png";
+import DatapointsLight from "../../Assets/images/HowToUse/light/datapoints.png";
+import PostsDark from "../../Assets/images/HowToUse/dark/posts.png";
+import PostsLight from "../../Assets/images/HowToUse/light/posts.png";
+import ProfileDark from "../../Assets/images/HowToUse/dark/profile.png";
+import ProfileLight from "../../Assets/images/HowToUse/light/profile.png";
+import ProgramsDark from "../../Assets/images/HowToUse/dark/programs.png";
+import ProgramsLight from "../../Assets/images/HowToUse/light/programs.png";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import {ArrowBack} from "@mui/icons-material";
+import "./HowToUse.css"
 
+const imageDir = {
+    light: {
+        profile: ProfileLight,
+        programs: ProgramsLight,
+        datapoints: DatapointsLight,
+        posts: PostsLight
+    },
+    dark: {
+        profile: ProfileDark,
+        programs: ProgramsDark,
+        datapoints: DatapointsDark,
+        posts: PostsDark
+    }
+}
 
 export function HowToUse() {
     return (
         <Box sx={{p: '1rem'}}>
             <BoldTypography variant="h4" sx={{textAlign: 'center'}}>OpenSIST使用指南</BoldTypography>
             <Graduated/>
-            <Divider variant='large'/>
-            <Current/>
         </Box>
     )
 }
 
 export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLink, ButtonContent}) {
+    const nameList = ['profile', 'programs', 'datapoints', 'posts'];
+    const theme = useTheme();
+    const inverse = Index % 2;
+    const smallPage = useSmallPage();
     return (
-        <Grid2 xs={12} sm={6} md={6} xl={3}
-               sx={{
-                   display: 'flex',
-                   flexDirection: 'column',
-                   gap: '3rem',
-                   justifyContent: 'space-between'
-               }}
-        >
-            <Box sx={{display: 'flex', flexDirection: "column", gap: "1.5rem"}}>
-                <BoldTypography variant="h5">{Index}.</BoldTypography>
-                <Box>
-                    <BoldTypography variant='h6'
-                                    sx={{color: (theme) => theme.palette.mode === 'dark' ? "#fff" : "#000"}}>
-                        {TitlePrime}
-                    </BoldTypography>
-                    <BoldTypography variant='h6'
-                                    sx={{color: (theme) => theme.palette.mode === 'dark' ? "#fff" : "#000"}}>
-                        {TitleSecond}
-                    </BoldTypography>
-                </Box>
-                <Typography>{Content}</Typography>
-            </Box>
-            <Button component={Link} to={ButtonLink} variant='contained'>
-                {`${ButtonContent}`}
-            </Button>
-        </Grid2>
+        <Card>
+            <CardActionArea component={Link} to={ButtonLink}>
+                <Paper
+                    className="img-mask"
+                    sx={{
+                        minWidth: '100%',
+                        display: 'flex',
+                        flexDirection: (inverse ? 'row' : 'row-reverse'),
+                        textAlign: (inverse ? 'start' : 'end'),
+                        "&:before": {
+                            backgroundImage: `url(${imageDir[theme.palette.mode][nameList[Index - 1]]})`,
+                        },
+                    }}
+                >
+                    <CardContent
+                        sx={{
+                            width: {
+                                xs: '70%',
+                                sm: '60%',
+                                md: '50%',
+                                lg: '40%',
+                                xl: '30%'
+                            },
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            gap: '2rem'
+                        }}
+                    >
+                        <Box sx={{display: 'flex', flexDirection: "column", gap: "inherit"}}>
+                            <BoldTypography variant='h4'>{Index}.</BoldTypography>
+                            <Box>
+                                <BoldTypography variant='h6'
+                                                sx={{color: (theme) => theme.palette.mode === 'dark' ? "#fff" : "#000"}}>
+                                    {TitlePrime}
+                                </BoldTypography>
+                                <BoldTypography variant='h6'
+                                                sx={{color: (theme) => theme.palette.mode === 'dark' ? "#fff" : "#000"}}>
+                                    {TitleSecond}
+                                </BoldTypography>
+                            </Box>
+                            <Typography sx={{lineHeight: '2rem'}}>{Content}</Typography>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                gap: 'inherit',
+                                alignItems: 'center',
+                                justifyContent: (inverse ? 'start' : 'end'),
+                                flexDirection: (inverse ? 'row' : 'row-reverse')
+                            }}
+                        >
+                            <Link style={{textDecoration: "none"}} to={ButtonLink}>{ButtonContent}</Link>
+                            <Fab component={Link} to={ButtonLink} color="primary">
+                                {inverse ? <ArrowForwardIcon/> : <ArrowBack/>}
+                            </Fab>
+                        </Box>
+
+                    </CardContent>
+                </Paper>
+            </CardActionArea>
+        </Card>
 
     )
-
 }
 
 function Graduated() {
@@ -60,7 +122,7 @@ function Graduated() {
                 为了给SIST学弟学妹们提供更多海外申请的信息，我们希望你能抽出一点宝贵的时间，按个人意愿来做至多四件事情：
             </BoldTypography>
             <Divider variant='middle'/>
-            <Grid2 container columnSpacing={7} rowSpacing={3}>
+            <Box spacing={4} sx={{display: 'flex', flexDirection: 'column', gap: '1rem', p: "1rem"}}>
                 <GuidanceGrid
                     Index={1}
                     TitlePrime='填写申请时的'
@@ -93,7 +155,7 @@ function Graduated() {
                     ButtonLink='/posts/new'
                     ButtonContent='添加申请分享帖'
                 />
-            </Grid2>
+            </Box>
         </Box>
     )
 }
