@@ -50,7 +50,6 @@ export async function getPrograms(isRefresh = false, query = {}) {
         acc[univ] = programs;
         return acc;
     }, {});
-
     const search_keys = Object.keys(programs).filter((univName) => {
         const fullNameResults = univAbbrFullNameMapping[univName].toLowerCase().includes(query.u?.toLowerCase() ?? '');
         const abbrResults = univName.toLowerCase().includes(query.u?.toLowerCase() ?? '');
@@ -166,8 +165,8 @@ export async function setProgram(program) {
     if (programs[univName] === undefined) {
         programs[univName] = []
     }
-    if (programs[univName].find(p => p.ProgramID === program.ProgramID) !== undefined) {
-        programs[univName][programs[univName].indexOf(program)] = program;
+    if (programs[univName].find(p => p.ProgramID === program.ProgramID)) {
+        programs[univName][programs[univName].findIndex((p) => p.ProgramID === program.ProgramID)] = program;
     } else {
         programs[univName].push(program);
     }
