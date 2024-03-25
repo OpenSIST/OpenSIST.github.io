@@ -195,31 +195,17 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     };
     const applicantBodyTemplate = (rowData) => {
         return (
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Tooltip title={rowData.ApplicantID} arrow>
-                    <Chip label={rowData.ApplicantID} sx={{maxWidth: "8rem"}} onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}/>
-                </Tooltip>
-                {/*<Tooltip title='查看申请人信息' arrow>*/}
-                {/*    <IconButton onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}>*/}
-                {/*        <OpenInFull sx={{fontSize: "0.8rem"}}/>*/}
-                {/*    </IconButton>*/}
-                {/*</Tooltip>*/}
-            </div>
+            <Tooltip title='查看申请人信息' arrow>
+                <Chip label={rowData.ApplicantID} sx={{maxWidth: "8rem"}} onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}/>
+            </Tooltip>
         )
     };
 
     const programBodyTemplate = (rowData) => {
         return (
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Tooltip title={rowData.ProgramID} arrow>
-                    <Chip label={rowData.ProgramID} sx={{maxWidth: "9rem"}} onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}/>
-                </Tooltip>
-                {/*<Tooltip title='查看项目描述' arrow>*/}
-                {/*    <IconButton onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}>*/}
-                {/*        <OpenInFull sx={{fontSize: "0.8rem"}}/>*/}
-                {/*    </IconButton>*/}
-                {/*</Tooltip>*/}
-            </div>
+            <Tooltip title='查看项目描述' arrow>
+                <Chip label={rowData.ProgramID} sx={{maxWidth: "9rem"}} onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}/>
+            </Tooltip>
         )
     };
 
@@ -280,7 +266,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     filter={!insideProgramPage}
                     filterPlaceholder="搜索项目"
                     className="ProgramIDColumn"
-                    style={{width: '10rem'}}
+                    style={{minWidth: '10rem'}}
                 />}
                 <Column
                     field='Status'
@@ -290,7 +276,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     filter={!insideProgramPage}
                     filterElement={statusFilterTemplate}
                     className="StatusColumn"
-                    style={{minWidth: '6rem'}}
+                    style={{minWidth: '7rem'}}
                 />
                 <Column
                     field='Final'
@@ -301,7 +287,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     align='center'
                     filterElement={finalRowFilterTemplate}
                     className="FinalColumn"
-                    style={{minWidth: '6rem'}}
+                    style={{minWidth: '7rem'}}
                 />
                 <Column
                     field='Season'
@@ -311,7 +297,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     filterPlaceholder="搜索申请季"
                     body={seasonBodyTemplate}
                     className="SeasonColumn"
-                    style={{width: '7rem'}}
+                    style={{minWidth: '7rem'}}
                 />
                 <Column
                     field='TimeLine.Decision'
@@ -325,7 +311,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     header='面试时间'
                     align='center'
                     body={timelineBodyTemplate}
-                    style={{minWidth: '8rem'}}
+                    style={{minWidth: '9rem'}}
                 />
                 <Column
                     field='TimeLine.Submit'
