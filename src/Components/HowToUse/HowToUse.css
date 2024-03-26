@@ -8,7 +8,7 @@
 }
 
 .GuidanceCard * {
-    cursor: url("../../Assets/images/circle-right-solid-32px.png"), pointer;
+    cursor: url("../../Assets/images/light-pointer-56px.png"), pointer;
 }
 
 .img-mask::before {
