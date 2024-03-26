@@ -12,7 +12,7 @@
     height: 100%;
     background-size: cover;
     background-position: top;
-    filter: blur(40px);
+    filter: blur(20px);
     transition: filter 0.3s ease;
 }
 

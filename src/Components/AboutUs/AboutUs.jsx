@@ -1,17 +1,10 @@
-import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {
     Avatar,
     Card,
     CardActionArea,
-    CardActions,
     CardHeader,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText
 } from "@mui/material";
-import {useSmallPage} from "../common";
 import Grid2 from "@mui/material/Unstable_Grid2";
 
 async function getUser(usernames) {
@@ -73,7 +66,7 @@ export function AboutUs() {
     return (
         <div style={{width: '70%'}}>
             <h1 style={{textAlign: 'center'}}><b>关于我们</b></h1>
-            <h3>我们是谁？</h3>
+            <h3>我们是谁？（按姓氏排序）</h3>
             <Grid2
                 container
                 spacing={2}

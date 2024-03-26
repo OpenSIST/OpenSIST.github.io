@@ -91,15 +91,14 @@ html {
 
 body {
     font-family: var(--font-body);
-    color: rgb(51, 51, 51);
+    /*color: rgb(51, 51, 51);*/
     line-height: 1.6;
 }
 
 #write {
     max-width: 860px;
     margin: 0 auto;
-    padding: 30px;
-    padding-bottom: 100px;
+    padding: 30px 30px 100px;
 }
 
 @media only screen and (min-width: 1400px) {

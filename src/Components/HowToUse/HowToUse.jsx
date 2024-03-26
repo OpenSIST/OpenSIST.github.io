@@ -1,10 +1,10 @@
 import {
-    Box, Button, Card, CardActionArea, CardContent, CardMedia, Divider, Fab, Paper, Typography, useTheme
+    Box, Card, CardActionArea, CardContent, Divider, Paper, Typography, useTheme
 } from "@mui/material";
 import React from "react";
 import {Link} from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import {BoldTypography, useSmallPage} from "../common";
+import {BoldTypography} from "../common";
 import DatapointsDark from "../../Assets/images/HowToUse/dark/datapoints.png";
 import DatapointsLight from "../../Assets/images/HowToUse/light/datapoints.png";
 import PostsDark from "../../Assets/images/HowToUse/dark/posts.png";
@@ -13,8 +13,6 @@ import ProfileDark from "../../Assets/images/HowToUse/dark/profile.png";
 import ProfileLight from "../../Assets/images/HowToUse/light/profile.png";
 import ProgramsDark from "../../Assets/images/HowToUse/dark/programs.png";
 import ProgramsLight from "../../Assets/images/HowToUse/light/programs.png";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import {ArrowBack} from "@mui/icons-material";
 import "./HowToUse.css"
 
 const imageDir = {
@@ -45,7 +43,6 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
     const nameList = ['profile', 'programs', 'datapoints', 'posts'];
     const theme = useTheme();
     const inverse = Index % 2;
-    const smallPage = useSmallPage();
     return (
         <Card>
             <CardActionArea component={Link} to={ButtonLink}>
@@ -73,7 +70,8 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
-                            gap: '2rem'
+                            gap: '1rem',
+                            p: '2rem 4rem'
                         }}
                     >
                         <Box sx={{display: 'flex', flexDirection: "column", gap: "inherit"}}>
@@ -90,21 +88,20 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                             </Box>
                             <Typography sx={{lineHeight: '2rem'}}>{Content}</Typography>
                         </Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                gap: 'inherit',
-                                alignItems: 'center',
-                                justifyContent: (inverse ? 'start' : 'end'),
-                                flexDirection: (inverse ? 'row' : 'row-reverse')
-                            }}
-                        >
-                            <Link style={{textDecoration: "none"}} to={ButtonLink}>{ButtonContent}</Link>
-                            <Fab component={Link} to={ButtonLink} color="primary">
-                                {inverse ? <ArrowForwardIcon/> : <ArrowBack/>}
-                            </Fab>
-                        </Box>
-
+                        {/*<Box*/}
+                        {/*    sx={{*/}
+                        {/*        display: 'flex',*/}
+                        {/*        gap: 'inherit',*/}
+                        {/*        alignItems: 'center',*/}
+                        {/*        justifyContent: (inverse ? 'start' : 'end'),*/}
+                        {/*        flexDirection: (inverse ? 'row' : 'row-reverse')*/}
+                        {/*    }}*/}
+                        {/*>*/}
+                        {/*    <Link style={{textDecoration: "none"}} to={ButtonLink}>{ButtonContent}</Link>*/}
+                        {/*    <Fab component={Link} to={ButtonLink} color="primary">*/}
+                        {/*        {inverse ? <ArrowForwardIcon/> : <ArrowBack/>}*/}
+                        {/*    </Fab>*/}
+                        {/*</Box>*/}
                     </CardContent>
                 </Paper>
             </CardActionArea>
