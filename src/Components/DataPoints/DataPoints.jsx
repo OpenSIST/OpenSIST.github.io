@@ -158,7 +158,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     };
 
     const statusBodyTemplate = (rowData) => {
-        return <Chip label={rowData.Status} color={getStatusColor(rowData.Status)}/>
+        return <Chip label={rowData.Status} color={getStatusColor(rowData.Status)} sx={{height: '1.6rem'}}/>
     };
 
     const statusFilterItemTemplate = (option) => {
@@ -184,7 +184,11 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         </div>
     };
     const seasonBodyTemplate = (rowData) => {
-        return <Chip label={`${rowData.ProgramYear} ${rowData.Semester}`} color={getSemesterColor(rowData.Semester)}/>
+        return <Chip
+            label={`${rowData.ProgramYear}${rowData.Semester}`}
+            color={getSemesterColor(rowData.Semester)}
+            sx={{height: '1.6rem'}}
+        />
     };
     const timelineBodyTemplate = (rowData, columnBodyOption) => {
         const field = columnBodyOption.field;
@@ -196,7 +200,14 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     const applicantBodyTemplate = (rowData) => {
         return (
             <Tooltip title='查看申请人信息' arrow>
-                <Chip label={rowData.ApplicantID} sx={{maxWidth: "8rem"}} onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}/>
+                <Chip
+                    label={rowData.ApplicantID}
+                    sx={{
+                        maxWidth: "8rem",
+                        height: '1.6rem'
+                    }}
+                    onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}
+                />
             </Tooltip>
         )
     };
@@ -204,7 +215,14 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     const programBodyTemplate = (rowData) => {
         return (
             <Tooltip title='查看项目描述' arrow>
-                <Chip label={rowData.ProgramID} sx={{maxWidth: "9rem"}} onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}/>
+                <Chip
+                    label={rowData.ProgramID}
+                    sx={{
+                        maxWidth: "9rem",
+                        height: '1.6rem'
+                    }}
+                    onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}
+                />
             </Tooltip>
         )
     };
