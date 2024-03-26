@@ -42,18 +42,20 @@ export function HowToUse() {
 }
 
 export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLink}) {
-    const nameList = ['profile', 'programs', 'datapoints', 'posts'];
+    const nameList = ['profile', 'datapoints', 'programs', 'posts'];
     const theme = useTheme();
     const inverse = Index % 2;
     return (
-        <Card sx={{
-            width: {
-                lg: "80%",
-                sm: "90%",
-                xs: "100%"
-            },
-            alignSelf: (inverse ? "start" : "end")
-        }}>
+        <Card
+            className='GuidanceCard'
+            sx={{
+                width: {
+                    lg: "80%",
+                    sm: "90%",
+                    xs: "100%"
+                },
+                alignSelf: (inverse ? "start" : "end"),
+            }}>
             <CardActionArea component={Link} to={ButtonLink}>
                 <Paper
                     className="img-mask"
@@ -64,7 +66,8 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                         textAlign: (inverse ? 'start' : 'end'),
                         "&:before": {
                             backgroundImage: `url(${imageDir[theme.palette.mode][nameList[Index - 1]]})`,
-                        }}}
+                        }
+                    }}
                 >
                     <CardContent
                         sx={{
