@@ -8,7 +8,7 @@
 }
 
 .GuidanceCard * {
-    cursor: url("../../Assets/images/circle-right-solid.svg"), auto;
+    cursor: url("../../Assets/images/light-pointer-56px.png"), pointer;
 }
 
 .img-mask::before {
@@ -35,9 +35,11 @@
 .img-mask > * {
     position: relative;
     opacity: 1;
-    transition: opacity 0.3s ease;
+    filter: blur(0px);
+    transition: all 0.3s ease;
 }
 
 .img-mask:hover > * {
+    filter: blur(40px);
     opacity: 0;
 }
