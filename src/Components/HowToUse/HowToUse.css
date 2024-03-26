@@ -7,6 +7,10 @@
     color: inherit;
 }
 
+.img-mask * {
+    cursor: url("../../Assets/images/circle-right-solid.svg"), auto;
+}
+
 .img-mask::before {
     content: "";
     position: absolute;

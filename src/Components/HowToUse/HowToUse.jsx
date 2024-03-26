@@ -14,6 +14,8 @@ import ProfileLight from "../../Assets/images/HowToUse/light/profile.png";
 import ProgramsDark from "../../Assets/images/HowToUse/dark/programs.png";
 import ProgramsLight from "../../Assets/images/HowToUse/light/programs.png";
 import "./HowToUse.css"
+import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
+import ReactDOMServer from 'react-dom/server';
 
 const imageDir = {
     light: {
@@ -44,7 +46,14 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
     const theme = useTheme();
     const inverse = Index % 2;
     return (
-        <Card sx={{width: "90%", alignSelf: (inverse ? "start" : "end")}}>
+        <Card sx={{
+            width: {
+                lg: "80%",
+                sm: "90%",
+                xs: "100%"
+            },
+            alignSelf: (inverse ? "start" : "end")
+        }}>
             <CardActionArea component={Link} to={ButtonLink}>
                 <Paper
                     className="img-mask"
@@ -55,8 +64,7 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                         textAlign: (inverse ? 'start' : 'end'),
                         "&:before": {
                             backgroundImage: `url(${imageDir[theme.palette.mode][nameList[Index - 1]]})`,
-                        },
-                    }}
+                        }}}
                 >
                     <CardContent
                         sx={{
@@ -71,14 +79,17 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                             flexDirection: 'column',
                             justifyContent: 'center',
                             gap: '1rem',
-                            p: '8rem 4rem',
+                            p: '12rem 4rem',
+                            "&:last-child": {
+                                pb: '4rem'
+                            }
                         }}
                     >
                         <Box
                             component="blockquote"
                             sx={{
                                 m: 0,
-                                borderLeft: (inverse ? "4px solid #909090": 'none'),
+                                borderLeft: (inverse ? "4px solid #909090" : 'none'),
                                 borderRight: (inverse ? 'none' : "4px solid #909090"),
                                 display: 'flex',
                                 flexDirection: "column",
