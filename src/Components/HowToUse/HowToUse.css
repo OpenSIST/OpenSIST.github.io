@@ -3,6 +3,10 @@
     overflow: hidden;
 }
 
+.img-mask blockquote {
+    color: inherit;
+}
+
 .img-mask::before {
     content: "";
     position: absolute;

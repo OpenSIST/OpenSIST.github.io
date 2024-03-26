@@ -39,12 +39,12 @@ export function HowToUse() {
     )
 }
 
-export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLink, ButtonContent}) {
+export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLink}) {
     const nameList = ['profile', 'programs', 'datapoints', 'posts'];
     const theme = useTheme();
     const inverse = Index % 2;
     return (
-        <Card>
+        <Card sx={{width: "90%", alignSelf: (inverse ? "start" : "end")}}>
             <CardActionArea component={Link} to={ButtonLink}>
                 <Paper
                     className="img-mask"
@@ -61,20 +61,30 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                     <CardContent
                         sx={{
                             width: {
-                                xs: '70%',
-                                sm: '60%',
-                                md: '50%',
-                                lg: '40%',
-                                xl: '30%'
+                                xs: '90%',
+                                sm: '80%',
+                                md: '70%',
+                                lg: '60%',
+                                xl: '50%'
                             },
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
                             gap: '1rem',
-                            p: '2rem 4rem'
+                            p: '8rem 4rem',
                         }}
                     >
-                        <Box sx={{display: 'flex', flexDirection: "column", gap: "inherit"}}>
+                        <Box
+                            component="blockquote"
+                            sx={{
+                                m: 0,
+                                borderLeft: (inverse ? "4px solid #909090": 'none'),
+                                borderRight: (inverse ? 'none' : "4px solid #909090"),
+                                display: 'flex',
+                                flexDirection: "column",
+                                gap: "inherit"
+                            }}
+                        >
                             <BoldTypography variant='h4'>{Index}.</BoldTypography>
                             <Box>
                                 <BoldTypography variant='h6'
@@ -86,22 +96,8 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                                     {TitleSecond}
                                 </BoldTypography>
                             </Box>
-                            <Typography sx={{lineHeight: '2rem'}}>{Content}</Typography>
+                            <Typography>{Content}</Typography>
                         </Box>
-                        {/*<Box*/}
-                        {/*    sx={{*/}
-                        {/*        display: 'flex',*/}
-                        {/*        gap: 'inherit',*/}
-                        {/*        alignItems: 'center',*/}
-                        {/*        justifyContent: (inverse ? 'start' : 'end'),*/}
-                        {/*        flexDirection: (inverse ? 'row' : 'row-reverse')*/}
-                        {/*    }}*/}
-                        {/*>*/}
-                        {/*    <Link style={{textDecoration: "none"}} to={ButtonLink}>{ButtonContent}</Link>*/}
-                        {/*    <Fab component={Link} to={ButtonLink} color="primary">*/}
-                        {/*        {inverse ? <ArrowForwardIcon/> : <ArrowBack/>}*/}
-                        {/*    </Fab>*/}
-                        {/*</Box>*/}
                     </CardContent>
                 </Paper>
             </CardActionArea>
@@ -119,14 +115,13 @@ function Graduated() {
                 为了给SIST学弟学妹们提供更多海外申请的信息，我们希望你能抽出一点宝贵的时间，按个人意愿来做至多四件事情：
             </BoldTypography>
             <Divider variant='middle'/>
-            <Box spacing={4} sx={{display: 'flex', flexDirection: 'column', gap: '1rem', p: "1rem"}}>
+            <Box sx={{display: 'flex', flexDirection: 'column', gap: '1rem', p: "1rem"}}>
                 <GuidanceGrid
                     Index={1}
                     TitlePrime='填写申请时的'
                     TitleSecond='个人背景（可匿名）'
                     Content='考虑到有的人也许会有多于一年的申请经历，因此每个用户可添加多个申请人，以申请年份作区分'
                     ButtonLink='/profile/new-applicant'
-                    ButtonContent='添加申请人'
                 />
                 <GuidanceGrid
                     Index={2}
@@ -134,7 +129,6 @@ function Graduated() {
                     TitleSecond='admit/reject的情况'
                     Content='尽可能多地填写自己的申请记录，也就是你申请的各个项目的admit/reject的结果'
                     ButtonLink='/profile/new-record'
-                    ButtonContent='添加申请记录'
                 />
                 <GuidanceGrid
                     Index={3}
@@ -142,7 +136,6 @@ function Graduated() {
                     TitleSecond='海外硕博项目细节'
                     Content='如果你对某些项目有着很深入的了解，我们希望你能够把你所了解的内容进行分享，为学弟学妹们提供更多insight'
                     ButtonLink='/programs/new'
-                    ButtonContent='添加项目信息'
                 />
                 <GuidanceGrid
                     Index={4}
@@ -150,7 +143,6 @@ function Graduated() {
                     TitleSecond='分享你的申请经验'
                     Content='在本站发布申请分享帖，分享你申请过程中的心得体会，包括但不限于选校、套磁、申请总结等方面'
                     ButtonLink='/posts/new'
-                    ButtonContent='添加申请分享帖'
                 />
             </Box>
         </Box>
