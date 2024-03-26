@@ -5,17 +5,17 @@ import React from "react";
 import {Link} from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {BoldTypography} from "../common";
-import DatapointsDark from "../../Assets/images/HowToUse/dark/datapoints.png";
-import DatapointsLight from "../../Assets/images/HowToUse/light/datapoints.png";
-import PostsDark from "../../Assets/images/HowToUse/dark/posts.png";
-import PostsLight from "../../Assets/images/HowToUse/light/posts.png";
-import ProfileDark from "../../Assets/images/HowToUse/dark/profile.png";
-import ProfileLight from "../../Assets/images/HowToUse/light/profile.png";
-import ProgramsDark from "../../Assets/images/HowToUse/dark/programs.png";
-import ProgramsLight from "../../Assets/images/HowToUse/light/programs.png";
+import DatapointsDark from "../../Assets/images/HowToUse/dark/datapoints.webp";
+import DatapointsLight from "../../Assets/images/HowToUse/light/datapoints.webp";
+import PostsDark from "../../Assets/images/HowToUse/dark/posts.webp";
+import PostsLight from "../../Assets/images/HowToUse/light/posts.webp";
+import ProfileDark from "../../Assets/images/HowToUse/dark/profile.webp";
+import ProfileLight from "../../Assets/images/HowToUse/light/profile.webp";
+import ProgramsDark from "../../Assets/images/HowToUse/dark/programs.webp";
+import ProgramsLight from "../../Assets/images/HowToUse/light/programs.webp";
+import LightPointer from "../../Assets/images/light-pointer-56px.png";
+import DarkPointer from "../../Assets/images/dark-pointer-56px.png";
 import "./HowToUse.css"
-import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
-import ReactDOMServer from 'react-dom/server';
 
 const imageDir = {
     light: {
@@ -55,7 +55,11 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                     xs: "100%"
                 },
                 alignSelf: (inverse ? "start" : "end"),
-            }}>
+                "& *": {
+                    cursor: `url(${theme.palette.mode === 'light' ? LightPointer : DarkPointer}), pointer`
+                }
+            }}
+        >
             <CardActionArea component={Link} to={ButtonLink}>
                 <Paper
                     className="img-mask"

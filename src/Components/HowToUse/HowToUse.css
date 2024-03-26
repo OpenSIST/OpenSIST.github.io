@@ -7,10 +7,6 @@
     color: inherit;
 }
 
-.GuidanceCard * {
-    cursor: url("../../Assets/images/light-pointer-56px.png"), pointer;
-}
-
 .img-mask::before {
     content: "";
     position: absolute;
