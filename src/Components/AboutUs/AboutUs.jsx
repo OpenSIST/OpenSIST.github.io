@@ -7,14 +7,6 @@ import {
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 
-async function getUser(usernames) {
-    return Promise.all(usernames.map(username => fetch(`https://api.github.com/users/${username}`)
-        .then(response => response.json())
-        .then(response => {
-            return response;
-        })))
-}
-
 export function AboutUs() {
     const developers = ['cst', 'cze', 'frm', 'lbn'];
 
