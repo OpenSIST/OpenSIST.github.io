@@ -67,7 +67,8 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                         minWidth: '100%',
                         display: 'flex',
                         flexDirection: (inverse ? 'row' : 'row-reverse'),
-                        textAlign: (inverse ? 'start' : 'end'),
+                        // textAlign: (inverse ? 'start' : 'end'),
+                        textAlign: 'start',
                         "&:before": {
                             backgroundImage: `url(${imageDir[theme.palette.mode][nameList[Index - 1]]})`,
                         }
@@ -76,11 +77,11 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                     <CardContent
                         sx={{
                             width: {
-                                xs: '90%',
-                                sm: '80%',
-                                md: '70%',
-                                lg: '60%',
-                                xl: '50%'
+                                xs: '80%',
+                                sm: '70%',
+                                md: '60%',
+                                lg: '50%',
+                                xl: '40%'
                             },
                             display: 'flex',
                             flexDirection: 'column',
@@ -93,17 +94,18 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                         }}
                     >
                         <Box
-                            component="blockquote"
+                            // component="blockquote"
                             sx={{
                                 m: 0,
-                                borderLeft: (inverse ? "4px solid #909090" : 'none'),
-                                borderRight: (inverse ? 'none' : "4px solid #909090"),
+                                // borderLeft: (inverse ? "4px solid #909090" : 'none'),
+                                // borderRight: (inverse ? 'none' : "4px solid #909090"),
                                 display: 'flex',
                                 flexDirection: "column",
                                 gap: "inherit"
                             }}
                         >
                             <BoldTypography variant='h4'>{Index}.</BoldTypography>
+                            <Divider/>
                             <Box>
                                 <BoldTypography variant='h6'
                                                 sx={{color: (theme) => theme.palette.mode === 'dark' ? "#fff" : "#000"}}>
@@ -129,10 +131,6 @@ function Graduated() {
         <Box sx={{display: 'flex', flexDirection: 'column', gap: "2rem", m: '2rem'}}>
             <BoldTypography variant='h4'>毕业生、大四、研三请阅读：</BoldTypography>
             <BoldTypography variant="h5">我来这个网站应该干什么？</BoldTypography>
-            <BoldTypography variant="subtitl1">
-                为了给SIST学弟学妹们提供更多海外申请的信息，我们希望你能抽出一点宝贵的时间，按个人意愿来做至多四件事情：
-            </BoldTypography>
-            <Divider variant='middle'/>
             <Box sx={{display: 'flex', flexDirection: 'column', gap: '1rem', p: "1rem"}}>
                 <GuidanceGrid
                     Index={1}

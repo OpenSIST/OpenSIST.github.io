@@ -10,7 +10,7 @@ import {
     List,
     ListItemButton,
     ListItemText,
-    Paper, Tooltip,
+    Paper, Tooltip, Typography,
     useTheme
 } from "@mui/material";
 import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
@@ -116,7 +116,11 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
                 onClick={() => setIsFolded(!isFolded)}
             >
                 {isFolded ? <ExpandMore/> : <NavigateNext/>}
-                <ListItemText primary={univName} secondary={univAbbrFullNameMapping[univName]}/>
+                <ListItemText primary={univName} secondary={
+                    <Typography variant='subtitle1' sx={{fontSize: 'clamp(12px, 1.5vw, 14px)'}}>
+                        {univAbbrFullNameMapping[univName]}
+                </Typography>
+                }/>
                 {flags}
             </ListItemButton>
             <Divider component="li" light/>

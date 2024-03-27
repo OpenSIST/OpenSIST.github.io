@@ -158,11 +158,26 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     };
 
     const statusBodyTemplate = (rowData) => {
-        return <Chip label={rowData.Status} color={getStatusColor(rowData.Status)} sx={{height: '1.6rem'}}/>
+        // const theme = useTheme();
+        // console.log(theme.palette.background.paper)
+        return <Chip
+            label={rowData.Status}
+            color={getStatusColor(rowData.Status)}
+            sx={{
+                height: '1.6rem',
+                color: (rowData.Status === 'Waitlist' ? 'inherit' : '#ffffffde')
+            }}
+        />
     };
 
     const statusFilterItemTemplate = (option) => {
-        return <Chip label={option} color={getStatusColor(option)}/>
+        return <Chip
+            label={option}
+            color={getStatusColor(option)}
+            sx={{
+                color: (option === 'Waitlist' ? 'inherit' : '#ffffffde')
+            }}
+        />
     };
 
     const statusFilterTemplate = (options) => {
@@ -254,7 +269,6 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 scrollHeight="100%"
                 rowGroupHeaderTemplate={groupSubheaderTemplate}
                 rowHover
-                // showGridlines
                 paginator={insideProgramPage ? null : true}
                 paginatorTemplate="FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
                 currentPageReportTemplate="{first}~{last} of {totalRecords}"

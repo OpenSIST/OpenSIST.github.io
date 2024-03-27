@@ -42,6 +42,14 @@ function OpenSIST() {
     const theme = createTheme({
         palette: {
             mode: mode ?? (prefersDarkMode ? 'dark' : 'light'),
+            contrastThreshold: 3,
+            error: {
+                main: mode === 'dark' ? '#FF375F' : '#FF2D55',
+            }, success: {
+                main: mode === 'dark' ? '#30D158' : '#34C759',
+            }, warning: {
+                main: mode === 'dark' ? '#FF9F0A' : '#FF9500',
+            },
         },
         components: {
             MuiButtonBase: {
