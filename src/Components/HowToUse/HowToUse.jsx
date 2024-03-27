@@ -104,8 +104,8 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                                 gap: "inherit"
                             }}
                         >
-                            <BoldTypography variant='h4'>{Index}.</BoldTypography>
-                            <Divider/>
+                            <BoldTypography variant='h3'>{Index}.</BoldTypography>
+                            <Divider sx={{bgcolor: (theme) => theme.palette.mode === 'dark' ? "#fff" : "#000", height: 'auto'}}/>
                             <Box>
                                 <BoldTypography variant='h6'
                                                 sx={{color: (theme) => theme.palette.mode === 'dark' ? "#fff" : "#000"}}>

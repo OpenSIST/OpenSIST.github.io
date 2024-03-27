@@ -123,7 +123,7 @@ function Filter({label, id, name, value, handleFilterChange, options, OptionItem
         <FormControl component={Paper} fullWidth sx={{
             bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : "#fff",
         }}>
-            <InputLabel size="small">{label}</InputLabel>
+            <InputLabel size='small' sx={{fontSize: '0.8rem', lineHeight: 'inherit'}}>{label}</InputLabel>
             <Select
                 multiple
                 id={id}

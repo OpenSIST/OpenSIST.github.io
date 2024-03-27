@@ -117,7 +117,7 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
             >
                 {isFolded ? <ExpandMore/> : <NavigateNext/>}
                 <ListItemText primary={univName} secondary={
-                    <Typography variant='subtitle1' sx={{fontSize: 'clamp(12px, 1.5vw, 14px)'}}>
+                    <Typography variant='subtitle1' sx={{fontSize: 'clamp(11px, 1.5vw, 13px)'}}>
                         {univAbbrFullNameMapping[univName]}
                 </Typography>
                 }/>
