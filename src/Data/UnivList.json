@@ -3,1862 +3,1862 @@
         "fullName": "Massachusetts Institute of Technology",
         "region": ["US"],
         "abbr": "MIT",
-        "latitude": "42.3582529",
-        "longitude": "-71.0966272383055"
+        "latitude": 42.3582529,
+        "longitude": -71.0966272383055
     },
     {
         "fullName": "University of California - Berkeley",
         "region": ["US"],
         "abbr": "UCB",
-        "latitude": "37.875499649999995",
-        "longitude": "-122.23906851395179"
+        "latitude": 37.875499649999995,
+        "longitude": -122.23906851395179
     },
     {
         "fullName": "Stanford University",
         "region": ["US"],
         "abbr": "Stanford",
-        "latitude": "37.431313849999995",
-        "longitude": "-122.16936535498309"
+        "latitude": 37.431313849999995,
+        "longitude": -122.16936535498309
     },
     {
         "fullName": "Carnegie Mellon University",
         "region": ["US"],
         "abbr": "CMU",
-        "latitude": "40.444189699999995",
-        "longitude": "-79.94271918393466"
+        "latitude": 40.444189699999995,
+        "longitude": -79.94271918393466
     },
     {
         "fullName": "University of Illinois at Urbana-Champaign",
         "region": ["US"],
         "abbr": "UIUC",
-        "latitude": "40.076154450000004",
-        "longitude": "-88.22331340640494"
+        "latitude": 40.076154450000004,
+        "longitude": -88.22331340640494
     },
     {
         "fullName": "University of Washington",
         "region": ["US"],
         "abbr": "UW",
-        "latitude": "47.65566435",
-        "longitude": "-122.30270718903485"
+        "latitude": 47.65566435,
+        "longitude": -122.30270718903485
     },
     {
         "fullName": "Princeton University",
         "region": ["US"],
         "abbr": "Princeton",
-        "latitude": "40.33867515",
-        "longitude": "-74.65836549131683"
+        "latitude": 40.33867515,
+        "longitude": -74.65836549131683
     },
     {
         "fullName": "California Institute of Technology",
         "region": ["US"],
         "abbr": "Caltech",
-        "latitude": "34.13701375",
-        "longitude": "-118.12528833668254"
+        "latitude": 34.13701375,
+        "longitude": -118.12528833668254
     },
     {
         "fullName": "ETH Z\u00fcrich",
         "region": ["EU"],
         "abbr": "ETH",
-        "latitude": "47.56277165",
-        "longitude": "7.580947334069263"
+        "latitude": 47.56277165,
+        "longitude": 7.580947334069263
     },
     {
         "fullName": "Harvard University",
         "region": ["US"],
         "abbr": "Harvard",
-        "latitude": "42.365743249999994",
-        "longitude": "-71.12221394207614"
+        "latitude": 42.365743249999994,
+        "longitude": -71.12221394207614
     },
     {
         "fullName": "\u00c9cole Polytechnique F\u00e9d\u00e9rale de Lausanne",
         "region": ["EU"],
         "abbr": "EPFL",
-        "latitude": "46.518659400000004",
-        "longitude": "6.566561505148001"
+        "latitude": 46.518659400000004,
+        "longitude": 6.566561505148001
     },
     {
         "fullName": "University of California - San Diego",
         "region": ["US"],
         "abbr": "UCSD",
-        "latitude": "32.87924375",
-        "longitude": "-117.23112468377349"
+        "latitude": 32.87924375,
+        "longitude": -117.23112468377349
     },
     {
         "fullName": "Georgia Institute of Technology",
         "region": ["US"],
         "abbr": "GaTech",
-        "latitude": "33.776094799999996",
-        "longitude": "-84.3988076699857"
+        "latitude": 33.776094799999996,
+        "longitude": -84.3988076699857
     },
     {
         "fullName": "University of Michigan",
         "region": ["US"],
         "abbr": "UMich",
-        "latitude": "42.2942142",
-        "longitude": "-83.71003893509601"
+        "latitude": 42.2942142,
+        "longitude": -83.71003893509601
     },
     {
         "fullName": "University of Texas at Austin",
         "region": ["US"],
         "abbr": "UT-Austin",
-        "latitude": "30.2851494",
-        "longitude": "-97.73393515146053"
+        "latitude": 30.2851494,
+        "longitude": -97.73393515146053
     },
     {
         "fullName": "Cornell University",
         "region": ["US"],
         "abbr": "Cornell",
-        "latitude": "42.4529076",
-        "longitude": "-76.48008423030923"
+        "latitude": 42.4529076,
+        "longitude": -76.48008423030923
     },
     {
         "fullName": "University of Maryland - College Park",
         "region": ["US"],
         "abbr": "UMD",
-        "latitude": "38.990412449999994",
-        "longitude": "-76.9438585924238"
+        "latitude": 38.990412449999994,
+        "longitude": -76.9438585924238
     },
     {
         "fullName": "University of California - Los Angeles",
         "region": ["US"],
         "abbr": "UCLA",
-        "latitude": "34.070877749999994",
-        "longitude": "-118.44685070595054"
+        "latitude": 34.070877749999994,
+        "longitude": -118.44685070595054
     },
     {
         "fullName": "Yale University",
         "region": ["US"],
         "abbr": "Yale",
-        "latitude": "41.25713055",
-        "longitude": "-72.98966960152231"
+        "latitude": 41.25713055,
+        "longitude": -72.98966960152231
     },
     {
         "fullName": "University of Pennsylvania",
         "region": ["US"],
         "abbr": "UPenn",
-        "latitude": "39.9493382",
-        "longitude": "-75.1896439962691"
+        "latitude": 39.9493382,
+        "longitude": -75.1896439962691
     },
     {
         "fullName": "University of Wisconsin - Madison",
         "region": ["US"],
         "abbr": "UW-Madison",
-        "latitude": "43.080274450000005",
-        "longitude": "-89.43095871991434"
+        "latitude": 43.080274450000005,
+        "longitude": -89.43095871991434
     },
     {
         "fullName": "Duke University",
         "region": ["US"],
         "abbr": "Duke",
-        "latitude": "36.00015569999999",
-        "longitude": "-78.94422972195878"
+        "latitude": 36.00015569999999,
+        "longitude": -78.94422972195878
     },
     {
         "fullName": "University of Toronto",
         "region": ["CA"],
         "abbr": "UToronto",
-        "latitude": "43.663461999999996",
-        "longitude": "-79.39775966248058"
+        "latitude": 43.663461999999996,
+        "longitude": -79.39775966248058
     },
     {
         "fullName": "University of British Columbia",
         "region": ["CA"],
         "abbr": "UBC",
-        "latitude": "49.25783145",
-        "longitude": "-123.24624198622213"
+        "latitude": 49.25783145,
+        "longitude": -123.24624198622213
     },
     {
         "fullName": "Max Planck Society",
         "region": ["EU"],
         "abbr": "Max Planck",
-        "latitude": "48.14115510",
-        "longitude": "11.58207790"
+        "latitude": 48.14115510,
+        "longitude": 11.58207790
     },
     {
         "fullName": "European Laboratory for Learning and Intelligent Systems",
         "region": ["EU"],
         "abbr": "ELLIS",
-        "latitude": "48.7139028",
-        "longitude": "2.2141074106393925"
+        "latitude": 48.7139028,
+        "longitude": 2.2141074106393925
     },
     {
         "fullName": "International Programme in Vision and Robotics",
         "region": ["EU"],
         "abbr": "VIBOT",
-        "latitude": "5.068862575081764",
-        "longitude": "47.3133052"
+        "latitude": 47.3133052,
+        "longitude": 5.068862575081764
     },
     {
         "fullName": "Purdue University",
         "region": ["US"],
         "abbr": "Purdue",
-        "latitude": "40.430028",
-        "longitude": "-86.92642114650494"
+        "latitude": 40.430028,
+        "longitude": -86.92642114650494
     },
     {
         "fullName": "Northwestern University",
         "region": ["US"],
         "abbr": "NWU",
-        "latitude": "42.0557157",
-        "longitude": "-87.67529454739416"
+        "latitude": 42.0557157,
+        "longitude": -87.67529454739416
     },
     {
         "fullName": "Brown University",
         "region": ["US"],
         "abbr": "Brown",
-        "latitude": "41.8186395",
-        "longitude": "-71.4088008716793"
+        "latitude": 41.8186395,
+        "longitude": -71.4088008716793
     },
     {
         "fullName": "Chinese University of Hong Kong",
         "region": ["HK"],
         "abbr": "CUHK",
-        "latitude": "22.4140914",
-        "longitude": "114.2100208"
+        "latitude": 22.4140914,
+        "longitude": 114.2100208
     },
     {
         "fullName": "The Hong Kong University of Science and Technology",
         "region": ["HK"],
         "abbr": "HKUST",
-        "latitude": "22.3358031",
-        "longitude": "114.2659087549023"
+        "latitude": 22.3358031,
+        "longitude": 114.2659087549023
     },
     {
         "fullName": "University of Hong Kong",
         "region": ["HK"],
         "abbr": "HKU",
-        "latitude": "22.28269745",
-        "longitude": "114.13845499995571"
+        "latitude": 22.28269745,
+        "longitude": 114.13845499995571
     },
     {
         "fullName": "National University of Singapore",
         "region": ["SG"],
         "abbr": "NUS",
-        "latitude": "1.2962018",
-        "longitude": "103.77689765953073"
+        "latitude": 1.2962018,
+        "longitude": 103.77689765953073
     },
     {
         "fullName": "Nanyang Technological University",
         "region": ["SG"],
         "abbr": "NTU",
-        "latitude": "1.3484104000000001",
-        "longitude": "103.68293320728537"
+        "latitude": 1.3484104000000001,
+        "longitude": 103.68293320728537
     },
     {
         "fullName": "University of Waterloo",
         "region": ["CA"],
         "abbr": "UWaterloo",
-        "latitude": "43.4701994",
-        "longitude": "-80.54524293779451"
+        "latitude": 43.4701994,
+        "longitude": -80.54524293779451
     },
     {
         "fullName": "University of Oxford",
         "region": ["UK"],
         "abbr": "Oxford",
-        "latitude": "51.75870755",
-        "longitude": "-1.2556684826092037"
+        "latitude": 51.75870755,
+        "longitude": -1.2556684826092037
     },
     {
         "fullName": "University of Cambridge",
         "region": ["UK"],
         "abbr": "Cambridge",
-        "latitude": "52.210945550000005",
-        "longitude": "0.09200497637871279"
+        "latitude": 52.210945550000005,
+        "longitude": 0.09200497637871279
     },
     {
         "fullName": "University of California - Santa Barbara",
         "region": ["US"],
         "abbr": "UCSB",
-        "latitude": "34.414602450000004",
-        "longitude": "-119.84581004701371"
+        "latitude": 34.414602450000004,
+        "longitude": -119.84581004701371
     },
     {
         "fullName": "Cornell Tech",
         "region": ["US"],
         "abbr": "Cornell Tech",
-        "latitude": "40.7544531",
-        "longitude": "-73.9557927"
+        "latitude": 40.7544531,
+        "longitude": -73.9557927
     },
     {
         "fullName": "University of California - Irvine",
         "region": ["US"],
         "abbr": "UCI",
-        "latitude": "33.64294685",
-        "longitude": "-117.84016055716225"
+        "latitude": 33.64294685,
+        "longitude": -117.84016055716225
     },
     {
         "fullName": "Technical University of Munich",
         "region": ["EU"],
         "abbr": "TUM",
-        "latitude": "48.2655696",
-        "longitude": "11.669345610437997"
+        "latitude": 48.2655696,
+        "longitude": 11.669345610437997
     },
     {
         "fullName": "New York University",
         "region": ["US"],
         "abbr": "NYU",
-        "latitude": "40.729205300000004",
-        "longitude": "-73.99501481290962"
+        "latitude": 40.729205300000004,
+        "longitude": -73.99501481290962
     },
     {
         "fullName": "Johns Hopkins University",
         "region": ["US"],
         "abbr": "JHU",
-        "latitude": "39.33020225",
-        "longitude": "-76.62185357858337"
+        "latitude": 39.33020225,
+        "longitude": -76.62185357858337
     },
     {
         "fullName": "Columbia University",
         "region": ["US"],
         "abbr": "Columbia",
-        "latitude": "40.80775585",
-        "longitude": "-73.96164946987652"
+        "latitude": 40.80775585,
+        "longitude": -73.96164946987652
     },
     {
         "fullName": "Rice University",
         "region": ["US"],
         "abbr": "Rice",
-        "latitude": "29.716791450000002",
-        "longitude": "-95.40478113393792"
+        "latitude": 29.716791450000002,
+        "longitude": -95.40478113393792
     },
     {
         "fullName": "University of Southern California",
         "region": ["US"],
         "abbr": "USC",
-        "latitude": "34.02186895",
-        "longitude": "-118.285857923125"
+        "latitude": 34.02186895,
+        "longitude": -118.285857923125
     },
     {
         "fullName": "Texas A&M University",
         "region": ["US"],
         "abbr": "TAMU",
-        "latitude": "30.6108618",
-        "longitude": "-96.35206061388457"
+        "latitude": 30.6108618,
+        "longitude": -96.35206061388457
     },
     {
         "fullName": "Dartmouth College",
         "region": ["US"],
         "abbr": "Dartmouth",
-        "latitude": "43.70467565",
-        "longitude": "-72.29420886774966"
+        "latitude": 43.70467565,
+        "longitude": -72.29420886774966
     },
     {
         "fullName": "University of Chicago",
         "region": ["US"],
         "abbr": "UChicago",
-        "latitude": "41.784977",
-        "longitude": "-87.5905237123017"
+        "latitude": 41.784977,
+        "longitude": -87.5905237123017
     },
     {
         "fullName": "Northeastern University",
         "region": ["US", "CA"],
         "abbr": "NEU",
-        "latitude": "42.33907025",
-        "longitude": "-71.08783833987422"
+        "latitude": 42.33907025,
+        "longitude": -71.08783833987422
     },
     {
         "fullName": "King Abdullah University of Science and Technology",
         "region": ["Others"],
         "abbr": "KAUST",
-        "latitude": "22.32237535",
-        "longitude": "39.11738351837985"
+        "latitude": 22.32237535,
+        "longitude": 39.11738351837985
     },
     {
         "fullName": "Boston University",
         "region": ["US"],
         "abbr": "BU",
-        "latitude": "42.3504324",
-        "longitude": "-71.10170122505716"
+        "latitude": 42.3504324,
+        "longitude": -71.10170122505716
     },
     {
         "fullName": "University of California - Davis",
         "region": ["US"],
         "abbr": "UCD",
-        "latitude": "38.533790350000004",
-        "longitude": "-121.79079892146456"
+        "latitude": 38.533790350000004,
+        "longitude": -121.79079892146456
     },
     {
         "fullName": "University of Massachusetts Amherst",
         "region": ["US"],
         "abbr": "UMass-Amherst",
-        "latitude": "42.3869382",
-        "longitude": "-72.52991477067445"
+        "latitude": 42.3869382,
+        "longitude": -72.52991477067445
     },
     {
         "fullName": "The University of North Carolina at Chapel Hill",
         "region": ["US"],
         "abbr": "UNC-Chapel Hill",
-        "latitude": "35.9131542",
-        "longitude": "-79.05578"
+        "latitude": 35.9131542,
+        "longitude": -79.05578
     },
     {
         "fullName": "Stony Brook University",
         "region": ["US"],
         "abbr": "Stony Brook",
-        "latitude": "40.9090809",
-        "longitude": "-73.12055180275716"
+        "latitude": 40.9090809,
+        "longitude": -73.12055180275716
     },
     {
         "fullName": "Imperial College London",
         "region": ["UK"],
         "abbr": "Imperial",
-        "latitude": "51.4989595",
-        "longitude": "-0.17564069276310426"
+        "latitude": 51.4989595,
+        "longitude": -0.17564069276310426
     },
     {
         "fullName": "University of Edinburgh",
         "region": ["UK"],
         "abbr": "Edinburgh",
-        "latitude": "55.94407645",
-        "longitude": "-3.1883735563964555"
+        "latitude": 55.94407645,
+        "longitude": -3.1883735563964555
     },
     {
         "fullName": "Politecnico di Milano",
         "region": ["EU"],
         "abbr": "Polimi",
-        "latitude": "45.04850495",
-        "longitude": "9.701694744265293"
+        "latitude": 45.04850495,
+        "longitude": 9.701694744265293
     },
     {
         "fullName": "Universit\u00e9 Paris-Saclay",
         "region": ["EU"],
         "abbr": "Saclay",
-        "latitude": "48.7123928",
-        "longitude": "2.1725958"
+        "latitude": 48.7123928,
+        "longitude": 2.1725958
     },
     {
         "fullName": "Institut Polytechnique de Paris",
         "region": ["EU"],
         "abbr": "IP-Paris",
-        "latitude": "48.7139028",
-        "longitude": "2.2141074106393925"
+        "latitude": 48.7139028,
+        "longitude": 2.2141074106393925
     },
     {
         "fullName": "Eindhoven University of Technology",
         "region": ["EU"],
         "abbr": "TU/e",
-        "latitude": "51.4486602",
-        "longitude": "5.4903995655080475"
+        "latitude": 51.4486602,
+        "longitude": 5.4903995655080475
     },
     {
         "fullName": "Rutgers University",
         "region": ["US"],
         "abbr": "Rutgers",
-        "latitude": "40.492977800000006",
-        "longitude": "-74.44510808059266"
+        "latitude": 40.492977800000006,
+        "longitude": -74.44510808059266
     },
     {
         "fullName": "University of California - Riverside",
         "region": ["US"],
         "abbr": "UCR",
-        "latitude": "33.9642567",
-        "longitude": "-117.3397858271953"
+        "latitude": 33.9642567,
+        "longitude": -117.3397858271953
     },
     {
         "fullName": "Ohio State University",
         "region": ["US"],
         "abbr": "OSU",
-        "latitude": "40.7988105",
-        "longitude": "-82.5782294"
+        "latitude": 40.7988105,
+        "longitude": -82.5782294
     },
     {
         "fullName": "Pennsylvania State University",
         "region": ["US"],
         "abbr": "PSU",
-        "latitude": "40.8025835",
-        "longitude": "-77.85593833184565"
+        "latitude": 40.8025835,
+        "longitude": -77.85593833184565
     },
     {
         "fullName": "University of Utah",
         "region": ["US"],
         "abbr": "Utah",
-        "latitude": "40.762813699999995",
-        "longitude": "-111.83687191368261"
+        "latitude": 40.762813699999995,
+        "longitude": -111.83687191368261
     },
     {
         "fullName": "North Carolina State University",
         "region": ["US"],
         "abbr": "NCSU",
-        "latitude": "35.7714749",
-        "longitude": "-78.6741935"
+        "latitude": 35.7714749,
+        "longitude": -78.6741935
     },
     {
         "fullName": "Simon Fraser University",
         "region": ["CA"],
         "abbr": "SFU",
-        "latitude": "49.276709600000004",
-        "longitude": "-122.91780296438841"
+        "latitude": 49.276709600000004,
+        "longitude": -122.91780296438841
     },
     {
         "fullName": "University of Virginia",
         "region": ["US"],
         "abbr": "UVA",
-        "latitude": "38.0410576",
-        "longitude": "-78.50550841214823"
+        "latitude": 38.0410576,
+        "longitude": -78.50550841214823
     },
     {
         "fullName": "University of California - Santa Cruz",
         "region": ["US"],
         "abbr": "UCSC",
-        "latitude": "37.00012445",
-        "longitude": "-122.06221224829252"
+        "latitude": 37.00012445,
+        "longitude": -122.06221224829252
     },
     {
         "fullName": "University College London",
         "region": ["UK"],
         "abbr": "UCL",
-        "latitude": "51.52420305",
-        "longitude": "-0.13300072425929543"
+        "latitude": 51.52420305,
+        "longitude": -0.13300072425929543
     },
     {
         "fullName": "Delft University of Technology",
         "region": ["EU"],
         "abbr": "TU Delft",
-        "latitude": "51.99882735",
-        "longitude": "4.373960368154041"
+        "latitude": 51.99882735,
+        "longitude": 4.373960368154041
     },
     {
         "fullName": "Katholieke Universiteit Leuven",
         "region": ["EU"],
         "abbr": "KU Leuven",
-        "latitude": "51.220506799999995",
-        "longitude": "4.404626282608695"
+        "latitude": 51.220506799999995,
+        "longitude": 4.404626282608695
     },
     {
         "fullName": "Lund University",
         "region": ["EU"],
         "abbr": "Lund",
-        "latitude": "55.7126504",
-        "longitude": "13.210758659399971"
+        "latitude": 55.7126504,
+        "longitude": 13.210758659399971
     },
     {
         "fullName": "Ghent University",
         "region": ["EU"],
         "abbr": "Ghent",
-        "latitude": "51.00784845",
-        "longitude": "3.710883068491984"
+        "latitude": 51.00784845,
+        "longitude": 3.710883068491984
     },
     {
         "fullName": "University at Buffalo",
         "region": ["US"],
         "abbr": "UBuffalo",
-        "latitude": "43.0007502",
-        "longitude": "-78.7887138"
+        "latitude": 43.0007502,
+        "longitude": -78.7887138
     },
     {
         "fullName": "Washington University in St. Louis",
         "region": ["US"],
         "abbr": "WUSTL",
-        "latitude": "38.64724015",
-        "longitude": "-90.3084017323959"
+        "latitude": 38.64724015,
+        "longitude": -90.3084017323959
     },
     {
         "fullName": "Emory University",
         "region": ["US"],
         "abbr": "Emory",
-        "latitude": "33.80045465",
-        "longitude": "-84.31723780466274"
+        "latitude": 33.80045465,
+        "longitude": -84.31723780466274
     },
     {
         "fullName": "Vanderbilt University",
         "region": ["US"],
         "abbr": "Vanderbilt",
-        "latitude": "36.14380105",
-        "longitude": "-86.80281889095295"
+        "latitude": 36.14380105,
+        "longitude": -86.80281889095295
     },
     {
         "fullName": "Korea Advanced Institute of Science and Technology",
         "region": ["Others"],
         "abbr": "KAIST",
-        "latitude": "36.3697191",
-        "longitude": "127.36253700115094"
+        "latitude": 36.3697191,
+        "longitude": 127.36253700115094
     },
     {
         "fullName": "Seoul National University",
         "region": ["Others"],
         "abbr": "SNU",
-        "latitude": "37.46691",
-        "longitude": "126.94771"
+        "latitude": 37.46691,
+        "longitude": 126.94771
     },
     {
         "fullName": "Technische Universit\u00e4t Berlin",
         "region": ["EU"],
         "abbr": "TU Berlin",
-        "latitude": "52.51101585",
-        "longitude": "13.326954140959668"
+        "latitude": 52.51101585,
+        "longitude": 13.326954140959668
     },
     {
         "fullName": "Rheinisch-Westf\u00e4lische Technische Hochschule Aachen University",
         "region": ["EU"],
         "abbr": "RWTH-Aachen",
-        "latitude": "50.7791657",
-        "longitude": "6.068920935592383"
+        "latitude": 50.7791657,
+        "longitude": 6.068920935592383
     },
     {
         "fullName": "Aalborg University",
         "region": ["EU"],
         "abbr": "AAU",
-        "latitude": "57.015907049999996",
-        "longitude": "9.975308243557345"
+        "latitude": 57.015907049999996,
+        "longitude": 9.975308243557345
     },
     {
         "fullName": "George Mason University",
         "region": ["US"],
         "abbr": "George Mason",
-        "latitude": "38.83133325",
-        "longitude": "-77.30798838879116"
+        "latitude": 38.83133325,
+        "longitude": -77.30798838879116
     },
     {
         "fullName": "Technische Universit\u00e4t Darmstadt",
         "region": ["EU"],
         "abbr": "TU Darmstadt",
-        "latitude": "49.86115175",
-        "longitude": "8.681943998674633"
+        "latitude": 49.86115175,
+        "longitude": 8.681943998674633
     },
     {
         "fullName": "University of Colorado Boulder",
         "region": ["US"],
         "abbr": "Colorado Boulder",
-        "latitude": "40.011137149999996",
-        "longitude": "-105.2470157043634"
+        "latitude": 40.011137149999996,
+        "longitude": -105.2470157043634
     },
     {
         "fullName": "University of Illinois at Chicago",
         "region": ["US"],
         "abbr": "UIC",
-        "latitude": "41.868922299999994",
-        "longitude": "-87.64858476010119"
+        "latitude": 41.868922299999994,
+        "longitude": -87.64858476010119
     },
     {
         "fullName": "University of Minnesota",
         "region": ["US"],
         "abbr": "UMN",
-        "latitude": "44.9863392",
-        "longitude": "-93.17945580218503"
+        "latitude": 44.9863392,
+        "longitude": -93.17945580218503
     },
     {
         "fullName": "Arizona State University",
         "region": ["US"],
         "abbr": "ASU",
-        "latitude": "33.4213174",
-        "longitude": "-111.93316305413154"
+        "latitude": 33.4213174,
+        "longitude": -111.93316305413154
     },
     {
         "fullName": "University of Sydney",
         "region": ["Others"],
         "abbr": "USyd",
-        "latitude": "-33.88888125",
-        "longitude": "151.18941425705117"
+        "latitude": -33.88888125,
+        "longitude": 151.18941425705117
     },
     {
         "fullName": "Virginia Polytechnic Institute and State University",
         "region": ["US"],
         "abbr": "Virginia Tech",
-        "latitude": "37.22192675",
-        "longitude": "-80.42728184013652"
+        "latitude": 37.22192675,
+        "longitude": -80.42728184013652
     },
     {
         "fullName": "Indiana University",
         "region": ["US"],
         "abbr": "IU",
-        "latitude": "39.1802358",
-        "longitude": "-86.50935262731483"
+        "latitude": 39.1802358,
+        "longitude": -86.50935262731483
     },
     {
         "fullName": "Singapore Management University",
         "region": ["SG"],
         "abbr": "SMU",
-        "latitude": "1.29616795",
-        "longitude": "103.85004365998248"
+        "latitude": 1.29616795,
+        "longitude": 103.85004365998248
     },
     {
         "fullName": "Oregon State University",
         "region": ["US"],
         "abbr": "Oregon State",
-        "latitude": "44.56305595",
-        "longitude": "-123.28392363395751"
+        "latitude": 44.56305595,
+        "longitude": -123.28392363395751
     },
     {
         "fullName": "University of Tokyo",
         "region": ["Others"],
         "abbr": "UTokyo",
-        "latitude": "35.71171565",
-        "longitude": "139.76374569517452"
+        "latitude": 35.71171565,
+        "longitude": 139.76374569517452
     },
     {
         "fullName": "Technical University of Denmark",
         "region": ["EU"],
         "abbr": "DTU",
-        "latitude": "55.785414450000005",
-        "longitude": "12.520215144442094"
+        "latitude": 55.785414450000005,
+        "longitude": 12.520215144442094
     },
     {
         "fullName": "Saarland University",
         "region": ["EU"],
         "abbr": "Saarland",
-        "latitude": "49.25428530000001",
-        "longitude": "7.04150707562534"
+        "latitude": 49.25428530000001,
+        "longitude": 7.04150707562534
     },
     {
         "fullName": "Aarhus University",
         "region": ["EU"],
         "abbr": "Aarhus",
-        "latitude": "56.1670905",
-        "longitude": "10.202617693592895"
+        "latitude": 56.1670905,
+        "longitude": 10.202617693592895
     },
     {
         "fullName": "CISPA Helmholtz Center",
         "region": ["EU"],
         "abbr": "CISPA",
-        "latitude": "49.2593545",
-        "longitude": "7.050992224567377"
+        "latitude": 49.2593545,
+        "longitude": 7.050992224567377
     },
     {
         "fullName": "City University of Hong Kong",
         "region": ["HK"],
         "abbr": "CityU",
-        "latitude": "22.3400204",
-        "longitude": "114.16971664362887"
+        "latitude": 22.3400204,
+        "longitude": 114.16971664362887
     },
     {
         "fullName": "Monash University",
         "region": ["Others"],
         "abbr": "Monash",
-        "latitude": "-37.8774234",
-        "longitude": "145.04496691740303"
+        "latitude": -37.8774234,
+        "longitude": 145.04496691740303
     },
     {
         "fullName": "University of Central Florida",
         "region": ["US"],
         "abbr": "UCF",
-        "latitude": "28.59899755",
-        "longitude": "-81.19712501183949"
+        "latitude": 28.59899755,
+        "longitude": -81.19712501183949
     },
     {
         "fullName": "National Institute of Informatics",
         "region": ["Others"],
         "abbr": "NII",
-        "latitude": "35.8932615",
-        "longitude": "139.9449382"
+        "latitude": 35.8932615,
+        "longitude": 139.9449382
     },
     {
         "fullName": "University of New South Wales",
         "region": ["Others"],
         "abbr": "UNSW",
-        "latitude": "-33.91759945",
-        "longitude": "151.23126487290787"
+        "latitude": -33.91759945,
+        "longitude": 151.23126487290787
     },
     {
         "fullName": "Universidade de Lisboa",
         "region": ["EU"],
         "abbr": "ULisboa",
-        "latitude": "38.7525379",
-        "longitude": "-9.156845594636383"
+        "latitude": 38.7525379,
+        "longitude": -9.156845594636383
     },
     {
         "fullName": "University of Melbourne",
         "region": ["Others"],
         "abbr": "UniMelb",
-        "latitude": "-37.8038271",
-        "longitude": "144.9597056360034"
+        "latitude": -37.8038271,
+        "longitude": 144.9597056360034
     },
     {
         "fullName": "University of Rochester",
         "region": ["US"],
         "abbr": "Rochester",
-        "latitude": "43.1226985",
-        "longitude": "-77.6307297"
+        "latitude": 43.1226985,
+        "longitude": -77.6307297
     },
     {
         "fullName": "Bar-Ilan University",
         "region": ["Others"],
         "abbr": "BIU",
-        "latitude": "32.069329249999996",
-        "longitude": "34.84334338615306"
+        "latitude": 32.069329249999996,
+        "longitude": 34.84334338615306
     },
     {
         "fullName": "Technische Universit\u00e4t Wien",
         "region": ["EU"],
         "abbr": "TU Wien",
-        "latitude": "48.19853965",
-        "longitude": "16.369861676286614"
+        "latitude": 48.19853965,
+        "longitude": 16.369861676286614
     },
     {
         "fullName": "University of Copenhagen",
         "region": ["EU"],
         "abbr": "UCPH",
-        "latitude": "55.6801502",
-        "longitude": "12.57232700140625"
+        "latitude": 55.6801502,
+        "longitude": 12.57232700140625
     },
     {
         "fullName": "University of Texas at Dallas",
         "region": ["US"],
         "abbr": "UT-Dallas",
-        "latitude": "32.9875855",
-        "longitude": "-96.74978396047038"
+        "latitude": 32.9875855,
+        "longitude": -96.74978396047038
     },
     {
         "fullName": "Yonsei University",
         "region": ["Others"],
         "abbr": "Yonsei",
-        "latitude": "37.280096549999996",
-        "longitude": "127.90150303233045"
+        "latitude": 37.280096549999996,
+        "longitude": 127.90150303233045
     },
     {
         "fullName": "Mohamed bin Zayed University of Artificial Intelligence",
         "region": ["Others"],
         "abbr": "MBZUAI",
-        "latitude": "24.4324903",
-        "longitude": "54.618379"
+        "latitude": 24.4324903,
+        "longitude": 54.618379
     },
     {
         "fullName": "Michigan State University",
         "region": ["US"],
         "abbr": "MSU",
-        "latitude": "42.70237935",
-        "longitude": "-84.48038686520441"
+        "latitude": 42.70237935,
+        "longitude": -84.48038686520441
     },
     {
         "fullName": "Pohang University of Science and Technology",
         "region": ["Others"],
         "abbr": "POSTECH",
-        "latitude": "36.0180795",
-        "longitude": "129.32085559784392"
+        "latitude": 36.0180795,
+        "longitude": 129.32085559784392
     },
     {
         "fullName": "Rochester Institute of Technology",
         "region": ["US"],
         "abbr": "RIT",
-        "latitude": "43.08248835",
-        "longitude": "-77.67291102378641"
+        "latitude": 43.08248835,
+        "longitude": -77.67291102378641
     },
     {
         "fullName": "Sapienza University of Rome",
         "region": ["EU"],
         "abbr": "Sapienza",
-        "latitude": "41.856085",
-        "longitude": "12.634443354865688"
+        "latitude": 41.856085,
+        "longitude": 12.634443354865688
     },
     {
         "fullName": "University of Amsterdam",
         "region": ["EU"],
         "abbr": "UAmsterdam",
-        "latitude": "52.36813335",
-        "longitude": "4.889804155733945"
+        "latitude": 52.36813335,
+        "longitude": 4.889804155733945
     },
     {
         "fullName": "University of Warwick",
         "region": ["UK"],
         "abbr": "Warwick",
-        "latitude": "52.3813073",
-        "longitude": "-1.5639569481637439"
+        "latitude": 52.3813073,
+        "longitude": -1.5639569481637439
     },
     {
         "fullName": "Aalto University",
         "region": ["EU"],
         "abbr": "Aalto",
-        "latitude": "60.1860789",
-        "longitude": "24.828102074406736"
+        "latitude": 60.1860789,
+        "longitude": 24.828102074406736
     },
     {
         "fullName": "Institute of Science and Technology Austria",
         "region": ["EU"],
         "abbr": "IST Austria",
-        "latitude": "48.3109736",
-        "longitude": "16.258631088976628"
+        "latitude": 48.3109736,
+        "longitude": 16.258631088976628
     },
     {
         "fullName": "King's College London",
         "region": ["UK"],
         "abbr": "KCL",
-        "latitude": "51.503403199999994",
-        "longitude": "-0.08946614662781002"
+        "latitude": 51.503403199999994,
+        "longitude": -0.08946614662781002
     },
     {
         "fullName": "Ludwig Maximilian University of Munich",
         "region": ["EU"],
         "abbr": "LMU Munich",
-        "latitude": "48.15047575",
-        "longitude": "11.579835648337658"
+        "latitude": 48.15047575,
+        "longitude": 11.579835648337658
     },
     {
         "fullName": "McGill University",
         "region": ["CA"],
         "abbr": "McGill",
-        "latitude": "45.50688565",
-        "longitude": "-73.57908460423829"
+        "latitude": 45.50688565,
+        "longitude": -73.57908460423829
     },
     {
         "fullName": "University of Notre Dame",
         "region": ["US"],
         "abbr": "Notre Dame",
-        "latitude": "41.704567749999995",
-        "longitude": "-86.23822026017265"
+        "latitude": 41.704567749999995,
+        "longitude": -86.23822026017265
     },
     {
         "fullName": "University of Pittsburgh",
         "region": ["US"],
         "abbr": "UPitt",
-        "latitude": "40.44415295",
-        "longitude": "-79.96246095144505"
+        "latitude": 40.44415295,
+        "longitude": -79.96246095144505
     },
     {
         "fullName": "University of Stuttgart",
         "region": ["EU"],
         "abbr": "Uni Stuttgart",
-        "latitude": "48.7784485",
-        "longitude": "9.1800132"
+        "latitude": 48.7784485,
+        "longitude": 9.1800132
     },
     {
         "fullName": "University of Texas at Arlington",
         "region": ["US"],
         "abbr": "UT-Arlington",
-        "latitude": "32.728471299999995",
-        "longitude": "-97.11202127009975"
+        "latitude": 32.728471299999995,
+        "longitude": -97.11202127009975
     },
     {
         "fullName": "Australian National University",
         "region": ["Others"],
         "abbr": "ANU",
-        "latitude": "-35.2813935",
-        "longitude": "149.11714511802117"
+        "latitude": -35.2813935,
+        "longitude": 149.11714511802117
     },
     {
         "fullName": "Graz University of Technology",
         "region": ["EU"],
         "abbr": "TU Graz",
-        "latitude": "47.058199900000005",
-        "longitude": "15.460187434162261"
+        "latitude": 47.058199900000005,
+        "longitude": 15.460187434162261
     },
     {
         "fullName": "Sungkyunkwan University",
         "region": ["Others"],
         "abbr": "SKKU",
-        "latitude": "37.3003187",
-        "longitude": "126.9697911"
+        "latitude": 37.3003187,
+        "longitude": 126.9697911
     },
     {
         "fullName": "University of Bristol",
         "region": ["UK"],
         "abbr": "Bristol",
-        "latitude": "51.4905582",
-        "longitude": "-2.6304824978595356"
+        "latitude": 51.4905582,
+        "longitude": -2.6304824978595356
     },
     {
         "fullName": "University of Delaware",
         "region": ["US"],
         "abbr": "UD",
-        "latitude": "39.6803338",
-        "longitude": "-75.75307489920786"
+        "latitude": 39.6803338,
+        "longitude": -75.75307489920786
     },
     {
         "fullName": "University of Liverpool",
         "region": ["UK"],
         "abbr": "Liverpool",
-        "latitude": "53.40724285",
-        "longitude": "-2.965833661018871"
+        "latitude": 53.40724285,
+        "longitude": -2.965833661018871
     },
     {
         "fullName": "Centre de Recherche en Informatique, Signal et Automatique de Lille",
         "region": ["EU"],
         "abbr": "CRIStAL",
-        "latitude": "43.9097185",
-        "longitude": "4.888863469357361"
+        "latitude": 43.9097185,
+        "longitude": 4.888863469357361
     },
     {
         "fullName": "The Hong Kong Polytechnic University",
         "region": ["HK"],
         "abbr": "PolyU",
-        "latitude": "22.304486699999998",
-        "longitude": "114.17969345847592"
+        "latitude": 22.304486699999998,
+        "longitude": 114.17969345847592
     },
     {
         "fullName": "University of California - Merced",
         "region": ["US"],
         "abbr": "UCM",
-        "latitude": "37.36513585",
-        "longitude": "-120.42253889071495"
+        "latitude": 37.36513585,
+        "longitude": -120.42253889071495
     },
     {
         "fullName": "University of Adelaide",
         "region": ["Others"],
         "abbr": "Adelaide",
-        "latitude": "-34.9189226",
-        "longitude": "138.60423667410745"
+        "latitude": -34.9189226,
+        "longitude": 138.60423667410745
     },
     {
         "fullName": "University of Alberta",
         "region": ["CA"],
         "abbr": "Alberta",
-        "latitude": "53.52682",
-        "longitude": "-113.5244937350756"
+        "latitude": 53.52682,
+        "longitude": -113.5244937350756
     },
     {
         "fullName": "University of Birmingham",
         "region": ["UK"],
         "abbr": "Birmingham",
-        "latitude": "52.4522956",
-        "longitude": "-1.9312856726008194"
+        "latitude": 52.4522956,
+        "longitude": -1.9312856726008194
     },
     {
         "fullName": "University of Connecticut",
         "region": ["US"],
         "abbr": "UConn",
-        "latitude": "41.82175755",
-        "longitude": "-72.24277535505323"
+        "latitude": 41.82175755,
+        "longitude": -72.24277535505323
     },
     {
         "fullName": "University of Florida",
         "region": ["US"],
         "abbr": "UF",
-        "latitude": "29.6328837",
-        "longitude": "-82.34901302237435"
+        "latitude": 29.6328837,
+        "longitude": -82.34901302237435
     },
     {
         "fullName": "Binghamton University",
         "region": ["US"],
         "abbr": "Binghamton",
-        "latitude": "42.08779975",
-        "longitude": "-75.97066065614858"
+        "latitude": 42.08779975,
+        "longitude": -75.97066065614858
     },
     {
         "fullName": "Ecole Normale Superieure",
         "region": ["EU"],
         "abbr": "ENS Paris",
-        "latitude": "48.8430502",
-        "longitude": "2.346015821392692"
+        "latitude": 48.8430502,
+        "longitude": 2.346015821392692
     },
     {
         "fullName": "IT University of Copenhagen",
         "region": ["EU"],
         "abbr": "ITU Copenhagen",
-        "latitude": "55.65965525",
-        "longitude": "12.591076889344563"
+        "latitude": 55.65965525,
+        "longitude": 12.591076889344563
     },
     {
         "fullName": "KTH Royal Institute of Technology",
         "region": ["EU"],
         "abbr": "KTH",
-        "latitude": "59.2016758",
-        "longitude": "17.6203201"
+        "latitude": 59.2016758,
+        "longitude": 17.6203201
     },
     {
         "fullName": "Singapore University of Technology and Design",
         "region": ["SG"],
         "abbr": "SUTD",
-        "latitude": "1.3401441",
-        "longitude": "103.9631302"
+        "latitude": 1.3401441,
+        "longitude": 103.9631302
     },
     {
         "fullName": "Technische Universit\u00e4t Dresden",
         "region": ["EU"],
         "abbr": "TU Dresden",
-        "latitude": "51.028276500000004",
-        "longitude": "13.735982754935176"
+        "latitude": 51.028276500000004,
+        "longitude": 13.735982754935176
     },
     {
         "fullName": "University of T\u00fcbingen",
         "region": ["EU"],
         "abbr": "T\u00fcbingen",
-        "latitude": "48.53405945",
-        "longitude": "9.071244429234808"
+        "latitude": 48.53405945,
+        "longitude": 9.071244429234808
     },
     {
         "fullName": "Weizmann Institute of Science",
         "region": ["Others"],
         "abbr": "Weizmann",
-        "latitude": "31.907849900000002",
-        "longitude": "34.81334092444211"
+        "latitude": 31.907849900000002,
+        "longitude": 34.81334092444211
     },
     {
         "fullName": "Karlsruhe Institute of Technology",
         "region": ["EU"],
         "abbr": "KIT",
-        "latitude": "49.101853399999996",
-        "longitude": "8.433120159201868"
+        "latitude": 49.101853399999996,
+        "longitude": 8.433120159201868
     },
     {
         "fullName": "Osaka University",
         "region": ["Others"],
         "abbr": "UOsaka",
-        "latitude": "34.51119925",
-        "longitude": "135.63144797553792"
+        "latitude": 34.51119925,
+        "longitude": 135.63144797553792
     },
     {
         "fullName": "Ruhr-University Bochum",
         "region": ["EU"],
         "abbr": "RUB",
-        "latitude": "51.444157649999994",
-        "longitude": "7.260965412383296"
+        "latitude": 51.444157649999994,
+        "longitude": 7.260965412383296
     },
     {
         "fullName": "Ulsan National Institute of Science and Technology",
         "region": ["Others"],
         "abbr": "UNIST",
-        "latitude": "35.57374845",
-        "longitude": "129.18972658449857"
+        "latitude": 35.57374845,
+        "longitude": 129.18972658449857
     },
     {
         "fullName": "University of Bonn",
         "region": ["EU"],
         "abbr": "Bonn",
-        "latitude": "50.7338124",
-        "longitude": "7.1022465"
+        "latitude": 50.7338124,
+        "longitude": 7.1022465
     },
     {
         "fullName": "University of Montreal",
         "region": ["CA"],
         "abbr": "UMontreal",
-        "latitude": "45.5092094",
-        "longitude": "-73.58075877093961"
+        "latitude": 45.5092094,
+        "longitude": -73.58075877093961
     },
     {
         "fullName": "University of Surrey",
         "region": ["UK"],
         "abbr": "Surrey",
-        "latitude": "51.24307815",
-        "longitude": "-0.5900544877514773"
+        "latitude": 51.24307815,
+        "longitude": -0.5900544877514773
     },
     {
         "fullName": "University of Trento",
         "region": ["EU"],
         "abbr": "Trento",
-        "latitude": "46.0661497",
-        "longitude": "11.11662318758863"
+        "latitude": 46.0661497,
+        "longitude": 11.11662318758863
     },
     {
         "fullName": "University of Tsukuba",
         "region": ["Others"],
         "abbr": "Tsukuba",
-        "latitude": "36.1070526",
-        "longitude": "140.10066020403983"
+        "latitude": 36.1070526,
+        "longitude": 140.10066020403983
     },
     {
         "fullName": "University of Warsaw",
         "region": ["EU"],
         "abbr": "UWarsaw",
-        "latitude": "52.2394966",
-        "longitude": "21.015693129786936"
+        "latitude": 52.2394966,
+        "longitude": 21.015693129786936
     },
     {
         "fullName": "University of Zurich",
         "region": ["EU"],
         "abbr": "UZH",
-        "latitude": "47.49684345",
-        "longitude": "8.72980716809498"
+        "latitude": 47.49684345,
+        "longitude": 8.72980716809498
     },
     {
         "fullName": "Worcester Polytechnic Institute",
         "region": ["US"],
         "abbr": "WPI",
-        "latitude": "42.274315",
-        "longitude": "-71.80845674552586"
+        "latitude": 42.274315,
+        "longitude": -71.80845674552586
     },
     {
         "fullName": "Chalmers University of Technology",
         "region": ["EU"],
         "abbr": "Chalmers/GU",
-        "latitude": "57.6897462",
-        "longitude": "11.97652929499342"
+        "latitude": 57.6897462,
+        "longitude": 11.97652929499342
     },
     {
         "fullName": "College of William and Mary",
         "region": ["US"],
         "abbr": "William and Mary",
-        "latitude": "37.269093350000006",
-        "longitude": "-76.7220488639414"
+        "latitude": 37.269093350000006,
+        "longitude": -76.7220488639414
     },
     {
         "fullName": "Florida State University",
         "region": ["US"],
         "abbr": "FSU",
-        "latitude": "30.44235995",
-        "longitude": "-84.29747867166262"
+        "latitude": 30.44235995,
+        "longitude": -84.29747867166262
     },
     {
         "fullName": "Hasso Plattner Institute",
         "region": ["EU"],
         "abbr": "HPI",
-        "latitude": "52.3933919",
-        "longitude": "13.13156397679563"
+        "latitude": 52.3933919,
+        "longitude": 13.13156397679563
     },
     {
         "fullName": "Iowa State University",
         "region": ["US"],
         "abbr": "ISU",
-        "latitude": "42.0279608",
-        "longitude": "-93.64473746093857"
+        "latitude": 42.0279608,
+        "longitude": -93.64473746093857
     },
     {
         "fullName": "Queen Mary University of London",
         "region": ["UK"],
         "abbr": "QMUL",
-        "latitude": "51.52492685",
-        "longitude": "-0.03924405317429028"
+        "latitude": 51.52492685,
+        "longitude": -0.03924405317429028
     },
     {
         "fullName": "Radboud University",
         "region": ["EU"],
         "abbr": "Radboud",
-        "latitude": "51.82151725",
-        "longitude": "5.863403442541042"
+        "latitude": 51.82151725,
+        "longitude": 5.863403442541042
     },
     {
         "fullName": "Royal Holloway University of London",
         "region": ["UK"],
         "abbr": "Royal Holloway",
-        "latitude": "51.424449550000006",
-        "longitude": "-0.5642561069587715"
+        "latitude": 51.424449550000006,
+        "longitude": -0.5642561069587715
     },
     {
         "fullName": "Stevens Institute of Technology",
         "region": ["US"],
         "abbr": "Stevens",
-        "latitude": "40.744809599999996",
-        "longitude": "-74.0252392276461"
+        "latitude": 40.744809599999996,
+        "longitude": -74.0252392276461
     },
     {
         "fullName": "University of Freiburg",
         "region": ["EU"],
         "abbr": "Freiburg",
-        "latitude": "47.9960901",
-        "longitude": "7.8494005"
+        "latitude": 47.9960901,
+        "longitude": 7.8494005
     },
     {
         "fullName": "University of Macau",
         "region": ["HK"],
         "abbr": "UMacau",
-        "latitude": "22.1284604",
-        "longitude": "113.5438378"
+        "latitude": 22.1284604,
+        "longitude": 113.5438378
     },
     {
         "fullName": "Vrije Universiteit Amsterdam",
         "region": ["EU"],
         "abbr": "VU Amsterdam",
-        "latitude": "52.3340539",
-        "longitude": "4.865188201518784"
+        "latitude": 52.3340539,
+        "longitude": 4.865188201518784
     },
     {
         "fullName": "Washington State University",
         "region": ["US"],
         "abbr": "WSU",
-        "latitude": "46.7337716",
-        "longitude": "-117.14980348311619"
+        "latitude": 46.7337716,
+        "longitude": -117.14980348311619
     },
     {
         "fullName": "Cardiff University",
         "region": ["UK"],
         "abbr": "Cardiff",
-        "latitude": "51.49332655",
-        "longitude": "-3.1860369709224132"
+        "latitude": 51.49332655,
+        "longitude": -3.1860369709224132
     },
     {
         "fullName": "Georgetown University",
         "region": ["US"],
         "abbr": "Georgetown",
-        "latitude": "38.90893925",
-        "longitude": "-77.07457962060826"
+        "latitude": 38.90893925,
+        "longitude": -77.07457962060826
     },
     {
         "fullName": "Hong Kong Baptist University",
         "region": ["HK"],
         "abbr": "HKBU",
-        "latitude": "22.33798795",
-        "longitude": "114.18262590878285"
+        "latitude": 22.33798795,
+        "longitude": 114.18262590878285
     },
     {
         "fullName": "Kyoto University",
         "region": ["Others"],
         "abbr": "UKyoto",
-        "latitude": "35.0234513",
-        "longitude": "135.7798129"
+        "latitude": 35.0234513,
+        "longitude": 135.7798129
     },
     {
         "fullName": "New Jersey Institute of Technology",
         "region": ["US"],
         "abbr": "NJIT",
-        "latitude": "40.7421254",
-        "longitude": "-74.17903159685589"
+        "latitude": 40.7421254,
+        "longitude": -74.17903159685589
     },
     {
         "fullName": "Technische Universit\u00e4t Dortmund",
         "region": ["EU"],
         "abbr": "TU Dortmund",
-        "latitude": "51.49148435",
-        "longitude": "7.4122738886856805"
+        "latitude": 51.49148435,
+        "longitude": 7.4122738886856805
     },
     {
         "fullName": "Technische Universit\u00e4t Kaiserslautern",
         "region": ["EU"],
         "abbr": "TU Kaiserslautern",
-        "latitude": "49.4246142",
-        "longitude": "7.754214153273509"
+        "latitude": 49.4246142,
+        "longitude": 7.754214153273509
     },
     {
         "fullName": "Tufts University",
         "region": ["US"],
         "abbr": "Tufts",
-        "latitude": "42.40649125",
-        "longitude": "-71.11800725402092"
+        "latitude": 42.40649125,
+        "longitude": -71.11800725402092
     },
     {
         "fullName": "Tulane University",
         "region": ["US"],
         "abbr": "Tulane",
-        "latitude": "29.94121955",
-        "longitude": "-90.12010089179185"
+        "latitude": 29.94121955,
+        "longitude": -90.12010089179185
     },
     {
         "fullName": "University of Arizona",
         "region": ["US"],
         "abbr": "UArizona",
-        "latitude": "33.45205165",
-        "longitude": "-112.06367894217559"
+        "latitude": 33.45205165,
+        "longitude": -112.06367894217559
     },
     {
         "fullName": "University of Georgia",
         "region": ["US"],
         "abbr": "UGA",
-        "latitude": "33.9404278",
-        "longitude": "-83.37304904988295"
+        "latitude": 33.9404278,
+        "longitude": -83.37304904988295
     },
     {
         "fullName": "University of Glasgow",
         "region": ["UK"],
         "abbr": "Glasgow",
-        "latitude": "55.872315349999994",
-        "longitude": "-4.289219112981823"
+        "latitude": 55.872315349999994,
+        "longitude": -4.289219112981823
     },
     {
         "fullName": "University of Hamburg",
         "region": ["EU"],
         "abbr": "UHH",
-        "latitude": "53.5641091",
-        "longitude": "9.994978875267606"
+        "latitude": 53.5641091,
+        "longitude": 9.994978875267606
     },
     {
         "fullName": "Leibniz University Hannover",
         "region": ["EU"],
         "abbr": "UniHannover",
-        "latitude": "52.376532850000004",
-        "longitude": "9.721217957520619"
+        "latitude": 52.376532850000004,
+        "longitude": 9.721217957520619
     },
     {
         "fullName": "University of Southampton",
         "region": ["UK"],
         "abbr": "Southampton",
-        "latitude": "1.42991655",
-        "longitude": "103.61217722346026"
+        "latitude": 50.93418045,
+        "longitude": -1.3974843578245824
     },
     {
         "fullName": "Uppsala University",
         "region": ["EU"],
         "abbr": "Uppsala",
-        "latitude": "59.841953700000005",
-        "longitude": "17.634420389231323"
+        "latitude": 59.841953700000005,
+        "longitude": 17.634420389231323
     },
     {
         "fullName": "Illinois Institute of Technology",
         "region": ["US"],
         "abbr": "IIT",
-        "latitude": "41.83616405",
-        "longitude": "-87.62647227745128"
+        "latitude": 41.83616405,
+        "longitude": -87.62647227745128
     },
     {
         "fullName": "Rensselaer Polytechnic Institute",
         "region": ["US"],
         "abbr": "RPI",
-        "latitude": "42.7298969",
-        "longitude": "-73.67966781998861"
+        "latitude": 42.7298969,
+        "longitude": -73.67966781998861
     },
     {
         "fullName": "Tokyo Institute of Technology",
         "region": ["Others"],
         "abbr": "Tokyo Tech",
-        "latitude": "35.605038050000005",
-        "longitude": "139.6827406514703"
+        "latitude": 35.605038050000005,
+        "longitude": 139.6827406514703
     },
     {
         "fullName": "The University of North Carolina at Charlotte",
         "region": ["US"],
         "abbr": "UNC-Charlotte",
-        "latitude": "35.30649445",
-        "longitude": "-80.73497049689712"
+        "latitude": 35.30649445,
+        "longitude": -80.73497049689712
     },
     {
         "fullName": "University of Bath",
         "region": ["UK"],
         "abbr": "Bath",
-        "latitude": "51.37658725",
-        "longitude": "-2.323432593859133"
+        "latitude": 51.37658725,
+        "longitude": -2.323432593859133
     },
     {
         "fullName": "University of Nebraska",
         "region": ["US"],
         "abbr": "UNebraska",
-        "latitude": "40.8206834",
-        "longitude": "-96.70048317521739"
+        "latitude": 40.8206834,
+        "longitude": -96.70048317521739
     },
     {
         "fullName": "University of Oregon",
         "region": ["US"],
         "abbr": "UOregon",
-        "latitude": "44.04441965",
-        "longitude": "-123.07176029673084"
+        "latitude": 44.04441965,
+        "longitude": -123.07176029673084
     },
     {
         "fullName": "University of Sheffield",
         "region": ["UK"],
         "abbr": "Sheffield",
-        "latitude": "53.381504199999995",
-        "longitude": "-1.4833687805861575"
+        "latitude": 53.381504199999995,
+        "longitude": -1.4833687805861575
     },
     {
         "fullName": "University of Tennessee",
         "region": ["US"],
         "abbr": "UT Knoxville",
-        "latitude": "35.9515612",
-        "longitude": "-83.93087998929315"
+        "latitude": 35.9515612,
+        "longitude": -83.93087998929315
     },
     {
         "fullName": "University of Victoria",
         "region": ["CA"],
         "abbr": "UVic",
-        "latitude": "48.46205995",
-        "longitude": "-123.31141980604804"
+        "latitude": 48.46205995,
+        "longitude": -123.31141980604804
     },
     {
         "fullName": "York University",
         "region": ["CA"],
         "abbr": "YorkU",
-        "latitude": "43.77383185",
-        "longitude": "-79.49981056529253"
+        "latitude": 43.77383185,
+        "longitude": -79.49981056529253
     },
     {
         "fullName": "Brigham Young University",
         "region": ["US"],
         "abbr": "BYU",
-        "latitude": "40.25501105",
-        "longitude": "-111.64968264312222"
+        "latitude": 40.25501105,
+        "longitude": -111.64968264312222
     },
     {
         "fullName": "Drexel University",
         "region": ["US"],
         "abbr": "Drexel",
-        "latitude": "39.9569305",
-        "longitude": "-75.18992654517834"
+        "latitude": 39.9569305,
+        "longitude": -75.18992654517834
     },
     {
         "fullName": "George Washington University",
         "region": ["US"],
         "abbr": "GWU",
-        "latitude": "38.899893750000004",
-        "longitude": "-77.04744828062584"
+        "latitude": 38.899893750000004,
+        "longitude": -77.04744828062584
     },
     {
         "fullName": "Hanyang University",
         "region": ["Others"],
         "abbr": "Hanyang",
-        "latitude": "37.5557232",
-        "longitude": "127.0436441"
+        "latitude": 37.5557232,
+        "longitude": 127.0436441
     },
     {
         "fullName": "Lehigh University",
         "region": ["US"],
         "abbr": "Lehigh",
-        "latitude": "40.6068028",
-        "longitude": "-75.3782488"
+        "latitude": 40.6068028,
+        "longitude": -75.3782488
     },
     {
         "fullName": "Queen's University Belfast",
         "region": ["UK"],
         "abbr": "QUB",
-        "latitude": "54.58414875",
-        "longitude": "-5.933721043274003"
+        "latitude": 54.58414875,
+        "longitude": -5.933721043274003
     },
     {
         "fullName": "University of Calgary",
         "region": ["CA"],
         "abbr": "UCalgary",
-        "latitude": "51.0783651",
-        "longitude": "-114.1283072"
+        "latitude": 51.0783651,
+        "longitude": -114.1283072
     },
     {
         "fullName": "University of Houston",
         "region": ["US"],
         "abbr": "UHouston",
-        "latitude": "29.7207902",
-        "longitude": "-95.34406271491369"
+        "latitude": 29.7207902,
+        "longitude": -95.34406271491369
     },
     {
         "fullName": "University of Leeds",
         "region": ["UK"],
         "abbr": "Leeds",
-        "latitude": "53.80677435",
-        "longitude": "-1.5562877504739676"
+        "latitude": 53.80677435,
+        "longitude": -1.5562877504739676
     },
     {
         "fullName": "University of Massachusetts Lowell",
         "region": ["US"],
         "abbr": "UMass-Lowell",
-        "latitude": "42.651909700000004",
-        "longitude": "-71.31736283953776"
+        "latitude": 42.651909700000004,
+        "longitude": -71.31736283953776
     },
     {
         "fullName": "University of Queensland",
         "region": ["Others"],
         "abbr": "UQueensland",
-        "latitude": "-27.498142350000002",
-        "longitude": "153.01115355575917"
+        "latitude": -27.498142350000002,
+        "longitude": 153.01115355575917
     },
     {
         "fullName": "University of South Carolina",
         "region": ["US"],
         "abbr": "UofSC",
-        "latitude": "33.9968529",
-        "longitude": "-81.0276709"
+        "latitude": 33.9968529,
+        "longitude": -81.0276709
     },
     {
         "fullName": "University of York",
         "region": ["UK"],
         "abbr": "York",
-        "latitude": "53.9453903",
-        "longitude": "-1.0314592943104675"
+        "latitude": 53.9453903,
+        "longitude": -1.0314592943104675
     },
     {
         "fullName": "Boston College",
         "region": ["US"],
         "abbr": "BC",
-        "latitude": "42.3354481",
-        "longitude": "-71.16826648999114"
+        "latitude": 42.3354481,
+        "longitude": -71.16826648999114
     },
     {
         "fullName": "Brandeis University",
         "region": ["US"],
         "abbr": "Brandeis",
-        "latitude": "42.36650945",
-        "longitude": "-71.2580196483813"
+        "latitude": 42.36650945,
+        "longitude": -71.2580196483813
     },
     {
         "fullName": "Durham University",
         "region": ["UK"],
         "abbr": "Durham",
-        "latitude": "54.76412815",
-        "longitude": "-1.5863066451588925"
+        "latitude": 54.76412815,
+        "longitude": -1.5863066451588925
     },
     {
         "fullName": "Lancaster University",
         "region": ["UK"],
         "abbr": "Lancaster",
-        "latitude": "54.00975365",
-        "longitude": "-2.7875727317728654"
+        "latitude": 54.00975365,
+        "longitude": -2.7875727317728654
     },
     {
         "fullName": "Open University UK",
         "region": ["UK"],
         "abbr": "OU UK",
-        "latitude": "52.02453775",
-        "longitude": "-0.7092748093945007"
+        "latitude": 52.02453775,
+        "longitude": -0.7092748093945007
     },
     {
         "fullName": "Syracuse University",
         "region": ["US"],
         "abbr": "Syracuse",
-        "latitude": "43.017112850000004",
-        "longitude": "-76.11855360009726"
+        "latitude": 43.017112850000004,
+        "longitude": -76.11855360009726
     },
     {
         "fullName": "University of Iowa",
         "region": ["US"],
         "abbr": "UIowa",
-        "latitude": "41.631102350000006",
-        "longitude": "-91.54075201642047"
+        "latitude": 41.631102350000006,
+        "longitude": -91.54075201642047
     },
     {
         "fullName": "University of Manchester",
         "region": ["UK"],
         "abbr": "Manchester",
-        "latitude": "53.465651449999996",
-        "longitude": "-2.2326316129336994"
+        "latitude": 53.465651449999996,
+        "longitude": -2.2326316129336994
     },
     {
         "fullName": "University of New Hampshire",
         "region": ["US"],
         "abbr": "UNH",
-        "latitude": "43.1350987",
-        "longitude": "-70.94620785070498"
+        "latitude": 43.1350987,
+        "longitude": -70.94620785070498
     },
     {
         "fullName": "University of Nottingham",
         "region": ["UK"],
         "abbr": "Nottingham",
-        "latitude": "52.9387428",
-        "longitude": "-1.2002956927457427"
+        "latitude": 52.9387428,
+        "longitude": -1.2002956927457427
     },
     {
         "fullName": "University of Ottawa",
         "region": ["CA"],
         "abbr": "uOttawa",
-        "latitude": "45.42580945",
-        "longitude": "-75.68736498199888"
+        "latitude": 45.42580945,
+        "longitude": -75.68736498199888
     },
     {
         "fullName": "University of Strathclyde",
         "region": ["UK"],
         "abbr": "Strathclyde",
-        "latitude": "55.8618812",
-        "longitude": "-4.241956565778082"
+        "latitude": 55.8618812,
+        "longitude": -4.241956565778082
     },
     {
         "fullName": "Waseda University",
         "region": ["Others"],
         "abbr": "Waseda",
-        "latitude": "35.709179750000004",
-        "longitude": "139.71972128895072"
+        "latitude": 35.709179750000004,
+        "longitude": 139.71972128895072
     },
     {
         "fullName": "Auburn University",
         "region": ["US"],
         "abbr": "Auburn",
-        "latitude": "32.59195285",
-        "longitude": "-85.49597748562812"
+        "latitude": 32.59195285,
+        "longitude": -85.49597748562812
     },
     {
         "fullName": "Case Western Reserve University",
         "region": ["US"],
         "abbr": "CWRU",
-        "latitude": "41.50138695",
-        "longitude": "-81.60070216600491"
+        "latitude": 41.50138695,
+        "longitude": -81.60070216600491
     },
     {
         "fullName": "Colorado State University",
         "region": ["US"],
         "abbr": "CSU",
-        "latitude": "40.570656650000004",
-        "longitude": "-105.08539947634978"
+        "latitude": 40.570656650000004,
+        "longitude": -105.08539947634978
     },
     {
         "fullName": "Michigan Technological University",
         "region": ["US"],
         "abbr": "Michigan Tech",
-        "latitude": "47.1099114",
-        "longitude": "-88.55115132129092"
+        "latitude": 47.1099114,
+        "longitude": -88.55115132129092
     },
     {
         "fullName": "Nara Institute of Science and Technology",
         "region": ["Others"],
         "abbr": "NAIST",
-        "latitude": "34.731811300000004",
-        "longitude": "135.73358745177381"
+        "latitude": 34.731811300000004,
+        "longitude": 135.73358745177381
     },
     {
         "fullName": "Qatar Computing Research Institute",
         "region": ["Others"],
         "abbr": "QCRI",
-        "latitude": "51.2295295",
-        "longitude": "25.3336984"
+        "latitude": 51.2295295,
+        "longitude": 25.3336984
     },
     {
         "fullName": "Texas State University",
         "region": ["US"],
         "abbr": "TSU",
-        "latitude": "29.8910941",
-        "longitude": "-97.93768392991333"
+        "latitude": 29.8910941,
+        "longitude": -97.93768392991333
     },
     {
         "fullName": "University of Colorado Colorado Springs",
         "region": ["US"],
         "abbr": "UCCS",
-        "latitude": "38.8924932",
-        "longitude": "-104.7996978"
+        "latitude": 38.8924932,
+        "longitude": -104.7996978
     },
     {
         "fullName": "University of Kansas",
         "region": ["US"],
         "abbr": "UKansas",
-        "latitude": "38.953491799999995",
-        "longitude": "-95.26308879955823"
+        "latitude": 38.953491799999995,
+        "longitude": -95.26308879955823
     },
     {
         "fullName": "University of Kentucky",
         "region": ["US"],
         "abbr": "UKentucky",
-        "latitude": "38.026629099999994",
-        "longitude": "-84.50472223981663"
+        "latitude": 38.026629099999994,
+        "longitude": -84.50472223981663
     },
     {
         "fullName": "University of South Florida",
         "region": ["US"],
         "abbr": "USF",
-        "latitude": "28.0599999",
-        "longitude": "-82.41383619025117"
+        "latitude": 28.0599999,
+        "longitude": -82.41383619025117
     },
     {
         "fullName": "University of Texas at San Antonio",
         "region": ["US"],
         "abbr": "UT-SA",
-        "latitude": "29.583331049999998",
-        "longitude": "-98.6194450505688"
+        "latitude": 29.583331049999998,
+        "longitude": -98.6194450505688
     },
     {
         "fullName": "University of Western Australia",
         "region": ["Others"],
         "abbr": "UWA",
-        "latitude": "-31.95040445",
-        "longitude": "115.79790157357621"
+        "latitude": -31.95040445,
+        "longitude": 115.79790157357621
     },
     {
         "fullName": "Georgia State University",
         "region": ["US"],
         "abbr": "GSU",
-        "latitude": "33.7535889",
-        "longitude": "-84.38542086620515"
+        "latitude": 33.7535889,
+        "longitude": -84.38542086620515
     },
     {
         "fullName": "Kansas State University",
         "region": ["US"],
         "abbr": "KSU",
-        "latitude": "39.20883",
-        "longitude": "-96.58845116318602"
+        "latitude": 39.20883,
+        "longitude": -96.58845116318602
     },
     {
         "fullName": "Louisiana State University",
         "region": ["US"],
         "abbr": "LSU",
-        "latitude": "30.405761849999998",
-        "longitude": "-91.18597450265686"
+        "latitude": 30.405761849999998,
+        "longitude": -91.18597450265686
     },
     {
         "fullName": "New Mexico State University",
         "region": ["US"],
         "abbr": "NMSU",
-        "latitude": "32.2729032",
-        "longitude": "-106.74349267153694"
+        "latitude": 32.2729032,
+        "longitude": -106.74349267153694
     },
     {
         "fullName": "Polytechnique Montreal",
         "region": ["CA"],
         "abbr": "Poly Montreal",
-        "latitude": "45.5045875",
-        "longitude": "-73.612996"
+        "latitude": 45.5045875,
+        "longitude": -73.612996
     },
     {
         "fullName": "Queen's University",
         "region": ["CA"],
         "abbr": "Queen's U",
-        "latitude": "44.22634885",
-        "longitude": "-76.49575545601735"
+        "latitude": 44.22634885,
+        "longitude": -76.49575545601735
     },
     {
         "fullName": "Texas Tech University",
         "region": ["US"],
         "abbr": "Texas Tech",
-        "latitude": "33.59375255",
-        "longitude": "-101.89959552302756"
+        "latitude": 33.59375255,
+        "longitude": -101.89959552302756
     },
     {
         "fullName": "The University of Alabama",
         "region": ["US"],
         "abbr": "UAlabama",
-        "latitude": "33.2099791",
-        "longitude": "-87.51722089982663"
+        "latitude": 33.2099791,
+        "longitude": -87.51722089982663
     },
     {
         "fullName": "University of Arkansas",
         "region": ["US"],
         "abbr": "UArkansas",
-        "latitude": "36.09352375",
-        "longitude": "-94.17708979491738"
+        "latitude": 36.09352375,
+        "longitude": -94.17708979491738
     },
     {
         "fullName": "University of Massachusetts Boston",
         "region": ["US"],
         "abbr": "UMass-Boston",
-        "latitude": "42.314068",
-        "longitude": "-71.03871320767618"
+        "latitude": 42.314068,
+        "longitude": -71.03871320767618
     },
     {
         "fullName": "University of Nevada",
         "region": ["US"],
         "abbr": "UNLV",
-        "latitude": "36.10782625",
-        "longitude": "-115.14186111825259"
+        "latitude": 36.10782625,
+        "longitude": -115.14186111825259
     },
     {
         "fullName": "University of New Mexico",
         "region": ["US"],
         "abbr": "UNM",
-        "latitude": "35.08663275",
-        "longitude": "-106.62020940505188"
+        "latitude": 35.08663275,
+        "longitude": -106.62020940505188
     },
     {
         "fullName": "University of Vermont",
         "region": ["US"],
         "abbr": "UVermont",
-        "latitude": "44.4737365",
-        "longitude": "-73.19414679705882"
+        "latitude": 44.4737365,
+        "longitude": -73.19414679705882
     },
     {
         "fullName": "Utah State University",
         "region": ["US"],
         "abbr": "USU",
-        "latitude": "41.752695900000006",
-        "longitude": "-111.808733045283"
+        "latitude": 41.752695900000006,
+        "longitude": -111.808733045283
     },
     {
         "fullName": "West Virginia University",
         "region": ["US"],
         "abbr": "WVU",
-        "latitude": "39.6256302",
-        "longitude": "-79.96310731507394"
+        "latitude": 39.6256302,
+        "longitude": -79.96310731507394
     },
     {
         "fullName": "McMaster University",
         "region": ["CA"],
         "abbr": "McMaster",
-        "latitude": "43.263939699999995",
-        "longitude": "-79.917825231868"
+        "latitude": 43.263939699999995,
+        "longitude": -79.917825231868
     },
     {
         "fullName": "Mississippi State University",
         "region": ["US"],
         "abbr": "Mississippi State",
-        "latitude": "33.4386876",
-        "longitude": "-88.79432320417112"
+        "latitude": 33.4386876,
+        "longitude": -88.79432320417112
     },
     {
         "fullName": "Oklahoma State University",
         "region": ["US"],
         "abbr": "Oklahoma State",
-        "latitude": "36.128476750000004",
-        "longitude": "-97.08398055028107"
+        "latitude": 36.128476750000004,
+        "longitude": -97.08398055028107
     },
     {
         "fullName": "University of Missouri",
         "region": ["US"],
         "abbr": "Mizzou",
-        "latitude": "38.93641465",
-        "longitude": "-92.32970301784542"
+        "latitude": 38.93641465,
+        "longitude": -92.32970301784542
     },
     {
         "fullName": "University of New Orleans",
         "region": ["US"],
         "abbr": "UNO",
-        "latitude": "30.02835255",
-        "longitude": "-90.06684280430662"
+        "latitude": 30.02835255,
+        "longitude": -90.06684280430662
     },
     {
         "fullName": "University of Oklahoma",
         "region": ["US"],
         "abbr": "UOklahoma",
-        "latitude": "35.1959878",
-        "longitude": "-97.44570827599858"
+        "latitude": 35.1959878,
+        "longitude": -97.44570827599858
     },
     {
         "fullName": "Western University",
         "region": ["CA"],
         "abbr": "Western Ontario",
-        "latitude": "11.57164495",
-        "longitude": "104.88919265514961"
+        "latitude": 43.0054234,
+        "longitude": -81.27480104616814
     }
 ]
