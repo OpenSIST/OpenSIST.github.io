@@ -7,11 +7,21 @@ import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "rea
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
 import {
-    Accordion, AccordionDetails, AccordionSummary,
+    Accordion, AccordionDetails, AccordionSummary, Button,
     Chip, Dialog, DialogActions,
     DialogContent, IconButton, Paper, Tooltip, useTheme,
 } from "@mui/material";
-import {Check, Close, Explore, Refresh} from "@mui/icons-material";
+import {
+    Check,
+    Close,
+    ExpandLess,
+    ExpandMore,
+    Explore,
+    NavigateBefore,
+    NavigateNext,
+    Refresh,
+    Search
+} from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import {recordStatusList} from "../../Data/Schemas";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
@@ -143,7 +153,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
             <InlineTypography sx={{gap: '0.5rem'}}>
                 <b style={{fontSize: 'clamp(14px, 1.5vw, 16px)'}}>{data.ProgramID}</b>
                 <Tooltip title="添加申请记录" arrow>
-                    <ControlPointIcon fontSize='small' onClick={() => navigate(`/profile/new-record`, {
+                    <ControlPointIcon fontSize='0.5rem' onClick={() => navigate(`/profile/new-record`, {
                         state: {
                             programID: data.ProgramID,
                             from: window.location.pathname
@@ -244,6 +254,10 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
     const finalRowFilterTemplate = (options) => {
         return <TriStateCheckbox onChange={(e) => options.filterApplyCallback(e.value)} value={options.value}/>
+        // return <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+        //     <label>最终去向</label>
+        //     <TriStateCheckbox onChange={(e) => options.filterApplyCallback(e.value)} value={options.value}/>
+        // </div>
     };
 
     FilterService.register('custom_Season', (value, filters) => {
@@ -253,7 +267,24 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         filters = filters.replace(/\s/g, "").toLowerCase();
         value = value.replace(/\s/g, "").toLowerCase();
         return value.includes(filters);
-    })
+    });
+
+    const [filterExpanded, setFilterExpanded] = useState(false);
+
+    const headerTemplate = (title) => {
+        return (
+            <div>
+                <Tooltip title={filterExpanded ? '收起筛选' : '展开筛选'} arrow>
+                    <IconButton onClick={() => {
+                        setFilterExpanded(!filterExpanded)
+                    }} size='small'>
+                        {filterExpanded ? <ExpandMore fontSize='0.5rem'/> : <NavigateNext fontSize='0.5rem'/>}
+                    </IconButton>
+                </Tooltip>
+                {title}
+            </div>
+        );
+    };
 
     return (
         <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap}>
@@ -275,62 +306,67 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 rows={insideProgramPage ? null : 20}
                 filterDelay={insideProgramPage ? null : 300}
                 filters={insideProgramPage ? null : filters}
-                filterDisplay={insideProgramPage ? null : 'row'}
+                filterDisplay={insideProgramPage ? null : filterExpanded ? 'row' : null}
                 emptyMessage={insideProgramPage ? "该项目暂无申请记录" : "未找到任何匹配内容"}
                 className='DataTableStyle'
                 style={{...style, fontSize: 'clamp(14px, 1.5vw, 16px)'}}
             >
                 <Column
                     field='ApplicantID'
-                    header='申请人'
+                    header={insideProgramPage ? '申请人' : headerTemplate('申请人')}
                     body={applicantBodyTemplate}
                     filter={!insideProgramPage}
                     // align='center'
                     filterPlaceholder="搜索申请人"
+                    // showFilterMatchModes={false}
                     className="ApplicantIDColumn"
                     style={{minWidth: '10rem'}}
                 />
                 {insideProgramPage ? null : <Column
                     field='ProgramID'
-                    header='申请项目'
+                    header={insideProgramPage ? '申请项目' : headerTemplate('申请项目')}
                     body={programBodyTemplate}
                     // align='center'
                     filter={!insideProgramPage}
                     filterPlaceholder="搜索项目"
+                    // showFilterMatchModes={false}
                     className="ProgramIDColumn"
                     style={{minWidth: '10rem'}}
                 />}
                 <Column
                     field='Status'
-                    header='申请结果'
+                    header={insideProgramPage ? '申请结果' : headerTemplate('申请结果')}
                     body={statusBodyTemplate}
                     // align='center'
                     filter={!insideProgramPage}
                     filterElement={statusFilterTemplate}
+                    // showFilterMatchModes={false}
                     filterMenuStyle={{fontSize: 'clamp(14px, 1.5vw, 16px)'}}
                     className="StatusColumn"
-                    style={{minWidth: '7rem'}}
+                    style={{minWidth: '8rem'}}
                 />
                 <Column
                     field='Final'
-                    header='最终去向'
+                    header={insideProgramPage ? '最终去向' : headerTemplate('最终去向')}
                     body={finalBodyTemplate}
                     dataType="boolean"
                     filter={!insideProgramPage}
                     align='center'
                     filterElement={finalRowFilterTemplate}
+                    // showFilterMatchModes={false}
                     className="FinalColumn"
-                    style={{minWidth: '7rem'}}
+                    style={{minWidth: '8rem'}}
                 />
                 <Column
                     field='Season'
-                    header='申请季'
+                    header={insideProgramPage ? '申请季' : headerTemplate('申请季')}
                     filter={!insideProgramPage}
                     // align='center'
                     filterPlaceholder="搜索申请季"
+                    // showFilterMatchModes={false}
                     body={seasonBodyTemplate}
                     className="SeasonColumn"
-                    style={{minWidth: '7rem'}}
+                    style={{minWidth: '8rem'}}
                 />
                 <Column
                     field='TimeLine.Decision'
@@ -380,10 +416,14 @@ function UsageGuidance() {
                             对于<b>申请人</b>和<b>申请项目</b>这两列，可点击单元格中的药丸查看申请人或项目的详细信息。
                         </InlineTypography>
                     </li>
-                    <li>本页面为只读模式，想要编辑自己的申请人信息或添加/删除/修改所申请的项目，请点击右上角头像下拉菜单中Profile页面编辑相应信息。</li>
                     <li>
                         <InlineTypography>
-                            可通过表格上部的filter来进行关键信息筛选。
+                            每个项目分组的标题（也就是项目名）右侧都有一个<ControlPointIcon/>按钮，点击可为该项目添加新的申请记录。
+                        </InlineTypography>
+                    </li>
+                    <li>
+                        <InlineTypography>
+                            部分表头处有<NavigateNext/>按钮，点击展开搜索栏，可进行关键信息筛选。
                         </InlineTypography>
                     </li>
                     <li>

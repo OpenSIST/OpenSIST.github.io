@@ -35,7 +35,7 @@ const imageDir = {
 export function HowToUse() {
     return (
         <Box sx={{p: '1rem'}}>
-            <BoldTypography variant="h4" sx={{textAlign: 'center'}}>OpenSIST使用指南</BoldTypography>
+            <Typography variant="h4" sx={{textAlign: 'center'}}>OpenSIST使用指南</Typography>
             <Graduated/>
         </Box>
     )
@@ -129,8 +129,8 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
 function Graduated() {
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', gap: "2rem", m: '2rem'}}>
-            <BoldTypography variant='h4'>毕业生、大四、研三请阅读：</BoldTypography>
-            <BoldTypography variant="h5">我来这个网站应该干什么？</BoldTypography>
+            <BoldTypography variant='h5'>毕业生、大四、研三请阅读：</BoldTypography>
+            <BoldTypography variant="h5">我可以为这个网站做些什么？</BoldTypography>
             <Box sx={{display: 'flex', flexDirection: 'column', gap: '1rem', p: "1rem"}}>
                 <GuidanceGrid
                     Index={1}

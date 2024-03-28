@@ -19,7 +19,6 @@
 }
 
 .DataTableStyle * {
-
     transition: none;
 }
 
@@ -68,6 +67,11 @@
     align-items: center;
 }
 
+/*.p-column-filter-menu {*/
+/*    display: inline-flex;*/
+/*    margin-left: inherit;*/
+/*}*/
+
 .p-fluid.p-column-filter-element {
     height: 30px;
 }
@@ -92,19 +96,23 @@
 }
 
 .ProgramIDColumn .p-column-filter {
-    max-width: 12rem;
+    max-width: 10rem;
 }
 
 .StatusColumn .p-column-filter {
-    max-width: 6rem;
+    max-width: 8rem;
 }
 
 .FinalColumn .p-column-filter {
-    max-width: 6rem;
+    max-width: 8rem;
 }
 
 .SeasonColumn .p-column-filter {
     max-width: 8rem;
+}
+
+.th {
+    padding: 0;
 }
 
 /*.ApplicantIDColumn .p-column-filter,*/
@@ -131,5 +139,5 @@
 }
 
 .p-inputtext {
-    padding: 0 1rem 0 1rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
 }
