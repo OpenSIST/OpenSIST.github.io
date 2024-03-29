@@ -1,4 +1,4 @@
-<h1 style="text-align: center;">欢迎来到OpenSIST</h1>
+# 欢迎来到OpenSIST
 
 ---
 
@@ -28,7 +28,6 @@ OpenSIST是一个由上海科技大学2020级信息学院同学自发创建的�
 * CS PhD文书参考: [CS PhD Statements of Purpose](https://cs-sop.notion.site/CS-PhD-Statements-of-Purpose-df39955313834889b7ac5411c37b958d)
 * 海本申请信息共享平台：[GradCafe](https://www.thegradcafe.com/)
 #### 校内链接
-[//]: # (* 本科生课评网站：[Coursebench]&#40;https://coursebench.geekpie.club/&#41;)
 * 学校ACM社团：[ACM@SIST](https://acm.shanghaitech.edu.cn/)
 
 ---

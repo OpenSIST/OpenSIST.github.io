@@ -140,7 +140,7 @@ function Filter({label, id, name, value, handleFilterChange, options, OptionItem
             >
                 {options.map((opt) => (
                         <MenuItem key={opt} value={opt}>
-                            <Checkbox checked={value.indexOf(opt) > -1}/>
+                            <Checkbox checked={value.indexOf(opt) > -1} size='small'/>
                             <OptionContent optionValue={opt}/>
                         </MenuItem>
                     )
@@ -152,13 +152,28 @@ function Filter({label, id, name, value, handleFilterChange, options, OptionItem
 
 function CheckBoxOptionItem({optionValue}) {
     return (
-        <ListItemText primary={optionValue}/>
-
+        <ListItemText
+            primary={optionValue}
+            sx={{
+                '& .MuiListItemText-primary': {
+                    fontSize: '0.8rem',
+                    lineHeight: 'inherit',
+                }
+            }}
+        />
     )
 }
 
 function FlagOptionContent({optionValue}) {
     return (
-        <ListItemText primary={`${optionValue} ${regionFlagMapping[optionValue]}`}/>
+        <ListItemText
+            primary={`${optionValue} ${regionFlagMapping[optionValue]}`}
+            sx={{
+                '& .MuiListItemText-primary': {
+                    fontSize: '0.8rem',
+                    lineHeight: 'inherit',
+                }
+            }}
+        />
     )
 }

@@ -6,10 +6,15 @@ import {useUser} from "../../../Data/UserData";
 
 function useRouteMatch(patterns) {
     const {pathname} = useLocation();
-
     for (let i = 0; i < patterns.length; i += 1) {
         const pattern = patterns[i];
-        const possibleMatch = pathname === pattern ? pattern : null;
+        if (pattern === '/') {
+            if (pathname === '/') {
+                return '/';
+            }
+            continue;
+        }
+        const possibleMatch = pathname.startsWith(pattern) ? pattern : null;
         if (possibleMatch !== null) {
             return possibleMatch;
         }
@@ -17,32 +22,30 @@ function useRouteMatch(patterns) {
 
     return null;
 }
+
 export default function NavBar() {
     const navItems = [
         {
             name: "首页",
             path: "/",
-        },
-        {
+        }, {
             name: "使用指南",
             path: "/how-to-use",
-        },
-        {
+        }, {
             name: "申请季数据汇总",
             path: "/datapoints",
-        },
-        {
+        }, {
             name: "项目信息表",
             path: "/programs",
         }, {
             name: "申请分享帖",
             path: "/posts",
         }, {
-            name: "关于我们",
-            path: "/about-us",
-        }, {
             name: "常见问题",
             path: "/FAQ",
+        }, {
+            name: "关于我们",
+            path: "/about-us",
         }
     ]
     const routeMatch = useRouteMatch(navItems.map((item) => item.path));

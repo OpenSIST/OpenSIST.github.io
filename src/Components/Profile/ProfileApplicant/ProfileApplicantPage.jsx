@@ -26,7 +26,7 @@ import {
     publicationTypeMapping,
     rankPercentSliderValueMapping,
     recommendationTypeMapping,
-    RecordStatusPaltette,
+    RecordStatusPalette,
     SliderValueRankStringMapping
 } from "../../../Data/Schemas";
 import React, {Fragment, useEffect, useState} from "react";
@@ -726,7 +726,7 @@ function RecordBlock({Records, ApplicantID, editable}) {
                             justifyContent: 'space-between'
                         }}>
                             <BaseListItem
-                                Icon={<Chip label={record.Status} color={RecordStatusPaltette[record.Status]}/>}
+                                Icon={<Chip label={record.Status} color={RecordStatusPalette[record.Status]}/>}
                                 primary={
                                     <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                                         {record.ProgramID}

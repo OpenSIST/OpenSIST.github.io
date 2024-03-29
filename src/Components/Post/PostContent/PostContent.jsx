@@ -123,7 +123,7 @@ export default function PostContent() {
                 </Box>
             </Box>
             <Paper sx={{display: 'flex', flexDirection: 'column', p: '1rem', height: '100%', overflowY: 'auto'}}>
-                <Typography variant={smallPage ? 'h4' : 'h3'} sx={{display: 'flex', position: 'relative'}}>
+                <Typography variant={'h4'} sx={{display: 'flex', position: 'relative', mb: '1rem'}}>
                     {postObj.Title}
                 </Typography>
                 <ReactMarkdown>
