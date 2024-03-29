@@ -43,13 +43,28 @@ function OpenSIST() {
         palette: {
             mode: mode ?? (prefersDarkMode ? 'dark' : 'light'),
             contrastThreshold: 3,
-            error: {
+            reject: {
                 main: mode === 'dark' ? '#FF375F' : '#FF2D55',
-            }, success: {
+                contrastText: '#ffffffde',
+            }, admit: {
                 main: mode === 'dark' ? '#30D158' : '#34C759',
-            }, warning: {
+                contrastText: '#ffffffde',
+            }, defer: {
                 main: mode === 'dark' ? '#FF9F0A' : '#FF9500',
-            },
+                contrastText: '#ffffffde',
+            }, spring: {
+                main: mode === 'dark' ? '#5AC8FA' : '#007AFF',
+                contrastText: '#ffffffde',
+            }, summer: {
+                main: mode === 'dark' ? '#64D2FF' : '#5AC8FA',
+                contrastText: '#ffffffde',
+            }, fall: {
+                main: mode === 'dark' ? '#FFCC00' : '#FFCC00',
+                contrastText: '#ffffffde',
+            }, winter: {
+                main: mode === 'dark' ? '#8E8E93' : '#8E8E93',
+                contrastText: '#ffffffde',
+            }
         },
         components: {
             MuiButtonBase: {

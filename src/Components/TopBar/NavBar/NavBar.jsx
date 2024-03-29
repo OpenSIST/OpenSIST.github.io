@@ -6,10 +6,15 @@ import {useUser} from "../../../Data/UserData";
 
 function useRouteMatch(patterns) {
     const {pathname} = useLocation();
-
     for (let i = 0; i < patterns.length; i += 1) {
         const pattern = patterns[i];
-        const possibleMatch = pathname === pattern ? pattern : null;
+        if (pattern === '/') {
+            if (pathname === '/') {
+                return '/';
+            }
+            continue;
+        }
+        const possibleMatch = pathname.startsWith(pattern) ? pattern : null;
         if (possibleMatch !== null) {
             return possibleMatch;
         }
@@ -17,6 +22,7 @@ function useRouteMatch(patterns) {
 
     return null;
 }
+
 export default function NavBar() {
     const navItems = [
         {

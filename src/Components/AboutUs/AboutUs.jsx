@@ -1,9 +1,9 @@
 import {Link} from "react-router-dom";
 import {
-    Avatar,
+    Avatar, Box,
     Card,
     CardActionArea,
-    CardHeader,
+    CardHeader, Typography,
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 
@@ -56,9 +56,9 @@ export function AboutUs() {
     }
 
     return (
-        <div style={{width: '70%'}}>
-            <h1 style={{textAlign: 'center'}}><b>关于我们</b></h1>
-            <h3>我们是谁？（按姓氏排序）</h3>
+        <Box sx={{width: '70%', p: '1rem'}}>
+            <Typography variant="h4" sx={{textAlign: 'center'}}>关于我们</Typography>
+            <Typography variant='h5'>我们是谁？（按姓氏排序）</Typography>
             <Grid2
                 container
                 spacing={2}
@@ -91,6 +91,6 @@ export function AboutUs() {
             <p><b>如果您愿意参与OpenSIST后续的前端/后端维护工作，欢迎加入<a href='https://qm.qq.com/q/NyTIRw8PGC'>开发者QQ群：766590153</a>联系我们，大二以上非毕业生优先（包括研究生）</b></p>
             <p>如果您在使用中遇到了问题，欢迎前往<a href='https://github.com/OpenSIST/OpenSIST.github.io/issues'>GitHub
                 Official Repository</a>中提出Issue。</p>
-        </div>
+        </Box>
     )
 }

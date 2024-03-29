@@ -3,7 +3,6 @@ import {
 } from "@mui/material";
 import React from "react";
 import {Link} from "react-router-dom";
-import Grid2 from "@mui/material/Unstable_Grid2";
 import {BoldTypography} from "../common";
 import DatapointsDark from "../../Assets/images/HowToUse/dark/datapoints.webp";
 import DatapointsLight from "../../Assets/images/HowToUse/light/datapoints.webp";
@@ -67,7 +66,6 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                         minWidth: '100%',
                         display: 'flex',
                         flexDirection: (inverse ? 'row' : 'row-reverse'),
-                        // textAlign: (inverse ? 'start' : 'end'),
                         textAlign: 'start',
                         "&:before": {
                             backgroundImage: `url(${imageDir[theme.palette.mode][nameList[Index - 1]]})`,
@@ -129,8 +127,8 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
 function Graduated() {
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', gap: "2rem", m: '2rem'}}>
-            <BoldTypography variant='h5'>毕业生、大四、研三请阅读：</BoldTypography>
-            <BoldTypography variant="h5">我可以为这个网站做些什么？</BoldTypography>
+            <Typography variant='h5'>毕业生、大四、研三请阅读：</Typography>
+            <Typography component="blockquote" variant="h6">我可以为这个网站做些什么？</Typography>
             <Box sx={{display: 'flex', flexDirection: 'column', gap: '1rem', p: "1rem"}}>
                 <GuidanceGrid
                     Index={1}
@@ -161,53 +159,6 @@ function Graduated() {
                     ButtonLink='/posts/new'
                 />
             </Box>
-        </Box>
-    )
-}
-
-function Current() {
-    return (
-        <Box sx={{display: 'flex', flexDirection: 'column', gap: "2rem", m: '2rem'}}>
-            <BoldTypography variant='h4'>非毕业年级本硕同学请阅读：</BoldTypography>
-            <BoldTypography variant="h5">这个网站能怎么帮助我申请？</BoldTypography>
-            <BoldTypography variant="subtitl1">
-                OpenSIST是一个面向信息学院的出国申请信息共享平台，收集了往届海外硕博项目的申请案例、各个项目的介绍、学长学姐的申请经验帖等等。希望这些信息能为你的申请规划起到参考作用。
-            </BoldTypography>
-            <Divider variant='middle'/>
-            <Grid2 container columnSpacing={7} rowSpacing={3}>
-                <GuidanceGrid
-                    Index={1}
-                    TitlePrime='申请季的'
-                    TitleSecond='申请记录一览表'
-                    Content='该表记录了信息学院往届本科生、硕士生申请各个海外项目被admit/reject的情况'
-                    ButtonLink='/datapoints'
-                    ButtonContent='前往数据汇总表'
-                />
-                <GuidanceGrid
-                    Index={2}
-                    TitlePrime='申请人的'
-                    TitleSecond='个人背景信息'
-                    Content='在数据汇总表里可点击查看每位申请人在申请时的背景，包括但不限于三维、科研实习、推荐信等等'
-                    ButtonLink='/datapoints'
-                    ButtonContent='前往数据汇总表'
-                />
-                <GuidanceGrid
-                    Index={3}
-                    TitlePrime='海外硕博'
-                    TitleSecond='项目信息表'
-                    Content='该页面包含了许多海外硕博项目的项目信息，包括但不限于项目介绍、录取偏好、其他注意事项等'
-                    ButtonLink='/programs'
-                    ButtonContent='前往项目信息表'
-                />
-                <GuidanceGrid
-                    Index={4}
-                    TitlePrime='学长学姐的'
-                    TitleSecond='申请经验心得'
-                    Content='该页面包含了许多学长学姐们在申请季的心得帖子，能以大段的文字为你提供丰富的insight'
-                    ButtonLink='/posts'
-                    ButtonContent='前往申请分享帖'
-                />
-            </Grid2>
         </Box>
     )
 }

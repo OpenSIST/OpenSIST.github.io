@@ -67,11 +67,6 @@
     align-items: center;
 }
 
-/*.p-column-filter-menu {*/
-/*    display: inline-flex;*/
-/*    margin-left: inherit;*/
-/*}*/
-
 .p-fluid.p-column-filter-element {
     height: 30px;
 }
@@ -115,20 +110,6 @@
     padding: 0;
 }
 
-/*.ApplicantIDColumn .p-column-filter,*/
-/*.ProgramIDColumn .p-column-filter,*/
-/*.StatusColumn .p-column-filter,*/
-/*.FinalColumn .p-column-filter,*/
-/*.SeasonColumn .p-column-filter {*/
-/*    margin: auto*/
-/*}*/
-
-/*.p-column-filter.p-dropdown.p-component.p-inputwrapper.p-dropdown-clearable,*/
-/*.p-inputtext,*/
-/*.p-checkbox-box {*/
-/*    transition: none;*/
-/*}*/
-
 .p-paginator {
     justify-content: center;
     padding: 0;
@@ -140,4 +121,14 @@
 
 .p-inputtext {
     padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.p-dropdown-panel .p-dropdown-items {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0 10px 0;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+    padding: 5px 1rem 5px 1rem;
 }

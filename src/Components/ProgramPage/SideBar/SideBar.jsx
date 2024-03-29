@@ -4,6 +4,7 @@ import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
 import {univAbbrFullNameMapping} from "../../../Data/Common";
 import {
+    Box,
     Button,
     Collapse,
     Divider,
@@ -115,13 +116,20 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
             <ListItemButton
                 onClick={() => setIsFolded(!isFolded)}
             >
-                {isFolded ? <ExpandMore/> : <NavigateNext/>}
-                <ListItemText primary={univName} secondary={
-                    <Typography variant='subtitle1' sx={{fontSize: 'clamp(11px, 1.5vw, 13px)'}}>
-                        {univAbbrFullNameMapping[univName]}
-                </Typography>
-                }/>
-                {flags}
+                {isFolded ? <ExpandMore fontSize="0.9em"/> : <NavigateNext fontSize="0.9em"/>}
+                <ListItemText
+                    primary={
+                        <Box sx={{display:'flex', justifyContent: 'space-between'}}>
+                            <Typography>{univName}</Typography>
+                            <Typography>{flags}</Typography>
+                        </Box>
+                    }
+                    secondary={
+                        <Typography variant='subtitle1' sx={{fontSize: 'clamp(11px, 1.5vw, 13px)'}}>
+                            {univAbbrFullNameMapping[univName]}
+                        </Typography>
+                    }/>
+
             </ListItemButton>
             <Divider component="li" light/>
             <Collapse in={isFolded} timeout='auto' unmountOnExit>

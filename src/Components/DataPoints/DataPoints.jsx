@@ -7,26 +7,23 @@ import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "rea
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
 import {
-    Accordion, AccordionDetails, AccordionSummary, Button,
+    Accordion, AccordionDetails, AccordionSummary,
     Chip, Dialog, DialogActions,
     DialogContent, IconButton, Paper, Tooltip, useTheme,
 } from "@mui/material";
 import {
     Check,
     Close,
-    ExpandLess,
     ExpandMore,
     Explore,
-    NavigateBefore,
     NavigateNext,
     Refresh,
-    Search
 } from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
-import {recordStatusList} from "../../Data/Schemas";
+import {recordStatusList, RecordStatusPalette, SemesterPalette} from "../../Data/Schemas";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import {DraggableFAB, InlineTypography} from "../common";
+import {BoldTypography, DraggableFAB, InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import {TriStateCheckbox} from 'primereact/tristatecheckbox';
 import {Dropdown} from "primereact/dropdown";
@@ -120,38 +117,10 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
             Final: {value: null, matchMode: FilterMatchMode.EQUALS}
         });
     };
-    const getStatusColor = (status) => {
-        switch (status) {
-            case 'Reject':
-                return 'error';
-            case 'Admit':
-                return 'success';
-            case 'Waitlist':
-                return "default";
-            case 'Defer':
-                return 'warning';
-            default:
-                return null;
-        }
-    };
-    const getSemesterColor = (semester) => {
-        switch (semester) {
-            case 'Fall':
-                return 'warning';
-            case 'Spring':
-                return 'success';
-            case 'Winter':
-                return 'primary';
-            case 'Summer':
-                return 'secondary';
-            default:
-                return null;
-        }
-    }
     const groupSubheaderTemplate = (data) => {
         return (
-            <InlineTypography sx={{gap: '0.5rem'}}>
-                <b style={{fontSize: 'clamp(14px, 1.5vw, 16px)'}}>{data.ProgramID}</b>
+            <InlineTypography component='span' sx={{gap: '0.5rem'}}>
+                <BoldTypography sx={{fontSize: 'clamp(14px, 1.5vw, 16px)'}}>{data.ProgramID}</BoldTypography>
                 <Tooltip title="添加申请记录" arrow>
                     <ControlPointIcon fontSize='0.5rem' onClick={() => navigate(`/profile/new-record`, {
                         state: {
@@ -168,25 +137,18 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     };
 
     const statusBodyTemplate = (rowData) => {
-        // const theme = useTheme();
-        // console.log(theme.palette.background.paper)
         return <Chip
             label={rowData.Status}
-            color={getStatusColor(rowData.Status)}
-            sx={{
-                height: '1.6rem',
-                color: (rowData.Status === 'Waitlist' ? 'inherit' : '#ffffffde')
-            }}
+            color={RecordStatusPalette[rowData.Status]}
+            sx={{height: '1.6rem', width: '5rem'}}
         />
     };
 
     const statusFilterItemTemplate = (option) => {
         return <Chip
             label={option}
-            color={getStatusColor(option)}
-            sx={{
-                color: (option === 'Waitlist' ? 'inherit' : '#ffffffde')
-            }}
+            color={RecordStatusPalette[option]}
+            sx={{height: '1.6rem', width: '5rem'}}
         />
     };
 
@@ -205,13 +167,13 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
     const finalBodyTemplate = (rowData) => {
         return <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            {rowData.Final ? <Check color='success' fontSize="small"/> : null}
+            {rowData.Final ? <Check color='success' fontSize='small'/> : null}
         </div>
     };
-    const seasonBodyTemplate = (rowData) => {
+    const semesterBodyTemplate = (rowData) => {
         return <Chip
             label={`${rowData.ProgramYear}${rowData.Semester}`}
-            color={getSemesterColor(rowData.Semester)}
+            color={SemesterPalette[rowData.Semester]}
             sx={{height: '1.6rem'}}
         />
     };
@@ -254,10 +216,6 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
     const finalRowFilterTemplate = (options) => {
         return <TriStateCheckbox onChange={(e) => options.filterApplyCallback(e.value)} value={options.value}/>
-        // return <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-        //     <label>最终去向</label>
-        //     <TriStateCheckbox onChange={(e) => options.filterApplyCallback(e.value)} value={options.value}/>
-        // </div>
     };
 
     FilterService.register('custom_Season', (value, filters) => {
@@ -364,7 +322,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     // align='center'
                     filterPlaceholder="搜索申请季"
                     // showFilterMatchModes={false}
-                    body={seasonBodyTemplate}
+                    body={semesterBodyTemplate}
                     className="SeasonColumn"
                     style={{minWidth: '8rem'}}
                 />
