@@ -6,35 +6,17 @@ UnivList.forEach(univ => {
     univ.hash = ((univ.latitude + univ.longitude) % 1).toFixed(2);
 });
 
-// let cachedData = null;
 let projection = null;
 let canvas = null;
 let ctx = null;
 let animationId = null;
-let container = null;
+let width = null;
+let height = null;
 
-async function redraw() {
-    console.log("redraw!")
-
+function redraw() {
     cancelAnimationFrame(animationId);
 
-    let width = container.clientWidth;
-    let height = container.clientHeight;
-
-    let devicePixelRatio = window.devicePixelRatio || 1;
-
-    if (canvas === null) {
-        canvas = document.createElement("canvas");
-        canvas.width = width * devicePixelRatio;
-        canvas.height = height * devicePixelRatio;
-        canvas.style.width = `${width}px`;
-        canvas.style.height = `${height}px`;
-        container.appendChild(canvas);
-        ctx = canvas.getContext("2d");
-        ctx.scale(devicePixelRatio, devicePixelRatio);
-    } else {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     projection = d3.geoNaturalEarth1()
         .fitSize([width, height], cachedData);
@@ -78,19 +60,27 @@ async function redraw() {
     animationId = requestAnimationFrame(redraw);
 }
 
-export async function init_map(at_container) {
-    console.log("init_map")
+export function init_map(at_container, with_width, with_height) {
     if (animationId !== null) {
         cancelAnimationFrame(animationId);
     }
-    container = at_container;
-    container.style.background = '#1A1E24';
+    canvas = at_container;
     const resizeObserver = new ResizeObserver(async entries => {
-        const containerEntry = entries.find(entry => entry.target === container);
+        const containerEntry = entries.find(entry => entry.target === canvas);
         if (containerEntry) {
-            await redraw();
+            redraw();
         }
     });
-    resizeObserver.observe(container);
-    await redraw();
+    resizeObserver.observe(canvas);
+
+    width = with_width;
+    height = with_height;
+    let devicePixelRatio = window.devicePixelRatio || 1;
+    canvas.width = width * devicePixelRatio;
+    canvas.height = height * devicePixelRatio;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx = canvas.getContext("2d");
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+    redraw();
 }

@@ -1,5 +1,5 @@
 import {createBrowserRouter} from "react-router-dom";
-import Home from "./home";
+import Home, {HomeIndex} from "./home";
 import {action as HomeAction, loader as HomeLoader} from "./TopBar/StatusBlock/StatusBlock";
 import ErrorPage from "./Errors/ErrorPage";
 import ProgramPage, {
@@ -57,7 +57,7 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <MarkDownPage key="HomeIndex" sx={{width: '70%'}}/>,
+                element: <HomeIndex/>,
                 loader: async () => {
                     return {content: await loadMarkDown(HomeIndexMDPath)}
                 }
