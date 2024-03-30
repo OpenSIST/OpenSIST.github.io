@@ -90,7 +90,6 @@ function ProgramContent({editable = true}) {
                     tooltipTitle="添加记录"
                 />
             </> : null}
-
         </>
     );
 }

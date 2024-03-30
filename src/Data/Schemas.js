@@ -227,8 +227,8 @@ export const RecordStatusPalette = {
 export const SemesterPalette = {
     'Fall': 'fall',
     'Spring': 'spring',
-    'Summer': 'summer',
-    'Winter': 'winter',
+    'Summer': 'secondary',
+    'Winter': 'info',
 }
 export const regionFlagMapping = {
     "US": "\u{1F1FA}\u{1F1F8}",

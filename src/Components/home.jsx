@@ -4,15 +4,15 @@ import React, {useEffect, useRef, useState} from "react";
 import {LoadingBackdrop} from "./common";
 import {Box, Paper, Typography} from "@mui/material";
 import {init_map} from "./WorldMap/display";
-import MarkDownPage from "./MarkDownPage/MarkDownPage";
 
 function Home() {
     return (
-        <Paper elevation={0}>
+        <Paper elevation={0} sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#fff"}}>
             <TopBar/>
             <Paper
                 className="ContentBlock"
                 elevation={0}
+                sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#fff"}}
             >
                 <Outlet/>
             </Paper>

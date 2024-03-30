@@ -29,7 +29,7 @@ function OpenSIST() {
         const root = document.documentElement;
         if (mode === 'dark') {
             root.style.setProperty('--scrollbar-color', 'rgba(155, 155, 155, 0.7)');
-            root.style.setProperty('--bg-color', '#121212');
+            root.style.setProperty('--bg-color', '#1A1E24');
         } else {
             root.style.setProperty('--scrollbar-color', 'rgba(0, 0, 0, 0.5)');
             root.style.setProperty('--bg-color', '#fff');
@@ -53,16 +53,10 @@ function OpenSIST() {
                 main: mode === 'dark' ? '#FF9F0A' : '#FF9500',
                 contrastText: '#ffffffde',
             }, spring: {
-                main: mode === 'dark' ? '#5AC8FA' : '#007AFF',
-                contrastText: '#ffffffde',
-            }, summer: {
-                main: mode === 'dark' ? '#64D2FF' : '#5AC8FA',
+                main: mode === 'dark' ? '#12CCA4' : '#00C59B',
                 contrastText: '#ffffffde',
             }, fall: {
-                main: mode === 'dark' ? '#FFCC00' : '#FFCC00',
-                contrastText: '#ffffffde',
-            }, winter: {
-                main: mode === 'dark' ? '#8E8E93' : '#8E8E93',
+                main: mode === 'dark' ? '#FE892E' : '#FE801E',
                 contrastText: '#ffffffde',
             }
         },
