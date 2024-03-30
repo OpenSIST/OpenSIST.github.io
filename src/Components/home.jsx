@@ -54,8 +54,8 @@ export function HomeIndex() {
 function WorldMap({width, height, style}) {
     const canvasRef = useRef(null);
     useEffect(() => {
-        let map_width = width;
-        let map_height = height;
+        let map_width = Math.min(width, 1700);
+        let map_height = height - 60;
         if (map_width > map_height * 1.75) {
             map_width = map_height * 1.75;
         } else {
