@@ -140,7 +140,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         return <Chip
             label={rowData.Status}
             color={RecordStatusPalette[rowData.Status]}
-            sx={{height: '1.6rem', width: '5rem'}}
+            sx={{height: '1.6rem', width: '4.5rem'}}
         />
     };
 
@@ -148,7 +148,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         return <Chip
             label={option}
             color={RecordStatusPalette[option]}
-            sx={{height: '1.6rem', width: '5rem'}}
+            sx={{height: '1.6rem', width: '4.5rem'}}
         />
     };
 
