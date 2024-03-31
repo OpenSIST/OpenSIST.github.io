@@ -41,8 +41,8 @@ function drawMap(static_container, mode) {
     static_ctx.clearRect(0, 0, static_container.width, static_container.height);
 
     projection = d3.geoNaturalEarth1()
-        .fitSize([width, height], cachedData)
-        .translate([width / 2, height / 2]);
+        .fitExtent([[-width / 20, 0], [width, height]], cachedData)
+        .center([0, -5])
 
     const path = d3.geoPath()
         .projection(projection)
