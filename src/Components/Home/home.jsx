@@ -53,7 +53,8 @@ export function HomeIndex() {
             <WorldMap width={width} height={height}/>
             <HomeIndexContent/>
             {/*<MarkDownPage sx={{position: 'absolute', bgcolor: 'transparent', backgroundImage: 'none', boxShadow: 'none'}}/>*/}
-        </Box>)
+        </Box>
+    )
 }
 
 function HomeIndexContent() {
@@ -78,6 +79,7 @@ function HomeIndexContent() {
                             setPageIndex(1);
                         }}
                         size='large'
+                        className='slide-out-elliptic-top-bck'
                     >
                         {/*<SvgIcon*/}
                         {/*    component={darkMode ? AirplaneLight : AirplaneLight}*/}
@@ -87,13 +89,14 @@ function HomeIndexContent() {
                         <ArrowUpward sx={{fontSize: '4rem'}} color='primary'/>
                     </IconButton>
                 </Box>
-                <Box sx={{height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'start'}}>
+                <Box sx={{height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'start', ml: smallPage ? 0 : '2rem'}}>
                     <IconButton
                         sx={{mx: 'auto', mt: '2rem', mb: '2rem', bgcolor: darkMode ? grey[800] : grey[200]}}
                         onClick={() => {
                             setPageIndex(0);
                         }}
                         size='large'
+                        className='slide-out-elliptic-bottom-bck'
                     >
                         {/*<SvgIcon*/}
                         {/*    component={darkMode ? AirplaneLight : AirplaneLight}*/}
@@ -180,7 +183,7 @@ function HomeIndexContentBlock({title}) {
                         href='https://opencs.app' style={{color: linkColor}}>OpenCS</a>项目的启发
                     </li>
                     <li>
-                        本项目在内测阶段得到了信息学院毕业生们的大力支持，他们的宝贵建议对OpenSIST的进一步完善至关重要
+                        本项目在内测阶段得到了信息学院和生医工学院毕业生们的大力支持，他们的宝贵建议对OpenSIST的进一步完善至关重要
                     </li>
                     <li>
                         信息学院的倪鹤南老师为本项目提供了很多行政上的支持
