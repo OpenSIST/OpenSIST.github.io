@@ -34,7 +34,7 @@ const color = {
     },
 }
 
-async function drawMap(static_container, mode) {
+function drawMap(static_container, mode) {
     const static_ctx = static_container.getContext("2d");
     static_ctx.clearRect(0, 0, static_container.width, static_container.height);
 
