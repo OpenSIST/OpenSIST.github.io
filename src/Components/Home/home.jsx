@@ -2,22 +2,22 @@ import TopBar from "../TopBar/TopBar";
 import {Outlet, Link} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 import {BoldTypography, LoadingBackdrop, OpenSIST, useSmallPage} from "../common";
-import {Box, Button, Divider, IconButton, Paper, Typography, useTheme} from "@mui/material";
+import {Box, Button, Divider, IconButton, Paper, SvgIcon, Typography, useTheme} from "@mui/material";
 import {init_map} from "../WorldMap/display";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import './home.css';
 import ReactMarkdown from "react-markdown";
-import {ArrowDownward, ArrowUpward} from "@mui/icons-material";
-import {grey} from "@mui/material/colors";
+import {ReactComponent as VectorArrowDark} from "../icons/VectorArrowDark.svg";
+import {ReactComponent as VectorArrowLight} from "../icons/VectorArrowLight.svg";
 
 function Home() {
     return (
-        <Paper elevation={0} sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#E8EAED"}}>
+        <Paper elevation={0} sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA"}}>
             <TopBar/>
             <Paper
                 className="ContentBlock"
                 elevation={0}
-                sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#E8EAED"}}
+                sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA"}}
             >
                 <Outlet/>
             </Paper>
@@ -76,20 +76,23 @@ function HomeIndexContent() {
                         height: 'calc(100vh - 60px)',
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'center',
                         ml: smallPage ? 0 : '2rem',
                         overflow: 'auto',
                     }}>
                     <WelcomeBlock/>
                     <IconButton
-                        sx={{mx: 'auto', mt: '3rem', bgcolor: darkMode ? grey[800] : grey[200]}}
+                        sx={{mx: 'auto', mt: '2rem'}}
                         onClick={() => {
                             setPageIndex(1);
                         }}
                         size='large'
                         className='slide-out-elliptic-top-bck'
                     >
-                        <ArrowUpward sx={{fontSize: '2rem'}} color='primary'/>
+                        <SvgIcon
+                            component={darkMode ? VectorArrowDark : VectorArrowLight}
+                            inheritViewBox
+                            sx={{fontSize: '3rem', filter: 'drop-shadow(0px 0px 15px rgba(128, 128, 128, 0.4))'}}
+                        />
                     </IconButton>
                 </Box>
                 <Box sx={{
@@ -101,14 +104,19 @@ function HomeIndexContent() {
                     overflow: 'auto',
                 }}>
                     <IconButton
-                        sx={{mx: 'auto', mt: '2rem', mb: '2rem', bgcolor: darkMode ? grey[800] : grey[200]}}
+                        sx={{mx: 'auto', mt: '1rem', mb: '1rem'}}
                         onClick={() => {
                             setPageIndex(0);
                         }}
                         size='large'
                         className='slide-out-elliptic-bottom-bck'
                     >
-                        <ArrowDownward sx={{fontSize: '2rem'}} color='primary'/>
+                        <SvgIcon
+                            component={darkMode ? VectorArrowDark : VectorArrowLight}
+                            inheritViewBox
+                            sx={{fontSize: '3rem', transform: 'rotate(180deg)', filter: 'drop-shadow(0px 0px 15px rgba(128, 128, 128, 0.4))'}}
+                        />
+                        {/*<ArrowDownward sx={{fontSize: '2rem'}} color='primary'/>*/}
                     </IconButton>
                     <Grid2 container rowSpacing={smallPage ? 5 : 10}>
                         <Grid2 xs={12} lg={6}>
@@ -127,24 +135,27 @@ function HomeIndexContent() {
 }
 
 function WelcomeBlock() {
-    const linkColor = useTheme().palette.mode === "dark" ? "#fff" : "#4183C4";
+    const theme = useTheme();
+    const linkColor = theme.palette.mode === "dark" ? "#fff" : "#4183C4";
+    const smallPage = useSmallPage();
 
     return (
         <Box
             sx={{
                 width: {xs: '100%', sm: '70%', md: '60%', lg: '50%'},
                 position: 'relative',
-                backdropFilter: 'blur(2px)'
+                backdropFilter: 'blur(2px)',
+                mt: smallPage ? '10vh' : '23vh'
             }}>
             <Typography variant='h4' sx={{fontFamily: 'Merriweather', mb: '1rem'}}>
                 Welcome to
             </Typography>
             <OpenSIST props={{variant: 'h3'}}/>
-            <Divider sx={{mt: '1rem', mb: '1rem'}}/>
+            <Divider sx={{mt: '1rem', mb: '1rem', bgcolor: theme.palette.mode === 'dark' ? "#fff" : "#000", height: '1px'}}/>
             <Typography sx={{mb: '1rem'}}>
                 OpenSIST是一个由上海科技大学2020级信息学院同学自发创建的留学申请信息共享平台，旨在为上科大学子提供一个更加开放的留学申请信息分享平台，帮助大家更好地规划自己的留学申请。<br/>
                 如果你喜欢这个网站，请前往<a href='https://github.com/opensist/opensist.github.io'
-                                            style={{color: linkColor}}>GitHub</a>给我们一个star!
+                                               style={{color: linkColor}}>GitHub</a>给我们一个star!
             </Typography>
             <ReactMarkdown>
                 [![License: GPL
@@ -153,17 +164,18 @@ function WelcomeBlock() {
                 stars](https://img.shields.io/github/stars/opensist/opensist.github.io?style=social)](https://github.com/opensist/opensist.github.io)
             </ReactMarkdown>
             <Button variant='contained' component={Link} to='/how-to-use'>
-                Start
+                使用指南
             </Button>
-            <Button variant='outlined' component={Link} to='https://qm.qq.com/q/U1QvSyE6u6' sx={{ml: '1rem'}}>
-                加入QQ群
+            <Button variant='outlined' component={Link} to='https://qm.qq.com/q/U1QvSyE6u6' sx={{ml: '1rem', textTransform: 'none'}}>
+                OpenSIST QQ群
             </Button>
         </Box>
     )
 }
 
 function HomeIndexContentBlock({title}) {
-    const linkColor = useTheme().palette.mode === "dark" ? "#fff" : "#4183C4";
+    const theme = useTheme();
+    const linkColor = theme.palette.mode === "dark" ? "#fff" : "#4183C4";
     const blockItems = (title) => {
         if (title === "友情链接") {
             return (
@@ -209,7 +221,7 @@ function HomeIndexContentBlock({title}) {
             <BoldTypography variant='h4'>
                 {title}
             </BoldTypography>
-            <Divider sx={{mt: '1rem', mb: '1rem'}}/>
+            <Divider sx={{mt: '1rem', mb: '1rem', bgcolor: theme.palette.mode === 'dark' ? "#fff" : "#000", height: '1px'}}/>
             {blockItems(title)}
         </Box>
     )

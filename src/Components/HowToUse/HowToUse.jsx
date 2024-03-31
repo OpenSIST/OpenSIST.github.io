@@ -3,7 +3,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import {Link} from "react-router-dom";
-import {BoldTypography} from "../common";
+import {BoldTypography, OpenSIST} from "../common";
 import DatapointsDark from "../../Assets/images/HowToUse/dark/datapoints.webp";
 import DatapointsLight from "../../Assets/images/HowToUse/light/datapoints.webp";
 import PostsDark from "../../Assets/images/HowToUse/dark/posts.webp";
@@ -33,8 +33,8 @@ const imageDir = {
 
 export function HowToUse() {
     return (
-        <Box sx={{p: '1rem', bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#fff"}}>
-            <Typography variant="h4" sx={{textAlign: 'center'}}>OpenSIST使用指南</Typography>
+        <Box sx={{p: '1rem', bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA"}}>
+            <Typography variant="h4" sx={{textAlign: 'center'}}><OpenSIST props={{variant: 'h4'}}/>使用指南</Typography>
             <Graduated/>
         </Box>
     )

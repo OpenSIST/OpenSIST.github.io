@@ -200,7 +200,7 @@ const router = createBrowserRouter([
                         ]
                     }, {
                         path: '/FAQ',
-                        element: <MarkDownPage key="FAQ" sx={{width: "70%", bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#fff"}}/>,
+                        element: <MarkDownPage key="FAQ" sx={{width: "80%", bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA"}}/>,
                         loader: async () => {
                             return {content: await loadMarkDown(FAQMDPath)}
                         },

@@ -32,7 +32,7 @@ function App() {
             root.style.setProperty('--bg-color', '#1A1E24');
         } else {
             root.style.setProperty('--scrollbar-color', 'rgba(0, 0, 0, 0.5)');
-            root.style.setProperty('--bg-color', '#fff');
+            root.style.setProperty('--bg-color', '#FAFAFA');
         }
     }, [mode]);
 

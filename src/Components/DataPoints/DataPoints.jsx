@@ -404,7 +404,7 @@ export default function DataPoints() {
 
     return (
         <>
-            <Paper className="DataPointsContent" sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#fff"}}>
+            <Paper className="DataPointsContent" sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA"}}>
                 <UsageGuidance/>
                 <DataGrid records={records} insideProgramPage={false}/>
                 <Outlet/>
