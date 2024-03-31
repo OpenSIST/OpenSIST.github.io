@@ -13,29 +13,39 @@ let animationId = null;
 let width = null;
 let height = null;
 
-function redraw() {
-    cancelAnimationFrame(animationId);
+let flights = [];
+let lastTimestamp = Date.now();
+let img = new Image();
+img.src = "airplane_light.svg";
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+async function drawMap(static_container) {
+    const static_ctx = static_container.getContext("2d");
+    static_ctx.clearRect(0, 0, static_container.width, static_container.height);
 
     projection = d3.geoNaturalEarth1()
         .fitSize([width, height], cachedData);
 
     const path = d3.geoPath()
         .projection(projection)
-        .context(ctx);
+        .context(static_ctx);
 
-    ctx.fillStyle = "#243347";
-    ctx.strokeStyle = "#405A80";
+    static_ctx.fillStyle = "#243347";
+    static_ctx.strokeStyle = "#405A80";
 
-    ctx.globalAlpha = 1.0;
-    ctx.filter = "none";
+    static_ctx.globalAlpha = 1.0;
+    static_ctx.filter = "none";
     cachedData.features.forEach(feature => {
-        ctx.beginPath();
+        static_ctx.beginPath();
         path(feature);
-        ctx.fill();
-        ctx.stroke();
+        static_ctx.fill();
+        static_ctx.stroke();
     });
+}
+
+function redraw() {
+    cancelAnimationFrame(animationId);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     UnivList.forEach(univ => {
         const [x, y] = projection([univ.longitude, univ.latitude]);
@@ -60,14 +70,24 @@ function redraw() {
     animationId = requestAnimationFrame(redraw);
 }
 
-export function init_map(at_container, with_width, with_height) {
+function init_canvas(container) {
+    let devicePixelRatio = window.devicePixelRatio || 1;
+    container.width = width * devicePixelRatio;
+    container.height = height * devicePixelRatio;
+    container.style.width = `${width}px`;
+    container.style.height = `${height}px`;
+    container.getContext("2d").scale(devicePixelRatio, devicePixelRatio);
+}
+
+export function init_map(static_container, dynamic_container, with_width, with_height) {
     if (animationId !== null) {
         cancelAnimationFrame(animationId);
     }
-    canvas = at_container;
+    canvas = dynamic_container;
     const resizeObserver = new ResizeObserver(async entries => {
         const containerEntry = entries.find(entry => entry.target === canvas);
         if (containerEntry) {
+            drawMap(static_container);
             redraw();
         }
     });
@@ -75,12 +95,9 @@ export function init_map(at_container, with_width, with_height) {
 
     width = with_width;
     height = with_height;
-    let devicePixelRatio = window.devicePixelRatio || 1;
-    canvas.width = width * devicePixelRatio;
-    canvas.height = height * devicePixelRatio;
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
+    init_canvas(static_container);
+    init_canvas(dynamic_container);
     ctx = canvas.getContext("2d");
-    ctx.scale(devicePixelRatio, devicePixelRatio);
+    drawMap(static_container);
     redraw();
 }

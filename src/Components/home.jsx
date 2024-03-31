@@ -44,15 +44,16 @@ export function HomeIndex() {
                 justifyContent: 'center',
             }}
         >
-            <WorldMap width={width} height={height} style={{position: 'relative'}}/>
+            <WorldMap width={width} height={height}/>
             <Typography sx={{position: 'absolute'}}> This is a world map</Typography>
             {/*<MarkDownPage sx={{position: 'absolute'}}/>*/}
         </Box>
     )
 }
 
-function WorldMap({width, height, style}) {
-    const canvasRef = useRef(null);
+function WorldMap({width, height}) {
+    const dynamicCanvasRef = useRef(null);
+    const staticCanvasRef = useRef(null);
     useEffect(() => {
         let map_width = Math.min(width, 1700);
         let map_height = height - 60;
@@ -61,10 +62,13 @@ function WorldMap({width, height, style}) {
         } else {
             map_height = map_width / 1.75;
         }
-        init_map(canvasRef.current, map_width, map_height);
+        init_map(staticCanvasRef.current, dynamicCanvasRef.current, map_width, map_height);
     }, [width, height]);
     return (
-        <canvas ref={canvasRef} width={width} height={height} style={{overflow: "auto", ...style}}/>
+        <>
+            <canvas ref={staticCanvasRef} width={width} height={height} style={{overflow: "auto", position: "relative"}}/>
+            <canvas ref={dynamicCanvasRef} width={width} height={height} style={{overflow: "auto", position: "absolute"}}/>
+        </>
     )
 }
 
