@@ -134,7 +134,7 @@ function WelcomeBlock() {
             sx={{
                 width: {xs: '100%', sm: '70%', md: '60%', lg: '50%'},
                 position: 'relative',
-                backdropFilter: 'blur(1px)'
+                backdropFilter: 'blur(2px)'
             }}>
             <Typography variant='h4' sx={{fontFamily: 'Merriweather', mb: '1rem'}}>
                 Welcome to
@@ -167,9 +167,7 @@ function HomeIndexContentBlock({title}) {
     const blockItems = (title) => {
         if (title === "友情链接") {
             return (
-                <div style={{
-                    backdropFilter: 'blur(1px)'
-                }}>
+                <div>
                     <Typography variant='h5'>申请网站</Typography>
                     <ul>
                         <li>陆本申请北美选校定位平台：<a href="https://opencs.app" style={{color: linkColor}}>Open CS
@@ -191,9 +189,7 @@ function HomeIndexContentBlock({title}) {
             )
         } else if (title === '特别鸣谢') {
             return (
-                <ul style={{
-                    backdropFilter: 'blur(1px)'
-                }}>
+                <ul>
                     <li>
                         本项目受到<a href='https://github.com/xichenpan' style={{color: linkColor}}>flash老师</a>的<a
                         href='https://opencs.app' style={{color: linkColor}}>OpenCS</a>项目的启发
@@ -209,7 +205,7 @@ function HomeIndexContentBlock({title}) {
         }
     }
     return (
-        <Box>
+        <Box sx={{backdropFilter: 'blur(2px)'}}>
             <BoldTypography variant='h4'>
                 {title}
             </BoldTypography>
