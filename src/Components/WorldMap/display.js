@@ -13,6 +13,7 @@ let ctx = null;
 let animationId = null;
 let width = null;
 let height = null;
+let proportion = null;
 
 let flights = [];
 let lastTimestamp = Date.now();
@@ -160,7 +161,7 @@ function drawFlight(ctx, projection, flight, fps) {
     ctx.setLineDash([3400]);
     ctx.lineDashOffset = -distance;
     ctx.strokeStyle = linear_gradient;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 3 * proportion;
     ctx.beginPath();
     ctx.moveTo(...flight_end_position);
     ctx.bezierCurveTo(...control_point_2_coord, ...control_point_1_coord, ...projection([shanghai[0], shanghai[1]]));
@@ -207,7 +208,6 @@ function lightModeRedraw() {
             ctx.translate(x, y);
             ctx.rotate(direction);
             ctx.globalAlpha = opacity;
-            const proportion = width / 1700;
             ctx.drawImage(img, -10 * proportion, -10 * proportion, 20 * proportion, 20 * proportion);
             ctx.restore();
         }
@@ -215,7 +215,7 @@ function lightModeRedraw() {
 
     const [x1, y1] = projection(shanghai);
     ctx.beginPath();
-    ctx.arc(x1, y1, 5, 0, 2 * Math.PI);
+    ctx.arc(x1, y1, 5 * proportion, 0, 2 * Math.PI);
     ctx.fillStyle = "#C25451";
     ctx.fill();
 }
@@ -281,6 +281,7 @@ export function init_map(static_container, dynamic_container, with_width, with_h
 
     width = with_width;
     height = with_height;
+    proportion = width / 1700;
     init_canvas(static_container);
     init_canvas(dynamic_container);
     ctx = canvas.getContext("2d");
