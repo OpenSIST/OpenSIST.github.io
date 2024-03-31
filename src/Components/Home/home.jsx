@@ -98,7 +98,15 @@ function HomeIndexContent() {
                     }}>
                     <WelcomeBlock/>
                     <IconButton
-                        sx={{mx: 'auto', position: 'absolute', left: 'calc(50% - 1.5rem - 8px)', bottom: 'calc(100vh - 50px)'}}
+                        sx={{
+                            mx: 'auto',
+                            position: 'absolute',
+                            left: 'calc(50% - 1.5rem - 8px)',
+                            bottom: 'calc(100vh - 50px)',
+                            "&:hover": {
+                                bgcolor: 'transparent',
+                            }
+                        }}
                         onClick={() => {
                             setPageIndex(1);
                         }}
@@ -107,7 +115,14 @@ function HomeIndexContent() {
                         <SvgIcon
                             component={darkMode ? VectorArrowDark : VectorArrowLight}
                             inheritViewBox
-                            sx={{height: '3rem', width: '3rem', filter: 'drop-shadow(0px 0px 15px rgba(128, 128, 128, 0.4))'}}
+                            sx={{
+                                height: '3rem',
+                                width: '3rem',
+                                filter: 'drop-shadow(0px 0px 15px rgba(128, 128, 128, 0.4))',
+                                "&:hover": {
+                                    filter: 'drop-shadow(0px 0px 15px rgb(128, 128, 128))'
+                                }
+                            }}
                         />
                     </IconButton>
                 </Box>
@@ -120,7 +135,15 @@ function HomeIndexContent() {
                     overflow: 'auto',
                 }}>
                     <IconButton
-                        sx={{mx: 'auto', position: 'absolute', left: 'calc(50% - 1.5rem - 8px)', top: 'calc(100vh - 50px)'}}
+                        sx={{
+                            mx: 'auto',
+                            position: 'absolute',
+                            left: 'calc(50% - 1.5rem - 8px)',
+                            top: 'calc(100vh - 50px)',
+                            "&:hover": {
+                                bgcolor: 'transparent',
+                            }
+                        }}
                         onClick={() => {
                             setPageIndex(0);
                         }}
@@ -132,7 +155,10 @@ function HomeIndexContent() {
                             sx={{
                                 fontSize: '3rem',
                                 transform: 'rotate(180deg)',
-                                filter: 'drop-shadow(0px 0px 15px rgba(128, 128, 128, 0.4))'
+                                filter: 'drop-shadow(0px 0px 15px rgba(128, 128, 128, 0.4))',
+                                "&:hover": {
+                                    filter: 'drop-shadow(0px 0px 15px rgb(128, 128, 128))'
+                                }
                             }}
                         />
                     </IconButton>
