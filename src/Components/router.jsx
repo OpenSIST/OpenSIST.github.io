@@ -1,5 +1,5 @@
 import {createBrowserRouter} from "react-router-dom";
-import Home, {HomeIndex} from "./home";
+import Home, {HomeIndex} from "./Home/home";
 import {action as HomeAction, loader as HomeLoader} from "./TopBar/StatusBlock/StatusBlock";
 import ErrorPage from "./Errors/ErrorPage";
 import ProgramPage, {

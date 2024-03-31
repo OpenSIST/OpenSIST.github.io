@@ -1,0 +1,9 @@
+.HomeIndexContent-0 {
+    transform: translateY(0);
+    transition: all 0.3s ease-in-out;
+}
+
+.HomeIndexContent-1 {
+    transform: translateY(calc(-100vh + 60px));
+    transition: all 0.3s ease-in-out;
+}

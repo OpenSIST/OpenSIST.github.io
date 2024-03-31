@@ -16,7 +16,7 @@ export const ThemeContext = createContext({
     }
 });
 
-function OpenSIST() {
+function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
     const [mode, setMode] = useState(null);
     useEffect(() => {
@@ -139,4 +139,4 @@ function OpenSIST() {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<OpenSIST/>);
+root.render(<App/>);

@@ -25,8 +25,8 @@ OpenSIST是一个由上海科技大学2020级信息学院同学自发创建的�
 #### 申请网站
 * 陆本申请北美选校定位平台：[Open CS Application](https://opencs.app)
 * 陆本申请欧洲/港新地区信息共享平台：[Global CS](https://global-cs-application.github.io)
-* CS PhD文书参考: [CS PhD Statements of Purpose](https://cs-sop.notion.site/CS-PhD-Statements-of-Purpose-df39955313834889b7ac5411c37b958d)
-* 海本申请信息共享平台：[GradCafe](https://www.thegradcafe.com/)
+* CS PhD文书参考：[CS PhD Statements of Purpose](https://cs-sop.notion.site/CS-PhD-Statements-of-Purpose-df39955313834889b7ac5411c37b958d)
+* 海外硕博申请信息共享平台（类似一亩三分地）：[GradCafe](https://www.thegradcafe.com/)
 #### 校内链接
 * 学校ACM社团：[ACM@SIST](https://acm.shanghaitech.edu.cn/)
 

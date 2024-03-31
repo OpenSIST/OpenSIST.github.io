@@ -4,7 +4,7 @@ import {
     Backdrop,
     Box,
     Button,
-    CircularProgress, Drawer, Fab, Paper,
+    CircularProgress, Fab,
     styled,
     SwipeableDrawer, Tooltip,
     Typography,
@@ -125,5 +125,13 @@ export function DraggableFAB({Icon, DragThreshold, ActionType, ButtonClassName, 
                 value={ActionType}
             />
         </>
+    )
+}
+
+export function OpenSIST({props, sx}) {
+    return (
+        <Typography {...props} sx={{fontFamily: 'Merriweather', ...sx}} component='span'>
+            OpenSIST
+        </Typography>
     )
 }
