@@ -25,8 +25,8 @@ const shanghai = [121.48, 31.13];
 const longest_tail = 16000;
 const color = {
     'light': {
-        'country_fill': '#E1E3E5',
-        'country_border': '#969799'
+        'country_fill': '#E8EAED',
+        'country_border': '#A5A6A8'
     },
     'dark': {
         'country_fill': '#243347',
