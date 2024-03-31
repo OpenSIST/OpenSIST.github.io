@@ -12,12 +12,12 @@ import {grey} from "@mui/material/colors";
 
 function Home() {
     return (
-        <Paper elevation={0} sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#fff"}}>
+        <Paper elevation={0} sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#E8EAED"}}>
             <TopBar/>
             <Paper
                 className="ContentBlock"
                 elevation={0}
-                sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#fff"}}
+                sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#E8EAED"}}
             >
                 <Outlet/>
             </Paper>
@@ -42,7 +42,7 @@ export function HomeIndex() {
     return (
         <Box
             sx={{
-                bgcolor: (theme) => theme.palette.mode === 'dark' ? "#1A1E24" : "#F5F5F5",
+                bgcolor: (theme) => theme.palette.mode === 'dark' ? "#1A1E24" : "#E8EAED",
                 height: "100%",
                 width: "100%",
                 display: 'flex',
@@ -69,8 +69,17 @@ function HomeIndexContent() {
                 overflow: 'hidden'
             }}
         >
-            <Box sx={{height: 'calc(200vh - 120px)'}} className={pageIndex === 0 ? 'HomeIndexContent-0' : 'HomeIndexContent-1'}>
-                <Box sx={{height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'center', ml: smallPage ? 0 : '2rem', overflow: 'auto'}}>
+            <Box sx={{height: 'calc(200vh - 120px)'}}
+                 className={pageIndex === 0 ? 'HomeIndexContent-0' : 'HomeIndexContent-1'}>
+                <Box
+                    sx={{
+                        height: 'calc(100vh - 60px)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        ml: smallPage ? 0 : '2rem',
+                        overflow: 'auto',
+                    }}>
                     <WelcomeBlock/>
                     <IconButton
                         sx={{mx: 'auto', mt: '3rem', bgcolor: darkMode ? grey[800] : grey[200]}}
@@ -83,7 +92,14 @@ function HomeIndexContent() {
                         <ArrowUpward sx={{fontSize: '2rem'}} color='primary'/>
                     </IconButton>
                 </Box>
-                <Box sx={{height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'start', ml: smallPage ? 0 : '2rem', overflow: 'auto'}}>
+                <Box sx={{
+                    height: 'calc(100vh - 60px)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'start',
+                    ml: smallPage ? 0 : '2rem',
+                    overflow: 'auto',
+                }}>
                     <IconButton
                         sx={{mx: 'auto', mt: '2rem', mb: '2rem', bgcolor: darkMode ? grey[800] : grey[200]}}
                         onClick={() => {
@@ -114,7 +130,12 @@ function WelcomeBlock() {
     const linkColor = useTheme().palette.mode === "dark" ? "#fff" : "#4183C4";
 
     return (
-        <Box sx={{width: {xs: '100%', sm: '70%', md: '60%', lg: '50%'}}}>
+        <Box
+            sx={{
+                width: {xs: '100%', sm: '70%', md: '60%', lg: '50%'},
+                position: 'relative',
+                backdropFilter: 'blur(1px)'
+            }}>
             <Typography variant='h4' sx={{fontFamily: 'Merriweather', mb: '1rem'}}>
                 Welcome to
             </Typography>
@@ -146,7 +167,9 @@ function HomeIndexContentBlock({title}) {
     const blockItems = (title) => {
         if (title === "友情链接") {
             return (
-                <div>
+                <div style={{
+                    backdropFilter: 'blur(1px)'
+                }}>
                     <Typography variant='h5'>申请网站</Typography>
                     <ul>
                         <li>陆本申请北美选校定位平台：<a href="https://opencs.app" style={{color: linkColor}}>Open CS
@@ -168,7 +191,9 @@ function HomeIndexContentBlock({title}) {
             )
         } else if (title === '特别鸣谢') {
             return (
-                <ul>
+                <ul style={{
+                    backdropFilter: 'blur(1px)'
+                }}>
                     <li>
                         本项目受到<a href='https://github.com/xichenpan' style={{color: linkColor}}>flash老师</a>的<a
                         href='https://opencs.app' style={{color: linkColor}}>OpenCS</a>项目的启发
