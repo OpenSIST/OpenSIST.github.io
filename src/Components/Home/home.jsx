@@ -70,7 +70,7 @@ function HomeIndexContent() {
             }}
         >
             <Box sx={{height: 'calc(200vh - 120px)'}} className={pageIndex === 0 ? 'HomeIndexContent-0' : 'HomeIndexContent-1'}>
-                <Box sx={{height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'center', ml: smallPage ? 0 : '2rem'}}>
+                <Box sx={{height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'center', ml: smallPage ? 0 : '2rem', overflow: 'auto'}}>
                     <WelcomeBlock/>
                     <IconButton
                         sx={{mx: 'auto', mt: '3rem', bgcolor: darkMode ? grey[800] : grey[200]}}
@@ -83,7 +83,7 @@ function HomeIndexContent() {
                         <ArrowUpward sx={{fontSize: '2rem'}} color='primary'/>
                     </IconButton>
                 </Box>
-                <Box sx={{height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'start', ml: smallPage ? 0 : '2rem'}}>
+                <Box sx={{height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'start', ml: smallPage ? 0 : '2rem', overflow: 'auto'}}>
                     <IconButton
                         sx={{mx: 'auto', mt: '2rem', mb: '2rem', bgcolor: darkMode ? grey[800] : grey[200]}}
                         onClick={() => {
