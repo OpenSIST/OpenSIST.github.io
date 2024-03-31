@@ -74,6 +74,7 @@ function HomeIndexContent() {
         return () => currentContentRef.removeEventListener("wheel", onWheel)
     }, [pageIndex]);
 
+    const iconButtonRef = useRef(null);
     return (
         <Box
             ref={contentRef}
@@ -91,22 +92,22 @@ function HomeIndexContent() {
                         height: 'calc(100vh - 60px)',
                         display: 'flex',
                         flexDirection: 'column',
+                        justifyContent: 'center',
                         ml: smallPage ? 0 : '2rem',
                         overflow: 'auto',
                     }}>
                     <WelcomeBlock/>
                     <IconButton
-                        sx={{mx: 'auto', mt: '2rem'}}
+                        sx={{mx: 'auto', position: 'absolute', left: 'calc(50% - 1.5rem - 8px)', bottom: 'calc(100vh - 50px)'}}
                         onClick={() => {
                             setPageIndex(1);
                         }}
-                        size='large'
-                        className='slide-out-elliptic-top-bck'
+                        className='slide-out-blurred-top'
                     >
                         <SvgIcon
                             component={darkMode ? VectorArrowDark : VectorArrowLight}
                             inheritViewBox
-                            sx={{fontSize: '3rem', filter: 'drop-shadow(0px 0px 15px rgba(128, 128, 128, 0.4))'}}
+                            sx={{height: '3rem', width: '3rem', filter: 'drop-shadow(0px 0px 15px rgba(128, 128, 128, 0.4))'}}
                         />
                     </IconButton>
                 </Box>
@@ -119,12 +120,11 @@ function HomeIndexContent() {
                     overflow: 'auto',
                 }}>
                     <IconButton
-                        sx={{mx: 'auto', mt: '1rem', mb: '1rem'}}
+                        sx={{mx: 'auto', position: 'absolute', left: 'calc(50% - 1.5rem - 8px)', top: 'calc(100vh - 50px)'}}
                         onClick={() => {
                             setPageIndex(0);
                         }}
-                        size='large'
-                        className='slide-out-elliptic-bottom-bck'
+                        className='slide-out-blurred-bottom'
                     >
                         <SvgIcon
                             component={darkMode ? VectorArrowDark : VectorArrowLight}
@@ -135,9 +135,8 @@ function HomeIndexContent() {
                                 filter: 'drop-shadow(0px 0px 15px rgba(128, 128, 128, 0.4))'
                             }}
                         />
-                        {/*<ArrowDownward sx={{fontSize: '2rem'}} color='primary'/>*/}
                     </IconButton>
-                    <Grid2 container rowSpacing={smallPage ? 5 : 10}>
+                    <Grid2 container rowSpacing={smallPage ? 5 : 10} sx={{mt: '3rem'}}>
                         <Grid2 xs={12} lg={6}>
                             <HomeIndexContentBlock title="友情链接"/>
                         </Grid2>
@@ -164,12 +163,12 @@ function WelcomeBlock() {
                 width: {xs: '100%', sm: '70%', md: '60%', lg: '50%'},
                 position: 'relative',
                 backdropFilter: 'blur(2px)',
-                mt: smallPage ? '10vh' : '23vh'
+                // mt: smallPage ? '10vh' : '23vh'
             }}>
             <Typography variant='h4' sx={{fontFamily: 'Merriweather', mb: '1rem'}}>
                 Welcome to
             </Typography>
-            <OpenSIST props={{variant: 'h3'}}/>
+            <OpenSIST props={{variant: 'h2'}}/>
             <Divider sx={{
                 mt: '1rem',
                 mb: '1rem',
