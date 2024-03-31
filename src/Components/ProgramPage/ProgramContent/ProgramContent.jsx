@@ -8,7 +8,7 @@ import {Add, Edit, Refresh} from "@mui/icons-material";
 import remarkGfm from 'remark-gfm'
 import {getRecordByProgram} from "../../../Data/RecordData";
 import {DataGrid} from "../../DataPoints/DataPoints";
-import {DraggableFAB, useSmallPage} from "../../common";
+import {DraggableFAB} from "../../common";
 
 export async function loader({params}) {
     const programId = params.programId;
@@ -40,11 +40,10 @@ function ProgramContent({editable = true}) {
         record['Season'] = record.ProgramYear + " " + record.Semester;
         return record;
     });
-    const smallPage = useSmallPage();
     return (
         <>
             <Box className="ProgramHeader" sx={{pb: "0.5rem"}}>
-                <Typography variant={smallPage ? 'h4' : 'h3'} sx={{display: 'flex', position: 'relative'}}>
+                <Typography variant='h4' sx={{display: 'flex', position: 'relative'}}>
                     {programContent.ProgramID}
                 </Typography>
                 <div className='ReviseRefreshButtonGroup'>
@@ -91,7 +90,6 @@ function ProgramContent({editable = true}) {
                     tooltipTitle="添加记录"
                 />
             </> : null}
-
         </>
     );
 }

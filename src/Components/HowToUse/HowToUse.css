@@ -1,0 +1,41 @@
+.img-mask {
+    position: relative;
+    overflow: hidden;
+}
+
+.img-mask blockquote {
+    color: inherit;
+}
+
+.img-mask::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: top;
+    filter: blur(40px);
+    transition: filter 0.3s ease;
+}
+
+.img-mask:hover::before {
+    filter: none;
+}
+
+.img-mask:hover::after {
+    background: transparent;
+}
+
+.img-mask > * {
+    position: relative;
+    opacity: 1;
+    filter: blur(0px);
+    transition: all 0.3s ease;
+}
+
+.img-mask:hover > * {
+    filter: blur(40px);
+    opacity: 0;
+}

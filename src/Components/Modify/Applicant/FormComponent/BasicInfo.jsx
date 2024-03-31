@@ -18,6 +18,7 @@ import {useNavigate} from "react-router-dom";
 import {Link as MuiLink} from '@mui/material';
 import {useSmallPage} from "../../../common";
 import {HelpOutline} from "@mui/icons-material";
+import {grey} from "@mui/material/colors";
 
 function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData}) {
     let finalOptions = loaderData.programs;
@@ -63,7 +64,14 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
     const smallPage = useSmallPage();
 
     return (
-        <Paper variant='outlined' sx={{width: smallPage ? '90%' : '70%'}}>
+        <Paper
+            variant='elevation'
+            sx={{
+                width: smallPage ? '90%' : '70%',
+                bgcolor: (theme) => theme.palette.mode === "dark" ? grey[900] : grey[50]
+            }}
+            elevation={2}
+        >
             <Divider
                 textAlign="center"
                 variant='middle'

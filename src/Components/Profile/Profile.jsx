@@ -1,5 +1,5 @@
 import {Paper, useTheme} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {Outlet, redirect, useLoaderData} from "react-router-dom";
 import {ProfileSideBar} from "./ProfileSideBar/ProfileSideBar";
 import {grey} from "@mui/material/colors";
@@ -12,8 +12,6 @@ import {
     uploadAvatar
 } from "../../Data/UserData";
 import localforage from "localforage";
-import MDPath from "../../Data/ProfileIndex.md";
-import ReactMarkdown from "react-markdown";
 import "./Profile.css"
 
 export async function loader() {
@@ -61,19 +59,5 @@ export default function Profile() {
                 <Outlet/>
             </Paper>
         </>
-    )
-}
-
-export function ProfileIndex() {
-    const [markDown, setMarkDown] = useState("");
-    useEffect(() => {
-        fetch(MDPath)
-            .then((response) => response.text())
-            .then((text) => setMarkDown(text));
-    }, []);
-    return (
-        <ReactMarkdown className="ProfileIndex">
-            {markDown}
-        </ReactMarkdown>
     )
 }

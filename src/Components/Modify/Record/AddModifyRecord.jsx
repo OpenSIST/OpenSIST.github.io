@@ -14,6 +14,7 @@ import {DatePicker} from "@mui/x-date-pickers";
 import {getDisplayName, getMetaData} from "../../../Data/UserData";
 import {useSmallPage} from "../../common";
 import {HelpOutline} from "@mui/icons-material";
+import {grey} from "@mui/material/colors";
 
 export async function loader({params}) {
     const programs = await getPrograms();
@@ -113,7 +114,14 @@ export default function AddModifyRecord({type}) {
                 alignItems: "center",
                 textAlign: "center"
             }}>
-                <Paper variant='outlined' sx={{width: smallPage ? '90%' : '70%'}}>
+                <Paper
+                    variant='elevation'
+                    sx={{
+                        width: smallPage ? '90%' : '70%',
+                        bgcolor: (theme) => theme.palette.mode === "dark" ? grey[900] : grey[50]
+                    }}
+                    elevation={2}
+                >
                     <Typography variant="h4" sx={{alignSelf: 'center', marginTop: '10px'}}>{`${mode}申请记录`}</Typography>
                     <Box className='AddModifyForm'>
                         <Grid2

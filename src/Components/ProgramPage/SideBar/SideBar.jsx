@@ -2,21 +2,23 @@ import React from "react";
 import {Form, Link} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
-import {regionFlagMapping, univAbbrFullNameMapping} from "../../../Data/Common";
+import {univAbbrFullNameMapping} from "../../../Data/Common";
 import {
     Box,
-    Button, ButtonGroup,
+    Button,
     Collapse,
     Divider,
     List,
     ListItemButton,
     ListItemText,
-    Paper, Tooltip,
+    Paper, Tooltip, Typography,
     useTheme
 } from "@mui/material";
 import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
 import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
+import {regionFlagMapping} from "../../../Data/Schemas";
+import Grid2 from "@mui/material/Unstable_Grid2";
 
 export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
@@ -35,32 +37,36 @@ export default function SideBar({loaderData}) {
                 }}
             >
                 <SearchBar query={getQuery(loaderData)} pageName='program'/>
-                <ButtonGroup fullWidth>
-                    <Form action='/programs/new' style={{width: "100%"}}>
-                        <Tooltip title='添加新项目' arrow>
-                            <Button fullWidth type='submit' variant="outlined"
-                                sx={{
-                                    transition: 'background-color 0s',
-                                    bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
-                                }}
-                            >
-                                <Add/>
-                            </Button>
-                        </Tooltip>
-                    </Form>
-                    <Form method='post' style={{width: "100%"}}>
-                        <Tooltip title='刷新项目列表' arrow>
-                            <Button fullWidth type='submit' variant="outlined"
-                                    sx={{
-                                        transition: 'background-color 0s',
-                                        bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
-                                    }}
-                            >
-                                <Refresh/>
-                            </Button>
-                        </Tooltip>
-                    </Form>
-                </ButtonGroup>
+                <Grid2 columnSpacing={1} container sx={{width: '100%'}}>
+                    <Grid2 xs={9}>
+                        <Form action='/programs/new' style={{width: "100%"}}>
+                            <Tooltip title='添加新项目' arrow>
+                                <Button fullWidth type='submit' variant="outlined"
+                                        sx={{
+                                            transition: 'background-color 0s',
+                                            bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
+                                        }}
+                                >
+                                    <Add/>
+                                </Button>
+                            </Tooltip>
+                        </Form>
+                    </Grid2>
+                    <Grid2 xs={3}>
+                        <Form method='post' style={{width: "100%"}}>
+                            <Tooltip title='刷新项目列表' arrow>
+                                <Button fullWidth type='submit' variant="outlined"
+                                        sx={{
+                                            transition: 'background-color 0s',
+                                            bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
+                                        }}
+                                >
+                                    <Refresh/>
+                                </Button>
+                            </Tooltip>
+                        </Form>
+                    </Grid2>
+                </Grid2>
                 <UnivProgramList univProgramList={univProgramList}/>
             </CollapseSideBar>
         </>
@@ -110,9 +116,20 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
             <ListItemButton
                 onClick={() => setIsFolded(!isFolded)}
             >
-                {isFolded ? <ExpandMore/> : <NavigateNext/>}
-                <ListItemText primary={univName} secondary={univAbbrFullNameMapping[univName]}/>
-                {flags}
+                {isFolded ? <ExpandMore fontSize="0.9em"/> : <NavigateNext fontSize="0.9em"/>}
+                <ListItemText
+                    primary={
+                        <Box sx={{display:'flex', justifyContent: 'space-between'}}>
+                            <Typography>{univName}</Typography>
+                            <Typography>{flags}</Typography>
+                        </Box>
+                    }
+                    secondary={
+                        <Typography variant='subtitle1' sx={{fontSize: 'clamp(11px, 1.5vw, 13px)'}}>
+                            {univAbbrFullNameMapping[univName]}
+                        </Typography>
+                    }/>
+
             </ListItemButton>
             <Divider component="li" light/>
             <Collapse in={isFolded} timeout='auto' unmountOnExit>

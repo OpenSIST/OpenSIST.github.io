@@ -157,6 +157,7 @@ export default function RegisterAndReset() {
                     value={suffix}
                     input={<Input/>}
                     onChange={(e) => setSuffix(e.target.value)}
+                    sx={{maxWidth: "200px"}}
                 >
                     <MenuItem value="@shanghaitech.edu.cn">@shanghaitech.edu.cn</MenuItem>
                     <MenuItem value="@alumni.shanghaitech.edu.cn">@alumni.shanghaitech.edu.cn</MenuItem>

@@ -5,9 +5,10 @@ import './ProgramPage.css';
 import {Paper, useTheme} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import ReactMarkdown from "react-markdown";
-import MDPath from "../../Data/ProgramIndex.md";
+import MDPath from "../../Data/MarkDown/ProgramIndex.md";
 import {useEffect, useState} from "react";
 import "./ProgramPage.css";
+import {loadMarkDown} from "../../Data/Common";
 
 export async function loader({request}) {
     const url = new URL(request.url);
@@ -41,16 +42,21 @@ export default function ProgramPage() {
     )
 }
 
+export async function ProgramIndexLoader() {
+    const content = await loadMarkDown(MDPath);
+    return {content};
+}
+
 export function ProgramIndex() {
-    const [markDown, setMarkDown] = useState("");
+    const [content, setContent] = useState("");
     useEffect(() => {
         fetch(MDPath)
             .then((response) => response.text())
-            .then((text) => setMarkDown(text));
+            .then((text) => setContent(text));
     }, []);
     return (
         <ReactMarkdown className="ProgramIndex">
-            {markDown}
+            {content}
         </ReactMarkdown>
     )
 }

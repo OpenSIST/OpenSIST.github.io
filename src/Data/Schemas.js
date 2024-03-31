@@ -218,11 +218,17 @@ export const EnglishExamMapping = {
     }
 }
 
-export const RecordStatusPaltette = {
-    'Admit': 'success',
-    'Reject': 'error',
+export const RecordStatusPalette = {
+    'Admit': 'admit',
+    'Reject': 'reject',
     'Waitlist': 'default',
-    'Defer': 'warning',
+    'Defer': 'defer',
+}
+export const SemesterPalette = {
+    'Fall': 'fall',
+    'Spring': 'spring',
+    'Summer': 'secondary',
+    'Winter': 'info',
 }
 export const regionFlagMapping = {
     "US": "\u{1F1FA}\u{1F1F8}",

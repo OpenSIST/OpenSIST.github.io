@@ -13,8 +13,7 @@ import {
     OutlinedInput, Paper, useTheme
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import {majorList, degreeList, regionList} from "../../../../Data/Schemas";
-import {regionFlagMapping} from "../../../../Data/Common";
+import {majorList, degreeList, regionList, regionFlagMapping} from "../../../../Data/Schemas";
 import {grey} from "@mui/material/colors";
 
 export default function SearchBar({query, pageName}) {
@@ -124,7 +123,7 @@ function Filter({label, id, name, value, handleFilterChange, options, OptionItem
         <FormControl component={Paper} fullWidth sx={{
             bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : "#fff",
         }}>
-            <InputLabel size="small">{label}</InputLabel>
+            <InputLabel size='small' sx={{fontSize: '0.8rem', lineHeight: 'inherit'}}>{label}</InputLabel>
             <Select
                 multiple
                 id={id}
@@ -141,7 +140,7 @@ function Filter({label, id, name, value, handleFilterChange, options, OptionItem
             >
                 {options.map((opt) => (
                         <MenuItem key={opt} value={opt}>
-                            <Checkbox checked={value.indexOf(opt) > -1}/>
+                            <Checkbox checked={value.indexOf(opt) > -1} size='small'/>
                             <OptionContent optionValue={opt}/>
                         </MenuItem>
                     )
@@ -153,13 +152,28 @@ function Filter({label, id, name, value, handleFilterChange, options, OptionItem
 
 function CheckBoxOptionItem({optionValue}) {
     return (
-        <ListItemText primary={optionValue}/>
-
+        <ListItemText
+            primary={optionValue}
+            sx={{
+                '& .MuiListItemText-primary': {
+                    fontSize: '0.8rem',
+                    lineHeight: 'inherit',
+                }
+            }}
+        />
     )
 }
 
 function FlagOptionContent({optionValue}) {
     return (
-        <ListItemText primary={`${optionValue} ${regionFlagMapping[optionValue]}`}/>
+        <ListItemText
+            primary={`${optionValue} ${regionFlagMapping[optionValue]}`}
+            sx={{
+                '& .MuiListItemText-primary': {
+                    fontSize: '0.8rem',
+                    lineHeight: 'inherit',
+                }
+            }}
+        />
     )
 }

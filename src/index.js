@@ -16,7 +16,7 @@ export const ThemeContext = createContext({
     }
 });
 
-function OpenSIST() {
+function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
     const [mode, setMode] = useState(null);
     useEffect(() => {
@@ -29,10 +29,10 @@ function OpenSIST() {
         const root = document.documentElement;
         if (mode === 'dark') {
             root.style.setProperty('--scrollbar-color', 'rgba(155, 155, 155, 0.7)');
-            root.style.setProperty('--bg-color', 'rgba(0, 0, 0, 0.9)');
+            root.style.setProperty('--bg-color', '#1A1E24');
         } else {
             root.style.setProperty('--scrollbar-color', 'rgba(0, 0, 0, 0.5)');
-            root.style.setProperty('--bg-color', 'rgba(255, 255, 255, 0.9)');
+            root.style.setProperty('--bg-color', '#FAFAFA');
         }
     }, [mode]);
 
@@ -42,6 +42,23 @@ function OpenSIST() {
     const theme = createTheme({
         palette: {
             mode: mode ?? (prefersDarkMode ? 'dark' : 'light'),
+            contrastThreshold: 3,
+            reject: {
+                main: mode === 'dark' ? '#FF375F' : '#FF2D55',
+                contrastText: '#ffffffde',
+            }, admit: {
+                main: mode === 'dark' ? '#30D158' : '#34C759',
+                contrastText: '#ffffffde',
+            }, defer: {
+                main: mode === 'dark' ? '#FF9F0A' : '#FF9500',
+                contrastText: '#ffffffde',
+            }, spring: {
+                main: mode === 'dark' ? '#12CCA4' : '#00C59B',
+                contrastText: '#ffffffde',
+            }, fall: {
+                main: mode === 'dark' ? '#FE892E' : '#FE801E',
+                contrastText: '#ffffffde',
+            }
         },
         components: {
             MuiButtonBase: {
@@ -122,4 +139,4 @@ function OpenSIST() {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<OpenSIST/>);
+root.render(<App/>);

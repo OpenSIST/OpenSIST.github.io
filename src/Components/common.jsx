@@ -127,3 +127,11 @@ export function DraggableFAB({Icon, DragThreshold, ActionType, ButtonClassName, 
         </>
     )
 }
+
+export function OpenSIST({props, sx}) {
+    return (
+        <Typography {...props} sx={{fontFamily: 'Merriweather', ...sx}} component='span'>
+            OpenSIST
+        </Typography>
+    )
+}

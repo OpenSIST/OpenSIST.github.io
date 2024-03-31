@@ -28,6 +28,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {useNavigate} from "react-router-dom";
 import {useSmallPage} from "../../../common";
+import {grey} from "@mui/material/colors";
 
 function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
     const navigate = useNavigate();
@@ -117,7 +118,14 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
     };
 
     return (
-        <Paper variant='outlined' sx={{width: smallPage ? '90%' : '80%'}}>
+        <Paper
+            variant='elevation'
+            sx={{
+                width: smallPage ? '90%' : '80%',
+                bgcolor: (theme) => theme.palette.mode === "dark" ? grey[900] : grey[50]
+            }}
+            elevation={2}
+        >
             <Divider
                 textAlign="center"
                 variant='middle'

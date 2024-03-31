@@ -2,7 +2,7 @@ import {getPosts} from "../../Data/PostData";
 import {Form, Link, Outlet, useLoaderData} from "react-router-dom";
 import {CollapseSideBar} from "../common";
 import {
-    Button, ButtonGroup,
+    Button,
     Divider,
     List,
     ListItemButton,
@@ -16,6 +16,7 @@ import {Add, Refresh} from "@mui/icons-material";
 import "./PostPage.css"
 import React, {Fragment} from "react";
 import SearchBar from "../ProgramPage/SideBar/SearchBar/SearchBar";
+import Grid2 from "@mui/material/Unstable_Grid2";
 
 export async function loader({request}) {
     const url = new URL(request.url);
@@ -46,28 +47,32 @@ export default function PostPage() {
                 }
             }}>
                 <SearchBar query={{searchStr: loaderData.searchStr}} pageName='post'/>
-                <ButtonGroup fullWidth>
-                    <Form action="/posts/new" style={{width: "100%"}}>
-                        <Tooltip title="撰写新文章" arrow>
-                            <Button type="submit" fullWidth sx={{
-                                transition: 'background-color 0s',
-                                bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
-                            }}>
-                                <Add/>
-                            </Button>
-                        </Tooltip>
-                    </Form>
-                    <Form method='post' style={{width: "100%"}}>
-                        <Tooltip title="刷新列表" arrow>
-                            <Button type="submit" fullWidth sx={{
-                                transition: 'background-color 0s',
-                                bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
-                            }}>
-                                <Refresh/>
-                            </Button>
-                        </Tooltip>
-                    </Form>
-                </ButtonGroup>
+                <Grid2 columnSpacing={1} container sx={{width: '100%'}}>
+                    <Grid2 xs={9}>
+                        <Form action="/posts/new" style={{width: "100%"}}>
+                            <Tooltip title="撰写新文章" arrow>
+                                <Button type="submit" variant="outlined" fullWidth sx={{
+                                    transition: 'background-color 0s',
+                                    bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
+                                }}>
+                                    <Add/>
+                                </Button>
+                            </Tooltip>
+                        </Form>
+                    </Grid2>
+                    <Grid2 xs={3}>
+                        <Form method='post' style={{width: "100%"}}>
+                            <Tooltip title="刷新列表" arrow>
+                                <Button type="submit" variant="outlined" fullWidth sx={{
+                                    transition: 'background-color 0s',
+                                    bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
+                                }}>
+                                    <Refresh/>
+                                </Button>
+                            </Tooltip>
+                        </Form>
+                    </Grid2>
+                </Grid2>
                 <Paper
                     variant='elevation'
                     elevation={darkMode ? 0 : 1}
@@ -105,16 +110,6 @@ export default function PostPage() {
             >
                 <Outlet/>
             </Paper>
-        </>
-    )
-}
-
-export function PostIndex() {
-    return (
-        <>
-            <h1>欢迎来到申请分享帖！</h1>
-            <h4><b>对于已经结束申请的同学而言，您可分享任何关于海外申请的内容，包括但不限于申请策略、选校、套磁、申请总结等等。</b></h4>
-            <h4><b>对于准备申请的同学而言，您可以在此浏览前人留下的宝贵经验。侧边栏顶部有搜索框，可按标题或申请人ID进行筛选。</b></h4>
         </>
     )
 }

@@ -52,17 +52,12 @@ export function blobToBase64(blob) {
     });
 }
 
-export const regionFlagMapping = {
-    "US": "\u{1F1FA}\u{1F1F8}",
-    "EU": "\u{1F1EA}\u{1F1FA}",
-    "UK": "\u{1F1EC}\u{1F1E7}",
-    "CA": "\u{1F1E8}\u{1F1E6}",
-    "HK": "\u{1F1ED}\u{1F1F0}",
-    "SG": "\u{1F1F8}\u{1F1EC}",
-    'Others': ''
-}
-
 export const univAbbrFullNameMapping = univList.reduce((acc, univ) => {
     acc[univ.abbr] = univ.fullName;
     return acc;
 }, {});
+
+export async function loadMarkDown(path) {
+    const response = await fetch(path);
+    return await response.text();
+}

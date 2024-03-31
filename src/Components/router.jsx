@@ -1,11 +1,10 @@
 import {createBrowserRouter} from "react-router-dom";
-import Home, {HomeIndex} from "./home";
+import Home, {HomeIndex} from "./Home/home";
 import {action as HomeAction, loader as HomeLoader} from "./TopBar/StatusBlock/StatusBlock";
 import ErrorPage from "./Errors/ErrorPage";
 import ProgramPage, {
     action as ProgramPageAction,
     loader as ProgramPageLoader,
-    ProgramIndex
 } from "./ProgramPage/ProgramPage";
 import ProgramContent, {
     action as programContentAction,
@@ -22,7 +21,7 @@ import {
     DataPointsAction as ProfileDataPointsAction,
     DataPointsLoader as ProfileDataPointsLoader, loader as ProfileApplicantLoader, ProfileApplicantPage
 } from "./Profile/ProfileApplicant/ProfileApplicantPage";
-import Profile, {action as profileAction, loader as profileLoader, ProfileIndex} from "./Profile/Profile";
+import Profile, {action as profileAction, loader as profileLoader} from "./Profile/Profile";
 import AddModifyApplicant, {
     action as addModifyApplicantAction,
     loader as addModifyApplicantLoader
@@ -31,16 +30,22 @@ import AddModifyRecord, {
     action as addModifyRecordAction,
     loader as addModifyRecordLoader
 } from "./Modify/Record/AddModifyRecord";
-import PostPage, {action as PostPageAction, loader as PostPageLoader, PostIndex} from "./Post/PostPage";
+import PostPage, {action as PostPageAction, loader as PostPageLoader} from "./Post/PostPage";
 import PostContent, {action as PostContentAction, loader as PostContentLoader} from "./Post/PostContent/PostContent";
 import AddModifyPost, {action as AddModifyPostAction, loader as AddModifyPostLoader} from "./Modify/Post/AddModifyPost";
-import FAQPage from "./FAQ/FAQPage";
+import MarkDownPage from "./MarkDownPage/MarkDownPage";
 import Login, {action as loginAction} from "./Auth/Login/Login";
 import RegisterAndReset, {action as registerAndResetAction} from "./Auth/RegisterAndReset/RegisterAndReset";
 import Agreement from "./Agreement/Agreement";
 import {AboutUs} from "./AboutUs/AboutUs";
 import {HowToUse} from "./HowToUse/HowToUse";
 import React from "react";
+import FAQMDPath from "../Data/MarkDown/FAQ.md";
+import ProgramIndexMDPath from "../Data/MarkDown/ProgramIndex.md"
+import {loadMarkDown} from "../Data/Common";
+import ProfileIndexMDPath from "../Data/MarkDown/ProfileIndex.md"
+import HomeIndexMDPath from "../Data/MarkDown/HomeIndex.md"
+import PostIndexMDPath from "../Data/MarkDown/PostIndex.md"
 
 const router = createBrowserRouter([
     {
@@ -53,6 +58,9 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <HomeIndex/>,
+                loader: async () => {
+                    return {content: await loadMarkDown(HomeIndexMDPath)}
+                }
             }, {
                 errorElement: <ErrorPage/>,
                 children: [
@@ -67,7 +75,10 @@ const router = createBrowserRouter([
                                 children: [
                                     {
                                         index: true,
-                                        element: <ProgramIndex/>,
+                                        element: <MarkDownPage key="ProgramIndex"/>,
+                                        loader: async () => {
+                                            return {content: await loadMarkDown(ProgramIndexMDPath)}
+                                        }
                                     }, {
                                         path: '/programs/:programId',
                                         element: <ProgramContent/>,
@@ -119,7 +130,10 @@ const router = createBrowserRouter([
                                 children: [
                                     {
                                         index: true,
-                                        element: <ProfileIndex/>
+                                        element: <MarkDownPage key="ProfileIndex"/>,
+                                        loader: async () => {
+                                            return {content: await loadMarkDown(ProfileIndexMDPath)}
+                                        }
                                     }, {
                                         path: '/profile/:applicantId',
                                         element: <ProfileApplicantPage editable={true}/>,
@@ -160,7 +174,11 @@ const router = createBrowserRouter([
                                 children: [
                                     {
                                         index: true,
-                                        element: <PostIndex/>
+                                        // element: <PostIndex/>
+                                        element: <MarkDownPage key={"PostIndex"}/>,
+                                        loader: async () => {
+                                            return {content: await loadMarkDown(PostIndexMDPath)}
+                                        }
                                     }, {
                                         path: '/posts/:postId',
                                         element: <PostContent/>,
@@ -182,7 +200,10 @@ const router = createBrowserRouter([
                         ]
                     }, {
                         path: '/FAQ',
-                        element: <FAQPage/>,
+                        element: <MarkDownPage key="FAQ" sx={{width: "80%", bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA"}}/>,
+                        loader: async () => {
+                            return {content: await loadMarkDown(FAQMDPath)}
+                        },
                     }, {
                         path: '/login',
                         element: <Login/>,
@@ -204,7 +225,6 @@ const router = createBrowserRouter([
                     }, {
                         path: '/how-to-use',
                         element: <HowToUse/>,
-                        // loader: profileLoader,
                     }
                 ]
             }
