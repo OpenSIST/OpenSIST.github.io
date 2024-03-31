@@ -221,12 +221,12 @@ function darkModeRedraw() {
         ctx.arc(x, y, univ.size, 0, 2 * Math.PI);
 
         let gradient = ctx.createRadialGradient(x, y, 0, x, y, univ.size);
-        gradient.addColorStop(1.0, 'rgba(255, 183, 64, 0.00155)');
-        gradient.addColorStop(0.8, 'rgba(255, 183, 64, 0.12185)');
-        gradient.addColorStop(0.6, 'rgba(255, 183, 64, 0.35375)');
-        gradient.addColorStop(0.4, 'rgba(255, 183, 64, 0.57965)');
-        gradient.addColorStop(0.2, 'rgba(255, 183, 64, 0.68195)');
-        gradient.addColorStop(0.0, 'rgba(255, 183, 64, 0.70000)');
+        gradient.addColorStop(1.0, 'rgba(255, 171, 46, 0.00155)');
+        gradient.addColorStop(0.8, 'rgba(255, 171, 46, 0.12185)');
+        gradient.addColorStop(0.6, 'rgba(255, 171, 46, 0.35375)');
+        gradient.addColorStop(0.4, 'rgba(255, 171, 46, 0.57965)');
+        gradient.addColorStop(0.2, 'rgba(255, 171, 46, 0.68195)');
+        gradient.addColorStop(0.0, 'rgba(255, 171, 46, 0.70000)');
 
         ctx.fillStyle = gradient;
         ctx.fill();
