@@ -174,7 +174,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         return <Chip
             label={`${rowData.ProgramYear}${rowData.Semester}`}
             color={SemesterPalette[rowData.Semester]}
-            sx={{height: '1.6rem'}}
+            sx={{height: '1.6rem', width: '6rem'}}
         />
     };
     const timelineBodyTemplate = (rowData, columnBodyOption) => {
@@ -331,26 +331,26 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     header='结果通知时间'
                     // align='center'
                     body={timelineBodyTemplate}
-                    style={{minWidth: '8rem'}}
+                    style={{minWidth: '8rem', fontSize: '14px'}}
                 />
                 <Column
                     field='TimeLine.Interview'
                     header='面试时间'
                     // align='center'
                     body={timelineBodyTemplate}
-                    style={{minWidth: '8rem'}}
+                    style={{minWidth: '8rem', fontSize: '14px'}}
                 />
                 <Column
                     field='TimeLine.Submit'
                     header='网申提交时间'
                     // align='center'
                     body={timelineBodyTemplate}
-                    style={{minWidth: '8rem'}}
+                    style={{minWidth: '8rem', fontSize: '14px'}}
                 />
                 <Column
                     field='Detail'
                     header='备注、补充说明等'
-                    style={{width: '25rem', minWidth: '15rem'}}
+                    style={{width: '25rem', minWidth: '15rem', fontSize: '14px'}}
                 />
             </DataTable>
         </ThemeSwitcherProvider>
