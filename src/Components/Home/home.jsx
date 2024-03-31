@@ -2,11 +2,10 @@ import TopBar from "../TopBar/TopBar";
 import {Outlet, Link} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 import {BoldTypography, LoadingBackdrop, OpenSIST, useSmallPage} from "../common";
-import {Box, Button, Divider, IconButton, Paper, SvgIcon, Typography, useTheme} from "@mui/material";
+import {Box, Button, Divider, IconButton, Paper, Typography, useTheme} from "@mui/material";
 import {init_map} from "../WorldMap/display";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import './home.css';
-import {ReactComponent as AirplaneLight} from "../WorldMap/airplane_light.svg";
 import ReactMarkdown from "react-markdown";
 import {ArrowDownward, ArrowUpward} from "@mui/icons-material";
 import {grey} from "@mui/material/colors";
@@ -81,12 +80,7 @@ function HomeIndexContent() {
                         size='large'
                         className='slide-out-elliptic-top-bck'
                     >
-                        {/*<SvgIcon*/}
-                        {/*    component={darkMode ? AirplaneLight : AirplaneLight}*/}
-                        {/*    inheritViewBox*/}
-                        {/*    sx={{transform: 'rotate(90deg)', fontSize: '4rem'}}*/}
-                        {/*/>*/}
-                        <ArrowUpward sx={{fontSize: '4rem'}} color='primary'/>
+                        <ArrowUpward sx={{fontSize: '2rem'}} color='primary'/>
                     </IconButton>
                 </Box>
                 <Box sx={{height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'start', ml: smallPage ? 0 : '2rem'}}>
@@ -98,12 +92,7 @@ function HomeIndexContent() {
                         size='large'
                         className='slide-out-elliptic-bottom-bck'
                     >
-                        {/*<SvgIcon*/}
-                        {/*    component={darkMode ? AirplaneLight : AirplaneLight}*/}
-                        {/*    inheritViewBox*/}
-                        {/*    sx={{transform: 'rotate(270deg)', fontSize: '4rem'}}*/}
-                        {/*/>*/}
-                        <ArrowDownward sx={{fontSize: '4rem'}} color='primary'/>
+                        <ArrowDownward sx={{fontSize: '2rem'}} color='primary'/>
                     </IconButton>
                     <Grid2 container rowSpacing={smallPage ? 5 : 10}>
                         <Grid2 xs={12} lg={6}>
@@ -133,7 +122,8 @@ function WelcomeBlock() {
             <Divider sx={{mt: '1rem', mb: '1rem'}}/>
             <Typography sx={{mb: '1rem'}}>
                 OpenSIST是一个由上海科技大学2020级信息学院同学自发创建的留学申请信息共享平台，旨在为上科大学子提供一个更加开放的留学申请信息分享平台，帮助大家更好地规划自己的留学申请。<br/>
-                如果你喜欢这个网站，请前往<a href='https://github.com/opensist/opensist.github.io' style={{color: linkColor}}>GitHub</a>给我们一个star!
+                如果你喜欢这个网站，请前往<a href='https://github.com/opensist/opensist.github.io'
+                                            style={{color: linkColor}}>GitHub</a>给我们一个star!
             </Typography>
             <ReactMarkdown>
                 [![License: GPL
@@ -171,7 +161,8 @@ function HomeIndexContentBlock({title}) {
                     </ul>
                     <Typography variant='h5'>校内链接</Typography>
                     <ul>
-                        <li>学校ACM社团：<a href='https://acm.shanghaitech.edu.cn/' style={{color: linkColor}}>ACM@SIST</a></li>
+                        <li>学校ACM社团：<a href='https://acm.shanghaitech.edu.cn/'
+                                           style={{color: linkColor}}>ACM@SIST</a></li>
                     </ul>
                 </div>
             )
@@ -220,8 +211,10 @@ function WorldMap({width, height}) {
     }, [width, height, mode]);
     return (
         <>
-            <canvas ref={staticCanvasRef} width={width} height={height} style={{overflow: "auto", position: "relative"}}/>
-            <canvas ref={dynamicCanvasRef} width={width} height={height} style={{overflow: "auto", position: "absolute"}}/>
+            <canvas ref={staticCanvasRef} width={width} height={height}
+                    style={{overflow: "auto", position: "relative"}}/>
+            <canvas ref={dynamicCanvasRef} width={width} height={height}
+                    style={{overflow: "auto", position: "absolute"}}/>
         </>
     )
 }
