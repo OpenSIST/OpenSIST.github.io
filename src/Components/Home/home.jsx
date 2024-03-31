@@ -235,10 +235,11 @@ function WorldMap({width, height}) {
     useEffect(() => {
         let map_width = Math.min(width, 1700);
         let map_height = height - 60;
-        if (map_width > map_height * 1.75) {
-            map_width = map_height * 1.75;
+        const desired_scale = 1.9;
+        if (map_width > map_height * desired_scale) {
+            map_width = map_height * desired_scale;
         } else {
-            map_height = map_width / 1.75;
+            map_height = map_width / desired_scale;
         }
         init_map(staticCanvasRef.current, dynamicCanvasRef.current, map_width, map_height, mode);
     }, [width, height, mode]);
