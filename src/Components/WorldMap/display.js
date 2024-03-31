@@ -18,6 +18,8 @@ let flights = [];
 let lastTimestamp = Date.now();
 let img = new Image();
 img.src = String(plane_svg);
+let nextGenTime = Date.now();
+let force = false;
 
 
 // Settings
@@ -171,17 +173,24 @@ function drawFlight(ctx, projection, flight, fps) {
     return [x1, y1, direction, opacity, flight.total !== 1];
 }
 
-function lightModeRedraw() {
-    for (let i = 0; i < flights.length; i++) {
-        if (flights[i].progress >= flights[i].total + longest_tail) {
-            flights[i].progress = 0;
-            const new_flight = UnivList[Math.floor(Math.random() * UnivList.length)];
-            flights[i].latitude = new_flight.latitude;
-            flights[i].longitude = new_flight.longitude;
-            const longitude = flights[i].longitude < 0 ? flights[i].longitude + 360 : flights[i].longitude;
-            flights[i].total = (flights[i].latitude - shanghai[1]) ** 2 + (longitude - shanghai[0]) ** 2;
-        }
+function genNewFlight() {
+    if (!force && nextGenTime > lastTimestamp) {
+        return;
     }
+    nextGenTime = lastTimestamp + 2000 + Math.random() * 4000;
+    let flight = {};
+    flight.progress = 0;
+    const new_flight = UnivList[Math.floor(Math.random() * UnivList.length)];
+    flight.latitude = new_flight.latitude;
+    flight.longitude = new_flight.longitude;
+    const longitude = flight.longitude < 0 ? flight.longitude + 360 : flight.longitude;
+    flight.total = (flight.latitude - shanghai[1]) ** 2 + (longitude - shanghai[0]) ** 2;
+    flights.push(flight);
+}
+
+function lightModeRedraw() {
+    flights = flights.filter(flight => flight.progress < flight.total + longest_tail);
+    genNewFlight();
 
     const now = Date.now();
     const fps = 1000 / (now - lastTimestamp);
@@ -275,16 +284,6 @@ export function init_map(static_container, dynamic_container, with_width, with_h
     init_canvas(static_container);
     init_canvas(dynamic_container);
     ctx = canvas.getContext("2d");
-    if (flights.length === 0) {
-        flights = Array.from({length: 5}, () => {
-            return {
-                latitude: 31.13,
-                longitude: 121.48,
-                total: 1,
-                progress: (1 - Math.random() / 5) * longest_tail
-            }
-        });
-    }
     drawMap(static_container, mode);
     redraw(mode);
 }
