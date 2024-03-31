@@ -42,7 +42,7 @@ export function HomeIndex() {
     return (
         <Box
             sx={{
-                bgcolor: (theme) => theme.palette.mode === 'dark' ? "#1A1E24" : "#E8EAED",
+                bgcolor: (theme) => theme.palette.mode === 'dark' ? "#1A1E24" : "#FAFAFA",
                 height: "100%",
                 width: "100%",
                 display: 'flex',

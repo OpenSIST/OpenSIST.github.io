@@ -206,7 +206,7 @@ function lightModeRedraw() {
     const [x1, y1] = projection(shanghai);
     ctx.beginPath();
     ctx.arc(x1, y1, 5, 0, 2 * Math.PI);
-    ctx.fillStyle = "#FF2600";
+    ctx.fillStyle = "#C25451";
     ctx.fill();
 }
 
