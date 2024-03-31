@@ -51,7 +51,6 @@ export function HomeIndex() {
         >
             <WorldMap width={width} height={height}/>
             <HomeIndexContent/>
-            {/*<MarkDownPage sx={{position: 'absolute', bgcolor: 'transparent', backgroundImage: 'none', boxShadow: 'none'}}/>*/}
         </Box>
     )
 }
@@ -60,8 +59,24 @@ function HomeIndexContent() {
     const smallPage = useSmallPage();
     const [pageIndex, setPageIndex] = useState(0);
     const darkMode = useTheme().palette.mode === 'dark';
+    const contentRef = useRef(null);
+
+    useEffect(() => {
+        const currentContentRef = contentRef.current;
+        const onWheel = (e) => {
+            if (e.deltaY > 0 && pageIndex === 0) {
+                setPageIndex(1);
+            } else if (e.deltaY < 0 && pageIndex === 1) {
+                setPageIndex(0);
+            }
+        };
+        currentContentRef.addEventListener("wheel", onWheel);
+        return () => currentContentRef.removeEventListener("wheel", onWheel)
+    }, [pageIndex]);
+
     return (
         <Box
+            ref={contentRef}
             sx={{
                 position: 'absolute',
                 width: '80%',
@@ -114,7 +129,11 @@ function HomeIndexContent() {
                         <SvgIcon
                             component={darkMode ? VectorArrowDark : VectorArrowLight}
                             inheritViewBox
-                            sx={{fontSize: '3rem', transform: 'rotate(180deg)', filter: 'drop-shadow(0px 0px 15px rgba(128, 128, 128, 0.4))'}}
+                            sx={{
+                                fontSize: '3rem',
+                                transform: 'rotate(180deg)',
+                                filter: 'drop-shadow(0px 0px 15px rgba(128, 128, 128, 0.4))'
+                            }}
                         />
                         {/*<ArrowDownward sx={{fontSize: '2rem'}} color='primary'/>*/}
                     </IconButton>
@@ -151,11 +170,16 @@ function WelcomeBlock() {
                 Welcome to
             </Typography>
             <OpenSIST props={{variant: 'h3'}}/>
-            <Divider sx={{mt: '1rem', mb: '1rem', bgcolor: theme.palette.mode === 'dark' ? "#fff" : "#000", height: '1px'}}/>
+            <Divider sx={{
+                mt: '1rem',
+                mb: '1rem',
+                bgcolor: theme.palette.mode === 'dark' ? "#fff" : "#000",
+                height: '1px'
+            }}/>
             <Typography sx={{mb: '1rem'}}>
                 OpenSIST是一个由上海科技大学2020级信息学院同学自发创建的留学申请信息共享平台，旨在为上科大学子提供一个更加开放的留学申请信息分享平台，帮助大家更好地规划自己的留学申请。<br/>
                 如果你喜欢这个网站，请前往<a href='https://github.com/opensist/opensist.github.io'
-                                               style={{color: linkColor}}>GitHub</a>给我们一个star!
+                                            style={{color: linkColor}}>GitHub</a>给我们一个star!
             </Typography>
             <ReactMarkdown>
                 [![License: GPL
@@ -166,7 +190,8 @@ function WelcomeBlock() {
             <Button variant='contained' component={Link} to='/how-to-use'>
                 使用指南
             </Button>
-            <Button variant='outlined' component={Link} to='https://qm.qq.com/q/U1QvSyE6u6' sx={{ml: '1rem', textTransform: 'none'}}>
+            <Button variant='outlined' component={Link} to='https://qm.qq.com/q/U1QvSyE6u6'
+                    sx={{ml: '1rem', textTransform: 'none'}}>
                 OpenSIST QQ群
             </Button>
         </Box>
@@ -203,7 +228,8 @@ function HomeIndexContentBlock({title}) {
             return (
                 <ul>
                     <li>
-                        本项目受到<a href='https://github.com/xichenpan' style={{color: linkColor}}>flash老师</a>的<a
+                        本项目受到<a href='https://github.com/xichenpan'
+                                     style={{color: linkColor}}>flash老师</a>的<a
                         href='https://opencs.app' style={{color: linkColor}}>OpenCS</a>项目的启发
                     </li>
                     <li>
@@ -221,7 +247,12 @@ function HomeIndexContentBlock({title}) {
             <BoldTypography variant='h4'>
                 {title}
             </BoldTypography>
-            <Divider sx={{mt: '1rem', mb: '1rem', bgcolor: theme.palette.mode === 'dark' ? "#fff" : "#000", height: '1px'}}/>
+            <Divider sx={{
+                mt: '1rem',
+                mb: '1rem',
+                bgcolor: theme.palette.mode === 'dark' ? "#fff" : "#000",
+                height: '1px'
+            }}/>
             {blockItems(title)}
         </Box>
     )
