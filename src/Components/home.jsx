@@ -2,7 +2,7 @@ import TopBar from "./TopBar/TopBar";
 import {Outlet} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 import {LoadingBackdrop} from "./common";
-import {Box, Paper, Typography} from "@mui/material";
+import {Box, Paper, Typography, useTheme} from "@mui/material";
 import {init_map} from "./WorldMap/display";
 
 function Home() {
@@ -37,7 +37,7 @@ export function HomeIndex() {
     return (
         <Box
             sx={{
-                bgcolor: "#1A1E24",
+                bgcolor: (theme) => theme.palette.mode === 'dark' ? "#1A1E24" : "#FFFFFF",
                 height: "100%",
                 width: "100%",
                 display: 'flex',
@@ -52,6 +52,8 @@ export function HomeIndex() {
 }
 
 function WorldMap({width, height}) {
+    const theme = useTheme();
+    const mode = theme.palette.mode;
     const dynamicCanvasRef = useRef(null);
     const staticCanvasRef = useRef(null);
     useEffect(() => {
@@ -62,8 +64,8 @@ function WorldMap({width, height}) {
         } else {
             map_height = map_width / 1.75;
         }
-        init_map(staticCanvasRef.current, dynamicCanvasRef.current, map_width, map_height);
-    }, [width, height]);
+        init_map(staticCanvasRef.current, dynamicCanvasRef.current, map_width, map_height, mode);
+    }, [width, height, mode]);
     return (
         <>
             <canvas ref={staticCanvasRef} width={width} height={height} style={{overflow: "auto", position: "relative"}}/>

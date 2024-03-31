@@ -18,7 +18,18 @@ let lastTimestamp = Date.now();
 let img = new Image();
 img.src = "airplane_light.svg";
 
-async function drawMap(static_container) {
+const color = {
+    'light': {
+        'country_fill': '#E1E3E5',
+        'country_border': '#969799'
+    },
+    'dark': {
+        'country_fill': '#243347',
+        'country_border': '#405A80'
+    },
+}
+
+async function drawMap(static_container, mode) {
     const static_ctx = static_container.getContext("2d");
     static_ctx.clearRect(0, 0, static_container.width, static_container.height);
 
@@ -29,8 +40,8 @@ async function drawMap(static_container) {
         .projection(projection)
         .context(static_ctx);
 
-    static_ctx.fillStyle = "#243347";
-    static_ctx.strokeStyle = "#405A80";
+    static_ctx.fillStyle = color[mode].country_fill;
+    static_ctx.strokeStyle = color[mode].country_border;
 
     static_ctx.globalAlpha = 1.0;
     static_ctx.filter = "none";
@@ -79,7 +90,7 @@ function init_canvas(container) {
     container.getContext("2d").scale(devicePixelRatio, devicePixelRatio);
 }
 
-export function init_map(static_container, dynamic_container, with_width, with_height) {
+export function init_map(static_container, dynamic_container, with_width, with_height, mode) {
     if (animationId !== null) {
         cancelAnimationFrame(animationId);
     }
@@ -87,7 +98,7 @@ export function init_map(static_container, dynamic_container, with_width, with_h
     const resizeObserver = new ResizeObserver(async entries => {
         const containerEntry = entries.find(entry => entry.target === canvas);
         if (containerEntry) {
-            drawMap(static_container);
+            drawMap(static_container, mode);
             redraw();
         }
     });
@@ -98,6 +109,6 @@ export function init_map(static_container, dynamic_container, with_width, with_h
     init_canvas(static_container);
     init_canvas(dynamic_container);
     ctx = canvas.getContext("2d");
-    drawMap(static_container);
+    drawMap(static_container, mode);
     redraw();
 }
