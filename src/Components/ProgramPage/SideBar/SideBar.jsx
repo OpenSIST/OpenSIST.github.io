@@ -111,6 +111,7 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
     const univName = univProgram[0];
     const programList = univProgram[1];
     const flags = programList[0].Region.map((r) => regionFlagMapping[r]).reduce((prev, curr) => prev + ' ' + curr, '');
+    const darkMode = useTheme().palette.mode === 'dark';
     return (
         <>
             <ListItemButton
@@ -125,7 +126,7 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
                         </Box>
                     }
                     secondary={
-                        <Typography variant='subtitle1' sx={{fontSize: 'clamp(11px, 1.5vw, 13px)'}}>
+                        <Typography variant='subtitle1' sx={{fontSize: 'clamp(11px, 1.5vw, 13px)', color: darkMode ? '#888888' : '#777777'}}>
                             {univAbbrFullNameMapping[univName]}
                         </Typography>
                     }/>

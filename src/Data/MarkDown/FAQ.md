@@ -30,13 +30,15 @@
 > - SDE: Software Development Engineer
 > - MLE: Machine Learning Engineer
 > - DS: Data Science
+> - CSE: 有时指Computer Science and Engineering，有时指Computational Science and Engineering
 > - MS/MSc: Master of Science
+> - MSE: 一般指Master of Science and Engineering，少数情况指Master of Software Engineering
 > - MASc: Master of Applied Science
 > - MEng: Master of Engineering
 > - ScM: Science Master
 > - MPhil: Master of Philosophy
-> - DPhil: Doctor of Philosophy
-> - deposit: 入学前的押金
-> - I20: 接offer之后学校签发的文件，用于办签证
-> - bar: 准入门槛，指录取难度
+> - PhD: Doctor of Philosophy
+> - deposit: 接offer后要交的押金，俗称占位费，正式入学后会抵扣等额的学费
+> - I20: 接offer之后学校签发的文件，是维持在美国学生身份的唯一合法文件，办签证必带
+> - bar: 项目录取的准入门槛
 > - co-op: Cooperative education，学期内官方带薪实习。

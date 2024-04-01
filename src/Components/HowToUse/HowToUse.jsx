@@ -104,7 +104,7 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                         >
                             <BoldTypography variant='h3'>{Index}.</BoldTypography>
                             <Divider sx={{bgcolor: (theme) => theme.palette.mode === 'dark' ? "#fff" : "#000", height: 'auto'}}/>
-                            <Box>
+                            <Box sx={{mr: '1rem'}}>
                                 <BoldTypography variant='h6'
                                                 sx={{color: (theme) => theme.palette.mode === 'dark' ? "#fff" : "#000"}}>
                                     {TitlePrime}
@@ -114,7 +114,7 @@ export function GuidanceGrid({Index, TitlePrime, TitleSecond, Content, ButtonLin
                                     {TitleSecond}
                                 </BoldTypography>
                             </Box>
-                            <Typography>{Content}</Typography>
+                            <Typography sx={{mr: '1rem'}}>{Content}</Typography>
                         </Box>
                     </CardContent>
                 </Paper>

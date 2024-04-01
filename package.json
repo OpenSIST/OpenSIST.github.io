@@ -31,6 +31,7 @@
     "primereact": "10.5.1",
     "react": "18.2.0",
     "react-css-theme-switcher": "0.3.0",
+    "react-device-detect": "^2.2.3",
     "react-dom": "18.2.0",
     "react-draggable": "4.4.6",
     "react-hook-form": "7.50.1",

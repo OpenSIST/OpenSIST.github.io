@@ -9,6 +9,7 @@ import './home.css';
 import ReactMarkdown from "react-markdown";
 import {ReactComponent as VectorArrowDark} from "../icons/VectorArrowDark.svg";
 import {ReactComponent as VectorArrowLight} from "../icons/VectorArrowLight.svg";
+import {isSafari} from 'react-device-detect';
 
 function Home() {
     return (
@@ -74,7 +75,6 @@ function HomeIndexContent() {
         return () => currentContentRef.removeEventListener("wheel", onWheel)
     }, [pageIndex]);
 
-    const iconButtonRef = useRef(null);
     return (
         <Box
             ref={contentRef}
@@ -119,7 +119,7 @@ function HomeIndexContent() {
                                 height: '3rem',
                                 width: '3rem',
                                 filter: 'drop-shadow(0px 0px 15px rgba(128, 128, 128, 0.4))',
-                                "&:hover": {
+                                "&:hover": isSafari ? {} : {
                                     filter: 'drop-shadow(0px 0px 15px rgb(128, 128, 128))'
                                 }
                             }}
@@ -156,19 +156,19 @@ function HomeIndexContent() {
                                 fontSize: '3rem',
                                 transform: 'rotate(180deg)',
                                 filter: 'drop-shadow(0px 0px 15px rgba(128, 128, 128, 0.4))',
-                                "&:hover": {
+                                "&:hover": isSafari ? {} : {
                                     filter: 'drop-shadow(0px 0px 15px rgb(128, 128, 128))'
                                 }
                             }}
                         />
                     </IconButton>
                     <Grid2 container rowSpacing={smallPage ? 5 : 10} sx={{mt: '3rem'}}>
-                        <Grid2 xs={12} lg={6}>
+                        <Grid2 xs={12} md={6}>
                             <HomeIndexContentBlock title="友情链接"/>
                         </Grid2>
                         {!smallPage ? <Grid2 xs={6}/> : null}
                         {!smallPage ? <Grid2 xs={6}/> : null}
-                        <Grid2 xs={12} lg={6}>
+                        <Grid2 xs={12} md={6}>
                             <HomeIndexContentBlock title="特别鸣谢"/>
                         </Grid2>
                     </Grid2>
@@ -181,7 +181,6 @@ function HomeIndexContent() {
 function WelcomeBlock() {
     const theme = useTheme();
     const linkColor = theme.palette.mode === "dark" ? "#fff" : "#4183C4";
-    const smallPage = useSmallPage();
 
     return (
         <Box
@@ -201,10 +200,12 @@ function WelcomeBlock() {
                 bgcolor: theme.palette.mode === 'dark' ? "#fff" : "#000",
                 height: '1px'
             }}/>
-            <Typography sx={{mb: '1rem'}}>
-                OpenSIST是一个由上海科技大学2020级信息学院同学自发创建的留学申请信息共享平台，旨在为上科大学子提供一个更加开放的留学申请信息分享平台，帮助大家更好地规划自己的留学申请。<br/>
-                <b>如果你喜欢这个网站，请前往<a href='https://github.com/opensist/opensist.github.io' style={{color: linkColor}}>GitHub</a>给我们一个Star!</b>
+            <Typography sx={{mb: '1rem', ml: '0.5rem'}}>
+                OpenSIST是一个由上海科技大学2020级信息学院同学自发创建、旨在为上科大学子提供一个更加开放的留学申请信息分享平台，帮助大家更好地规划自己的留学申请。
             </Typography>
+            <BoldTypography>
+                如果你喜欢这个网站，请前往<a href='https://github.com/opensist/opensist.github.io' style={{color: linkColor}}>GitHub</a>给我们一个Star!
+            </BoldTypography>
             <ReactMarkdown>
                 [![License: GPL
                 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
