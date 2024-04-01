@@ -203,8 +203,8 @@ function WelcomeBlock() {
                 bgcolor: theme.palette.mode === 'dark' ? "#fff" : "#000",
                 height: '1px'
             }}/>
-            <Typography sx={{mb: '1rem', ml: '0.5rem'}}>
-                OpenSIST是一个由上海科技大学2020级信息学院同学自发创建、旨在为上科大学子提供一个更加开放的留学申请信息分享平台，帮助大家更好地规划自己的留学申请。
+            <Typography sx={{mb: '1rem', mr: '4rem'}}>
+                OpenSIST由上海科技大学2020级信息学院同学自发创建，旨在为上科大学子提供一个更加开放的留学申请信息分享平台，帮助大家更好地规划自己的留学申请。
             </Typography>
             <BoldTypography>
                 如果你喜欢这个网站，请前往<a href='https://github.com/opensist/opensist.github.io' style={{color: linkColor}}>GitHub</a>给我们一个Star!
