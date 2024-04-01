@@ -126,7 +126,7 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
                         </Box>
                     }
                     secondary={
-                        <Typography variant='subtitle1' sx={{fontSize: 'clamp(11px, 1.5vw, 13px)', color: darkMode ? '#888888' : '#777777'}}>
+                        <Typography variant='subtitle1' sx={{fontSize: 'clamp(11px, 1.5vw, 13px)', color: darkMode ? '#999999' : '#777777'}}>
                             {univAbbrFullNameMapping[univName]}
                         </Typography>
                     }/>

@@ -370,6 +370,9 @@ function UsageGuidance() {
             <AccordionDetails>
                 <ol>
                     <li>
+                        高校的顺序主要参考USNews和CSRankings的排名，每个学校内部的项目按字典序排序，因此<b>任何顺序与项目质量、申请难度并不直接挂钩</b>。
+                    </li>
+                    <li>
                         <InlineTypography>
                             对于<b>申请人</b>和<b>申请项目</b>这两列，可点击单元格中的药丸查看申请人或项目的详细信息。
                         </InlineTypography>
