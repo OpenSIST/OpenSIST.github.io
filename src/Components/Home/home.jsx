@@ -207,7 +207,7 @@ function WelcomeBlock() {
                 OpenSIST由上海科技大学2020级信息学院同学自发创建，旨在为上科大学子提供一个更加开放的留学申请信息分享平台，帮助大家更好地规划自己的留学申请。
             </Typography>
             <BoldTypography>
-                如果你喜欢这个网站，请前往<a href='https://github.com/opensist/opensist.github.io' style={{color: linkColor}}>GitHub</a>给我们一个Star!
+                如果你喜欢这个网站，请前往<a href='https://github.com/opensist/opensist.github.io' style={{color: linkColor}}><b>GitHub</b></a>给我们一个Star!
             </BoldTypography>
             <ReactMarkdown>
                 [![License: GPL
@@ -234,31 +234,31 @@ function HomeIndexContentBlock({title}) {
             return (
                 <div>
                     <Typography variant='h5'>申请网站</Typography>
-                    <ul>
-                        <li>陆本申请北美选校定位平台：<a href="https://opencs.app" style={{color: linkColor}}>Open CS
-                            Application</a></li>
+                    <ul style={{marginRight: '4rem'}}>
+                        <li>陆本申请北美选校定位平台：<a href="https://opencs.app" style={{color: linkColor}}><b>Open CS
+                            Application</b></a></li>
                         <li>陆本申请欧洲/港新地区信息共享平台：<a href="https://global-cs-application.github.io"
-                                                                 style={{color: linkColor}}>Global CS</a></li>
+                                                                 style={{color: linkColor}}><b>Global CS</b></a></li>
                         <li>CS PhD文书参考：<a
                             href="https://cs-sop.notion.site/CS-PhD-Statements-of-Purpose-df39955313834889b7ac5411c37b958d"
-                            style={{color: linkColor}}>CS PhD Statements of Purpose</a></li>
+                            style={{color: linkColor}}><b>CS PhD Statements of Purpose</b></a></li>
                         <li>海外硕博申请信息共享平台（类似一亩三分地）：<a href="https://www.thegradcafe.com/"
-                                                                        style={{color: linkColor}}>GradCafe</a></li>
+                                                                        style={{color: linkColor}}><b>GradCafe</b></a></li>
                     </ul>
                     <Typography variant='h5'>校内链接</Typography>
                     <ul>
                         <li>学校ACM社团：<a href='https://acm.shanghaitech.edu.cn/'
-                                           style={{color: linkColor}}>ACM@SIST</a></li>
+                                           style={{color: linkColor}}><b>ACM@SIST</b></a></li>
                     </ul>
                 </div>
             )
         } else if (title === '特别鸣谢') {
             return (
-                <ul>
+                <ul style={{marginRight: '4rem'}}>
                     <li>
                         本项目受到<a href='https://github.com/xichenpan'
-                                     style={{color: linkColor}}>flash老师</a>的<a
-                        href='https://opencs.app' style={{color: linkColor}}>OpenCS</a>项目的启发
+                                     style={{color: linkColor}}><b>flash老师</b></a>的<a
+                        href='https://opencs.app' style={{color: linkColor}}><b>OpenCS</b></a>项目的启发
                     </li>
                     <li>
                         本项目在内测阶段得到了信息学院和生医工学院毕业生们的大力支持，他们的宝贵建议对OpenSIST的进一步完善至关重要

@@ -35,6 +35,10 @@ export function HowToUse() {
     return (
         <Box sx={{p: '1rem', bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA"}}>
             <Typography variant="h4" sx={{textAlign: 'center'}}><OpenSIST props={{variant: 'h4'}}/>使用指南</Typography>
+            <Box sx={{display: 'flex', flexDirection: 'column', gap: "2rem", m: '2rem'}}>
+                <Typography variant="h5">非毕业年级的在读生请阅读：</Typography>
+                <Typography component="blockquote" variant="h6">请自由探索顶部导航栏的三个主要板块（申请季数据汇总、项目信息表、申请分享帖），每个版块内部请配合使用指南食用。</Typography>
+            </Box>
             <Graduated/>
         </Box>
     )
