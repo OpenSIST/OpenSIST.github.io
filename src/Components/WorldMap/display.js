@@ -93,24 +93,33 @@ function cubicBezierLength(p0, cp1, cp2, p, t = 1) {
     return t2 * sum;
 }
 
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+
+}
+
 function drawFlight(ctx, projection, flight, fps) {
-    flight.progress += (10 + 0.001 * flight.total) * (60 / fps);
+    const base_speed = (10 + 0.001 * flight.total) * (60 / fps);
+    const progress = flight.progress / flight.total;
+    const ease_out = (0.8 < progress && progress < 1.0) ? (-20 * progress ** 2 + 32 * progress - 11.8) : 1.0;
+    flight.progress += base_speed * ease_out;
+    flight.tail_progrss += base_speed;
     const gradient_start_position = projection(shanghai);
     const flight_end_position = projection([flight.longitude, flight.latitude]);
 
-    const gradient_end_progress = flight.progress / flight.total;
-    const gradient_end_position = [
-        gradient_start_position[0] + (flight_end_position[0] - gradient_start_position[0]) * gradient_end_progress,
-        gradient_start_position[1] + (flight_end_position[1] - gradient_start_position[1]) * gradient_end_progress
+    const gradient_1_progress = progress;
+    const gradient_1_position = [
+        gradient_start_position[0] + (flight_end_position[0] - gradient_start_position[0]) * gradient_1_progress,
+        gradient_start_position[1] + (flight_end_position[1] - gradient_start_position[1]) * gradient_1_progress
     ];
-    const gradient_tail_progress = (flight.progress - longest_tail) / flight.total;
-    const gradient_tail_position = [
-        gradient_start_position[0] + (flight_end_position[0] - gradient_start_position[0]) * gradient_tail_progress,
-        gradient_start_position[1] + (flight_end_position[1] - gradient_start_position[1]) * gradient_tail_progress
+    const gradient_0_progress = flight.tail_progrss / flight.total;
+    const gradient_0_position = [
+        gradient_start_position[0] + (flight_end_position[0] - gradient_start_position[0]) * gradient_0_progress,
+        gradient_start_position[1] + (flight_end_position[1] - gradient_start_position[1]) * gradient_0_progress
     ];
-    const linear_gradient = ctx.createLinearGradient(...gradient_end_position, ...gradient_tail_position);
-    linear_gradient.addColorStop(0, "rgba(255, 172, 41, 1)");
-    linear_gradient.addColorStop(1, "rgba(255, 172, 41, 0)");
+    const linear_gradient = ctx.createLinearGradient(...gradient_0_position, ...gradient_1_position);
+    linear_gradient.addColorStop(0, "rgba(255, 172, 41, 0)");
+    linear_gradient.addColorStop(1, "rgba(255, 172, 41, 1)");
 
     // Create a mapping, [360, 0] => shanghai, [0, 0] => flight_end_position
     const coord_x = [
@@ -170,7 +179,7 @@ function drawFlight(ctx, projection, flight, fps) {
 
     const plane_position = flight.progress / flight.total;
     const [[x1, y1], direction] = get_position_slope(Math.min(1, plane_position));
-    const opacity = Math.max(0, Math.min(1, 1 - (flight.progress - flight.total) / longest_tail));
+    const opacity = clamp((flight.progress < flight.total) + (flight.total - flight.tail_progrss) / (flight.progress - flight.tail_progrss), 0, 1);
     return [x1, y1, direction, opacity, flight.total !== 1];
 }
 
@@ -186,11 +195,12 @@ function genNewFlight() {
     flight.longitude = new_flight.longitude;
     const longitude = flight.longitude < 0 ? flight.longitude + 360 : flight.longitude;
     flight.total = (flight.latitude - shanghai[1]) ** 2 + (longitude - shanghai[0]) ** 2;
+    flight.tail_progrss = -longest_tail;
     flights.push(flight);
 }
 
 function lightModeRedraw() {
-    flights = flights.filter(flight => flight.progress < flight.total + longest_tail);
+    flights = flights.filter(flight => flight.tail_progrss < flight.total);
     genNewFlight();
 
     const now = Date.now();
