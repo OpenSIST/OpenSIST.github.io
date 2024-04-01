@@ -1,4 +1,3 @@
-// const ROOT = "https://api.opensist.tech/";
 const ROOT = "https://demo.opensist.tech/";
 export const PROGRAM_LIST = ROOT + "api/list/programs";
 export const PROGRAM_DESC = ROOT + "api/query/program_description";
