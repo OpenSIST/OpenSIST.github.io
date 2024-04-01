@@ -156,6 +156,9 @@ export default function AddModifyRecord({type}) {
                                                 label='选择申请人'
                                                 name='ApplicantID'
                                                 size='small'
+                                                helperText={<MuiLink href='/profile/new-applicant'>
+                                                    没有选项？请点击此处前往添加申请人信息
+                                                </MuiLink>}
                                                 required
                                             />
                                     }

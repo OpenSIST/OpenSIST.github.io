@@ -224,7 +224,7 @@ function GenderIcon({gender}) {
     }
 }
 
-function ControlButtonGroup({applicantId, records, editable}) {
+function ControlButtonGroup({applicantId, records, posts, editable}) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
@@ -258,9 +258,9 @@ function ControlButtonGroup({applicantId, records, editable}) {
                 <DialogTitle>是否要删除{applicantId}？</DialogTitle>
                 <DialogContent>
                     <DialogContentText color='error'>
-                        {Object.keys(records).length === 0 ? '此操作会将申请人信息全部删除，且无法恢复，请谨慎！' : '在删除之前，请确保您已经删除了所有附属的申请记录！'}
+                        {Object.keys(records).length + posts.length === 0 ? '此操作会将申请人信息全部删除，且无法恢复，请谨慎！' : '在删除之前，请确保您已经删除了所有附属的申请记录以及撰写的分享贴！'}
                     </DialogContentText>
-                    {Object.keys(records).length === 0 ?
+                    {Object.keys(records).length + posts.length === 0 ?
                         <>
                             <DialogContentText>
                                 请输入您的Applicant ID: {applicantId}以确认删除。
@@ -333,7 +333,9 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                         </Typography>
                     </ContentCenteredGrid>
                     <ContentCenteredGrid xs={12}>
-                        <ControlButtonGroup applicantId={applicant.ApplicantID} records={records}
+                        <ControlButtonGroup applicantId={applicant.ApplicantID}
+                                            records={records}
+                                            posts={applicant.Posts}
                                             editable={editable && isAuth}/>
                     </ContentCenteredGrid>
                 </Grid2>

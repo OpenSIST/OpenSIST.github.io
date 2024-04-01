@@ -19,7 +19,9 @@
 
 ---
 #### 常用词缩写
+##### 网站/申请相关
 > - dp: datapoints
+> - IE: 信息学院的研究生专业，全称Information Engineering
 > - AD: Admission
 > - Rej: Rejection
 > - PoI: Professor of Interest
@@ -39,6 +41,19 @@
 > - MPhil: Master of Philosophy
 > - PhD: Doctor of Philosophy
 > - deposit: 接offer后要交的押金，俗称占位费，正式入学后会抵扣等额的学费
-> - I20: 接offer之后学校签发的文件，是维持在美国学生身份的唯一合法文件，办签证必带
+> - TA: Teaching Assistant
+> - RA: Research Assistant
 > - bar: 项目录取的准入门槛
 > - co-op: Cooperative education，学期内官方带薪实习。
+##### 签证/国外身份/找工作相关
+> - I20: 接offer之后学校签发的文件，是维持在美国学生身份的唯一合法文件，办签证必带
+> - F-1: 美国的学生签证
+> - J-1: 美国的访问学者签证，一般用于暑研等用途
+> - OPT: Optional Practical Training，美国高校毕业后的临时工作身份，时长一年，STEM专业的毕业生可以申请延期两年，共三年
+> - CPT: Curricular Practical Training，学期内的实习许可身份
+> - H1B: 美国的工作签证，一般需要公司帮助申请，目前是每年3月份抽签，一人每年只能抽一次，一共可以抽三年；如果抽中，就获得了在美国正式的工作许可，且可以让公司担保办理绿卡
+> - CBP: Customs and Border Protection，美国海关与边境保护局，负责入境出境的检查
+> - IRCC: 加拿大移民局，负责加拿大签证的审核和签发
+> - NG: New Grad，是美国就业市场中的概念，对应着国内的应届毕业生的概念
+> - BCPNP: 加拿大不列颠哥伦比亚省提名移民计划
+> - ONIP: 加拿大安大略省提名移民计划

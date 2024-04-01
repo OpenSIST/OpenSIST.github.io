@@ -57,10 +57,7 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <HomeIndex/>,
-                loader: async () => {
-                    return {content: await loadMarkDown(HomeIndexMDPath)}
-                }
+                element: <HomeIndex/>
             }, {
                 errorElement: <ErrorPage/>,
                 children: [
@@ -174,7 +171,6 @@ const router = createBrowserRouter([
                                 children: [
                                     {
                                         index: true,
-                                        // element: <PostIndex/>
                                         element: <MarkDownPage key={"PostIndex"}/>,
                                         loader: async () => {
                                             return {content: await loadMarkDown(PostIndexMDPath)}

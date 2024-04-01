@@ -204,6 +204,10 @@ export async function addModifyProgram(requestBody) {
     * Set the program (with description) to the local storage (i.e. localforage.getItem('programs') and localforage.getItem(`${programId}-Desc`), and post to the server.
     * @param program [Object]: program (with description)
     */
+    if (!requestBody.newProgram) {
+        const ori_program = await getProgram(requestBody.content.ProgramID);
+        requestBody.content.Applicants = ori_program.Applicants;
+    }
     const response = await fetch(ADD_MODIFY_PROGRAM, {
         method: 'POST',
         credentials: 'include',
@@ -213,6 +217,6 @@ export async function addModifyProgram(requestBody) {
             content: {...(requestBody.content)},
         }),
     });
-    await handleErrors(response)
+    await handleErrors(response);
     await setProgramContent(requestBody.content);
 }
