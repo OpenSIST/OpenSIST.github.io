@@ -25,6 +25,7 @@ let force = false;
 
 // Settings
 const shanghai = [121.48, 31.13];
+let shanghai_projected = null;
 const longest_tail = 16000;
 const color = {
     'light': {
@@ -42,8 +43,11 @@ function drawMap(static_container, mode) {
     static_ctx.clearRect(0, 0, static_container.width, static_container.height);
 
     projection = d3.geoNaturalEarth1()
-        .fitExtent([[-width / 20, 0], [width, height]], cachedData)
-        .center([0, -5])
+        .fitSize([width, height], cachedData)
+    // .fitExtent([[-width / 20, 0], [width, height]], cachedData)
+    // .center([0, -5])
+
+    shanghai_projected = projection(shanghai);
 
     const path = d3.geoPath()
         .projection(projection)
@@ -104,7 +108,7 @@ function drawFlight(ctx, projection, flight, fps) {
     const ease_out = (0.8 < progress && progress < 1.0) ? (-20 * progress ** 2 + 32 * progress - 11.8) : 1.0;
     flight.progress += base_speed * ease_out;
     flight.tail_progrss += base_speed;
-    const gradient_start_position = projection(shanghai);
+    const gradient_start_position = shanghai_projected;
     const flight_end_position = projection([flight.longitude, flight.latitude]);
 
     const gradient_1_progress = progress;
@@ -223,9 +227,8 @@ function lightModeRedraw() {
         }
     });
 
-    const [x1, y1] = projection(shanghai);
     ctx.beginPath();
-    ctx.arc(x1, y1, 5 * proportion, 0, 2 * Math.PI);
+    ctx.arc(...shanghai_projected, 5 * proportion, 0, 2 * Math.PI);
     ctx.fillStyle = "#C25451";
     ctx.fill();
 }
@@ -297,4 +300,17 @@ export function init_map(static_container, dynamic_container, with_width, with_h
     ctx = canvas.getContext("2d");
     drawMap(static_container, mode);
     redraw(mode);
+}
+
+export function clickHandler(e) {
+    const {x, y} = document.getElementById("dynamicCanvas").getBoundingClientRect();
+    const clickX = e.x - x;
+    const clickY = e.y - y;
+
+    if ((shanghai_projected[0] - clickX) ** 2 + (shanghai_projected[1] - clickY) ** 2 < (10 * proportion) ** 2) {
+        force = true;
+    }
+    setTimeout(() => {
+        force = false
+    }, 2000);
 }

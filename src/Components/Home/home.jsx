@@ -3,7 +3,7 @@ import {Outlet, Link} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 import {BoldTypography, LoadingBackdrop, OpenSIST, useSmallPage} from "../common";
 import {Box, Button, Divider, IconButton, Paper, SvgIcon, Typography, useTheme} from "@mui/material";
-import {init_map} from "../WorldMap/display";
+import {clickHandler, init_map} from "../WorldMap/display";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import './home.css';
 import ReactMarkdown from "react-markdown";
@@ -30,11 +30,13 @@ function Home() {
 export function HomeIndex() {
     const [width, setWidth] = useState(window.innerWidth);
     const [height, setHeight] = useState(window.innerHeight);
+    const nodeRef = useRef(null);
     useEffect(() => {
         const handleResize = () => {
             setWidth(window.innerWidth);
             setHeight(window.innerHeight);
         };
+        nodeRef.current.addEventListener("click", clickHandler);
         window.addEventListener("resize", handleResize);
         return () => {
             window.removeEventListener("resize", handleResize);
@@ -42,6 +44,7 @@ export function HomeIndex() {
     }, []);
     return (
         <Box
+            ref={nodeRef}
             sx={{
                 bgcolor: (theme) => theme.palette.mode === 'dark' ? "#1A1E24" : "#FAFAFA",
                 height: "100%",
@@ -303,7 +306,7 @@ function WorldMap({width, height}) {
         <>
             <canvas ref={staticCanvasRef} width={width} height={height}
                     style={{overflow: "auto", position: "relative"}}/>
-            <canvas ref={dynamicCanvasRef} width={width} height={height}
+            <canvas ref={dynamicCanvasRef} width={width} height={height} id={"dynamicCanvas"}
                     style={{overflow: "auto", position: "absolute"}}/>
         </>
     )
