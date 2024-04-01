@@ -1,0 +1,134 @@
+.DataPointsContent {
+    width: 100%;
+    margin: 10px;
+    overflow-x: auto;
+    user-select: text;
+    height: calc(100% - 20px);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.DataTableStyle {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.DataTableStyle * {
+    transition: none;
+}
+
+.DataTableStyle .p-column-title {
+    font-weight: bold;
+}
+
+.DataTableStyle .p-datatable-header {
+    border-radius: 5px 5px 0 0;
+}
+
+.DataTableStyle .p-datatable-wrapper {
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 0 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0 0 5px 5px;
+}
+
+.DataTableStyle .p-datatable-wrapper > .p-datatable-table > .p-datatable-thead,
+.p-filter-column {
+    height: 50px;
+}
+
+.p-column-filter-row-items,
+.p-multiselect-items.p-component,
+.p-dropdown-items {
+    padding: 0;
+}
+
+.p-sortable-column-badge {
+    display: none;
+}
+
+.p-column-filter-clear-button.p-link.p-hidden-space,
+.p-column-filter-clear-button.p-link,
+.p-column-filter-menu-button.p-link {
+    display: none;
+}
+
+.p-fluid.p-column-filter-element {
+    display: flex;
+    justify-content: center;
+}
+
+.p-column-filter.p-dropdown.p-component.p-inputwrapper.p-dropdown-clearable {
+    display: flex;
+    height: 30px;
+    align-items: center;
+}
+
+.p-fluid.p-column-filter-element {
+    height: 30px;
+}
+
+.p-column-filter.p-inputtext.p-component.p-column-filter {
+    /*transition: none;*/
+    height: inherit;
+    font-size: clamp(13px, 1.5vw, 15px);
+}
+
+.p-icon.p-dropdown-trigger-icon.p-clickable {
+    height: 0.9rem;
+    width: 0.9rem;
+}
+
+.p-fluid.p-column-filter-element {
+    align-items: center;
+}
+
+.ApplicantIDColumn .p-column-filter {
+    max-width: 10rem;
+}
+
+.ProgramIDColumn .p-column-filter {
+    max-width: 10rem;
+}
+
+.StatusColumn .p-column-filter {
+    max-width: 8rem;
+}
+
+.FinalColumn .p-column-filter {
+    max-width: 8rem;
+}
+
+.SeasonColumn .p-column-filter {
+    max-width: 8rem;
+}
+
+.th {
+    padding: 0;
+}
+
+.p-paginator {
+    justify-content: center;
+    padding: 0;
+}
+
+.p-paginator-current {
+    padding: 0;
+}
+
+.p-inputtext {
+    padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.p-dropdown-panel .p-dropdown-items {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0 10px 0;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+    padding: 5px 1rem 5px 1rem;
+}

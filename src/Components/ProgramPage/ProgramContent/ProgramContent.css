@@ -1,0 +1,38 @@
+/*@keyframes slideRight {*/
+/*    0% {*/
+/*        transform: translateX(100%);*/
+/*    }*/
+/*    100% {*/
+/*        transform: translateX(0);*/
+/*    }*/
+/*}*/
+
+.ProgramContent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 120px);
+    padding: 20px;
+    margin-top: 10px;
+    margin-left: 1vw;
+    margin-right: 1vw;
+    border-radius: 5px;
+    user-select: text;
+    overflow-y: auto;
+}
+
+.ReviseRefreshButtonGroup {
+    display: flex;
+    gap: 10px;
+    align-self: center;
+}
+
+.ProgramDescription {
+    position: relative;
+    z-index: 0;
+}
+
+.ProgramHeader {
+    display: flex;
+    justify-content: space-between;
+}

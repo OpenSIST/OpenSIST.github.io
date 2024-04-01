@@ -1,0 +1,44 @@
+@keyframes jump {
+    0%, 100% {
+        width: 20px;
+    }
+    50% {
+        width: 30px; /* adjust this value as needed */
+    }
+}
+
+.ShowUpButton {
+    z-index: 1200;
+    top: 10px;
+    left: 0;
+    border-radius: 0 5px 5px 0;
+}
+
+.ShowUpButton:hover {
+    animation: jump 1s ease-in-out infinite;
+}
+
+.UnivProgramList {
+    border-radius: 5px;
+    /*max-height: calc(100vh - 460px);*/
+    overflow-y: auto;
+}
+
+.UnivProgramList div:first-child {
+    border-radius: 5px 5px 0 0;
+}
+
+.ProgramItem::before {
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: 0;
+    left: calc(16px + 0.7em);
+    height: 100%;
+    width: 1px;
+    opacity: 1;
+}
+
+.CollapseSideBar > .PrivateSwipeArea-root {
+    z-index: 1;
+}

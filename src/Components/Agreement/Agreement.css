@@ -1,0 +1,7 @@
+.Agreement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: calc(20vh - 100px);
+    width: 80%;
+}

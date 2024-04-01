@@ -1,0 +1,13 @@
+.MarkDownPaper {
+    padding: 1rem;
+    overflow-y: auto;
+    height: -moz-available;          /* WebKit-based browsers will ignore this. */
+    height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+    height: fill-available;
+}
+.MarkDownContent {
+    margin: 10px;
+    height: fit-content;
+    user-select: text;
+    line-height: 2.5rem;
+}

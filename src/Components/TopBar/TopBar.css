@@ -1,0 +1,9 @@
+.TopBar {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1700px;
+    height: 100%;
+}

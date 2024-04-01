@@ -1,0 +1,22 @@
+.SearchBar {
+    width: 100%;
+    padding-left: 8px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    /*height: 40px;*/
+    border-radius: 0 5px 5px 0;
+}
+
+.SearchBlock svg {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+    /*margin-bottom: 10px;*/
+    border-radius: 5px;
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+    width: 100%;
+}
