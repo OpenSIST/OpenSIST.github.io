@@ -42,7 +42,6 @@ import EmailIcon from '@mui/icons-material/Email';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
 import {getAvatar, getDisplayName, getMetaData} from "../../../Data/UserData";
 import {grey} from "@mui/material/colors";
-
 import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
 import {HomeRounded, LinkedIn, Link as LinkIcon, Mail} from "@mui/icons-material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -50,8 +49,8 @@ import {getPostContent} from "../../../Data/PostData";
 import {BoldTypography} from "../../common";
 
 const contactIcons = {
-    "QQ": <FontAwesomeIcon icon={faQq} fontSize='medium'/>,
-    "WeChat": <FontAwesomeIcon icon={faWeixin} fontSize='medium'/>,
+    "QQ": <FontAwesomeIcon icon={faQq} fontSize='large' width='1.5rem' height='1.5rem'/>,
+    "WeChat": <FontAwesomeIcon icon={faWeixin} fontSize='large' width='1.5rem' height='1.5rem'/>,
     "LinkedIn": <LinkedIn/>,
     "HomePage": <HomeRounded/>,
     "OtherLink": <LinkIcon/>,
