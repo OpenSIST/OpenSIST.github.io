@@ -9,7 +9,7 @@ import React, {useEffect, useState} from "react";
 import {
     Accordion, AccordionDetails, AccordionSummary,
     Chip, Dialog, DialogActions,
-    DialogContent, IconButton, Paper, Tooltip, useTheme,
+    DialogContent, IconButton, Paper, Tooltip, Typography, useTheme,
 } from "@mui/material";
 import {
     Check,
@@ -180,7 +180,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     const timelineBodyTemplate = (rowData, columnBodyOption) => {
         const field = columnBodyOption.field;
         const timelineKey = field.split('.')[1];
-        return <div style={{fontSize: '14px'}}>
+        return <div style={{fontSize: 'clamp(11px, 1.5vw, 14px)'}}>
             {rowData.TimeLine[timelineKey]?.split('T')[0]}
         </div>
     };
@@ -231,15 +231,15 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
     const headerTemplate = (title) => {
         return (
-            <div>
+            <div style={{display: 'flex'}}>
                 <Tooltip title={filterExpanded ? '收起筛选' : '展开筛选'} arrow>
                     <IconButton onClick={() => {
                         setFilterExpanded(!filterExpanded)
                     }} size='small'>
-                        {filterExpanded ? <ExpandMore fontSize='0.5rem'/> : <NavigateNext fontSize='0.5rem'/>}
+                        {filterExpanded ? <ExpandMore fontSize='0.4rem'/> : <NavigateNext fontSize='0.4rem'/>}
                     </IconButton>
                 </Tooltip>
-                {title}
+                <BoldTypography sx={{fontSize: 'clamp(13px, 1.5vw, 15px)', alignSelf: 'center'}}>{title}</BoldTypography>
             </div>
         );
     };
@@ -350,7 +350,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 <Column
                     field='Detail'
                     header='备注、补充说明等'
-                    bodyStyle={{fontSize: '14px'}}
+                    bodyStyle={{fontSize: 'clamp(11px, 1.5vw, 14px)'}}
                     style={{width: '25rem', minWidth: '15rem'}}
                 />
             </DataTable>
