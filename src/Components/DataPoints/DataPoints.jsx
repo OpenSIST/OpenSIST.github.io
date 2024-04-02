@@ -180,9 +180,9 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     const timelineBodyTemplate = (rowData, columnBodyOption) => {
         const field = columnBodyOption.field;
         const timelineKey = field.split('.')[1];
-        return <>
+        return <div style={{fontSize: '14px'}}>
             {rowData.TimeLine[timelineKey]?.split('T')[0]}
-        </>
+        </div>
     };
     const applicantBodyTemplate = (rowData) => {
         return (
@@ -331,26 +331,27 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     header='结果通知时间'
                     // align='center'
                     body={timelineBodyTemplate}
-                    style={{minWidth: '8rem', fontSize: '14px'}}
+                    style={{minWidth: '8rem'}}
                 />
                 <Column
                     field='TimeLine.Interview'
                     header='面试时间'
                     // align='center'
                     body={timelineBodyTemplate}
-                    style={{minWidth: '8rem', fontSize: '14px'}}
+                    style={{minWidth: '8rem'}}
                 />
                 <Column
                     field='TimeLine.Submit'
                     header='网申提交时间'
                     // align='center'
                     body={timelineBodyTemplate}
-                    style={{minWidth: '8rem', fontSize: '14px'}}
+                    style={{minWidth: '8rem'}}
                 />
                 <Column
                     field='Detail'
                     header='备注、补充说明等'
-                    style={{width: '25rem', minWidth: '15rem', fontSize: '14px'}}
+                    bodyStyle={{fontSize: '14px'}}
+                    style={{width: '25rem', minWidth: '15rem'}}
                 />
             </DataTable>
         </ThemeSwitcherProvider>
