@@ -38,7 +38,7 @@ export default function NavBar() {
             name: "项目信息表",
             path: "/programs",
         }, {
-            name: "申请分享帖",
+            name: "经验分享帖",
             path: "/posts",
         }, {
             name: "常见问题",
