@@ -136,8 +136,8 @@ function Graduated() {
                 <GuidanceGrid
                     Index={4}
                     TitlePrime='在本站'
-                    TitleSecond='分享你的申请经验'
-                    Content='在本站发布申请分享帖，分享你申请过程中的心得体会，包括但不限于选校、套磁、申请总结等方面'
+                    TitleSecond='分享你的经验'
+                    Content='在本站发布经验分享帖，包括但不限于选校、套磁、申请总结等方面，也可以撰写关于后续海外就业、转博、中长期发展等的心得'
                     ButtonLink='/posts/new'
                 />
             </Grid2>

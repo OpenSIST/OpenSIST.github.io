@@ -42,7 +42,6 @@ import EmailIcon from '@mui/icons-material/Email';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
 import {getAvatar, getDisplayName, getMetaData} from "../../../Data/UserData";
 import {grey} from "@mui/material/colors";
-
 import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
 import {HomeRounded, LinkedIn, Link as LinkIcon, Mail} from "@mui/icons-material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -50,8 +49,8 @@ import {getPostContent} from "../../../Data/PostData";
 import {BoldTypography} from "../../common";
 
 const contactIcons = {
-    "QQ": <FontAwesomeIcon icon={faQq} fontSize='medium'/>,
-    "WeChat": <FontAwesomeIcon icon={faWeixin} fontSize='medium'/>,
+    "QQ": <FontAwesomeIcon icon={faQq} fontSize='large' width='1.5rem' height='1.5rem'/>,
+    "WeChat": <FontAwesomeIcon icon={faWeixin} fontSize='large' width='1.5rem' height='1.5rem'/>,
     "LinkedIn": <LinkedIn/>,
     "HomePage": <HomeRounded/>,
     "OtherLink": <LinkIcon/>,
@@ -224,7 +223,7 @@ function GenderIcon({gender}) {
     }
 }
 
-function ControlButtonGroup({applicantId, records, posts, editable}) {
+function ControlButtonGroup({applicantId, records, postLength, editable}) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
@@ -258,9 +257,9 @@ function ControlButtonGroup({applicantId, records, posts, editable}) {
                 <DialogTitle>是否要删除{applicantId}？</DialogTitle>
                 <DialogContent>
                     <DialogContentText color='error'>
-                        {Object.keys(records).length + posts.length === 0 ? '此操作会将申请人信息全部删除，且无法恢复，请谨慎！' : '在删除之前，请确保您已经删除了所有附属的申请记录以及撰写的分享贴！'}
+                        {Object.keys(records).length + postLength === 0 ? '此操作会将申请人信息全部删除，且无法恢复，请谨慎！' : '在删除之前，请确保您已经删除了所有附属的申请记录以及撰写的分享贴！'}
                     </DialogContentText>
-                    {Object.keys(records).length + posts.length === 0 ?
+                    {Object.keys(records).length + postLength === 0 ?
                         <>
                             <DialogContentText>
                                 请输入您的Applicant ID: {applicantId}以确认删除。
@@ -335,7 +334,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
                     <ContentCenteredGrid xs={12}>
                         <ControlButtonGroup applicantId={applicant.ApplicantID}
                                             records={records}
-                                            posts={applicant.Posts}
+                                            postLength={applicant?.Posts?.length ?? 0}
                                             editable={editable && isAuth}/>
                     </ContentCenteredGrid>
                 </Grid2>
