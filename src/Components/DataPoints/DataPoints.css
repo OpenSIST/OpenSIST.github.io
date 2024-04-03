@@ -24,6 +24,7 @@
 
 .DataTableStyle .p-column-title {
     font-weight: bold;
+    width: 100%;
     font-size: clamp(13px, 1.5vw, 15px);
 }
 
