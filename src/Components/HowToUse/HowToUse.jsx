@@ -1,5 +1,5 @@
 import {
-    Box, Card, CardActionArea, CardContent, CardMedia, Divider, Paper, Typography, useTheme
+    Box, Card, CardActionArea, CardContent, CardMedia, Divider, Typography, useTheme
 } from "@mui/material";
 import React from "react";
 import {Link} from "react-router-dom";

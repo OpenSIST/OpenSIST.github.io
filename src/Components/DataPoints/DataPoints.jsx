@@ -7,7 +7,7 @@ import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "rea
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
 import {
-    Accordion, AccordionDetails, AccordionSummary,
+    Accordion, AccordionDetails, AccordionSummary, Button,
     Chip, Dialog, DialogActions,
     DialogContent, IconButton, Paper, Tooltip, useTheme,
 } from "@mui/material";
@@ -231,16 +231,15 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
     const headerTemplate = (title) => {
         return (
-            <div>
-                <Tooltip title={filterExpanded ? '收起筛选' : '展开筛选'} arrow>
-                    <IconButton onClick={() => {
-                        setFilterExpanded(!filterExpanded)
-                    }} size='small'>
-                        {filterExpanded ? <ExpandMore fontSize='0.5rem'/> : <NavigateNext fontSize='0.5rem'/>}
-                    </IconButton>
-                </Tooltip>
+            <Button
+                fullWidth
+                onClick={() => {setFilterExpanded(!filterExpanded)}}
+                sx={{display: 'flex', justifyContent: 'flex-start'}}
+                color='default'
+            >
+                {filterExpanded ? <ExpandMore fontSize='0.5rem'/> : <NavigateNext fontSize='0.5rem'/>}
                 {title}
-            </div>
+            </Button>
         );
     };
 

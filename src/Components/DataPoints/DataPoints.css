@@ -24,6 +24,7 @@
 
 .DataTableStyle .p-column-title {
     font-weight: bold;
+    width: 100%;
 }
 
 .DataTableStyle .p-datatable-header {

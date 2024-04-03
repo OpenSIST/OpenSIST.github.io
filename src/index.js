@@ -58,6 +58,9 @@ function App() {
             }, fall: {
                 main: mode === 'dark' ? '#FE892E' : '#FE801E',
                 contrastText: '#ffffffde',
+            }, default: {
+                main: mode === 'dark' ? '#ffffffde' : '#000000de',
+                contrastText: '#ffffffde',
             }
         },
         components: {
