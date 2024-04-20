@@ -56,6 +56,11 @@ export function ProfileSideBar({loaderData}) {
         >
             <Box className="ProfileSideBar">
                 <Badge
+                    sx={{
+                        "& .MuiBadge-badge": {
+                            bgcolor: "transparent"
+                        }
+                    }}
                     badgeContent={
                         <Form method="post" encType="multipart/form-data">
                             <IconButton
