@@ -25,6 +25,7 @@
     "cm6-theme-basic-dark": "0.2.0",
     "d3": "^7.9.0",
     "dayjs": "1.11.10",
+    "jsonata": "^2.0.5",
     "localforage": "1.10.0",
     "match-sorter": "6.3.1",
     "postal-mime": "2.0.2",

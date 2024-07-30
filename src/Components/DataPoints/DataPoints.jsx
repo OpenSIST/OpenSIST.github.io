@@ -3,6 +3,7 @@ import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByRecordIDs} from "../../Data/RecordData";
+import {getApplicant} from "../../Data/ApplicantData";
 import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
 import React, {useEffect, useState} from "react";
@@ -28,6 +29,7 @@ import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import {TriStateCheckbox} from 'primereact/tristatecheckbox';
 import {Dropdown} from "primereact/dropdown";
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import jsonata from "jsonata";
 
 export async function loader() {
     let programs = await getPrograms();
@@ -405,11 +407,37 @@ export default function DataPoints() {
         return record;
     });
 
+    const [recordsWrapped, setRecordsWrapped] = useState(records);
+
+    useEffect(() => {
+        (async () => {
+            const query = new URLSearchParams(window.location.search);
+            
+            const filter = query.get('filter');
+            if (!filter) return;
+
+            const recordsExtended = await Promise.all(records.map(async (record) => {
+                record.Applicant = await getApplicant(record.ApplicantID);
+                return record;
+            }));
+
+            const filterExpr = decodeURIComponent(filter);
+            const filterFunc = jsonata(filterExpr);
+            const filteredRecords = await filterFunc.evaluate(recordsExtended);
+
+            if (!filteredRecords || !filteredRecords[0]) return;
+            if (Object.keys(recordsExtended[0]).length 
+                    !== Object.keys(filteredRecords[0]).length) return;            
+
+            setRecordsWrapped(filteredRecords);
+        })();
+    });
+
     return (
         <>
             <Paper className="DataPointsContent" sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA"}}>
                 <UsageGuidance/>
-                <DataGrid records={records} insideProgramPage={false}/>
+                <DataGrid records={recordsWrapped} insideProgramPage={false}/>
                 <Outlet/>
             </Paper>
             <Form method="post">
