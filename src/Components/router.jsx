@@ -112,6 +112,7 @@ const router = createBrowserRouter([
                                         path: '/datapoints/program/:programId',
                                         element: <ProgramContentInDataPoints/>,
                                         loader: programContentLoader,
+                                        action: programContentAction
                                     }
                                 ]
                             }
