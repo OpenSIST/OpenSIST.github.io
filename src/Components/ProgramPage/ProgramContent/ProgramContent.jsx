@@ -1,14 +1,16 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import './ProgramContent.css'
-import {Form, Link, useLoaderData, useNavigate} from "react-router-dom";
+import {Form, Link, useLoaderData, useNavigate, redirect} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
+import {getMetaData, collectProgram, uncollectProgram} from '../../../Data/UserData';
 import {Box, IconButton, Paper, Tooltip, Typography} from "@mui/material";
 import {Add, Edit, Refresh} from "@mui/icons-material";
 import remarkGfm from 'remark-gfm'
 import {getRecordByProgram} from "../../../Data/RecordData";
 import {DataGrid} from "../../DataPoints/DataPoints";
 import {DraggableFAB} from "../../common";
+import StarButton from "./StarButton"
 
 export async function loader({params}) {
     const programId = params.programId;
@@ -16,7 +18,8 @@ export async function loader({params}) {
     records = Object.values(records);
     try {
         const programContent = await getProgramContent(programId);
-        return {programContent, records};
+        const metaData = await getMetaData()
+        return {programContent, records, metaData};
     } catch (e) {
         throw e;
     }
@@ -30,11 +33,18 @@ export async function action({params, request}) {
         await getProgramDesc(programId, true);
         return await getRecordByProgram(programId, true);
     }
-
+    if (ActionType === "Star") {
+        await collectProgram(programId);
+        return redirect(window.location.href);
+    }
+    if (ActionType === "UnStar") {
+        await uncollectProgram(programId);
+        return redirect(window.location.href);
+    }
 }
 
 function ProgramContent({editable = true}) {
-    let {programContent, records} = useLoaderData();
+    let {programContent, records, metaData} = useLoaderData();
     const naviagte = useNavigate();
     records = records.map(record => {
         record['Season'] = record.ProgramYear + " " + record.Semester;
@@ -53,6 +63,7 @@ function ProgramContent({editable = true}) {
                                 <Edit/>
                             </IconButton>
                         </Tooltip> : null}
+                    <StarButton programID={programContent.ProgramID} metaData={metaData}/>
                     <Form method='post' style={{display: 'flex'}}>
                         <Tooltip title="刷新项目内容" arrow>
                             <IconButton type='submit' name="ActionType" value="Refresh">
