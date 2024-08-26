@@ -729,7 +729,7 @@ function RecordBlock({Records, ApplicantID, editable}) {
                             <BaseListItem
                                 Icon={<Chip label={record.Status} color={RecordStatusPalette[record.Status]}/>}
                                 primary={
-                                    <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                                    <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', overflowWrap: 'anywhere'}}>
                                         {record.ProgramID}
                                         {
                                             editable ?

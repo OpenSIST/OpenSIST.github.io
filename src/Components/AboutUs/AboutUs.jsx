@@ -10,52 +10,32 @@ import {OpenSIST} from "../common";
 import {AgreementContent} from "../Agreement/Agreement";
 
 export function AboutUs() {
-    const developers = ['cst', 'cze', 'frm', 'lbn'];
-
-    const displayRealName = (username) => {
-        switch (username) {
-            case 'cze':
-                return '迟择恩 - 前端开发'
-            case 'lbn':
-                return '李炳楠 - 前端开发'
-            case 'cst':
-                return '陈溯汀 - 后端开发'
-            case 'frm':
-                return '范润铭 - 设计师'
-            default:
-                return '未知'
-        }
-    }
-
-    const displayMajor = (username) => {
-        switch (username) {
-            case 'cze':
-                return '2020级CS本科生'
-            case 'lbn':
-                return '2020级CS本科生'
-            case 'cst':
-                return '2020级CS本科生'
-            case 'frm':
-                return '2021级创艺本科生'
-            default:
-                return '未知'
-        }
-    }
-
-    const getHyperlink = (username) => {
-        switch (username) {
-            case 'cze':
-                return 'https://www.harrychi.com';
-            case 'lbn':
-                return 'https://www.bingnanli.com';
-            case 'cst':
-                return 'https://github.com/caoster';
-            case 'frm':
-                return 'https://github.com/Fan-runming';
-            default:
-                return 'https://sist.shanghaitech.edu.cn';
-        }
-    }
+    const developers = [
+        {
+            id: 'cze',
+            name: '迟择恩 - 前端开发',
+            major: '2020级CS本科生',
+            hyperlink: 'https://www.harrychi.com'
+        },
+        {
+            id: 'lbn',
+            name: '李炳楠 - 前端开发',
+            major: '2020级CS本科生',
+            hyperlink: 'https://www.bingnanli.com'
+        },
+        {
+            id: 'cst',
+            name: '陈溯汀 - 后端开发',
+            major: '2020级CS本科生',
+            hyperlink: 'https://github.com/caoster'
+        },
+        {
+            id: 'frm',
+            name: '范润铭 - 设计师',
+            major: '2021级创艺本科生',
+            hyperlink: 'https://github.com/Fan-runming'
+        },
+    ].sort((a, b) => a.id.localeCompare(b.id))
 
     return (
         <Box sx={{width: '70%', p: '1rem'}}>
@@ -66,17 +46,17 @@ export function AboutUs() {
                 spacing={2}
             >
                 {developers.map(developer =>
-                    <Grid2 key={developer} xs={12} sm={6} lg={3}>
+                    <Grid2 key={developer.id} xs={12} sm={6} lg={3}>
                         <Card>
                             <CardActionArea
                                 component={Link}
-                                to={getHyperlink(developer)}
+                                to={developer.hyperlink || 'https://sist.shanghaitech.edu.cn'}
                             >
                                 <CardHeader
                                     avatar={
-                                        <Avatar alt={developer} src={developer === 'frm' ? `/avatars/${developer}.png` : `/avatars/${developer}.jpeg`}/>}
-                                    title={displayRealName(developer)}
-                                    subheader={displayMajor(developer)}
+                                        <Avatar alt={developer} src={developer.id === 'frm' ? `/avatars/${developer.id}.png` : `/avatars/${developer.id}.jpeg`}/>}
+                                    title={developer.name || '未知'}
+                                    subheader={developer.major || '未知'}
                                 />
                             </CardActionArea>
                         </Card>
