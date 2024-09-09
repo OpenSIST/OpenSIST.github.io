@@ -343,7 +343,7 @@ export default function AddModifyRecord({type}) {
                                 if (fromPath) {
                                     navigate(fromPath);
                                 } else {
-                                    navigate(-1);
+                                    navigate("..");
                                 }
                                 // else if (applicantOptions.length === 1) {
                                 //     navigate(`/profile/${applicantIDs[0]}`);

@@ -96,7 +96,7 @@ export default function AddModifyPost({type}) {
             <textarea name="Content" hidden={true} value={content} readOnly/>
             <ButtonGroup>
                 <Button type="submit" name="ActionType" value={type}> 提交 </Button>
-                <Button onClick={() => navigate(-1)}> 取消 </Button>
+                <Button onClick={() => navigate("..")}> 取消 </Button>
             </ButtonGroup>
         </Form>
     )
