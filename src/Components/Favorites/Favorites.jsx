@@ -34,7 +34,7 @@ export async function loader({ request }) {
     const programPageData = await ProgramPageLoader({ request });
     programPageData.programs = filterProgramsById(
         programPageData.programs,
-        metaData.ProgramCollection || []
+        metaData.ProgramCollection ?? []
     );
     return { programPageData };
 }
