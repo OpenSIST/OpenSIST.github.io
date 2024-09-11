@@ -710,7 +710,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                 <Button
                     sx={{mr: 1}}
                     variant='contained'
-                    onClick={() => navigate(-1)}
+                    onClick={() => navigate("..")}
                 >
                     取消
                 </Button>
