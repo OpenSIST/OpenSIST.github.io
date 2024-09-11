@@ -35,6 +35,12 @@ export function AboutUs() {
             major: '2021级创艺本科生',
             hyperlink: 'https://github.com/Fan-runming'
         },
+        {
+            id: 'zbm',
+            name: '张倍鸣 - 前端开发',
+            major: '2021级CS本科生',
+            hyperlink: 'https://github.com/thezbm'
+        },
     ].sort((a, b) => a.id.localeCompare(b.id))
 
     return (
@@ -54,7 +60,9 @@ export function AboutUs() {
                             >
                                 <CardHeader
                                     avatar={
-                                        <Avatar alt={developer} src={developer.id === 'frm' ? `/avatars/${developer.id}.png` : `/avatars/${developer.id}.jpeg`}/>}
+                                        <Avatar alt={developer} src={
+                                            ['frm', 'zbm'].includes(developer.id) ? `/avatars/${developer.id}.png` : `/avatars/${developer.id}.jpeg`
+                                        }/>}
                                     title={developer.name || '未知'}
                                     subheader={developer.major || '未知'}
                                 />
