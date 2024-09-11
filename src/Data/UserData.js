@@ -308,7 +308,8 @@ export async function collectProgram(programID) {
     await handleErrors(response);
 
     let metaData = await getMetaData()
-    metaData.ProgramCollection.push(programID)
+    metaData.ProgramCollection = metaData.ProgramCollection ?? [];
+    metaData.ProgramCollection.push(programID);
     await setMetaData(metaData)
 }
 

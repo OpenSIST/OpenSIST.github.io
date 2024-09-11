@@ -1,0 +1,9 @@
+.searchbar-style.favorites-searchbar {
+    flex-direction: row;
+}
+
+@media (max-width: 700px) {
+    .searchbar-style.favorites-searchbar {
+        flex-direction: column;
+    }
+}

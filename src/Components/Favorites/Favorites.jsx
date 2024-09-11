@@ -6,6 +6,7 @@ import { loader as ProgramPageLoader } from "../ProgramPage/ProgramPage";
 import SearchBar from "../ProgramPage/SideBar/SearchBar/SearchBar";
 import { getQuery } from "../ProgramPage/SideBar/SideBar";
 import ProgramCard from "./ProgramCard";
+import "./Favorites.css"
 
 function filterProgramsById(programs, programIDs) {
     let filtered = {};
@@ -33,7 +34,7 @@ export async function loader({ request }) {
     const programPageData = await ProgramPageLoader({ request });
     programPageData.programs = filterProgramsById(
         programPageData.programs,
-        metaData.ProgramCollection || []
+        metaData.ProgramCollection ?? []
     );
     return { programPageData };
 }
