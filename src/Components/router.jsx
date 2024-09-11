@@ -46,6 +46,7 @@ import {loadMarkDown} from "../Data/Common";
 import ProfileIndexMDPath from "../Data/MarkDown/ProfileIndex.md"
 import HomeIndexMDPath from "../Data/MarkDown/HomeIndex.md"
 import PostIndexMDPath from "../Data/MarkDown/PostIndex.md"
+import Favorites, {loader as FavoritesLoader} from "./Favorites/Favorites";
 
 const router = createBrowserRouter([
     {
@@ -157,6 +158,23 @@ const router = createBrowserRouter([
                                         element: <AddModifyRecord key='edit' type='edit'/>,
                                         loader: addModifyRecordLoader,
                                         action: addModifyRecordAction
+                                    }
+                                ]
+                            }
+                        ]
+                    }, {
+                        path: '/favorites',
+                        element: <Favorites/>,
+                        loader: FavoritesLoader,
+                        children: [
+                            {
+                                errorElement: <ErrorPage/>,
+                                children: [
+                                    {
+                                        path: '/favorites/:programId',
+                                        element: <ProgramContentInDataPoints/>,
+                                        loader: programContentLoader,
+                                        action: programContentAction
                                     }
                                 ]
                             }
