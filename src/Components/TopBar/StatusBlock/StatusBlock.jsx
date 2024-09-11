@@ -4,7 +4,7 @@ import React, {useContext, useEffect} from "react";
 import localforage from "localforage";
 import {getAvatar, getDisplayName, getMetaData, logout, useUser} from "../../../Data/UserData";
 import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography, useTheme} from "@mui/material";
-import {AccountBox, LockReset, Logout} from "@mui/icons-material";
+import {AccountBox, Star, LockReset, Logout} from "@mui/icons-material";
 import {blue} from "@mui/material/colors";
 import {ThemeContext} from "../../../index";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
@@ -90,6 +90,12 @@ export function StatusBlock() {
                         <AccountBox fontSize="small"/>
                     </ListItemIcon>
                     <Typography>Profile</Typography>
+                </MenuItem>
+                <MenuItem to={`/favorites`} component={Link} onClick={handleClose}>
+                    <ListItemIcon>
+                        <Star fontSize="small"/>
+                    </ListItemIcon>
+                    Favorites
                 </MenuItem>
                 <MenuItem to="/reset" component={Link} onClick={handleClose}>
                     <ListItemIcon>
