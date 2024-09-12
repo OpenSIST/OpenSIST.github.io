@@ -88,7 +88,7 @@ export function ProgramContentInDataPoints() {
             sx={{userSelect: 'text'}}
         >
             <DialogContent>
-                <ProgramContent editable={false}/>
+                <ProgramContent editable={false} inDialog={true}/>
             </DialogContent>
         </Dialog>
     )
