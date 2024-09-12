@@ -6,7 +6,7 @@ const StarButton = ({programID, metaData}) => {
     const starred = metaData.ProgramCollection && metaData.ProgramCollection.includes(programID)
 
     return <Form method='post' style={{display: 'flex'}}>
-        <Tooltip title="收藏该项目" arrow>
+        <Tooltip title={starred ? "取消收藏该项目" : "收藏该项目"} arrow>
             <IconButton type="submit" name="ActionType" value={starred ? "UnStar" : "Star"}>
                 {starred ? <Star/> : <StarBorder/>}
             </IconButton>
