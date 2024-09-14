@@ -1,10 +1,11 @@
-import { useTheme } from "@mui/material";
-import Paper from "@mui/material/Paper";
+import { ThemeProvider, createTheme, useTheme } from "@mui/material";
+import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
 import { grey } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { regionFlagMapping } from "../../Data/Schemas";
+import { univAbbrFullNameMapping } from "../../Data/Common";
 
 const ProgramCard = ({ program }) => {
     const darkMode = useTheme().palette.mode === "dark";
@@ -16,28 +17,41 @@ const ProgramCard = ({ program }) => {
         ""
     );
 
-    return (
+    const breakpointsTheme = (theme) => createTheme({
+        ...theme,
+        breakpoints: {
+            values: {
+                xs: 0,
+                sm: 580,
+                md: 900,
+                lg: 1100,
+                xl: 1436,
+            },
+        },
+    });
+
+    return (<ThemeProvider theme={breakpointsTheme}>
         <Grid
             display="flex"
             alignItems="center"
             justifyContent="center"
             xs={60}
-            sm={20}
-            md={15}
-            lg={12}
+            sm={30}
+            md={20}
+            lg={15}
+            xl={12}
         >
-            <Paper
-                elevation={2}
+            <Card
                 sx={{
+                    "&:hover": { cursor: "pointer" },
                     position: "relative",
-                    width: 278,
-                    height: 150,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    width: 274,
+                    height: 154,
                     backgroundColor: darkMode ? grey[800] : grey[200],
+                    color: darkMode ? grey[200] : grey[900],
                     borderRadius: "10px",
-                    p: 1,
+                    borderLeft: "20px solid #ffb74d",
+                    boxShadow: "0px 2px 4px rgba(255, 183, 77, 0.5)",
                 }}
                 onClick={() =>
                     navigate(
@@ -57,12 +71,20 @@ const ProgramCard = ({ program }) => {
                 >
                     {flags}
                 </Typography>
-                <Typography variant="h6" component="div" textAlign={"center"}>
-                    {program.ProgramID}
+                <Typography className="programcardtext abbruni" component="div">
+                    {program.University}
                 </Typography>
-            </Paper>
+                <Typography className="programcardtext fulluni" component="div" sx={
+                    { color: darkMode ? grey[400] : grey[700], }
+                }>
+                    {univAbbrFullNameMapping[program.University]}
+                </Typography>
+                <Typography className="programcardtext program" component="div">
+                    {program.Program}
+                </Typography>
+            </Card>
         </Grid>
-    );
+    </ThemeProvider>);
 };
 
 export default ProgramCard;
