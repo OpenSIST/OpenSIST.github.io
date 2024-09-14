@@ -53,12 +53,17 @@ export async function getPrograms(isRefresh = false, query = {}) {
     const search_keys = Object.keys(programs).filter((univName) => {
         const fullNameResults = univAbbrFullNameMapping[univName].toLowerCase().includes(query.u?.toLowerCase() ?? '');
         const abbrResults = univName.toLowerCase().includes(query.u?.toLowerCase() ?? '');
-        return fullNameResults || abbrResults;
+        const programResults = programs[univName].some((programInfo) => {
+            return programInfo.Program.toLowerCase().includes(query.u?.toLowerCase() ?? '');
+        })
+        return fullNameResults || abbrResults || programResults;
     })
 
     const search_programs = {}
     search_keys.forEach((key) => {
-        search_programs[key] = programs[key]
+        search_programs[key] = programs[key].filter((programInfo) => {
+            return programInfo.Program.toLowerCase().includes(query.u?.toLowerCase() ?? '');
+        })
     })
 
 
