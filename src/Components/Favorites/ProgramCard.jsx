@@ -30,6 +30,14 @@ const ProgramCard = ({ program }) => {
         },
     });
 
+// TODO: --------------- remove this -----------------
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+// ---------------------------------------------------
+
     return (<ThemeProvider theme={breakpointsTheme}>
         <Grid
             display="flex"
@@ -50,8 +58,8 @@ const ProgramCard = ({ program }) => {
                     backgroundColor: darkMode ? grey[800] : grey[200],
                     color: darkMode ? grey[200] : grey[900],
                     borderRadius: "10px",
-                    borderLeft: "20px solid #ffb74d",
-                    boxShadow: "0px 2px 4px rgba(255, 183, 77, 0.5)",
+                    borderLeft: `20px solid ${color}`,  // TODO: change this
+                    boxShadow: `0px 2px 4px ${color}80`,  // TODO: change this
                 }}
                 onClick={() =>
                     navigate(
