@@ -51,7 +51,6 @@ const ProgramCard = ({ program }) => {
         >
             <Card
                 sx={{
-                    "&:hover": { cursor: "pointer" },
                     position: "relative",
                     width: 274,
                     height: 154,
@@ -60,6 +59,12 @@ const ProgramCard = ({ program }) => {
                     borderRadius: "10px",
                     borderLeft: `20px solid ${color}`,  // TODO: change this
                     boxShadow: `0px 2px 4px ${color}80`,  // TODO: change this
+                    "&:hover": {
+                        cursor: "pointer",
+                        transition: "all 0.1s linear",
+                        backgroundColor: darkMode ? grey[700] : grey[300],
+                    },
+                    transition: "all 0.1s linear",
                 }}
                 onClick={() =>
                     navigate(
