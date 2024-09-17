@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Outlet, useLoaderData } from "react-router-dom";
 import { getMetaData } from "../../Data/UserData";
@@ -7,6 +7,7 @@ import SearchBar from "../ProgramPage/SideBar/SearchBar/SearchBar";
 import { getQuery } from "../ProgramPage/SideBar/SideBar";
 import ProgramCard from "./ProgramCard";
 import "./Favorites.css"
+import NoPrograms from "../../Assets/images/Favorites/no_programs.gif";
 
 function filterProgramsById(programs, programIDs) {
     let filtered = {};
@@ -43,25 +44,40 @@ export default function Favorites() {
     let { programPageData } = useLoaderData();
 
     return (
-        <Container maxWidth={"xl"} sx={{ flexDirection: "row" }}>
-            <Container maxWidth={"lg"} sx={{ mt: 2 }}>
-                <SearchBar
-                    query={getQuery(programPageData)}
-                    pageName="favorites"
-                />
-            </Container>
-            <Grid
-                container
-                spacing={2}
-                columns={60}
-                maxHeight={"calc(100vh - 150px)"}
-                sx={{ my: 2, overflowY: "auto" }}
-            >
-                {flattenPrograms(programPageData.programs).map((program) => (
-                    <ProgramCard key={program.ProgramID} program={program} />
-                ))}
-            </Grid>
-            <Outlet></Outlet>
+        <Container maxWidth={"xl"}>
+            {Object.keys(programPageData.programs).length !== 0
+            ? <Container sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "20px",
+            }}>
+                <img src={NoPrograms} alt="sweeting capoo"/>
+                <Typography variant="h4" component="div" textAlign="center">
+                    No programs in favorites.
+                </Typography>
+            </Container> : <>
+                <Container maxWidth={"lg"} sx={{ mt: 2 }}>
+                    <SearchBar
+                        query={getQuery(programPageData)}
+                        pageName="favorites"
+                    />
+                </Container>
+                <Grid
+                    container
+                    spacing={2}
+                    columns={60}
+                    maxHeight={"calc(100vh - 150px)"}
+                    sx={{ my: 2, overflowY: "auto" }}
+                >
+                    {flattenPrograms(programPageData.programs).map((program) => (
+                        <ProgramCard key={program.ProgramID} program={program} />
+                    ))}
+                </Grid>
+                <Outlet></Outlet>
+            </>}
         </Container>
     );
 }
