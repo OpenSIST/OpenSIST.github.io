@@ -45,7 +45,7 @@ export default function Favorites() {
 
     return (
         <Container maxWidth={"xl"}>
-            {Object.keys(programPageData.programs).length !== 0
+            {Object.keys(programPageData.programs).length === 0
             ? <Container sx={{
                 height: "100%",
                 display: "flex",
