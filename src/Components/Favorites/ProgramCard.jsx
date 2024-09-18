@@ -5,7 +5,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { grey } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { regionFlagMapping } from "../../Data/Schemas";
-import { univAbbrFullNameMapping } from "../../Data/Common";
+import { univAbbrFullNameMapping, univColorMapping } from "../../Data/Common";
 
 const ProgramCard = ({ program }) => {
     const darkMode = useTheme().palette.mode === "dark";
@@ -16,6 +16,8 @@ const ProgramCard = ({ program }) => {
         (prev, curr) => prev + " " + curr,
         ""
     );
+
+    const color = univColorMapping[program.University] ?? [85, 221, 128]; // [85, 221, 128] is a magic number
 
     const breakpointsTheme = (theme) => createTheme({
         ...theme,
@@ -29,14 +31,6 @@ const ProgramCard = ({ program }) => {
             },
         },
     });
-
-// TODO: --------------- remove this -----------------
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-// ---------------------------------------------------
 
     return (<ThemeProvider theme={breakpointsTheme}>
         <Grid
@@ -57,8 +51,8 @@ const ProgramCard = ({ program }) => {
                     backgroundColor: darkMode ? grey[800] : grey[200],
                     color: darkMode ? grey[200] : grey[900],
                     borderRadius: "10px",
-                    borderLeft: `20px solid ${color}`,  // TODO: change this
-                    boxShadow: `0px 2px 4px ${color}80`,  // TODO: change this
+                    borderLeft: `20px solid rgb(${color})`,
+                    boxShadow: `0px 2px 4px rgba(${color}, 0.5)`,
                     "&:hover": {
                         cursor: "pointer",
                         transition: "all 0.1s linear",
