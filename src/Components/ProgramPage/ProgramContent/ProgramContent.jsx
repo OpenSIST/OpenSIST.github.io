@@ -5,7 +5,7 @@ import {Form, Link, useLoaderData, useNavigate, redirect} from "react-router-dom
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 import {getMetaData, collectProgram, uncollectProgram} from '../../../Data/UserData';
 import {Box, IconButton, Paper, Tooltip, Typography} from "@mui/material";
-import {Add, Edit, Refresh, Close} from "@mui/icons-material";
+import {AddRounded, EditRounded, RefreshRounded, CloseRounded} from "@mui/icons-material";
 import remarkGfm from 'remark-gfm'
 import {getRecordByProgram} from "../../../Data/RecordData";
 import {DataGrid} from "../../DataPoints/DataPoints";
@@ -59,19 +59,19 @@ function ProgramContent({editable = true, inDialog=false}) {
                 <div className='ReviseRefreshButtonGroup'>
                     {editable && <Tooltip title="编辑项目简介" arrow>
                             <IconButton component={Link} to={`edit${window.location.search}`}>
-                                <Edit/>
+                                <EditRounded/>
                             </IconButton>
                     </Tooltip>}
                     <StarButton programID={programContent.ProgramID} metaData={metaData}/>
                     <Form method='post' style={{display: 'flex'}}>
                         <Tooltip title="刷新项目内容" arrow>
                             <IconButton type='submit' name="ActionType" value="Refresh">
-                                <Refresh/>
+                                <RefreshRounded/>
                             </IconButton>
                         </Tooltip>
                     </Form>
                     {inDialog && <IconButton onClick={() => navigate("..")}>
-                        <Close/>
+                        <CloseRounded/>
                     </IconButton>}
                 </div>
             </Box>
@@ -87,7 +87,7 @@ function ProgramContent({editable = true, inDialog=false}) {
                 <DataGrid records={records} style={{padding: '1rem 0 1rem 0', height: '100%'}}
                           insideProgramPage={true}/>
                 <DraggableFAB
-                    Icon={<Add/>}
+                    Icon={<AddRounded/>}
                     ActionType="AddRecord"
                     ButtonClassName="HiddenAddButton"
                     color="primary"
