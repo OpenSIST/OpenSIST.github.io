@@ -1,5 +1,6 @@
 .searchbar-style.favorites-searchbar {
     flex-direction: row;
+    column-gap: 12px;
 }
 
 @media (max-width: 700px) {
@@ -14,7 +15,7 @@
 }
 
 .programcardtext.abbruni {
-    margin-top: 27px;
+    margin-top: 30px;
     font-weight: 700;
     font-size: 24px;
     line-height: 32px;
@@ -26,8 +27,8 @@
 
 .programcardtext.program {
     position: absolute;
-    bottom: 27px;
+    bottom: 25px;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 32px;
 }

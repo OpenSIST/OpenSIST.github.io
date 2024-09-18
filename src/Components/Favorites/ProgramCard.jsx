@@ -67,12 +67,12 @@ const ProgramCard = ({ program }) => {
                 }
             >
                 <Typography
-                    variant="h5"
+                    variant="h6"
                     sx={{
                         display: "flex",
                         justifyContent: "space-between",
                         position: "absolute",
-                        top: 4,
+                        top: 2,
                         right: 10,
                     }}
                 >

@@ -47,7 +47,7 @@ export default function Favorites() {
 
     return (
         <Container maxWidth={"xl"}>
-            <Container maxWidth={"lg"} sx={{ mt: 2 }}>
+            <Container maxWidth={"lg"} sx={{ mt: 1.5 }}>
                 <SearchBar query={getQuery(programPageData)} pageName="favorites" />
             </Container>
             {noPrograms ? (
