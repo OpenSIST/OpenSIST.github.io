@@ -7,7 +7,9 @@ import SearchBar from "../ProgramPage/SideBar/SearchBar/SearchBar";
 import { getQuery } from "../ProgramPage/SideBar/SideBar";
 import ProgramCard from "./ProgramCard";
 import "./Favorites.css";
-import NoPrograms from "../../Assets/images/Favorites/no_programs.gif";
+import capoobeat from "../../Assets/images/Favorites/capoobeat.gif";
+import capoonife from "../../Assets/images/Favorites/capoonife.gif";
+import capoosigh from "../../Assets/images/Favorites/capoosigh.gif";
 
 function filterProgramsById(programs, programIDs) {
     let filtered = {};
@@ -45,6 +47,9 @@ export default function Favorites() {
 
     const noPrograms = Object.keys(programPageData.programs).length === 0;
 
+    const noProgramImgs = [capoobeat, capoosigh, capoonife]
+    const noProgramImg = noProgramImgs[Math.floor(Math.random() * noProgramImgs.length)]
+
     return (
         <Container maxWidth={"xl"}>
             <Container maxWidth={"lg"} sx={{ mt: 1.5 }}>
@@ -66,7 +71,7 @@ export default function Favorites() {
                     <Typography variant="h4" component="div" textAlign="center">
                         No programs to display.
                     </Typography>
-                    <img src={NoPrograms} alt="sweeting capoo" />
+                    <img src={noProgramImg} height="150px" alt="capoo" />
                 </Container>
             ) : (
                 <Grid
