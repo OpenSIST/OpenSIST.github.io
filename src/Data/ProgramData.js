@@ -61,7 +61,9 @@ export async function getPrograms(isRefresh = false, query = {}) {
 
     const search_programs = {}
     search_keys.forEach((key) => {
-        search_programs[key] = programs[key]
+        search_programs[key] = programs[key].filter((programInfo) => {
+            return programInfo.Program.toLowerCase().includes(query.u?.toLowerCase() ?? '');
+        })
     })
 
 
