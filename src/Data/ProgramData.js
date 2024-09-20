@@ -50,17 +50,18 @@ export async function getPrograms(isRefresh = false, query = {}) {
         acc[univ] = programs;
         return acc;
     }, {});
-    const search_keys = Object.keys(programs).filter((univName) => {
+
+    let search_programs = Object.keys(programs).reduce((search_programs, univName) => {
         const fullNameResults = univAbbrFullNameMapping[univName].toLowerCase().includes(query.u?.toLowerCase() ?? '');
         const abbrResults = univName.toLowerCase().includes(query.u?.toLowerCase() ?? '');
-        return fullNameResults || abbrResults;
-    })
-
-    const search_programs = {}
-    search_keys.forEach((key) => {
-        search_programs[key] = programs[key]
-    })
-
+        const programResults = programs[univName].filter((programInfo) => {
+            return programInfo.Program.toLowerCase().includes(query.u?.toLowerCase() ?? '');
+        })
+        if (fullNameResults || abbrResults || programResults.length > 0) {
+            search_programs[univName] = programResults.length > 0 ? programResults : programs[univName];
+        }
+        return search_programs;
+    }, {})
 
     const filteredEntries = Object.entries(search_programs).map(([university, programs]) => {
         const filteredPrograms = programs.filter(program =>

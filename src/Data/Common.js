@@ -57,6 +57,11 @@ export const univAbbrFullNameMapping = univList.reduce((acc, univ) => {
     return acc;
 }, {});
 
+export const univColorMapping = univList.reduce((acc, univ) => {
+    acc[univ.abbr] = univ.color;
+    return acc;
+}, {});
+
 export async function loadMarkDown(path) {
     const response = await fetch(path);
     return await response.text();

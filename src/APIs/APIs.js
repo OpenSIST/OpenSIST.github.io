@@ -33,3 +33,5 @@ export const GET_POST_CONTENT = ROOT + "api/query/post_content";
 export const REMOVE_POST = ROOT + "api/mutating/remove_post";
 export const ADD_POST = ROOT + "api/mutating/new_post";
 export const MODIFY_POST = ROOT + "api/mutating/modify_post";
+export const COLLECT_PROGRAM = ROOT + "api/user/collect_program";
+export const UNCOLLECT_PROGRAM = ROOT + "api/user/un_collect_program";

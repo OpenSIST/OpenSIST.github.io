@@ -1,0 +1,34 @@
+.searchbar-style.favorites-searchbar {
+    flex-direction: row;
+    column-gap: 12px;
+}
+
+@media (max-width: 700px) {
+    .searchbar-style.favorites-searchbar {
+        flex-direction: column;
+    }
+}
+
+.programcardtext {
+    padding-left: 23px;
+    padding-right: 15px;
+}
+
+.programcardtext.abbruni {
+    margin-top: 30px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 32px;
+}
+
+.programcardtext.fulluni {
+    font-size: 11px;
+}
+
+.programcardtext.program {
+    position: absolute;
+    bottom: 25px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 32px;
+}

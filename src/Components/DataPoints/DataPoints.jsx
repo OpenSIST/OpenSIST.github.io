@@ -57,13 +57,13 @@ export function ApplicantProfileInDataPoints() {
     return (
         <Dialog
             open={applicantID === applicant.ApplicantID}
-            onClose={() => navigate(-1)}
+            onClose={() => navigate("..")}
             fullWidth
             maxWidth={'xl'}
             sx={{userSelect: 'text'}}
         >
             <DialogActions>
-                <IconButton onClick={() => navigate(-1)}>
+                <IconButton onClick={() => navigate("..")}>
                     <Close/>
                 </IconButton>
             </DialogActions>
@@ -82,13 +82,13 @@ export function ProgramContentInDataPoints() {
     return (
         <Dialog
             open={programID === programContent.ProgramID}
-            onClose={() => navigate(-1)}
+            onClose={() => navigate("..")}
             fullWidth
             maxWidth={'xl'}
             sx={{userSelect: 'text'}}
         >
             <DialogContent>
-                <ProgramContent editable={false}/>
+                <ProgramContent editable={false} inDialog={true}/>
             </DialogContent>
         </Dialog>
     )

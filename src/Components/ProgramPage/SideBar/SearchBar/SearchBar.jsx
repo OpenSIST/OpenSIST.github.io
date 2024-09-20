@@ -22,7 +22,7 @@ export default function SearchBar({query, pageName}) {
     const [searchParams, setSearchParams] = useSearchParams();
     const [timeoutId, setTimeoutId] = useState(null);
     useEffect(() => {
-        if (pageName === 'program') {
+        if (pageName === 'program' || pageName === 'favories') {
             document.getElementById('u').value = query.u;
             document.getElementById('d').value = query.d?.split(',');
             document.getElementById('m').value = query.m?.split(',');
@@ -53,7 +53,10 @@ export default function SearchBar({query, pageName}) {
     const defaultRegion = regionList.filter(x => query.r?.split(',').includes(x));
 
     return (
-        <Box sx={{display: 'flex', flexDirection: 'column', gap: "10px"}}>
+        <Box
+            className={`${pageName}-searchbar searchbar-style`}
+            sx={{display: 'flex', gap: "10px", flexDirection: 'column'}}
+        >
             <Paper
                 role='search'
                 className='searchContainer'
@@ -63,7 +66,7 @@ export default function SearchBar({query, pageName}) {
             >
                 <SearchIcon sx={{mx: "10px"}}/>
                 <Divider orientation="vertical" variant="middle" flexItem/>
-                {pageName === 'program' ? <InputBase
+                {pageName === 'program' || pageName === 'favorites' ? <InputBase
                     id='u'
                     name='u'
                     placeholder="Search..."
@@ -85,7 +88,7 @@ export default function SearchBar({query, pageName}) {
                     size="small"
                 />}
             </Paper>
-            {pageName === 'program' ? <>
+            {pageName === 'program' || pageName === 'favorites' ? <>
                 <Filter
                     label='Select Degree'
                     id='d'

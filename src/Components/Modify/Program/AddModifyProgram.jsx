@@ -195,7 +195,7 @@ export default function AddModifyProgram({type}) {
             <textarea id='Description' name='Description' hidden={true} value={Description} readOnly/>
             <ButtonGroup sx={{mt: '1vh'}}>
                 <Button type="submit" disabled={programNameInvalid}> 提交 </Button>
-                <Button onClick={() => navigate(-1)}> 取消 </Button>
+                <Button onClick={() => navigate("..")}> 取消 </Button>
             </ButtonGroup>
         </Form>
     )

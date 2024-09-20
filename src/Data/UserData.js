@@ -8,7 +8,9 @@ import {
     LOGOUT,
     REGISTER,
     RESET_PASSWORD, TOGGLE_NICKNAME, UPDATE_CONTACT,
-    UPLOAD_AVATAR
+    UPLOAD_AVATAR,
+    COLLECT_PROGRAM,
+    UNCOLLECT_PROGRAM,
 } from "../APIs/APIs";
 import {blobToBase64, handleErrors, headerGenerator} from "./Common";
 import {useState} from "react";
@@ -294,4 +296,33 @@ export async function updateContact(contact) {
     let metadata = await getMetaData();
     metadata['Contact'] = contact;
     await setMetaData(metadata);
+}
+
+export async function collectProgram(programID) {
+    const response = await fetch(COLLECT_PROGRAM, {
+        method: 'POST',
+        credentials: "include",
+        headers: await headerGenerator(true),
+        body: JSON.stringify({ProgramID: programID})
+    })
+    await handleErrors(response);
+
+    let metaData = await getMetaData()
+    metaData.ProgramCollection = metaData.ProgramCollection ?? [];
+    metaData.ProgramCollection.push(programID);
+    await setMetaData(metaData)
+}
+
+export async function uncollectProgram(programID) {
+    const response = await fetch(UNCOLLECT_PROGRAM, {
+        method: 'POST',
+        credentials: "include",
+        headers: await headerGenerator(true),
+        body: JSON.stringify({ProgramID: programID})
+    })
+    await handleErrors(response);
+
+    let metaData = await getMetaData()
+    metaData.ProgramCollection.splice(metaData.ProgramCollection.indexOf(programID), 1)
+    await setMetaData(metaData)
 }
