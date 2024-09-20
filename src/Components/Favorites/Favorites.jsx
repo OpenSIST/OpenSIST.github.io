@@ -8,7 +8,7 @@ import { getQuery } from "../ProgramPage/SideBar/SideBar";
 import ProgramCard from "./ProgramCard";
 import "./Favorites.css";
 import capoobeat from "../../Assets/images/Favorites/capoobeat.gif";
-import capoonife from "../../Assets/images/Favorites/capoonife.gif";
+import capooknife from "../../Assets/images/Favorites/capooknife.gif";
 import capoosigh from "../../Assets/images/Favorites/capoosigh.gif";
 
 function filterProgramsById(programs, programIDs) {
@@ -47,7 +47,7 @@ export default function Favorites() {
 
     const noPrograms = Object.keys(programPageData.programs).length === 0;
 
-    const noProgramImgs = [capoobeat, capoosigh, capoonife]
+    const noProgramImgs = [capoobeat, capoosigh, capooknife]
     const noProgramImg = noProgramImgs[Math.floor(Math.random() * noProgramImgs.length)]
 
     return (
