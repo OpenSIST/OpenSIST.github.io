@@ -19,6 +19,17 @@ export async function headerGenerator(auth = false, contentType = 'application/j
     return header;
 }
 
+export async function emptyCache() {
+    /*
+    * Empty the cache
+     */
+    const theme = await localforage.getItem('theme');
+    await localforage.clear();
+    if (theme) {
+        await localforage.setItem('theme', theme);
+    }
+}
+
 export async function handleErrors(response) {
     /*
     * Handle the error of the response
@@ -26,9 +37,14 @@ export async function handleErrors(response) {
     * @return: response
      */
     if (response.status === 401) {
+        console.log(window.location.pathname)
+        if (window.location.pathname === "/agreement") {
+            return;
+        }
         if (!["/login", "/register", "/reset"].includes(window.location.pathname)) {
             window.location.href = "/login";
         }
+        await emptyCache();
         return;
     }
     if (response.status !== 200) {

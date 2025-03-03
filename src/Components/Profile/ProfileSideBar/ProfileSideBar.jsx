@@ -26,7 +26,7 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import {ConnectWithoutContact, Edit, Refresh, HomeRounded, LinkedIn, Link as LinkIcon, Mail} from "@mui/icons-material";
 import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
@@ -41,7 +41,9 @@ export function ProfileSideBar({loaderData}) {
     const [anonymousOpen, setAnonymousOpen] = useState(false);
     const [editContactOpen, setEditContactOpen] = useState(false);
     const [contact, setContact] = useState(userContact);
-
+    useEffect(() => {
+        setAnonymous(displayName !== user);
+    }, [displayName, user])
     return (
         <CollapseSideBar
             sx={{
@@ -107,7 +109,7 @@ export function ProfileSideBar({loaderData}) {
                 </Badge>
                 <Form method='post' style={{position: 'absolute', right: '10px'}}>
                     <Tooltip title='刷新侧边栏信息' arrow>
-                        <IconButton type='submit' variant="outlined" name='button' value='Refresh' >
+                        <IconButton type='submit' variant="outlined" name='button' value='Refresh'>
                             <Refresh fontSize='large'/>
                         </IconButton>
                     </Tooltip>

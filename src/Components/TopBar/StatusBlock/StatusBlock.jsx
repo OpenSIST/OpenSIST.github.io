@@ -4,11 +4,12 @@ import React, {useContext, useEffect} from "react";
 import localforage from "localforage";
 import {getAvatar, getDisplayName, getMetaData, logout, useUser} from "../../../Data/UserData";
 import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography, useTheme} from "@mui/material";
-import {AccountBoxRounded, StarRounded, LockResetRounded, LogoutRounded, ExitToAppRounded} from "@mui/icons-material";
+import {AccountBoxRounded, StarRounded, LockResetRounded, ExitToAppRounded} from "@mui/icons-material";
 import {blue} from "@mui/material/colors";
 import {ThemeContext} from "../../../index";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import {emptyCache} from "../../../Data/Common";
 
 export async function loader() {
     const displayName = await getDisplayName();
@@ -38,7 +39,11 @@ export function StatusBlock() {
 
     useEffect(() => {
         if (user === null) {
-            navigate('/login');
+            emptyCache().then(() => {
+                if (window.location.pathname !== '/agreement') {
+                    navigate('/login');
+                }
+            });
         }
     }, [user, navigate]);
 

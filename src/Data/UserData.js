@@ -12,7 +12,7 @@ import {
     COLLECT_PROGRAM,
     UNCOLLECT_PROGRAM,
 } from "../APIs/APIs";
-import {blobToBase64, handleErrors, headerGenerator} from "./Common";
+import {blobToBase64, emptyCache, handleErrors, headerGenerator} from "./Common";
 import {useState} from "react";
 import {getApplicants, setApplicants} from "./ApplicantData";
 import {getRecordByApplicant, setRecord} from "./RecordData";
@@ -84,7 +84,8 @@ export async function logout() {
         const content = await response.json();
         alert(`${content.error}, Error code: ${response.status}`);
     }
-    await localforage.clear();  // clear all the cache data
+    // await localforage.clear();  // clear all the cache data
+    await emptyCache(); // clear all the cache data
     return redirect("/login");
 }
 
