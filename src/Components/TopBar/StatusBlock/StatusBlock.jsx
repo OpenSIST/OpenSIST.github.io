@@ -40,7 +40,9 @@ export function StatusBlock() {
     useEffect(() => {
         if (user === null) {
             emptyCache().then(() => {
-                navigate('/login');
+                if (window.location.pathname !== '/agreement') {
+                    navigate('/login');
+                }
             });
         }
     }, [user, navigate]);
