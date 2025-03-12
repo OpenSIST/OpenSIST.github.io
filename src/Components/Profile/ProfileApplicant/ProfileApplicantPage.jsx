@@ -736,7 +736,7 @@ function RecordBlock({Records, ApplicantID, editable}) {
                                                 <ButtonGroup>
                                                     <Tooltip title='编辑此记录' arrow>
                                                         <IconButton component={Link}
-                                                                    to={`/profile/${record.ApplicantID}/${record.ProgramID}/edit`}>
+                                                                    to={`/profile/${record.ApplicantID}/${encodeURIComponent(record.ProgramID)}/edit`}>
                                                             <Edit/>
                                                         </IconButton>
                                                     </Tooltip>

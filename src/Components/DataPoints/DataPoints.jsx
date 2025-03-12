@@ -9,7 +9,7 @@ import React, {useEffect, useState} from "react";
 import {
     Accordion, AccordionDetails, AccordionSummary, Button,
     Chip, Dialog, DialogActions,
-    DialogContent, IconButton, Paper, Tooltip, Typography, useTheme,
+    DialogContent, IconButton, Paper, Tooltip, useTheme,
 } from "@mui/material";
 import {
     Check,
@@ -208,7 +208,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                         maxWidth: "9rem",
                         height: '1.6rem'
                     }}
-                    onClick={() => navigate(`/datapoints/program/${rowData.ProgramID}`)}
+                    onClick={() => navigate(`/datapoints/program/${encodeURIComponent(rowData.ProgramID)}`)}
                 />
             </Tooltip>
         )

@@ -13,7 +13,7 @@ import {DraggableFAB} from "../../common";
 import StarButton from "./StarButton"
 
 export async function loader({params}) {
-    const programId = params.programId;
+    const programId = decodeURIComponent(params.programId);
     let records = await getRecordByProgram(programId);
     records = Object.values(records);
     try {

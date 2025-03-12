@@ -160,7 +160,7 @@ export function ProgramButton({program, selectProgram, setSelectProgram}) {
             selected={program.ProgramID === selectProgram}
             component={Link}
             onClick={() => setSelectProgram(program.ProgramID)}
-            to={`/programs/${program.ProgramID}${window.location.search}`}
+            to={`/programs/${encodeURIComponent(program.ProgramID)}${window.location.search}`}
             sx={{
                 pl: "3rem",
                 "&::before": {
