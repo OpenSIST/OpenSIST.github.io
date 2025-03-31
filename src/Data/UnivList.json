@@ -1393,6 +1393,14 @@
         "color": [38, 33, 109]
     },
     {
+        "fullName": "European Institute of Innovation & Technology",
+        "region": ["EU"],
+        "abbr": "EIT",
+        "latitude": 47.470849, 
+        "longitude": 19.061396,
+        "color": [0, 74, 152]
+    },
+    {
         "fullName": "Vrije Universiteit Amsterdam",
         "region": ["EU"],
         "abbr": "VU Amsterdam",
