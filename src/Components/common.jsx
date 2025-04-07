@@ -18,7 +18,7 @@ export function LoadingBackdrop() {
     const loading = navigation.state !== 'idle';
     // const loading = navigation.state === 'loading';
     return (
-        <Backdrop open={loading} sx={{zIndex: 99999}} transitionDuration={1000}>
+        <Backdrop open={loading} sx={{zIndex: 99999}} transitionDuration={1000} style={{pointerEvents: "none"}} >
             <CircularProgress color="inherit"/>
         </Backdrop>
     )
