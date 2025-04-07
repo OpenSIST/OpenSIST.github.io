@@ -78,6 +78,7 @@ export async function setUserInfo(user_info) {
 export async function logout() {
     const response = await fetch(LOGOUT, {
         method: 'POST',
+        credentials: 'include',
         headers: await headerGenerator(true),
     })
     if (response.status !== 200 && response.status !== 401) {
@@ -136,6 +137,7 @@ export async function getAvatar(avatarId, displayName = null, isRefresh = false)
     if (isRefresh || !avatar || (Date.now() - avatar['Date']) > CACHE_EXPIRATION) {
         const response = await fetch(GET_AVATAR, {
             method: 'POST',
+            credentials: 'include',
             headers: await headerGenerator(true),
             body: JSON.stringify({avatar_id: avatarId})
         })
@@ -212,6 +214,7 @@ export async function getDisplayName(isRefresh = false) {
     if (isRefresh || !displayName || (Date.now() - displayName['Date']) > CACHE_EXPIRATION) {
         const response = await fetch(GET_DISPLAY_NAME, {
             method: 'POST',
+            credentials: 'include',
             headers: await headerGenerator(true),
         })
         await handleErrors(response);
@@ -242,6 +245,7 @@ export async function toggleAnonymous() {
 
     const response = await fetch(TOGGLE_NICKNAME, {
         method: 'POST',
+        credentials: 'include',
         headers: await headerGenerator(true),
     });
     await handleErrors(response);
