@@ -46,7 +46,7 @@
   },
   "scripts": {
     "start_win": "set PORT=61234 && react-scripts start",
-    "start_unix": "export PORT=61234 && react-scripts start",
+    "start_unix": "export PORT=61234 HTTPS=true && react-scripts start",
     "build": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "臭小子别乱碰这个 react-scripts eject"
