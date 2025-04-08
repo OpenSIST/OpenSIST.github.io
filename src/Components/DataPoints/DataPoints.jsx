@@ -23,11 +23,8 @@ import {
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import {recordStatusList, RecordStatusPalette, SemesterPalette} from "../../Data/Schemas";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {BoldTypography, DraggableFAB, InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
-import {TriStateCheckbox} from 'primereact/tristatecheckbox';
-import {Dropdown} from "primereact/dropdown";
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 export async function loader() {
@@ -639,81 +636,85 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                             dataKey="RecordID"
                             rowGroupMode={insideProgramPage ? null : "subheader"}
                             groupRowsBy="ProgramID"
-                            sortMode='multiple'
+                            sortMode="multiple"
                             multiSortMeta={[{field: 'ProgramID', order: 0}, {field: 'Season', order: -1}]}
-                            size='small'
+                            size="small"
                             scrollable
-                            scrollHeight="calc(100vh - 280px)" // 留出足够空间给搜索面板
+                            scrollHeight="calc(100vh - 280px)"
+                            virtualScrollerOptions={{
+                                itemSize: 50,
+                                delay: 5,
+                            }}
                             rowGroupHeaderTemplate={groupSubheaderTemplate}
                             rowHover
-                            paginator={insideProgramPage ? null : true}
-                            paginatorTemplate="FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
-                            currentPageReportTemplate="{first}~{last} of {totalRecords}"
-                            rows={insideProgramPage ? null : 300}
                             emptyMessage={insideProgramPage ? "该项目暂无申请记录" : "未找到任何匹配内容"}
-                            className='DataTableStyle'
-                            style={{...style, fontSize: 'clamp(14px, 1.5vw, 16px)'}}
+                            className="DataTableStyle"
+                            style={{...style, fontSize: 'clamp(14px, 1.5vw, 16px)', width: '100%'}}
                         >
                             <Column
                                 field='ApplicantID'
                                 header='申请人'
                                 body={applicantBodyTemplate}
                                 className="ApplicantIDColumn"
-                                style={{minWidth: '10rem'}}
+                                style={{minWidth: '8rem', maxWidth: '8rem'}}
                             />
                             {insideProgramPage ? null : <Column
                                 field='ProgramID'
                                 header='申请项目'
                                 body={programBodyTemplate}
                                 className="ProgramIDColumn"
-                                style={{minWidth: '10rem'}}
+                                style={{minWidth: '10rem', maxWidth: '10rem'}}
                             />}
                             <Column
                                 field='Status'
                                 header='申请结果'
                                 body={statusBodyTemplate}
                                 className="StatusColumn"
-                                style={{minWidth: '8rem'}}
+                                style={{minWidth: '4rem', maxWidth: '6rem'}}
                             />
                             <Column
                                 field='Final'
                                 header='最终去向'
                                 body={finalBodyTemplate}
                                 dataType="boolean"
-                                align='center'
                                 className="FinalColumn"
-                                style={{minWidth: '8rem'}}
+                                style={{minWidth: '5rem', maxWidth: '8rem'}}
                             />
                             <Column
                                 field='Season'
                                 header='申请季'
                                 body={semesterBodyTemplate}
                                 className="SeasonColumn"
-                                style={{minWidth: '8rem'}}
+                                style={{minWidth: '5rem', maxWidth: '8rem'}}
                             />
                             <Column
                                 field='TimeLine.Decision'
-                                header='结果通知时间'
+                                header='结果时间'
                                 body={timelineBodyTemplate}
-                                style={{minWidth: '8rem'}}
+                                style={{minWidth: '6rem', maxWidth: '8rem'}}
                             />
                             <Column
                                 field='TimeLine.Interview'
                                 header='面试时间'
                                 body={timelineBodyTemplate}
-                                style={{minWidth: '8rem'}}
+                                style={{minWidth: '6rem', maxWidth: '8rem'}}
                             />
                             <Column
                                 field='TimeLine.Submit'
-                                header='网申提交时间'
+                                header='申请时间'
                                 body={timelineBodyTemplate}
-                                style={{minWidth: '8rem'}}
+                                style={{minWidth: '6rem', maxWidth: '8rem'}}
                             />
                             <Column
                                 field='Detail'
                                 header='备注、补充说明等'
-                                bodyStyle={{fontSize: 'clamp(11px, 1.5vw, 14px)'}}
-                                style={{width: '25rem', minWidth: '15rem'}}
+                                bodyStyle={{
+                                    fontSize: 'clamp(11px, 1.5vw, 14px)',
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    maxWidth: '20rem'
+                                }}
                             />
                         </DataTable>
                     </Paper>
