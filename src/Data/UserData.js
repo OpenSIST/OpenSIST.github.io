@@ -36,9 +36,7 @@ export async function login(email, password) {
     } else {
         let data = await (await response).json();
         const user_info = {
-            user: username,
-            session: data.token,
-            expireAt: data.expireAt,
+            user: username
         }
         await setUserInfo(user_info);
         return redirect("/");

@@ -31,7 +31,7 @@ export function dict2Options(dict) {
     })
 }
 
-export const majorList = ['CS', 'EE', 'IE', 'BME'];
+export const majorList = ['CS', 'EE', 'IE', 'BME', 'SCA'];
 export const majorOptions = list2Options(majorList);
 
 export const degreeList = ['Master', 'PhD'];

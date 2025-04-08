@@ -7,16 +7,11 @@ export async function headerGenerator(auth = false, contentType = 'application/j
     * @param auth [boolean]: whether the request is authenticated
     * @return: header
      */
-    const header = {
+    return {
         'Content-Type': contentType,
         'Connection': 'close',
         'X-Content-Type-Options': 'nosniff'
-    }
-    const session = await localforage.getItem('session');
-    if (auth) {
-        header['Authorization'] = `Bearer ${session}`;
-    }
-    return header;
+    };
 }
 
 export async function emptyCache() {
