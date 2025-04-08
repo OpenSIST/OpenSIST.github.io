@@ -18,52 +18,8 @@
     height: 100%;
 }
 
-/* 高级搜索过滤器样式 - 重新设计 */
-.advanced-search-filter {
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    z-index: 10; /* 确保搜索面板在其他元素之上 */
-    position: sticky;
-    top: 0;
-    border-radius: 12px;
-    margin-bottom: 16px;
-}
-
-.advanced-search-filter.expanded {
-    margin-bottom: 20px;
-    border-bottom: 2px solid rgba(128, 128, 128, 0.2);
-}
-
-.advanced-search-filter.collapsed {
-    margin-bottom: 12px;
-    cursor: pointer;
-}
-
-.advanced-search-filter.collapsed:hover {
-    transform: translateY(-2px);
-}
-
-.advanced-search-filter:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.filter-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4px 8px;
-    border-radius: 8px;
-}
-
-.collapsed .filter-header {
-    background-color: rgba(128, 128, 128, 0.05);
-}
-
 .filter-container-wrapper {
-    animation: fadeIn 0.3s ease;
-    padding: 8px 12px 12px;
+    padding: 8px;
 }
 
 @keyframes fadeIn {

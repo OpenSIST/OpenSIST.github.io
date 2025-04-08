@@ -1,4 +1,3 @@
-import {FilterMatchMode, FilterService} from "primereact/api";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
@@ -7,21 +6,19 @@ import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "rea
 import './DataPoints.css';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {
-    Accordion, AccordionDetails, AccordionSummary, Button,
-    Chip, Dialog, DialogActions, DialogContent, 
-    IconButton, InputAdornment, MenuItem, Paper, 
-    Select, TextField, Tooltip, useTheme,
+    Box, Button,
+    Chip, Dialog, DialogActions, DialogContent, Fade,
+    IconButton, InputAdornment, MenuItem, Paper,
+    Select, TextField, Tooltip, useTheme
 } from "@mui/material";
 import {
     Check,
     Close,
-    ExpandMore,
     Explore,
-    NavigateNext,
     Refresh,
     Search,
-    FilterAlt,
     FilterAltOff,
+    QuestionMark,
 } from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import {recordStatusList, RecordStatusPalette, SemesterPalette} from "../../Data/Schemas";
@@ -99,13 +96,13 @@ export function ProgramContentInDataPoints() {
 }
 
 // 高效的搜索过滤器，替代原有PrimeReact过滤器
-function AdvancedSearchFilter({ 
-    records, 
-    onFilterChange,
-    insideProgramPage,
-    filteredCount = 0,
-    totalCount = 0
-}) {
+function AdvancedSearchFilter({
+                                  records,
+                                  onFilterChange,
+                                  insideProgramPage,
+                                  filteredCount = 0,
+                                  totalCount = 0
+                              }) {
     const [filters, setFilters] = useState({
         applicant: '',
         program: '',
@@ -126,31 +123,31 @@ function AdvancedSearchFilter({
         if (filters.season) count++;
         return count;
     }, [filters]);
-    
+
     // 添加防抖函数提高搜索性能
     const handleFilterChange = useCallback((name, value) => {
         setFilters(prev => {
-            const newFilters = { ...prev, [name]: value };
-            
+            const newFilters = {...prev, [name]: value};
+
             if (searchDebounceRef.current) {
                 clearTimeout(searchDebounceRef.current);
             }
-            
+
             searchDebounceRef.current = setTimeout(() => {
                 // 直接将过滤条件传递给父组件的索引搜索函数
                 onFilterChange(newFilters);
             }, 200); // 从300ms减少到200ms提高响应速度
-            
+
             return newFilters;
         });
     }, [onFilterChange]);
-    
+
     // 重置所有过滤器
     const resetFilters = () => {
         if (searchDebounceRef.current) {
             clearTimeout(searchDebounceRef.current);
         }
-        
+
         setFilters({
             applicant: '',
             program: '',
@@ -158,7 +155,7 @@ function AdvancedSearchFilter({
             final: null,
             season: ''
         });
-        
+
         // 使用空过滤器触发搜索重置
         onFilterChange({
             applicant: '',
@@ -168,209 +165,146 @@ function AdvancedSearchFilter({
             season: ''
         });
     };
-    
+
     // 如果在程序页面内，则不显示搜索过滤器
     if (insideProgramPage) {
         return null;
     }
-    
+
     return (
         <>
-            <Paper 
-                elevation={0} 
-                className={`advanced-search-filter ${expanded ? 'expanded' : 'collapsed'}`}
-                sx={{
-                    p: expanded ? 2 : 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 1,
-                    bgcolor: isDarkMode 
-                        ? 'rgba(30, 30, 30, 0.85)' 
-                        : 'rgba(245, 245, 245, 0.95)',
-                    transition: 'all 0.3s ease',
-                    overflow: 'hidden',
-                    maxHeight: expanded ? '500px' : '60px', // 控制折叠高度
-                }}
-                onClick={() => !expanded && setExpanded(true)}
-            >
-                <div className="filter-header">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <IconButton 
-                            size="small" 
+            <div className="filter-container-wrapper">
+                <div className="filter-container">
+                    <TextField
+                        label="申请人"
+                        size="small"
+                        value={filters.applicant}
+                        onChange={(e) => handleFilterChange('applicant', e.target.value)}
+                        placeholder="搜索申请人"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Search fontSize="small"/>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+
+                    <TextField
+                        label="申请项目"
+                        size="small"
+                        value={filters.program}
+                        onChange={(e) => handleFilterChange('program', e.target.value)}
+                        placeholder="搜索项目"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Search fontSize="small"/>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+
+                    <Select
+                        size="small"
+                        value={filters.status}
+                        onChange={(e) => handleFilterChange('status', e.target.value)}
+                        displayEmpty
+                        renderValue={selected => {
+                            if (!selected) {
+                                return <span style={{color: 'gray'}}>申请结果</span>;
+                            }
+                            return (
+                                <Chip
+                                    label={selected}
+                                    color={RecordStatusPalette[selected]}
+                                    size="small"
+                                />
+                            );
+                        }}
+                        sx={{minWidth: '120px', flex: '0 0 auto'}}
+                    >
+                        <MenuItem value="">
+                            <em>所有结果</em>
+                        </MenuItem>
+                        {recordStatusList.map(status => (
+                            <MenuItem key={status} value={status}>
+                                <Chip
+                                    label={status}
+                                    color={RecordStatusPalette[status]}
+                                    size="small"
+                                />
+                            </MenuItem>
+                        ))}
+                    </Select>
+
+                    <Select
+                        size="small"
+                        value={filters.final === null ? "" : filters.final ? "true" : "false"}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            handleFilterChange('final', value === "" ? null : value === "true");
+                        }}
+                        displayEmpty
+                        renderValue={selected => {
+                            if (selected === "") {
+                                return <span style={{color: 'gray'}}>最终去向</span>;
+                            }
+                            return selected === "true" ? "已确认" : "未确认";
+                        }}
+                        sx={{minWidth: '120px', flex: '0 0 auto'}}
+                    >
+                        <MenuItem value="">
+                            <em>全部</em>
+                        </MenuItem>
+                        <MenuItem value="true">是</MenuItem>
+                        <MenuItem value="false">否</MenuItem>
+                    </Select>
+
+                    <TextField
+                        label="申请季"
+                        size="small"
+                        value={filters.season}
+                        onChange={(e) => handleFilterChange('season', e.target.value)}
+                        placeholder="如: 2023 Fall"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Search fontSize="small"/>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+
+                    <Tooltip title="重置所有过滤器">
+                        <IconButton
+                            size="small"
                             onClick={(e) => {
                                 e.stopPropagation();
-                                setExpanded(!expanded);
+                                resetFilters();
                             }}
-                            sx={{
-                                bgcolor: expanded ? 'transparent' : 'rgba(0, 0, 0, 0.04)',
-                                '&:hover': {
-                                    bgcolor: expanded ? 'rgba(0, 0, 0, 0.04)' : 'rgba(0, 0, 0, 0.08)',
-                                }
-                            }}
+                            color="primary"
                         >
-                            {expanded ? <ExpandMore /> : <NavigateNext />}
+                            <FilterAltOff fontSize="small"/>
                         </IconButton>
-                        <InlineTypography>
-                            <FilterAlt fontSize="small" 
-                                sx={{ 
-                                    color: activeFiltersCount > 0 
-                                        ? theme.palette.primary.main 
-                                        : 'inherit' 
-                                }}
-                            />
-                            <BoldTypography variant="subtitle1">
-                                高级搜索
-                                {activeFiltersCount > 0 && (
-                                    <Chip 
-                                        size="small" 
-                                        label={activeFiltersCount} 
-                                        color="primary" 
-                                        sx={{ ml: 1, height: '20px', minWidth: '20px' }} 
-                                    />
-                                )}
-                            </BoldTypography>
-                        </InlineTypography>
-                    </div>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                        {activeFiltersCount > 0 && (
-                            <Tooltip title="重置所有过滤器">
-                                <IconButton 
-                                    size="small" 
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        resetFilters();
-                                    }} 
-                                    color="primary"
-                                >
-                                    <FilterAltOff fontSize="small" />
-                                </IconButton>
-                            </Tooltip>
-                        )}
-                    </div>
+                    </Tooltip>
                 </div>
-                
-                {expanded && (
-                    <div className="filter-container-wrapper">
-                        <div className="filter-container">
-                            <TextField
-                                label="申请人"
-                                size="small"
-                                value={filters.applicant}
-                                onChange={(e) => handleFilterChange('applicant', e.target.value)}
-                                placeholder="搜索申请人"
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <Search fontSize="small" />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                            
-                            <TextField
-                                label="申请项目"
-                                size="small"
-                                value={filters.program}
-                                onChange={(e) => handleFilterChange('program', e.target.value)}
-                                placeholder="搜索项目"
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <Search fontSize="small" />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                            
-                            <Select
-                                size="small"
-                                value={filters.status}
-                                onChange={(e) => handleFilterChange('status', e.target.value)}
-                                displayEmpty
-                                renderValue={selected => {
-                                    if (!selected) {
-                                        return <span style={{ color: 'gray' }}>申请结果</span>;
-                                    }
-                                    return (
-                                        <Chip
-                                            label={selected}
-                                            color={RecordStatusPalette[selected]}
-                                            size="small"
-                                        />
-                                    );
-                                }}
-                                sx={{ minWidth: '120px', flex: '0 0 auto' }}
-                            >
-                                <MenuItem value="">
-                                    <em>所有结果</em>
-                                </MenuItem>
-                                {recordStatusList.map(status => (
-                                    <MenuItem key={status} value={status}>
-                                        <Chip
-                                            label={status}
-                                            color={RecordStatusPalette[status]}
-                                            size="small"
-                                        />
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                            
-                            <Select
-                                size="small"
-                                value={filters.final === null ? "" : filters.final ? "true" : "false"}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    handleFilterChange('final', value === "" ? null : value === "true");
-                                }}
-                                displayEmpty
-                                renderValue={selected => {
-                                    if (selected === "") {
-                                        return <span style={{ color: 'gray' }}>最终去向</span>;
-                                    }
-                                    return selected === "true" ? "已确认" : "未确认";
-                                }}
-                                sx={{ minWidth: '120px', flex: '0 0 auto' }}
-                            >
-                                <MenuItem value="">
-                                    <em>全部</em>
-                                </MenuItem>
-                                <MenuItem value="true">已确认</MenuItem>
-                                <MenuItem value="false">未确认</MenuItem>
-                            </Select>
-                            
-                            <TextField
-                                label="申请季"
-                                size="small"
-                                value={filters.season}
-                                onChange={(e) => handleFilterChange('season', e.target.value)}
-                                placeholder="如: 2023 Fall"
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <Search fontSize="small" />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                        </div>
-                    </div>
-                )}
-            </Paper>
-            
+            </div>
+
             {/* 搜索结果统计指示器 */}
             {activeFiltersCount > 0 && filteredCount !== totalCount && (
                 <div className="search-results-indicator">
                     <BoldTypography variant="body2">
                         已找到 <b>{filteredCount}</b> 条记录 (共 {totalCount} 条)
                     </BoldTypography>
-                    
+
                     {filteredCount === 0 ? (
-                        <Button 
-                            size="small" 
-                            variant="outlined" 
-                            color="primary" 
+                        <Button
+                            size="small"
+                            variant="outlined"
+                            color="primary"
                             onClick={resetFilters}
-                            startIcon={<FilterAltOff />}
+                            startIcon={<FilterAltOff/>}
                         >
                             清除过滤器
                         </Button>
@@ -400,21 +334,21 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         statusIndex: new Map(),
         seasonIndex: new Map()
     });
-    
+
     // 创建搜索结果缓存
     const searchCache = useRef(new Map());
-    
+
     // 构建搜索索引以加速搜索
     useEffect(() => {
         // 重置缓存，因为数据已更改
         searchCache.current.clear();
-        
+
         // 创建新索引
         const newApplicantIndex = new Map();
         const newProgramIndex = new Map();
         const newStatusIndex = new Map();
         const newSeasonIndex = new Map();
-        
+
         records.forEach((record, idx) => {
             // 索引申请人
             const applicantKey = record.ApplicantID.toLowerCase();
@@ -422,21 +356,21 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 newApplicantIndex.set(applicantKey, []);
             }
             newApplicantIndex.get(applicantKey).push(idx);
-            
+
             // 索引项目
             const programKey = record.ProgramID.toLowerCase();
             if (!newProgramIndex.has(programKey)) {
                 newProgramIndex.set(programKey, []);
             }
             newProgramIndex.get(programKey).push(idx);
-            
+
             // 索引状态
             const statusKey = record.Status;
             if (!newStatusIndex.has(statusKey)) {
                 newStatusIndex.set(statusKey, []);
             }
             newStatusIndex.get(statusKey).push(idx);
-            
+
             // 索引申请季
             const seasonKey = `${record.ProgramYear} ${record.Semester}`.toLowerCase();
             if (!newSeasonIndex.has(seasonKey)) {
@@ -444,17 +378,17 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
             }
             newSeasonIndex.get(seasonKey).push(idx);
         });
-        
+
         searchIndexes.current = {
             applicantIndex: newApplicantIndex,
             programIndex: newProgramIndex,
             statusIndex: newStatusIndex,
             seasonIndex: newSeasonIndex
         };
-        
+
         setFilteredRecords(records);
     }, [records]);
-    
+
     // 处理过滤结果的回调 - 使用索引和缓存提升性能
     const handleFilterChange = useCallback((newFilteredRecords) => {
         setIsSearching(true);
@@ -469,28 +403,28 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     const handleAdvancedSearch = useCallback((filters) => {
         // 创建缓存键
         const cacheKey = JSON.stringify(filters);
-        
+
         // 检查缓存
         if (searchCache.current.has(cacheKey)) {
             handleFilterChange(searchCache.current.get(cacheKey));
             return;
         }
-        
+
         // 如果是空过滤器，则显示所有记录
-        if (!filters.applicant && !filters.program && !filters.status && 
+        if (!filters.applicant && !filters.program && !filters.status &&
             filters.final === null && !filters.season) {
             handleFilterChange(records);
             return;
         }
-        
+
         // 使用批处理处理搜索
         setIsSearching(true);
-        
+
         // 异步处理搜索以避免UI阻塞
         setTimeout(() => {
             // 预处理可能的匹配索引
             let potentialMatches;
-            
+
             // 尝试用最具体的过滤器开始，以尽快缩小搜索范围
             if (filters.status) {
                 // 状态过滤是精确匹配，开始效率较高
@@ -503,7 +437,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 // 找出可能包含搜索词的所有申请人
                 const applicantSearchKey = filters.applicant.toLowerCase();
                 potentialMatches = [];
-                
+
                 // 增量搜索 - 找出所有可能匹配的记录索引
                 searchIndexes.current.applicantIndex.forEach((indexes, key) => {
                     if (key.includes(applicantSearchKey)) {
@@ -514,7 +448,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 // 找出可能包含搜索词的所有项目
                 const programSearchKey = filters.program.toLowerCase();
                 potentialMatches = [];
-                
+
                 searchIndexes.current.programIndex.forEach((indexes, key) => {
                     if (key.includes(programSearchKey)) {
                         potentialMatches.push(...indexes);
@@ -524,7 +458,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 // 找出可能包含搜索词的所有申请季
                 const seasonSearchKey = filters.season.toLowerCase();
                 potentialMatches = [];
-                
+
                 searchIndexes.current.seasonIndex.forEach((indexes, key) => {
                     if (key.includes(seasonSearchKey)) {
                         potentialMatches.push(...indexes);
@@ -534,48 +468,48 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 // 没有过滤器，使用所有记录
                 potentialMatches = Array.from({length: records.length}, (_, i) => i);
             }
-            
+
             // 应用其他过滤器进一步筛选结果
             const filteredIndexes = potentialMatches.filter(idx => {
                 const record = records[idx];
-                
+
                 // 筛选申请人
-                if (filters.applicant && 
+                if (filters.applicant &&
                     !record.ApplicantID.toLowerCase().includes(filters.applicant.toLowerCase())) {
                     return false;
                 }
-                
+
                 // 筛选项目
-                if (filters.program && 
+                if (filters.program &&
                     !record.ProgramID.toLowerCase().includes(filters.program.toLowerCase())) {
                     return false;
                 }
-                
+
                 // 筛选状态
                 if (filters.status && record.Status !== filters.status) {
                     return false;
                 }
-                
+
                 // 筛选最终去向
                 if (filters.final !== null && record.Final !== filters.final) {
                     return false;
                 }
-                
+
                 // 筛选申请季
-                if (filters.season && 
+                if (filters.season &&
                     !(`${record.ProgramYear} ${record.Semester}`).toLowerCase().includes(filters.season.toLowerCase())) {
                     return false;
                 }
-                
+
                 return true;
             });
-            
+
             // 根据索引获取记录
             const finalFilteredRecords = filteredIndexes.map(idx => records[idx]);
-            
+
             // 存入缓存
             searchCache.current.set(cacheKey, finalFilteredRecords);
-            
+
             // 更新UI
             handleFilterChange(finalFilteredRecords);
         }, 0);
@@ -618,7 +552,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
             {rowData.Final ? <Check color='success' fontSize='small'/> : null}
         </div>
     };
-    
+
     const semesterBodyTemplate = (rowData) => {
         return <Chip
             label={`${rowData.ProgramYear}${rowData.Semester}`}
@@ -626,7 +560,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
             sx={{height: '1.6rem', width: '6rem'}}
         />
     };
-    
+
     const timelineBodyTemplate = (rowData, columnBodyOption) => {
         const field = columnBodyOption.field;
         const timelineKey = field.split('.')[1];
@@ -634,7 +568,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
             {rowData.TimeLine[timelineKey]?.split('T')[0]}
         </div>
     };
-    
+
     const applicantBodyTemplate = (rowData) => {
         return (
             <Tooltip title='查看申请人信息' arrow>
@@ -667,8 +601,8 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
     return (
         <div className="data-grid-container">
-            <AdvancedSearchFilter 
-                records={records} 
+            <AdvancedSearchFilter
+                records={records}
                 onFilterChange={handleAdvancedSearch}
                 insideProgramPage={insideProgramPage}
                 filteredCount={filteredRecords.length}
@@ -676,10 +610,10 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
             />
             <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap}>
                 {isSearching ? (
-                    <Paper 
-                        sx={{ 
-                            display: 'flex', 
-                            justifyContent: 'center', 
+                    <Paper
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
                             alignItems: 'center',
                             padding: '20px',
                             bgcolor: theme.palette.mode === 'dark' ? 'rgba(30, 30, 30, 0.8)' : 'rgba(245, 245, 245, 0.9)',
@@ -692,7 +626,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                         </BoldTypography>
                     </Paper>
                 ) : (
-                    <Paper 
+                    <Paper
                         elevation={0}
                         sx={{
                             borderRadius: '12px',
@@ -715,7 +649,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                             paginator={insideProgramPage ? null : true}
                             paginatorTemplate="FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
                             currentPageReportTemplate="{first}~{last} of {totalRecords}"
-                            rows={insideProgramPage ? null : 20}
+                            rows={insideProgramPage ? null : 300}
                             emptyMessage={insideProgramPage ? "该项目暂无申请记录" : "未找到任何匹配内容"}
                             className='DataTableStyle'
                             style={{...style, fontSize: 'clamp(14px, 1.5vw, 16px)'}}
@@ -791,16 +725,21 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
 function UsageGuidance() {
     return (
-        <Accordion sx={{bgcolor: '#448aff1a'}} disableGutters>
-            <AccordionSummary
-                expandIcon={<ArrowDropDownIcon/>}
-            >
-                <InlineTypography>
-                    <Explore/> 请先阅读使用指南
+        <Box
+            sx={{
+                position: 'fixed',
+                bottom: 24,
+                right: 80,
+                width: 500,
+                zIndex: 25,
+            }}
+        >
+            <Paper elevation={6} sx={{borderRadius: 2, overflow: 'hidden', px: 3, py: 2}}>
+                <InlineTypography sx={{display: 'flex', alignItems: 'center', mb: 1}}>
+                    <Explore sx={{mr: 0.5}}/>
+                    请先阅读使用指南
                 </InlineTypography>
-            </AccordionSummary>
-            <AccordionDetails>
-                <ol>
+                <ol style={{paddingLeft: 20}}>
                     <li>
                         高校的顺序主要参考USNews和CSRankings的排名，每个学校内部的项目按字典序排序，因此<b>任何顺序与项目质量、申请难度并不直接挂钩</b>。
                     </li>
@@ -816,21 +755,6 @@ function UsageGuidance() {
                     </li>
                     <li>
                         <InlineTypography>
-                            使用顶部的<b>高级搜索</b>面板快速筛选数据，搜索功能即时响应，不需点击按钮。点击左侧
-                            <NavigateNext style={{fontSize: '1rem', verticalAlign: 'middle'}}/>
-                            或
-                            <ExpandMore style={{fontSize: '1rem', verticalAlign: 'middle'}}/>
-                            按钮可展开或折叠搜索面板。
-                        </InlineTypography>
-                    </li>
-                    <li>
-                        <InlineTypography>
-                            搜索面板会在右上角显示当前激活的过滤器数量<Chip size="small" label="1" sx={{height: '16px', minWidth: '16px', fontSize: '0.7rem'}}/>，
-                            也可点击<FilterAltOff style={{fontSize: '1rem', verticalAlign: 'middle'}}/>重置所有过滤条件。
-                        </InlineTypography>
-                    </li>
-                    <li>
-                        <InlineTypography>
                             在数据量大时，搜索可能需要短暂的处理时间，系统会自动优化搜索速度并缓存结果，使重复搜索更快。
                         </InlineTypography>
                     </li>
@@ -840,10 +764,72 @@ function UsageGuidance() {
                         </InlineTypography>
                     </li>
                 </ol>
-            </AccordionDetails>
-        </Accordion>
+            </Paper>
+        </Box>
     );
 }
+
+function FloatingControls() {
+    const [showGuide, setShowGuide] = useState(false);
+
+    const handleToggleGuide = () => {
+        setShowGuide(prev => !prev);
+    };
+
+    return (
+        <>
+            {/* Refresh FAB */}
+            <Form method="post">
+                <DraggableFAB
+                    Icon={<Refresh/>}
+                    ActionType="Refresh"
+                    ButtonClassName="HiddenRefreshButton"
+                    color="primary"
+                    style={{
+                        position: 'fixed',
+                        bottom: '40px',
+                        right: '20px',
+                        zIndex: 20,
+                    }}
+                    tooltipTitle="刷新表格"
+                />
+            </Form>
+
+            {/* Help / Close FAB */}
+            <DraggableFAB
+                Icon={
+                    <>
+                        <Fade in={!showGuide} timeout={200} unmountOnExit>
+                            <QuestionMark sx={{position: 'absolute'}}/>
+                        </Fade>
+                        <Fade in={showGuide} timeout={200} unmountOnExit>
+                            <Close sx={{position: 'absolute'}}/>
+                        </Fade>
+                    </>
+                }
+                ActionType="HelpToggle"
+                ButtonClassName="HiddenHelpButton"
+                color="primary"
+                style={{
+                    position: 'fixed',
+                    bottom: '110px',
+                    right: '20px',
+                    zIndex: 20,
+                }}
+                tooltipTitle={showGuide ? "关闭指南" : "使用指南"}
+                onClick={handleToggleGuide}
+            />
+
+            {/* Usage Guidance Panel */}
+            <Fade in={showGuide}>
+                <div>
+                    <UsageGuidance/>
+                </div>
+            </Fade>
+        </>
+    );
+}
+
 
 export default function DataPoints() {
     const loaderRecords = useLoaderData();
@@ -854,7 +840,7 @@ export default function DataPoints() {
 
     return (
         <>
-            <Paper 
+            <Paper
                 className="DataPointsContent"
                 sx={{
                     bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA",
@@ -864,25 +850,10 @@ export default function DataPoints() {
                     gap: '16px'
                 }}
             >
-                <UsageGuidance />
-                <DataGrid records={records} insideProgramPage={false} />
-                <Outlet />
+                <DataGrid records={records} insideProgramPage={false}/>
+                <Outlet/>
             </Paper>
-            <Form method="post">
-                <DraggableFAB
-                    Icon={<Refresh/>}
-                    ActionType="Refresh"
-                    ButtonClassName="HiddenRefreshButton"
-                    color="primary"
-                    style={{
-                        position: 'fixed',  // 改为固定定位
-                        bottom: '40px',     // 从底部增加距离
-                        right: "20px",      // 从右侧增加距离
-                        zIndex: 20          // 确保在最上层
-                    }}
-                    tooltipTitle='刷新表格'
-                />
-            </Form>
+            <FloatingControls/>
         </>
     )
 }
