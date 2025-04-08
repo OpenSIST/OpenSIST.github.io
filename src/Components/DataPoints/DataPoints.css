@@ -9,6 +9,134 @@
     position: relative;
 }
 
+/* 数据网格容器样式 */
+.data-grid-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* 高级搜索过滤器样式 - 重新设计 */
+.advanced-search-filter {
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    z-index: 10; /* 确保搜索面板在其他元素之上 */
+    position: sticky;
+    top: 0;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.advanced-search-filter.expanded {
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(128, 128, 128, 0.2);
+}
+
+.advanced-search-filter.collapsed {
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.advanced-search-filter.collapsed:hover {
+    transform: translateY(-2px);
+}
+
+.advanced-search-filter:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+.collapsed .filter-header {
+    background-color: rgba(128, 128, 128, 0.05);
+}
+
+.filter-container-wrapper {
+    animation: fadeIn 0.3s ease;
+    padding: 8px 12px 12px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+/* 优化每个过滤器元素的宽度和样式 */
+.filter-container > .MuiTextField-root,
+.filter-container > .MuiFormControl-root {
+    min-width: 160px;
+    flex: 1;
+    margin: 0;
+}
+
+.filter-container .MuiOutlinedInput-root {
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.filter-container .MuiOutlinedInput-root:hover {
+    background-color: rgba(128, 128, 128, 0.05);
+}
+
+/* 搜索结果指示器 */
+.search-results-indicator {
+    background-color: rgba(128, 128, 128, 0.08);
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: fadeIn 0.3s ease;
+}
+
+/* 响应式布局 */
+@media (max-width: 1024px) {
+    .filter-container {
+        gap: 12px;
+    }
+    
+    .filter-container > .MuiTextField-root,
+    .filter-container > .MuiFormControl-root {
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .filter-container > * {
+        width: 100% !important;
+        min-width: unset !important;
+    }
+    
+    .advanced-search-filter.expanded {
+        max-height: 400px !important;
+        overflow-y: auto;
+    }
+}
+
 .DataTableStyle {
     display: flex;
     flex-direction: column;
