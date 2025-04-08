@@ -15,7 +15,7 @@ export function AboutUs() {
             id: 'cze',
             name: '迟择恩 - 前端开发',
             major: '2020级CS本科生',
-            hyperlink: 'https://www.harrychi.com'
+            hyperlink: 'https://www.linkedin.com/in/zeen-chi-230333238/'
         },
         {
             id: 'lbn',
@@ -27,13 +27,13 @@ export function AboutUs() {
             id: 'cst',
             name: '陈溯汀 - 后端开发',
             major: '2020级CS本科生',
-            hyperlink: 'https://github.com/caoster'
+            hyperlink: 'https://sutingchen.dev'
         },
         {
             id: 'frm',
             name: '范润铭 - 设计师',
             major: '2021级创艺本科生',
-            hyperlink: 'https://github.com/Fan-runming'
+            hyperlink: 'https://eva.fan'
         },
         {
             id: 'zbm',
