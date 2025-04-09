@@ -312,6 +312,20 @@ function AdvancedSearchFilter({
 export function DataGrid({records, insideProgramPage, style = {}}) {
     const navigate = useNavigate();
     const theme = useTheme();
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    
+    // Add event listener to track window size changes
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    
     const themeMap = {
         light: "/TableLight.css",
         dark: "/TableDark.css"
@@ -537,7 +551,14 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         return <Chip
             label={rowData.Status}
             color={RecordStatusPalette[rowData.Status]}
-            sx={{height: '1.6rem', width: '4.5rem'}}
+            sx={{
+                height: {xs: '1.4rem', sm: '1.6rem'},
+                width: {xs: '4rem', sm: '4.5rem'},
+                fontSize: {xs: '0.7rem', sm: '0.8rem'},
+                '& .MuiChip-label': {
+                    padding: {xs: '0 4px', sm: '0 6px'}
+                }
+            }}
         />
     };
 
@@ -551,7 +572,14 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         return <Chip
             label={`${rowData.ProgramYear}${rowData.Semester}`}
             color={SemesterPalette[rowData.Semester]}
-            sx={{height: '1.6rem', width: '6rem'}}
+            sx={{
+                height: {xs: '1.4rem', sm: '1.6rem'},
+                width: {xs: '5rem', sm: '6rem'},
+                fontSize: {xs: '0.7rem', sm: '0.8rem'},
+                '& .MuiChip-label': {
+                    padding: {xs: '0 4px', sm: '0 6px'}
+                }
+            }}
         />
     };
 
@@ -569,8 +597,12 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 <Chip
                     label={rowData.ApplicantID}
                     sx={{
-                        maxWidth: "8rem",
-                        height: '1.6rem'
+                        maxWidth: {xs: "6rem", sm: "8rem"},
+                        height: {xs: '1.4rem', sm: '1.6rem'},
+                        fontSize: {xs: '0.7rem', sm: '0.8rem'},
+                        '& .MuiChip-label': {
+                            padding: {xs: '0 6px', sm: '0 8px'}
+                        }
                     }}
                     onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}
                 />
@@ -584,8 +616,12 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 <Chip
                     label={rowData.ProgramID}
                     sx={{
-                        maxWidth: "9rem",
-                        height: '1.6rem'
+                        maxWidth: {xs: "7rem", sm: "9rem"},
+                        height: {xs: '1.4rem', sm: '1.6rem'},
+                        fontSize: {xs: '0.7rem', sm: '0.8rem'},
+                        '& .MuiChip-label': {
+                            padding: {xs: '0 6px', sm: '0 8px'}
+                        }
                     }}
                     onClick={() => navigate(`/datapoints/program/${encodeURIComponent(rowData.ProgramID)}`)}
                 />
@@ -636,17 +672,21 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                             sortMode="multiple"
                             multiSortMeta={[{field: 'ProgramID', order: 0}, {field: 'Season', order: -1}]}
                             size="small"
-                            scrollable={!insideProgramPage}
-                            scrollHeight={insideProgramPage ? undefined : "calc(100vh - 280px)"}
+                            scrollable
+                            scrollHeight={insideProgramPage ? undefined : windowWidth <= 768 ? "calc(100vh - 220px)" : "calc(100vh - 280px)"}
                             virtualScrollerOptions={{
-                                itemSize: 50,
+                                itemSize: windowWidth <= 768 ? 45 : 50,
                                 delay: 5,
                             }}
                             rowGroupHeaderTemplate={groupSubheaderTemplate}
                             rowHover
                             emptyMessage={insideProgramPage ? "该项目暂无申请记录" : "未找到任何匹配内容"}
                             className="DataTableStyle"
-                            style={{...style, fontSize: 'clamp(14px, 1.5vw, 16px)', width: '100%'}}
+                            style={{
+                                ...style, 
+                                fontSize: windowWidth <= 768 ? 'clamp(12px, 1.5vw, 14px)' : 'clamp(14px, 1.5vw, 16px)', 
+                                width: '100%'
+                            }}
                         >
                             <Column
                                 field='ApplicantID'
@@ -722,22 +762,87 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 }
 
 function UsageGuidance() {
+    // Use window size hook to determine responsive layout
+    const [windowSize, setWindowSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight
+    });
+    
+    // Add event listener to track window size changes
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowSize({
+                width: window.innerWidth,
+                height: window.innerHeight
+            });
+        };
+        
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    
+    // Determine if we're on mobile - check width
+    const isMobile = windowSize.width <= 768;
+    
+    // Calculate appropriate max height based on screen dimensions
+    const maxHeightValue = Math.min(windowSize.height * 0.6, 500);
+    
     return (
         <Box
             sx={{
                 position: 'fixed',
-                bottom: 24,
-                right: 80,
-                width: 500,
+                bottom: isMobile ? 90 : 24,
+                right: isMobile ? 16 : 80,
+                left: isMobile ? 16 : 'auto',
+                width: isMobile ? 'auto' : 500,
+                maxHeight: `${maxHeightValue}px`,
                 zIndex: 25,
             }}
         >
-            <Paper elevation={6} sx={{borderRadius: 2, overflow: 'hidden', px: 3, py: 2}}>
-                <InlineTypography sx={{display: 'flex', alignItems: 'center', mb: 1}}>
-                    <Explore sx={{mr: 0.5}}/>
+            <Paper 
+                elevation={6} 
+                sx={{
+                    borderRadius: 2, 
+                    overflow: 'hidden', 
+                    px: isMobile ? 2 : 3, 
+                    py: 2,
+                    overflowY: 'auto',
+                    maxHeight: isMobile ? `${Math.min(maxHeightValue - 20, windowSize.height - 150)}px` : 'none',
+                    position: 'relative',
+                    '&::after': isMobile ? {
+                        content: '""',
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: '40px',
+                        background: (theme) => 
+                            theme.palette.mode === 'dark' 
+                                ? 'linear-gradient(to top, rgba(18,18,18,0.8), rgba(18,18,18,0))' 
+                                : 'linear-gradient(to top, rgba(255,255,255,0.8), rgba(255,255,255,0))',
+                        pointerEvents: 'none',
+                        zIndex: 5
+                    } : {}
+                }}
+            >
+                <InlineTypography sx={{
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    mb: 1,
+                    fontSize: isMobile ? '15px' : 'inherit',
+                    fontWeight: 'bold'
+                }}>
+                    <Explore sx={{mr: 0.5, fontSize: isMobile ? '20px' : '24px'}}/>
                     请先阅读使用指南
                 </InlineTypography>
-                <ol style={{paddingLeft: 20}}>
+                <ol style={{
+                    paddingLeft: isMobile ? 16 : 20, 
+                    marginBottom: 0,
+                    fontSize: isMobile ? '14px' : 'inherit',
+                    lineHeight: isMobile ? 1.4 : 'inherit',
+                }}>
                     <li>
                         高校的顺序主要参考USNews和CSRankings的排名，每个学校内部的项目按字典序排序，因此<b>任何顺序与项目质量、申请难度并不直接挂钩</b>。
                     </li>
@@ -747,8 +852,10 @@ function UsageGuidance() {
                         </InlineTypography>
                     </li>
                     <li>
-                        <InlineTypography>
-                            每个项目分组的标题（也就是项目名）右侧都有一个<ControlPointIcon/>按钮，点击可为该项目添加新的申请记录。
+                        <InlineTypography sx={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '3px'}}>
+                            每个项目分组的标题（也就是项目名）右侧都有一个
+                            <ControlPointIcon fontSize="small" sx={{mx: '2px', verticalAlign: 'middle'}}/>
+                            按钮，点击可为该项目添加新的申请记录。
                         </InlineTypography>
                     </li>
                     <li>
@@ -757,8 +864,9 @@ function UsageGuidance() {
                         </InlineTypography>
                     </li>
                     <li>
-                        <InlineTypography>
-                            表格会每十分钟自动从服务器获取一次最新数据，您也可以可点击右下角<Refresh/>按钮手动获取。
+                        <InlineTypography sx={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '3px'}}>
+                            表格会每十分钟自动从服务器获取一次最新数据，您也可以点击右下角<Refresh fontSize="small" sx={{mx: '2px', verticalAlign: 'middle'}}/>
+                            按钮手动获取。
                         </InlineTypography>
                     </li>
                 </ol>
@@ -769,6 +877,22 @@ function UsageGuidance() {
 
 function FloatingControls() {
     const [showGuide, setShowGuide] = useState(false);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    
+    // Add event listener to track window size changes
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    
+    // Determine if we're on mobile
+    const isMobile = windowWidth <= 768;
 
     const handleToggleGuide = () => {
         setShowGuide(prev => !prev);
@@ -785,9 +909,10 @@ function FloatingControls() {
                     color="primary"
                     style={{
                         position: 'fixed',
-                        bottom: '40px',
-                        right: '20px',
+                        bottom: isMobile ? '20px' : '40px',
+                        right: isMobile ? '16px' : '20px',
                         zIndex: 20,
+                        transform: isMobile ? 'scale(0.9)' : 'none',
                     }}
                     tooltipTitle="刷新表格"
                 />
@@ -807,12 +932,14 @@ function FloatingControls() {
                 }
                 ActionType="HelpToggle"
                 ButtonClassName="HiddenHelpButton"
-                color="primary"
+                color={showGuide ? "error" : "primary"}
                 style={{
                     position: 'fixed',
-                    bottom: '110px',
-                    right: '20px',
-                    zIndex: 20,
+                    bottom: isMobile ? '80px' : '110px',
+                    right: isMobile ? '16px' : '20px',
+                    zIndex: 1070,
+                    transform: isMobile ? 'scale(1)' : 'none',
+                    boxShadow: showGuide ? '0 4px 10px rgba(0, 0, 0, 0.5)' : undefined,
                 }}
                 tooltipTitle={showGuide ? "关闭指南" : "使用指南"}
                 onClick={handleToggleGuide}

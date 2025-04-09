@@ -76,6 +76,11 @@
 }
 
 @media (max-width: 768px) {
+    .DataPointsContent {
+        margin: 5px;
+        height: calc(100% - 10px);
+    }
+    
     .filter-container {
         flex-direction: column;
         align-items: stretch;
@@ -90,6 +95,35 @@
     .advanced-search-filter.expanded {
         max-height: 400px !important;
         overflow-y: auto;
+    }
+    
+    /* Mobile styles for the usage guidance component */
+    .MuiPaper-root ol {
+        padding-left: 16px;
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+    
+    .MuiPaper-root li {
+        margin-bottom: 8px;
+    }
+    
+    /* Smaller margins for mobile usage guidance panel */
+    .MuiBox-root .MuiPaper-root {
+        margin: 0 !important;
+        max-width: 100%;
+        overflow-y: auto;
+    }
+    
+    /* Ensure floating action buttons don't overlap important content */
+    form .MuiFab-root {
+        z-index: 1060 !important; /* Match the z-index with the close button */
+    }
+    
+    /* Ensure the help/close button is always visible and on top */
+    .HiddenHelpButton {
+        z-index: 1070 !important; /* Higher than everything else */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important; /* Enhanced shadow */
     }
 }
 
