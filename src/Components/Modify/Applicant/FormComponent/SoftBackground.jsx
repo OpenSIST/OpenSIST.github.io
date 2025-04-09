@@ -102,7 +102,7 @@ function SoftBackground({formValues, handleBack, handleChange, loaderData}) {
                 alert("文件大小不能超过10MB!");
                 return;
             }
-            if (!(/^[\x00-\x7F]*$/.test(file.name))) {
+            if (!/^[a-zA-Z0-9_\-. ]+$/.test(file.name)) {
                 alert("文件名不能包含中文!");
                 return;
             }

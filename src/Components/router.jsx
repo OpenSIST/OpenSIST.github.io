@@ -44,7 +44,6 @@ import FAQMDPath from "../Data/MarkDown/FAQ.md";
 import ProgramIndexMDPath from "../Data/MarkDown/ProgramIndex.md"
 import {loadMarkDown} from "../Data/Common";
 import ProfileIndexMDPath from "../Data/MarkDown/ProfileIndex.md"
-import HomeIndexMDPath from "../Data/MarkDown/HomeIndex.md"
 import PostIndexMDPath from "../Data/MarkDown/PostIndex.md"
 import Favorites, {loader as FavoritesLoader} from "./Favorites/Favorites";
 

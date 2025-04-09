@@ -34,7 +34,6 @@ export async function login(email, password) {
         alert(`${content.error}, Error code: ${response.status}`)
         return redirect("/login");
     } else {
-        let data = await (await response).json();
         const user_info = {
             user: username
         }

@@ -87,7 +87,7 @@ export function ProfileSideBar({loaderData}) {
                                                 alert("图片大小不能超过4MB!");
                                                 return;
                                             }
-                                            if (!(/^[\x00-\x7F]*$/.test(file.name))) {
+                                            if (!/^[a-zA-Z0-9_\-. ]+$/.test(file.name)) {
                                                 alert("图片文件名不能包含中文!");
                                                 return;
                                             }

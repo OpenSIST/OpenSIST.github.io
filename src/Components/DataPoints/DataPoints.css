@@ -102,6 +102,11 @@
     overflow-x: auto;
 }
 
+/* 专门为项目页面内的表格添加样式 */
+.p-datatable-wrapper {
+    overflow: auto;
+}
+
 .DataTableStyle * {
     transition: none;
 }

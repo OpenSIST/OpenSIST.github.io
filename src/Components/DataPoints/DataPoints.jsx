@@ -107,9 +107,6 @@ function AdvancedSearchFilter({
         final: null,
         season: ''
     });
-    const [expanded, setExpanded] = useState(true); // 控制搜索面板的折叠状态
-    const theme = useTheme();
-    const isDarkMode = theme.palette.mode === 'dark';
     const searchDebounceRef = useRef(null);
     const activeFiltersCount = useMemo(() => {
         let count = 0;
@@ -639,8 +636,8 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                             sortMode="multiple"
                             multiSortMeta={[{field: 'ProgramID', order: 0}, {field: 'Season', order: -1}]}
                             size="small"
-                            scrollable
-                            scrollHeight="calc(100vh - 280px)"
+                            scrollable={!insideProgramPage}
+                            scrollHeight={insideProgramPage ? undefined : "calc(100vh - 280px)"}
                             virtualScrollerOptions={{
                                 itemSize: 50,
                                 delay: 5,
