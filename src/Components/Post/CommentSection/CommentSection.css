@@ -1,0 +1,295 @@
+.comment-section-container {
+    padding: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.comment-section-title {
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: #212121;
+    font-size: 1.25rem;
+}
+
+.comment-input-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+}
+
+.comment-input-avatar {
+    width: 40px;
+    height: 40px;
+}
+
+.comment-input-field {
+    flex-grow: 1;
+}
+
+.comment-input-field .MuiOutlinedInput-root {
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.comment-submit-button {
+    height: fit-content;
+    background-color: #00a1d6;
+    color: white;
+    border-radius: 4px;
+    font-weight: 500;
+    text-transform: none;
+    flex-shrink: 0;
+}
+
+.comment-submit-button:hover {
+    background-color: #0091c2;
+}
+
+.comment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.comment-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 12px 8px;
+    transition: background-color 0.2s;
+    border-radius: 8px;
+}
+
+.comment-item:hover {
+    background-color: #f5f5f5;
+}
+
+.comment-avatar {
+    width: 40px;
+    height: 40px;
+}
+
+.comment-content {
+    flex-grow: 1;
+    width: calc(100% - 60px); /* Account for avatar width and gap */
+}
+
+.comment-author {
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 1.2;
+}
+
+.comment-text {
+    margin-top: 0.5rem;
+    color: #333;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.comment-actions {
+    /* This class might still be used for the top-right menu, keep basic flex if needed */
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: space-between; */
+    margin-top: 0.5rem;
+}
+
+/* New styles for comment footer */
+.comment-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the start */
+    gap: 1rem; /* Space between timestamp and buttons */
+    margin-top: 0.75rem; /* Space above the footer */
+    color: #999; /* Default color for items in footer */
+}
+
+.comment-timestamp {
+    font-size: 0.75rem;
+    /* color: #999; Moved color to parent */
+}
+
+.comment-action-buttons {
+    display: flex;
+    gap: 0.5rem; /* Smaller gap between action buttons */
+}
+
+.like-button, .reply-button {
+    color: #999; /* Adjust default button color */
+    transition: color 0.2s, background-color 0.2s;
+    display: flex;
+    align-items: center;
+    padding: 4px; /* Slightly adjust padding */
+}
+
+.like-button.liked {
+    color: #00a1d6;
+}
+
+.like-button:hover, .reply-button:hover {
+    color: #00a1d6;
+    background-color: rgba(0, 161, 214, 0.1);
+}
+
+.comment-menu-button {
+    color: #bbb;
+}
+
+.comment-menu-button:hover {
+    color: #666;
+}
+
+.delete-menu-item {
+    color: #ff5252;
+}
+
+.comment-replies {
+    margin-top: 1rem;
+    margin-left: 1rem; /* Keep some margin for overall spacing */
+    padding-left: 2rem; /* Increase padding for indentation */
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Styles for Reply Input Section within a Comment */
+.reply-input-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    padding: 8px;
+    background-color: #f6f6f6;
+    border-radius: 8px;
+}
+
+.reply-input-avatar {
+    width: 32px;
+    height: 32px;
+    margin-top: 4px;
+}
+
+.reply-input-section .MuiTextField-root {
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.reply-input-section .MuiTextField-root .MuiInputBase-inputMultiline {
+    padding: 8.5px 10px;
+    font-size: 14px;
+}
+
+/* Author badge styling */
+.author-badge {
+    border-radius: 2px;
+    padding: 0 4px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .comment-input-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .comment-input-avatar {
+        align-self: flex-start;
+    }
+    
+    .comment-submit-button {
+        align-self: flex-end;
+    }
+}
+
+/* Style for the @mention in replies */
+.reply-target-author {
+    color: #00a1d6; /* Use the theme blue color */
+    font-weight: 500;
+    margin-right: 0.25em; /* Add a small space after the colon */
+}
+
+/* Styles for Comment Input Actions (Image Button, etc.) */
+.comment-input-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 8px;
+}
+
+/* Styles for Image Preview */
+.image-preview-container {
+    position: relative;
+    display: inline-block; /* Contain the image and button */
+    margin-top: 0.5rem;
+    max-width: 150px; /* Limit preview size */
+}
+
+.image-preview {
+    display: block; /* Remove extra space below image */
+    max-width: 100%;
+    max-height: 100px; /* Limit preview height */
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.remove-image-button {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    padding: 0;
+    border-radius: 50%;
+}
+
+.remove-image-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Quill Editor Styling - Toolbar Hidden */
+.comment-input-editor .ql-toolbar {
+    display: none;
+}
+.comment-input-editor .ql-container {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    min-height: 100px;
+    font-size: 15px;
+    line-height: 1.6;
+}
+.comment-input-editor .ql-editor {
+    padding: 12px 15px;
+    height: auto;
+}
+.comment-input-editor .ql-editor.ql-blank::before {
+  color: #999;
+  font-style: normal;
+  left: 15px;
+}
+
+/* Styling for Rendered Quill Content */
+.quill-render-content img {
+    max-width: 100%; /* Ensure images don't overflow */
+    max-height: 300px; /* Limit display height */
+    display: block; /* Prevent extra space below */
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+}
+.quill-render-content p {
+    margin-bottom: 0; /* Adjust paragraph spacing if needed */
+}
+
+/* Hide separate image preview if editor is used */
+.image-preview-container {
+    display: none; 
+} 

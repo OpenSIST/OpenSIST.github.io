@@ -20,6 +20,7 @@ import {isAuthApplicant} from "../../../Data/ApplicantData";
 import "./PostContent.css"
 import {getAvatar, getMetaData} from "../../../Data/UserData";
 import Grid2 from "@mui/material/Unstable_Grid2";
+import CommentSection from "../CommentSection/CommentSection";
 
 export async function loader({params}) {
     const postId = params.postId;
@@ -129,6 +130,10 @@ export default function PostContent() {
                 <ReactMarkdown>
                     {postObj.Content}
                 </ReactMarkdown>
+                <CommentSection 
+                    postId={postObj.PostID} 
+                    postAuthor={postObj.Author}
+                />
             </Paper>
         </>
     )
