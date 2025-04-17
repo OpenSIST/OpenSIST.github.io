@@ -15,7 +15,8 @@ import {
     MenuItem,
     Tooltip,
     Chip,
-    Input
+    Input,
+    Snackbar
 } from '@mui/material';
 import { 
     ThumbUpOutlined, 
@@ -23,23 +24,13 @@ import {
     DeleteOutline, 
     MoreVert, 
     Reply,
-    ImageOutlined
+    ImageOutlined,
+    CloudOff
 } from '@mui/icons-material';
 import './CommentSection.css';
-import { getComments, addComment, toggleLikeComment, deleteComment } from '../../../Data/CommentData';
+import { getComments, addComment, toggleLikeComment, deleteComment, syncPendingComments } from '../../../Data/CommentData';
 import { getDisplayName, getAvatar, getMetaData } from '../../../Data/UserData';
 import { Link } from 'react-router-dom';
-
-// --- Helper function to fetch avatar (extracted for reuse) ---
-async function fetchAvatar(author) {
-    try {
-        const metaData = await getMetaData(author?.split("@")[0]);
-        return await getAvatar(metaData?.Avatar, author);
-    } catch (error) {
-        console.error("Error fetching avatar:", error);
-        return null; // Return null or a default avatar path
-    }
-}
 
 // Format timestamp in a more user-friendly way
 const formatTimestamp = (timestamp) => {
@@ -85,16 +76,15 @@ const Comment = React.memo(({
     onReplySubmit, 
     onLikeComment, 
     onDeleteComment, 
-    currentUserAvatar,
     currentUserDisplayName,
     isPostAuthor = false, // 当前评论是否由帖子作者发布
     postAuthor, 
     isReply = false, // Prop to indicate if it's a reply (added in previous step)
     activeReplyCommentId, // Added prop: ID of the comment whose reply input is open
-    onToggleReplyInput    // Added prop: Handler to open/close reply input
+    onToggleReplyInput,   // Added prop: Handler to open/close reply input
+    userMetaDataMap,      // Added prop: Map of { displayName: { avatarUrl, latestYear } }
+    isOffline = false     // New prop: Whether the app is currently offline
 }) => {
-    const [avatarUrl, setAvatarUrl] = useState(null);
-    const [isLoadingAvatar, setIsLoadingAvatar] = useState(true);
     const [replyContent, setReplyContent] = useState('');
     const [isSubmittingReply, setIsSubmittingReply] = useState(false);
     const [replyError, setReplyError] = useState(null);
@@ -102,6 +92,11 @@ const Comment = React.memo(({
     const [isLikeProcessing, setIsLikeProcessing] = useState(false);
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
     const isMenuOpen = Boolean(menuAnchorEl);
+    
+    // Get metadata for the comment author from the passed map
+    const authorMeta = userMetaDataMap?.get(comment.author);
+    // Get metadata for the current user for the reply avatar
+    const currentUserMeta = userMetaDataMap?.get(currentUserDisplayName);
     
     // Check if the current user is the author of this comment
     const isCommentAuthor = currentUserDisplayName === comment.author;
@@ -112,14 +107,6 @@ const Comment = React.memo(({
             setIsLiked(comment.likedBy.includes(currentUserDisplayName));
         }
     }, [comment.likedBy, currentUserDisplayName]);
-
-    useEffect(() => {
-        setIsLoadingAvatar(true);
-        fetchAvatar(comment.author).then(url => {
-            setAvatarUrl(url);
-            setIsLoadingAvatar(false);
-        });
-    }, [comment.author]);
 
     // Handle submitting a reply from the mini-form
     const handleInternalReplySubmit = async () => {
@@ -195,11 +182,14 @@ const Comment = React.memo(({
     // Determine if this comment's reply input should be visible
     const isReplyInputVisible = comment.commentId === activeReplyCommentId;
 
+    // Add visual indicator for comments pending sync
+    const isPendingSync = comment.pendingSync || comment.likeStatusPendingSync;
+
     return (
-        <Box className={`comment-item ${isReply ? 'comment-item-reply' : ''}`}>
-            <Link to={`/datapoints/applicant/${comment.author}`} style={{ textDecoration: 'none' }}>
-                <Avatar src={avatarUrl} className="comment-avatar">
-                    {isLoadingAvatar ? <CircularProgress size={20} /> : comment.author?.[0]?.toUpperCase()}
+        <Box className={`comment-item ${isReply ? 'comment-item-reply' : ''} ${isPendingSync ? 'comment-pending-sync' : ''}`}>
+            <Link to={`/datapoints/applicant/${comment.author}${authorMeta?.latestYear ? '@' + authorMeta.latestYear : ''}`} style={{ textDecoration: 'none' }}>
+                <Avatar src={authorMeta?.avatarUrl} className="comment-avatar">
+                    {!authorMeta?.avatarUrl ? comment.author?.[0]?.toUpperCase() : null}
                 </Avatar>
             </Link>
             <Box className="comment-content">
@@ -209,7 +199,7 @@ const Comment = React.memo(({
                             variant="subtitle2" 
                             className="comment-author" 
                             component={Link}
-                            to={`/datapoints/applicant/${comment.author}`}
+                            to={`/datapoints/applicant/${comment.author}${authorMeta?.latestYear ? '@' + authorMeta.latestYear : ''}`}
                             sx={{ textDecoration: 'none', color: 'inherit' }}
                         >
                             {comment.author || 'Anonymous'}
@@ -302,7 +292,7 @@ const Comment = React.memo(({
                 {/* Reply Input Section - Render based on external state */}
                 {isReplyInputVisible && (
                     <Box className="reply-input-section">
-                        <Avatar src={currentUserAvatar} className="reply-input-avatar" />
+                        <Avatar src={currentUserMeta?.avatarUrl} className="reply-input-avatar" />
                         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                             <TextField
                                 multiline
@@ -330,11 +320,30 @@ const Comment = React.memo(({
                                     onClick={handleInternalReplySubmit}
                                     disabled={!replyContent.trim() || isSubmittingReply}
                                 >
-                                    {isSubmittingReply ? <CircularProgress size={18} /> : '发布'}
+                                    {isSubmittingReply ? <CircularProgress size={18} /> : isOffline ? '离线发布' : '发布'}
                                 </Button>
                             </Box>
                         </Box>
                     </Box>
+                )}
+
+                {/* Add sync pending indicator if needed */}
+                {isPendingSync && (
+                    <Tooltip title="等待同步">
+                        <Chip 
+                            icon={<CloudOff fontSize="small" />}
+                            label="待同步" 
+                            size="small"
+                            className="sync-pending-badge"
+                            sx={{
+                                height: '16px',
+                                fontSize: '10px',
+                                backgroundColor: '#ff9800',
+                                color: 'white',
+                                marginLeft: '8px'
+                            }}
+                        />
+                    </Tooltip>
                 )}
             </Box>
         </Box>
@@ -414,29 +423,76 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
     const [error, setError] = useState(null);
     const [newCommentContent, setNewCommentContent] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [currentUserAvatar, setCurrentUserAvatar] = useState(null);
     const [currentUserDisplayName, setCurrentUserDisplayName] = useState(null);
     const [activeReplyCommentId, setActiveReplyCommentId] = useState(null);
+    const [userMetaDataMap, setUserMetaDataMap] = useState(new Map());
+    const [isOffline, setIsOffline] = useState(!navigator.onLine);
+    const [showOfflineNotice, setShowOfflineNotice] = useState(false);
     const fileInputRef = useRef(null);
     const quillRef = useRef(null);
 
-    // Fetch current user info on mount
-    useEffect(() => {
-        getDisplayName().then(displayName => {
-            if (displayName) {
-                setCurrentUserDisplayName(displayName);
-                fetchAvatar(displayName).then(setCurrentUserAvatar);
-            }
-        });
-    }, []);
-
-    // Fetch comments function
-    const fetchComments = useCallback(async () => {
+    // Fetch comments function - 移到这里以确保在使用之前定义
+    const fetchComments = useCallback(async (forceRefresh = false) => {
         if (!postId) return; // Don't fetch if postId is not available yet
         setIsLoading(true);
         setError(null);
         try {
-            const fetchedComments = await getComments(postId);
+            const fetchedComments = await getComments(postId, forceRefresh);
+            // --- Start: Fetch metadata for comment authors ---
+            const authorDisplayNames = new Set();
+            fetchedComments.forEach(comment => {
+                if (comment.author) authorDisplayNames.add(comment.author);
+            });
+            
+            const authorsToFetch = Array.from(authorDisplayNames).filter(name => !userMetaDataMap.has(name));
+            
+            if (authorsToFetch.length > 0) {
+                const metaPromises = authorsToFetch.map(name => 
+                    // Use getMetaData here as well
+                    getMetaData(name.split("@")[0]).then(meta => ({ name, meta })) 
+                );
+                const metaResults = await Promise.allSettled(metaPromises);
+
+                const avatarPromises = [];
+                const newMetaData = new Map();
+
+                metaResults.forEach(result => {
+                    if (result.status === 'fulfilled') {
+                        const { name, meta } = result.value;
+                        // Prepare to fetch avatar URL
+                        avatarPromises.push(
+                            getAvatar(meta?.Avatar, name).then(avatarUrl => ({ 
+                                name, 
+                                latestYear: meta?.latestYear,
+                                avatarUrl
+                            }))
+                        );
+                    } else {
+                        console.error(`Failed to fetch metadata for ${result.reason?.config?.url}:`, result.reason);
+                        // Optionally store null data for failed authors to prevent re-fetching
+                        // newMetaData.set(failedAuthorName, { avatarUrl: null, latestYear: null });
+                    }
+                });
+
+                const avatarResults = await Promise.allSettled(avatarPromises);
+                
+                avatarResults.forEach(result => {
+                     if (result.status === 'fulfilled') {
+                        const { name, latestYear, avatarUrl } = result.value;
+                        newMetaData.set(name, { avatarUrl, latestYear });
+                    } else {
+                        console.error(`Failed to fetch avatar:`, result.reason);
+                        // Handle avatar fetch failure - maybe store null avatarUrl?
+                    }
+                });
+
+                // Update the state map with newly fetched data
+                if (newMetaData.size > 0) {
+                    setUserMetaDataMap(prevMap => new Map([...prevMap, ...newMetaData]));
+                }
+            }
+            // --- End: Fetch metadata for comment authors ---
+            
             setComments(buildCommentTreeOptimized(fetchedComments)); // Use optimized function
         } catch (err) {
             console.error("Error fetching comments:", err);
@@ -444,7 +500,54 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
         } finally {
             setIsLoading(false);
         }
-    }, [postId]);
+    }, [postId, userMetaDataMap]);
+
+    // Check online status
+    useEffect(() => {
+        function handleOnline() {
+            setIsOffline(false);
+            // When coming back online, attempt to sync any pending comments
+            syncPendingComments().then(() => {
+                // Refresh comments after syncing
+                fetchComments(true);
+            }).catch(error => {
+                console.error("Error syncing pending comments:", error);
+            });
+        }
+        
+        function handleOffline() {
+            setIsOffline(true);
+            setShowOfflineNotice(true);
+        }
+        
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+        
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, [fetchComments]);
+
+    // Fetch current user info on mount
+    useEffect(() => {
+        getDisplayName().then(async displayName => {
+            if (displayName) {
+                setCurrentUserDisplayName(displayName);
+                // Fetch metadata (avatar + year) for current user using getMetaData
+                try {
+                    const metaData = await getMetaData(displayName.split("@")[0]);
+                    const avatarUrl = await getAvatar(metaData?.Avatar, displayName);
+                    const latestYear = metaData?.latestYear;
+                    setUserMetaDataMap(prevMap => new Map(prevMap).set(displayName, { avatarUrl, latestYear }));
+                } catch (err) {
+                    console.error(`Failed to fetch metadata for ${displayName}:`, err);
+                    // Set default/empty data in map to avoid errors later?
+                    setUserMetaDataMap(prevMap => new Map(prevMap).set(displayName, { avatarUrl: null, latestYear: null }));
+                }
+            }
+        });
+    }, []);
 
     // Fetch comments on mount and when postId changes
     useEffect(() => {
@@ -543,7 +646,7 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
-            await fetchComments();
+            await fetchComments(true); // Force refresh to get the latest data from server
         } catch (err) {
             console.error("Error adding comment:", err);
             setError(err.message || 'Failed to post comment.');
@@ -557,7 +660,7 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
     const handleReplySubmit = useCallback(async (parentId, replyContent) => {
         try {
             await addComment({ postId, content: replyContent, parentId });
-            await fetchComments(); // Refresh the whole list to show the new reply
+            await fetchComments(true); // Force refresh to get the latest data from server
         } catch (err) {
             console.error("Error adding reply:", err);
             throw err; // Re-throw the error to be caught by the calling component (Comment's mini-form)
@@ -571,7 +674,7 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
             // Call API (toggle) and get actual result
             const isNowLiked = await toggleLikeComment(commentId);
             // Refresh comments to get the accurate state after API call
-            await fetchComments();
+            await fetchComments(true); // Force refresh to get the latest data from server
             return isNowLiked;
         } catch (err) {
             console.error("Error toggling like:", err);
@@ -587,33 +690,65 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
         try {
             await deleteComment(commentId);
             // Refresh comments after successful deletion
-            await fetchComments();
+            await fetchComments(true); // Force refresh to get the latest data from server
         } catch (err) {
             console.error("Error deleting comment:", err);
             throw err;
         }
-    }, [fetchComments]); // Dependency - Added missing closing bracket and parenthesis
+    }, [fetchComments]); // Dependency
 
     // Callback to toggle the reply input for a specific comment
     const handleToggleReplyInput = useCallback((commentId) => {
         setActiveReplyCommentId(prevId => (prevId === commentId ? null : commentId));
     }, []);
 
+    // Get current user meta for the input avatar link
+    const currentUserMetaForInput = userMetaDataMap.get(currentUserDisplayName);
+
+    // Handle closing offline notice
+    const handleCloseOfflineNotice = () => {
+        setShowOfflineNotice(false);
+    };
+
     return (
         <Box className="comment-section-container">
             <Typography variant="h6" className="comment-section-title">评论区 {`(${comments.reduce((acc, c) => acc + 1 + (c.replies?.length || 0), 0)})`}</Typography>
             <Divider sx={{ my: 2 }} />
 
-            {/* --- Modified Comment Input Field --- */} 
+            {/* Offline indicator */}
+            <Snackbar
+                open={showOfflineNotice}
+                autoHideDuration={6000}
+                onClose={handleCloseOfflineNotice}
+                message={
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <CloudOff fontSize="small" />
+                        <span>您当前处于离线状态。评论将在恢复网络连接后同步。</span>
+                    </Box>
+                }
+                sx={{ '& .MuiSnackbarContent-root': { bgcolor: 'warning.main' } }}
+            />
+
+            {isOffline && (
+                <Alert severity="warning" sx={{ mb: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <CloudOff fontSize="small" />
+                        <Typography>您当前处于离线状态。评论将在恢复网络连接后同步。</Typography>
+                    </Box>
+                </Alert>
+            )}
+
+            {/* --- Modified Comment Input Field --- */}
             <Box className="comment-input-section">
-                {/* Wrap Avatar with Link */}
+                {/* Wrap Avatar with Link - Update link and src */}
                 <Link 
-                    to={`/datapoints/applicant/${currentUserDisplayName}`}
+                    to={`/datapoints/applicant/${currentUserDisplayName}${currentUserMetaForInput?.latestYear ? '@' + currentUserMetaForInput.latestYear : ''}`}
                     style={{ textDecoration: 'none' }}
                     // Prevent clicking when no user is loaded
                     onClick={(e) => !currentUserDisplayName && e.preventDefault()} 
                 >
-                    <Avatar src={currentUserAvatar} className="comment-input-avatar" /> 
+                    {/* Use avatarUrl from map */}
+                    <Avatar src={currentUserMetaForInput?.avatarUrl} className="comment-input-avatar" /> 
                 </Link>
                 <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <ReactQuill 
@@ -650,7 +785,7 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                             onClick={handleSubmitComment}
                             disabled={isSubmitting || (!quillRef.current?.getEditor().getText().trim() && !quillRef.current?.getEditor().getContents().ops?.some(op => op.insert?.image))}
                         >
-                            {isSubmitting ? <CircularProgress size={24} /> : '发布'}
+                            {isSubmitting ? <CircularProgress size={24} /> : isOffline ? '离线发布' : '发布'}
                         </Button>
                     </Box>
                 </Box>
@@ -676,12 +811,13 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                                 onReplySubmit={handleReplySubmit} 
                                 onLikeComment={handleLikeComment}
                                 onDeleteComment={handleDeleteComment}
-                                currentUserAvatar={currentUserAvatar}
                                 currentUserDisplayName={currentUserDisplayName}
                                 isPostAuthor={rootComment.author === postAuthor}
                                 postAuthor={postAuthor}
                                 activeReplyCommentId={activeReplyCommentId}
                                 onToggleReplyInput={handleToggleReplyInput}
+                                userMetaDataMap={userMetaDataMap}
+                                isOffline={isOffline}
                             />
                             {/* Render all replies (flat) in an indented container */}
                             {rootComment.flatReplies && rootComment.flatReplies.length > 0 && (
@@ -693,13 +829,14 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                                             onReplySubmit={handleReplySubmit} 
                                             onLikeComment={handleLikeComment}
                                             onDeleteComment={handleDeleteComment}
-                                            currentUserAvatar={currentUserAvatar}
                                             currentUserDisplayName={currentUserDisplayName}
                                             isPostAuthor={reply.author === postAuthor}
                                             postAuthor={postAuthor}
                                             activeReplyCommentId={activeReplyCommentId}
                                             onToggleReplyInput={handleToggleReplyInput}
                                             isReply={true} 
+                                            userMetaDataMap={userMetaDataMap}
+                                            isOffline={isOffline}
                                         />
                                     ))}
                                 </Box>

@@ -35,3 +35,9 @@ export const ADD_POST = ROOT + "api/mutating/new_post";
 export const MODIFY_POST = ROOT + "api/mutating/modify_post";
 export const COLLECT_PROGRAM = ROOT + "api/user/collect_program";
 export const UNCOLLECT_PROGRAM = ROOT + "api/user/un_collect_program";
+
+// Comment API Endpoints
+export const GET_COMMENTS = ROOT + "api/comments/get_by_post";
+export const ADD_COMMENT = ROOT + "api/comments/add";
+export const LIKE_COMMENT = ROOT + "api/comments/like";
+export const DELETE_COMMENT = ROOT + "api/comments/delete";

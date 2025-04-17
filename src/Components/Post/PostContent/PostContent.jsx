@@ -18,7 +18,7 @@ import React, {useState} from "react";
 import {BoldTypography, useSmallPage} from "../../common";
 import {isAuthApplicant} from "../../../Data/ApplicantData";
 import "./PostContent.css"
-import {getAvatar, getMetaData} from "../../../Data/UserData";
+import {getMetaData, getAvatar} from "../../../Data/UserData";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import CommentSection from "../CommentSection/CommentSection";
 
@@ -29,7 +29,8 @@ export async function loader({params}) {
         const editable = await isAuthApplicant(postObj?.Author);
         const metaData = postObj?.Author ? await getMetaData(postObj?.Author.split("@")[0]) : {};
         const avatar = await getAvatar(metaData?.Avatar, postObj?.Author);
-        return {postObj, editable, avatar};
+        const latestYear = metaData?.latestYear;
+        return {postObj, editable, avatar, latestYear};
     } catch (e) {
         throw e;
     }
@@ -49,7 +50,7 @@ export async function action({request, params}) {
 }
 
 export default function PostContent() {
-    const {postObj, editable, avatar} = useLoaderData();
+    const {postObj, editable, avatar, latestYear} = useLoaderData();
     const smallPage = useSmallPage();
     const [open, setOpen] = useState(false);
     const handleClose = () => {
@@ -63,10 +64,10 @@ export default function PostContent() {
             <Box className="PostContentHeader" sx={{pb: "0.5rem"}}>
                 <Box sx={{pb: "0.5rem", display: 'flex', gap: '1rem'}}>
                     <Avatar src={avatar} sx={{height: (smallPage ? "5rem" : "4rem"), width: (smallPage ? "5rem" : "4rem"), cursor: 'pointer'}} component={Link}
-                            to={`/datapoints/applicant/${postObj.Author}`}/>
+                            to={`/datapoints/applicant/${postObj.Author}${latestYear ? '@' + latestYear : ''}`}/>
                     <Grid2 container>
                         <Grid2 xs={12}>
-                            <BoldTypography variant="h6" component={Link} to={`/datapoints/applicant/${postObj.Author}`}
+                            <BoldTypography variant="h6" component={Link} to={`/datapoints/applicant/${postObj.Author}${latestYear ? '@' + latestYear : ''}`}
                                             sx={{
                                                 cursor: 'pointer',
                                                 textDecoration: "none",

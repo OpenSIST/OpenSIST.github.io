@@ -289,6 +289,29 @@
     margin-bottom: 0; /* Adjust paragraph spacing if needed */
 }
 
+/* Style for comments pending synchronization */
+.comment-pending-sync {
+    position: relative;
+    border-left: 3px solid #ff9800;
+}
+
+.sync-pending-badge {
+    margin-left: 0.5rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
 /* Hide separate image preview if editor is used */
 .image-preview-container {
     display: none; 

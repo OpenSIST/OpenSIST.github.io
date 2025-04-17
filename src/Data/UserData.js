@@ -160,6 +160,12 @@ export async function setAvatar(avatar, displayName = null) {
     await localforage.setItem(`${displayName}-avatar`, avatar);
 }
 
+/**
+ * Get applicant metadata
+ * @param {string} displayName - The display name of the applicant
+ * @param {boolean} isRefresh - Whether to refresh cache
+ * @returns {Promise<object>} - A promise resolving to metadata with Avatar and latestYear
+ */
 export async function getMetaData(displayName = null, isRefresh = false) {
     /*
     * Get the user metadata from the server or local storage
@@ -184,7 +190,60 @@ export async function getMetaData(displayName = null, isRefresh = false) {
         metadata = await response.json();
         await setMetaData(metadata['result'], displayName);
     }
+    
+    // Add latestYear to metadata before returning
+    try {
+        const latestYear = await findLatestYearForApplicant(displayName);
+        metadata['result'] = {
+            ...metadata['result'],
+            latestYear
+        };
+    } catch (error) {
+        console.error("Error finding latest year:", error);
+        // Continue even if finding latest year fails
+    }
+    
     return metadata['result'];
+}
+
+/**
+ * Find the latest year with data for a given applicant
+ * @param {string} displayName - The display name of the applicant
+ * @returns {Promise<number|null>} - Latest year or null if no data found
+ */
+async function findLatestYearForApplicant(displayName) {
+    try {
+        // Get the user's metadata which should contain ApplicantIDs
+        const metadata = await localforage.getItem(`${displayName}-metadata`);
+        
+        if (!metadata || !metadata.result || !metadata.result.ApplicantIDs) {
+            console.log("No ApplicantIDs found in metadata");
+            return null;
+        }
+        
+        // Extract years from ApplicantIDs which should be in format displayName@year
+        const years = metadata.result.ApplicantIDs
+            .map(id => {
+                // Extract the part after @ which should be the year
+                const parts = id.split('@');
+                if (parts.length > 1) {
+                    return parseInt(parts[1], 10);
+                }
+                return null;
+            })
+            .filter(year => year !== null && !isNaN(year));
+        
+        if (years.length === 0) {
+            console.log("No valid years found in ApplicantIDs");
+            return null;
+        }
+        
+        // Return the most recent year
+        return Math.max(...years);
+    } catch (error) {
+        console.error("Error finding latest year for applicant:", error);
+        return null;
+    }
 }
 
 export async function setMetaData(metadata, displayName = null) {
