@@ -30,18 +30,16 @@ export const TOGGLE_NICKNAME = ROOT + "api/my/toggle_nickname";
 export const UPDATE_CONTACT = ROOT + "api/user/update_contact";
 
 // export const GET_POST_CONTENT = ROOT + "api/query/post_content";
-export const REMOVE_POST = ROOT + "api/mutating/remove_post";
-export const ADD_POST = ROOT + "api/mutating/new_post";
-export const MODIFY_POST = ROOT + "api/mutating/modify_post";
+// export const REMOVE_POST = ROOT + "api/mutating/remove_post";
+// export const ADD_POST = ROOT + "api/mutating/new_post";
+// export const MODIFY_POST = ROOT + "api/mutating/modify_post";
 export const COLLECT_PROGRAM = ROOT + "api/user/collect_program";
 export const UNCOLLECT_PROGRAM = ROOT + "api/user/un_collect_program";
 
 // --- New Post/Comment API Endpoints --- 
-// export const CREATE_POST_API = ROOT + "api/post/create_post"; // 这个目前用不到
+export const CREATE_POST_API = ROOT + "api/post/create_post";
 export const CREATE_COMMENT_API = ROOT + "api/post/create_comment";
 export const MODIFY_CONTENT_API = ROOT + "api/post/modify_content";
 export const TOGGLE_LIKE_API = ROOT + "api/post/toggle_like";
-export const LIST_POSTS_API = ROOT + "api/post/list_posts"; // 可能用于其他地方
-export const GET_CONTENT_API = ROOT + "api/post/get_content"; // 替换旧的 GET_COMMENTS
-
-// 注意：旧的评论 API 已被移除
+export const LIST_POSTS_API = ROOT + "api/post/list_posts";
+export const GET_CONTENT_API = ROOT + "api/post/get_content";

@@ -26,12 +26,19 @@ export async function loader({params}) {
     const postId = params.postId;
     try {
         const postObj = await getPostObject(postId);
-        const editable = await isAuthApplicant(postObj?.Author);
-        const metaData = postObj?.Author ? await getMetaData(postObj?.Author.split("@")[0]) : {};
-        const avatar = await getAvatar(metaData?.Avatar, postObj?.Author);
+        console.log("[PostContent Loader] postObj:", postObj);
+        console.log("[PostContent Loader] postObj.author:", postObj?.author);
+        
+        const authorId = postObj?.author;
+        const editable = authorId ? await isAuthApplicant(authorId) : false;
+        console.log("[PostContent Loader] Checking auth for:", authorId, "Result:", editable);
+        
+        const metaData = authorId ? await getMetaData(authorId.split("@")[0]) : {};
+        const avatar = await getAvatar(metaData?.Avatar, authorId);
         const latestYear = metaData?.latestYear;
         return {postObj, editable, avatar, latestYear, urlPostId: postId};
     } catch (e) {
+        console.error("[PostContent Loader] Error:", e);
         throw e;
     }
 }
@@ -94,7 +101,7 @@ export default function PostContent() {
                     {editable ?
                         <>
                             <Tooltip title="编辑内容" arrow>
-                                <IconButton component={Link} to={`edit${window.location.search}`}>
+                                <IconButton component={Link} to={`/posts/${urlPostId}/edit${window.location.search}`}>
                                     <Edit/>
                                 </IconButton>
                             </Tooltip>
