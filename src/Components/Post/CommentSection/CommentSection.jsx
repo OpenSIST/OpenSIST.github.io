@@ -270,16 +270,19 @@ const Comment = React.memo(({
                             </IconButton>
                         </Tooltip>
                         
-                        <Tooltip title="回复">
-                            <IconButton 
-                                size="small"
-                                // Pass comment's commentId to toggle input
-                                onClick={() => onToggleReplyInput(comment.commentId)} 
-                                className="reply-button"
-                            >
-                                <Reply fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
+                        {/* Only show Reply button if it's NOT a reply */}
+                        {!isReply && (
+                            <Tooltip title="回复">
+                                <IconButton 
+                                    size="small"
+                                    // Pass comment's commentId to toggle input
+                                    onClick={() => onToggleReplyInput(comment.commentId)} 
+                                    className="reply-button"
+                                >
+                                    <Reply fontSize="small" />
+                                </IconButton>
+                            </Tooltip>
+                        )}
                     </Box>
                 </Box>
 
