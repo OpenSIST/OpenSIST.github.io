@@ -143,7 +143,7 @@ export async function getComments(postId, forceRefresh = false) {
  * @param {string | null} [commentData.parentId=null] - The ID of the parent comment if it's a reply.
  * @returns {Promise<void>} - Resolves when the operation is complete (doesn't return the new comment).
  */
-export async function addComment({ postId, content, parentId }) {
+export async function addComment({ postId, content, parentId=null }) {
     const authorDisplayName = await getDisplayName(); // Still need this for potential errors
     if (!authorDisplayName) {
         throw new Error('User not logged in or display name not found.');
@@ -158,13 +158,15 @@ export async function addComment({ postId, content, parentId }) {
     // Determine the parentId for the API call
     // If parentId from frontend is null, it's a root comment, API parent is the postId
     // Otherwise, it's a reply, API parent is the parent comment's id
+
     const apiParentId = parentId === null ? postId : parentId;
-    
+
     // Ensure apiParentId is never null if postId is valid
     if (!apiParentId) {
          throw new Error('Cannot determine parent ID for comment creation.');
     }
 
+    
     try {
         // Send to server using CREATE_COMMENT_API
         const response = await fetch(CREATE_COMMENT_API, {
