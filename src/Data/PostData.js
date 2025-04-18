@@ -1,36 +1,25 @@
 import localforage from "localforage";
-import {ADD_POST, GET_POST_CONTENT, MODIFY_POST, POST_LIST, REMOVE_POST} from "../APIs/APIs";
+import {ADD_POST, GET_CONTENT_API, MODIFY_POST, REMOVE_POST, LIST_POSTS_API} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
-import {getApplicant, getApplicants, setApplicant} from "./ApplicantData";
+import {getApplicant, setApplicant} from "./ApplicantData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
 export async function getPosts(isRefresh = false, query = {}) {
-    const applicants = await getApplicants(isRefresh);
-    let posts = await localforage.getItem('posts');
-    if (isRefresh || posts === null || (Date.now() - posts.Date) > CACHE_EXPIRATION) {
-        const response = await fetch(POST_LIST, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-        });
-        await handleErrors(response);
-        posts = await response.json();
-        posts['data'] = posts['data'].map((post) => {
-            const applicant = applicants.find((applicant) => applicant?.Posts?.includes(post.PostID));
-            if (applicant) {
-                post.Author = applicant.ApplicantID;
-            }
-            return post;
-        });
-        // TODO: potential problem of asynchronized cache
-        await setPosts(posts['data']);
-    }
-    posts['data'] = posts['data'].sort((a, b) => new Date(b.modified) - new Date(a.modified));
-    posts['data'] = posts['data'].filter((post) => {
-        return (post.Title.toLowerCase().includes(query.searchStr?.toLowerCase() ?? '') || post.Author.toLowerCase().includes(query.searchStr?.toLowerCase() ?? ''));
+
+
+    const response = await fetch(LIST_POSTS_API, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
     });
-    return posts['data'];
+    
+    await handleErrors(response);
+    const posts = await response.json();
+
+    posts['posts'] = posts['posts'].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+
+    return posts['posts'];
 }
 
 export async function setPosts(posts) {
@@ -64,26 +53,25 @@ export async function setPost(post) {
 }
 
 export async function getPostContent(postId, isRefresh = false) {
-    let postContent = await localforage.getItem(`${postId}-Content`);
-    if (isRefresh || postContent === null || (Date.now() - postContent.Date) > CACHE_EXPIRATION) {
-        const response = await fetch(GET_POST_CONTENT, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-            body: JSON.stringify({PostID: postId}),
-        });
-        try {
-            await handleErrors(response);
-        } catch (e) {
-            if (e.status === 404) {
-                await getPosts(true);
-            }
-            throw e;
+    const response = await fetch(GET_CONTENT_API, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
+        body: JSON.stringify({postId}),
+    });
+    try {
+        await handleErrors(response);
+    } catch (e) {
+        if (e.status === 404) {
+            await getPosts(true);
         }
-        postContent = await response.json();
-        await setPostContent(postId, postContent['content']);
+        throw e;
     }
-    return postContent['content'];
+    const postContent = await response.json();
+    console.log("POST CONTENT: ", postContent);
+    await setPostContent(postId, postContent['post']['content']);
+
+    return postContent['post']['content'];
 }
 
 export async function setPostContent(postId, content) {
@@ -97,6 +85,8 @@ export async function setPostContent(postId, content) {
 export async function getPostObject(postId, isRefresh = false) {
     const post = await getPost(postId, isRefresh);
     const content = await getPostContent(postId, isRefresh);
+    
+    console.log("CONTENT: ", content);
     return {
         ...post,
         Content: content,

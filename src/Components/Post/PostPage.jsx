@@ -22,7 +22,7 @@ export async function loader({request}) {
     const url = new URL(request.url);
     const searchStr = url.searchParams.get("searchStr");
     let posts = await getPosts(false, {searchStr});
-    posts = posts.filter((post) => post.type === 'Post');
+    // console.log(posts);
     return {posts, searchStr};
 }
 
@@ -90,9 +90,9 @@ export default function PostPage() {
                         }}
                     >
                         {loaderData.posts.map((post) => (
-                            <Fragment key={post.PostID}>
-                                <ListItemButton component={Link} to={`/posts/${post.PostID}`}>
-                                    <ListItemText primary={post.Title} secondary={post.Author}/>
+                            <Fragment key={post.id}>
+                                <ListItemButton component={Link} to={`/posts/${post.id}`}>
+                                    <ListItemText primary={post.title} secondary={post.author}/>
                                 </ListItemButton>
                                 <Divider component="li" light/>
                             </Fragment>

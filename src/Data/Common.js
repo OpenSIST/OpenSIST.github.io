@@ -32,7 +32,6 @@ export async function handleErrors(response) {
     * @return: response
      */
     if (response.status === 401) {
-        console.log(window.location.pathname)
         if (window.location.pathname === "/agreement") {
             return;
         }

@@ -1,9 +1,15 @@
 import localforage from 'localforage'; // Import localforage
 import { getDisplayName } from './UserData'; // Use getDisplayName
-import { GET_COMMENTS, ADD_COMMENT, LIKE_COMMENT, DELETE_COMMENT } from '../APIs/APIs'; // Import API endpoints
+// Import NEW API endpoints
+import { 
+    GET_CONTENT_API, 
+    CREATE_COMMENT_API, 
+    TOGGLE_LIKE_API, 
+    MODIFY_CONTENT_API 
+} from '../APIs/APIs'; // Import API endpoints
 import { headerGenerator, handleErrors } from './Common'; // Import common utilities
 
-const COMMENT_KEY = 'comments';
+// const COMMENT_KEY = 'comments'; // No longer primary storage, only fallback for getComments if API fails initially
 const COMMENT_CACHE_EXPIRATION = 5 * 60 * 1000; // 5 minutes cache expiration
 
 // --- Comment Schema --- (Informal)
@@ -20,182 +26,196 @@ const COMMENT_CACHE_EXPIRATION = 5 * 60 * 1000; // 5 minutes cache expiration
 //     isDeleted: boolean // Whether this comment has been soft-deleted
 // }
 
+// --- Helper function to map API comment structure to frontend structure ---
+// API structure: { id, parentId, type, title, content, author, tags, like_count, is_deleted, created_at, updated_at }
+// Frontend structure: { commentId, postId, author, content, timestamp, parentId, targetAuthor, likes, likedBy, isDeleted, modified }
+const mapApiCommentToFrontend = (apiComment, allComments = [], originalPostId) => {
+    if (!apiComment || (apiComment.type !== 'comment' && apiComment.type !== 'subcomment')) { // Ensure it's a comment
+        return null; 
+    }
+
+    const parentComment = allComments.find(c => c.id === apiComment.parent_id);
+    const targetAuthor = parentComment ? parentComment.author : null;
+    
+    // Check if the parentId is the original postId, indicating a root comment
+    const frontendParentId = apiComment.parent_id === originalPostId ? null : apiComment.parent_id;
+
+    return {
+        commentId: apiComment.id, // Map id -> commentId
+        postId: originalPostId, // Add original postId
+        author: apiComment.author,
+        content: apiComment.content,
+        timestamp: new Date(apiComment.created_at).getTime(), // Map created_at -> timestamp (number)
+        parentId: frontendParentId, // Use derived parentId (null for root)
+        targetAuthor: targetAuthor, // Add targetAuthor based on parent
+        likes: apiComment.like_count, // Map like_count -> likes
+        likedBy: [], // API doesn't provide this, initialize as empty. Like status needs UI handling.
+        isDeleted: apiComment.is_deleted, // Map is_deleted -> isDeleted
+        modified: new Date(apiComment.updated_at).getTime(), // Map updated_at -> modified (number)
+        comment_type: apiComment.type, // Add comment_type field
+        // Remove pendingSync flags as offline actions are removed
+    };
+};
+
 /**
- * Fetches all comments for a specific post.
+ * Fetches all comments for a specific post using the new API.
  * @param {string} postId - The ID of the post.
- * @param {boolean} forceRefresh - Whether to bypass cache (if applicable).
- * @returns {Promise<Array<object>>} - A promise resolving to an array of comment objects.
+ * @param {boolean} forceRefresh - Whether to bypass cache.
+ * @returns {Promise<Array<object>>} - A promise resolving to an array of frontend-formatted comment objects.
  */
 export async function getComments(postId, forceRefresh = false) {
     if (!postId) {
+        console.error("getComments called without postId");
         return [];
     }
     
-    // Check cache first unless forceRefresh is true
-    const cacheKey = `post-comments-${postId}`;
-    let comments = null;
+    const cacheKey = `post-content-${postId}`; // Use a different key for content
     
-    if (!forceRefresh) {
-        const cachedData = await localforage.getItem(cacheKey);
-        if (cachedData && (Date.now() - cachedData.timestamp) < COMMENT_CACHE_EXPIRATION) {
-            return cachedData.comments;
-        }
-    }
-    
+    // if (!forceRefresh) {
+    //     try {
+    //         const cachedData = await localforage.getItem(cacheKey);
+    //         if (cachedData && (Date.now() - cachedData.timestamp) < COMMENT_CACHE_EXPIRATION) {
+    //             // Ensure cached data is in the correct frontend format
+    //             // Re-run mapping if needed or assume it was stored correctly
+    //             return cachedData.comments; 
+    //         }
+    //     } catch (cacheError) {
+    //         console.error("Error reading comment cache:", cacheError);
+    //     }
+    // }
     try {
-        // Fetch from server
-        const response = await fetch(GET_COMMENTS, {
+        // Fetch from server using GET_CONTENT_API
+        const response = await fetch(GET_CONTENT_API, {
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),
-            body: JSON.stringify({ postId })
+            body: JSON.stringify({ postId }) // API expects postId
         });
+        // console.log("Post_ID: ", postId);
+        // console.log("Response: ", response);
         
         await handleErrors(response);
-        comments = await response.json();
+        const result = await response.json();
+
+        if (!result.success || !Array.isArray(result.comments)) {
+             throw new Error(result.error || 'Failed to fetch comments or invalid format');
+        }
+
+        // Filter out the actual post if it's included, keep only comments
+        // And map API response to frontend format
+        const apiComments = result.comments.filter(item => item.type === 'comment' || item.type === 'subcomment');
+        // console.log("API Comments: ", apiComments);
+        const frontendComments = apiComments
+            .map(apiComment => mapApiCommentToFrontend(apiComment, apiComments, postId))
+            .filter(comment => comment !== null); // Filter out any null results from mapping
         
-        // Update cache
+        // Update cache with frontend-formatted comments
         await localforage.setItem(cacheKey, {
-            comments: comments,
+            comments: frontendComments,
             timestamp: Date.now()
         });
-        
-        return comments.sort((a, b) => a.timestamp - b.timestamp);
+        // console.log("Frontend Comments: ", frontendComments);
+        return frontendComments.sort((a, b) => a.timestamp - b.timestamp);
     } catch (error) {
         console.error("Error fetching comments from server:", error);
         
         // Fallback to local cache if available (even if expired)
-        const cachedData = await localforage.getItem(cacheKey);
-        if (cachedData) {
-            console.log("Using cached comments data as fallback");
-            return cachedData.comments;
+        try {
+            const cachedData = await localforage.getItem(cacheKey);
+            if (cachedData && cachedData.comments) {
+                console.warn("Using expired/stale cached comments data as fallback");
+                return cachedData.comments;
+            }
+        } catch (fallbackError) {
+             console.error("Error reading comment cache during fallback:", fallbackError);
         }
         
-        // Last resort - try the old local storage format
-        const allComments = await localforage.getItem(COMMENT_KEY) || [];
-        return allComments.filter(comment => comment.postId === postId)
-                         .sort((a, b) => a.timestamp - b.timestamp);
+        // If absolutely no cache, return empty
+        return []; 
     }
 }
 
 /**
- * Adds a new comment.
+ * Adds a new comment using the new API.
  * @param {object} commentData - The comment data.
  * @param {string} commentData.postId - The ID of the post being commented on.
  * @param {string} commentData.content - The content of the comment.
  * @param {string | null} [commentData.parentId=null] - The ID of the parent comment if it's a reply.
- * @returns {Promise<object>} - A promise resolving to the newly added comment object.
+ * @returns {Promise<void>} - Resolves when the operation is complete (doesn't return the new comment).
  */
-export async function addComment({ postId, content, parentId = null }) {
-    const authorDisplayName = await getDisplayName();
+export async function addComment({ postId, content, parentId }) {
+    const authorDisplayName = await getDisplayName(); // Still need this for potential errors
     if (!authorDisplayName) {
         throw new Error('User not logged in or display name not found.');
     }
     if (!content || !content.trim()) {
         throw new Error('Comment content cannot be empty.');
     }
-
-    let targetAuthor = null;
-    
-    // If it's a reply, find the parent comment's author
-    if (parentId) {
-        try {
-            // Try to get from cache first
-            const cacheKey = `post-comments-${postId}`;
-            const cachedData = await localforage.getItem(cacheKey);
-            
-            if (cachedData) {
-                const parentComment = cachedData.comments.find(c => c.commentId === parentId);
-                if (parentComment) {
-                    targetAuthor = parentComment.author;
-                }
-            }
-            
-            // If not found in cache, we'll let the server handle finding the target author
-        } catch (error) {
-            console.error("Error finding parent comment author:", error);
-            // Continue without targetAuthor - the server should handle this
-        }
+    if (!postId) {
+        throw new Error('Post ID is required to add a comment.');
     }
 
+    // Determine the parentId for the API call
+    // If parentId from frontend is null, it's a root comment, API parent is the postId
+    // Otherwise, it's a reply, API parent is the parent comment's id
+    console.log("POST ID: ", postId);
+    console.log("PARENT ID: ", parentId);
+    const apiParentId = parentId === null ? postId : parentId;
+    
+    // Ensure apiParentId is never null if postId is valid
+    if (!apiParentId) {
+         throw new Error('Cannot determine parent ID for comment creation.');
+    }
+
+    console.log("API Parent ID: ", apiParentId);
     try {
-        // Send to server
-        const response = await fetch(ADD_COMMENT, {
+        // Send to server using CREATE_COMMENT_API
+        const response = await fetch(CREATE_COMMENT_API, {
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),
             body: JSON.stringify({
-                postId,
-                content: content.trim(),
-                parentId,
-                targetAuthor
+                // API expects parentId (post or comment id) and content
+                parentId: apiParentId.toString(), 
+                content: content.trim()
             })
         });
         
         await handleErrors(response);
-        const newComment = await response.json();
-        
-        // Update local cache
-        await updateCommentCache(postId, async (cachedComments) => {
-            cachedComments.push(newComment);
-            return cachedComments;
-        });
-        
-        return newComment;
-    } catch (error) {
-        console.error("Error adding comment to server:", error);
-        
-        // Fallback to local storage in case of network issues
-        const allComments = await localforage.getItem(COMMENT_KEY) || [];
-        
-        const newComment = {
-            commentId: crypto.randomUUID(),
-            postId,
-            author: authorDisplayName,
-            content: content.trim(),
-            timestamp: Date.now(),
-            parentId,
-            targetAuthor,
-            likes: 0,
-            likedBy: [],
-            isDeleted: false,
-            pendingSync: true // Mark as needing sync with server
-        };
+        const result = await response.json();
 
-        allComments.push(newComment);
-        await localforage.setItem(COMMENT_KEY, allComments);
+        if (!result.success) {
+            throw new Error(result.error || 'Failed to create comment on server.');
+        }
         
-        // Also update the post-specific cache
-        await updateCommentCache(postId, async (cachedComments) => {
-            cachedComments.push(newComment);
-            return cachedComments;
-        });
-        
-        return newComment;
+        // **Important**: API does not return the new comment object.
+        // We MUST force a refresh in the component after this call.
+        // We also invalidate the cache here so the refresh gets new data.
+        const cacheKey = `post-content-${postId}`;
+        await localforage.removeItem(cacheKey);
+
+    } catch (error) {
+        console.error("Error adding comment via API:", error);
+        // Re-throw the error to be handled by the UI component
+        throw error; 
+        // NOTE: Offline fallback for adding comments removed due to API limitations (no new ID returned).
     }
 }
 
 /**
- * Helper function to update comment cache for a specific post
+ * Likes/unlikes a comment using the new API.
+ * @param {string} commentId - The ID of the comment to like/unlike.
+ * @param {string} postId - The ID of the post the comment belongs to (needed for cache invalidation).
+ * @returns {Promise<void>} - Resolves when the operation is complete.
  */
-async function updateCommentCache(postId, updateFn) {
-    const cacheKey = `post-comments-${postId}`;
-    let cachedData = await localforage.getItem(cacheKey) || { comments: [], timestamp: 0 };
-    
-    cachedData.comments = await updateFn(cachedData.comments);
-    cachedData.timestamp = Date.now();
-    
-    await localforage.setItem(cacheKey, cachedData);
-}
-
-/**
- * Likes a comment (toggles like status).
- * @param {string} commentId - The ID of the comment to like.
- * @returns {Promise<boolean>} - Whether the comment is now liked (true) or unliked (false).
- */
-export async function toggleLikeComment(commentId) {
+export async function toggleLikeComment(commentId, postId) { // Added postId parameter
     if (!commentId) {
-        throw new Error('Comment ID is required');
+        throw new Error('Comment ID is required for like toggle');
+    }
+     if (!postId) {
+        // Need postId to invalidate cache correctly after operation
+        console.error("Post ID is required to toggle like and invalidate cache.");
+        throw new Error('Post ID is required for like toggle');
     }
 
     const currentUser = await getDisplayName();
@@ -204,92 +224,51 @@ export async function toggleLikeComment(commentId) {
     }
 
     try {
-        // Send like/unlike to server
-        const response = await fetch(LIKE_COMMENT, {
+        // Send like/unlike to server using TOGGLE_LIKE_API
+        const response = await fetch(TOGGLE_LIKE_API, {
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),
-            body: JSON.stringify({ commentId })
+            body: JSON.stringify({ contentId: commentId }) // API expects contentId
         });
         
         await handleErrors(response);
         const result = await response.json();
+
+        if (!result.success) {
+            throw new Error(result.error || 'Failed to toggle like on server.');
+        }
         
-        // No need to update cache here - we'll refresh comments after the like operation
+        // **Important**: API does not return the updated comment state.
+        // We MUST force a refresh in the component after this call.
+        // Invalidate the cache.
+        const cacheKey = `post-content-${postId}`;
+        await localforage.removeItem(cacheKey);
         
-        return result.isLiked;
+        // Cannot reliably return the new liked state. Component must rely on refresh.
+        // return result.isLiked; // This field doesn't exist in the new API response
+
     } catch (error) {
-        console.error("Error liking comment on server:", error);
-        
-        // Fallback to local-only operation
-        const allComments = await localforage.getItem(COMMENT_KEY) || [];
-        
-        // Find the target comment and update its likes
-        let targetComment = null;
-        let isNowLiked = false;
-        let postId = null;
-
-        for (let i = 0; i < allComments.length; i++) {
-            if (allComments[i].commentId === commentId) {
-                targetComment = allComments[i];
-                postId = targetComment.postId;
-                
-                // Initialize likedBy array if it doesn't exist
-                if (!targetComment.likedBy) {
-                    targetComment.likedBy = [];
-                }
-                
-                // Check if user already liked this comment
-                const likedIndex = targetComment.likedBy.indexOf(currentUser);
-                
-                if (likedIndex >= 0) {
-                    // User already liked it, so unlike
-                    targetComment.likedBy.splice(likedIndex, 1);
-                    targetComment.likes = Math.max(0, (targetComment.likes || 0) - 1);
-                    isNowLiked = false;
-                } else {
-                    // User hasn't liked it yet, so like it
-                    targetComment.likedBy.push(currentUser);
-                    targetComment.likes = (targetComment.likes || 0) + 1;
-                    isNowLiked = true;
-                }
-                
-                // Mark comment as needing sync
-                targetComment.likeStatusPendingSync = true;
-                break;
-            }
-        }
-
-        if (!targetComment) {
-            throw new Error('Comment not found');
-        }
-
-        await localforage.setItem(COMMENT_KEY, allComments);
-        
-        // Update post-specific cache if available
-        if (postId) {
-            await updateCommentCache(postId, async (cachedComments) => {
-                const commentIndex = cachedComments.findIndex(c => c.commentId === commentId);
-                if (commentIndex >= 0) {
-                    // Update the cached comment with new like status
-                    cachedComments[commentIndex] = targetComment;
-                }
-                return cachedComments;
-            });
-        }
-        
-        return isNowLiked;
+        console.error("Error toggling like via API:", error);
+        // Re-throw error for UI handling
+        throw error;
+        // NOTE: Offline fallback for like toggle removed.
     }
 }
 
 /**
- * Deletes a comment and all its replies recursively.
+ * Deletes a comment using the modify API (marks as deleted).
  * @param {string} commentId - The ID of the comment to delete.
+ * @param {string} postId - The ID of the post the comment belongs to (needed for cache invalidation).
  * @returns {Promise<void>}
  */
-export async function deleteComment(commentId) {
+export async function deleteComment(commentId, postId) { // Added postId parameter
     if (!commentId) {
-        throw new Error('Comment ID is required');
+        throw new Error('Comment ID is required for deletion');
+    }
+     if (!postId) {
+        console.error("Post ID is required to delete comment and invalidate cache.");
+        throw new Error('Post ID is required for deletion');
     }
 
     const currentUser = await getDisplayName();
@@ -298,76 +277,51 @@ export async function deleteComment(commentId) {
     }
 
     try {
-        // Send delete request to server
-        const response = await fetch(DELETE_COMMENT, {
+        // Send delete request using MODIFY_CONTENT_API
+        // We'll mark it as deleted by setting content to a specific marker
+        // or potentially an 'is_deleted' flag if the backend supports it via modify.
+        // Assuming setting content to '[deleted]' for now. Title/Tags are null for comments.
+        const response = await fetch(MODIFY_CONTENT_API, {
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),
-            body: JSON.stringify({ commentId })
+            body: JSON.stringify({ 
+                contentId: commentId, 
+                // title: null, // Not applicable for comment
+                content: '[评论已删除]', // Mark content as deleted
+                tags: null // Not applicable for comment
+                // If backend preferred marking via a flag:
+                // is_deleted: true 
+            })
         });
         
         await handleErrors(response);
+        const result = await response.json();
+
+         if (!result.success) {
+            // Handle specific errors like 403 Unauthorized, 404 Not Found
+            if (response.status === 403) {
+                 throw new Error('Unauthorized to delete this comment.');
+            }
+             if (response.status === 404) {
+                 throw new Error('Comment not found or already deleted.');
+            }
+            throw new Error(result.error || 'Failed to delete comment on server.');
+        }
         
-        // Server should handle the deletion of replies - we'll refresh comments after
+        // **Important**: API confirms modification success.
+        // We MUST force a refresh in the component.
+        // Invalidate the cache.
+        const cacheKey = `post-content-${postId}`;
+        await localforage.removeItem(cacheKey);
         
     } catch (error) {
-        console.error("Error deleting comment from server:", error);
-        
-        // Fallback to local-only operation
-        let allComments = await localforage.getItem(COMMENT_KEY) || [];
-        
-        // Find the initial comment to delete
-        const commentToDelete = allComments.find(c => c.commentId === commentId);
-        
-        if (!commentToDelete) {
-            console.warn(`Comment with ID ${commentId} not found for deletion.`);
-            return; 
-        }
-        
-        // Check if current user is the author of the top-level comment being deleted
-        if (commentToDelete.author !== currentUser) {
-            throw new Error('You can only delete your own comments');
-        }
-        
-        // Store the postId for cache update
-        const postId = commentToDelete.postId;
-        
-        // --- Recursive Deletion Logic ---
-        const idsToDelete = new Set();
-        const queue = [commentId]; // Start with the initial comment ID
-        
-        // Add the initial comment ID to the set
-        idsToDelete.add(commentId);
-
-        // Use a queue to find all descendants
-        while (queue.length > 0) {
-            const currentParentId = queue.shift();
-            
-            // Find direct children of the current comment
-            for (const comment of allComments) {
-                if (comment.parentId === currentParentId && !idsToDelete.has(comment.commentId)) {
-                    idsToDelete.add(comment.commentId);
-                    queue.push(comment.commentId); // Add child to the queue to process its children
-                }
-            }
-        }
-        
-        // Filter out all comments marked for deletion
-        const updatedComments = allComments.filter(comment => !idsToDelete.has(comment.commentId));
-        
-        await localforage.setItem(COMMENT_KEY, updatedComments);
-        
-        // Update post-specific cache if available
-        if (postId) {
-            await updateCommentCache(postId, async (cachedComments) => {
-                return cachedComments.filter(comment => !idsToDelete.has(comment.commentId));
-            });
-        }
+        console.error("Error deleting comment via API:", error);
+        // Re-throw for UI handling
+        throw error;
+        // NOTE: Offline fallback for delete removed.
     }
 }
 
-// Helper function to sync pending changes when online
-export async function syncPendingComments() {
-    // This could be called on app startup or when network connectivity returns
-    // For now, just a placeholder for future implementation
-} 
+// Removed syncPendingComments as offline actions are no longer supported for mutations.
+// Helper function updateCommentCache is also removed as mutations invalidate cache instead. 

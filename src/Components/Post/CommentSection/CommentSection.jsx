@@ -16,7 +16,6 @@ import {
     Tooltip,
     Chip,
     Input,
-    Snackbar
 } from '@mui/material';
 import { 
     ThumbUpOutlined, 
@@ -25,10 +24,9 @@ import {
     MoreVert, 
     Reply,
     ImageOutlined,
-    CloudOff
 } from '@mui/icons-material';
 import './CommentSection.css';
-import { getComments, addComment, toggleLikeComment, deleteComment, syncPendingComments } from '../../../Data/CommentData';
+import { getComments, addComment, toggleLikeComment, deleteComment } from '../../../Data/CommentData';
 import { getDisplayName, getAvatar, getMetaData } from '../../../Data/UserData';
 import { Link } from 'react-router-dom';
 
@@ -82,8 +80,7 @@ const Comment = React.memo(({
     isReply = false, // Prop to indicate if it's a reply (added in previous step)
     activeReplyCommentId, // Added prop: ID of the comment whose reply input is open
     onToggleReplyInput,   // Added prop: Handler to open/close reply input
-    userMetaDataMap,      // Added prop: Map of { displayName: { avatarUrl, latestYear } }
-    isOffline = false     // New prop: Whether the app is currently offline
+    userMetaDataMap
 }) => {
     const [replyContent, setReplyContent] = useState('');
     const [isSubmittingReply, setIsSubmittingReply] = useState(false);
@@ -100,12 +97,15 @@ const Comment = React.memo(({
     
     // Check if the current user is the author of this comment
     const isCommentAuthor = currentUserDisplayName === comment.author;
-    
+
     // Check if the current user has liked this comment
     useEffect(() => {
-        if (comment.likedBy && currentUserDisplayName) {
+        // NOTE: Assuming likedBy structure is maintained or handled by API functions
+        if (comment.likedBy && currentUserDisplayName) { 
             setIsLiked(comment.likedBy.includes(currentUserDisplayName));
         }
+        // If likedBy is not available, we might rely solely on the API call result
+        // Or, the toggleLikeComment function might return the new like status/count
     }, [comment.likedBy, currentUserDisplayName]);
 
     // Handle submitting a reply from the mini-form
@@ -115,7 +115,11 @@ const Comment = React.memo(({
         setIsSubmittingReply(true);
         setReplyError(null);
         try {
-            await onReplySubmit(comment.commentId, replyContent);
+            // Pass parent comment's commentId as parentId
+            console.log("COMMENT: ", comment);
+            console.log("COMMENT ID: ", comment.commentId);
+
+            await onReplySubmit(comment.commentId, replyContent); 
             setReplyContent('');
             // Close the input after successful submission
             onToggleReplyInput(null); 
@@ -133,8 +137,8 @@ const Comment = React.memo(({
         
         setIsLikeProcessing(true);
         try {
-            const newLikedState = await onLikeComment(comment.commentId);
-            setIsLiked(newLikedState);
+            // Pass comment's commentId and postId
+            await onLikeComment(comment.commentId, comment.postId); // Assuming postId is available or handled by onLikeComment
         } catch (err) {
             console.error("Error liking comment:", err);
             // Could show error toast/message here
@@ -155,7 +159,8 @@ const Comment = React.memo(({
     const handleDelete = async () => {
         handleMenuClose();
         try {
-            await onDeleteComment(comment.commentId);
+            // Pass comment's commentId and postId
+            await onDeleteComment(comment.commentId, comment.postId); // Assuming postId is available or handled by onDeleteComment
         } catch (err) {
             console.error("Error deleting comment:", err);
             // Could show error toast/message here
@@ -165,7 +170,8 @@ const Comment = React.memo(({
     // Construct the content HTML, adding the mention prefix if necessary
     const renderContentHtml = () => {
         let contentHtml = comment.content || '';
-        if (isReply && comment.targetAuthor) {
+        // Use comment.targetAuthor which should be added by buildCommentTreeOptimized
+        if (isReply && comment.targetAuthor) { 
             const mentionHtml = `<span class="reply-target-author">回复 @${comment.targetAuthor}: </span>`;
             // Prepend mention HTML. Assumes comment.content starts with <p>
             // More robust logic might be needed if content can start differently.
@@ -180,13 +186,10 @@ const Comment = React.memo(({
     };
 
     // Determine if this comment's reply input should be visible
-    const isReplyInputVisible = comment.commentId === activeReplyCommentId;
-
-    // Add visual indicator for comments pending sync
-    const isPendingSync = comment.pendingSync || comment.likeStatusPendingSync;
+    const isReplyInputVisible = comment.commentId === activeReplyCommentId; // Use commentId
 
     return (
-        <Box className={`comment-item ${isReply ? 'comment-item-reply' : ''} ${isPendingSync ? 'comment-pending-sync' : ''}`}>
+        <Box className={`comment-item ${isReply ? 'comment-item-reply' : ''}`}>
             <Link to={`/datapoints/applicant/${comment.author}${authorMeta?.latestYear ? '@' + authorMeta.latestYear : ''}`} style={{ textDecoration: 'none' }}>
                 <Avatar src={authorMeta?.avatarUrl} className="comment-avatar">
                     {!authorMeta?.avatarUrl ? comment.author?.[0]?.toUpperCase() : null}
@@ -204,7 +207,7 @@ const Comment = React.memo(({
                         >
                             {comment.author || 'Anonymous'}
                         </Typography>
-                        {isPostAuthor && comment.author === currentUserDisplayName && (
+                        {isPostAuthor && comment.author === postAuthor && ( // Check if comment author matches post author
                             <Chip 
                                 label="作者" 
                                 size="small" 
@@ -257,7 +260,8 @@ const Comment = React.memo(({
                 {/* Group Timestamp and Action Buttons Below Content */}
                 <Box className="comment-footer">
                     <Typography variant="caption" className="comment-timestamp">
-                        {formatTimestamp(comment.timestamp)}
+                        {/* Use timestamp */}
+                        {formatTimestamp(comment.timestamp)} 
                     </Typography>
                     
                     <Box className="comment-action-buttons">
@@ -269,7 +273,8 @@ const Comment = React.memo(({
                                 className={`like-button ${isLiked ? 'liked' : ''}`}
                             >
                                 {isLiked ? <ThumbUp fontSize="small" /> : <ThumbUpOutlined fontSize="small" />}
-                                {comment.likes > 0 && (
+                                {/* Use likes */}
+                                {comment.likes > 0 && ( 
                                     <Typography variant="caption" sx={{ ml: 0.5 }}>
                                         {comment.likes}
                                     </Typography>
@@ -280,6 +285,7 @@ const Comment = React.memo(({
                         <Tooltip title="回复">
                             <IconButton 
                                 size="small"
+                                // Pass comment's commentId to toggle input
                                 onClick={() => onToggleReplyInput(comment.commentId)} 
                                 className="reply-button"
                             >
@@ -299,7 +305,8 @@ const Comment = React.memo(({
                                 fullWidth
                                 size="small"
                                 variant="outlined"
-                                placeholder={`回复 @${comment.author || 'Anonymous'}...`}
+                                // Use comment.author for the placeholder
+                                placeholder={`回复 @${comment.author || 'Anonymous'}...`} 
                                 value={replyContent}
                                 onChange={(e) => setReplyContent(e.target.value)}
                                 disabled={isSubmittingReply}
@@ -309,6 +316,7 @@ const Comment = React.memo(({
                             <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
                                 <Button 
                                     size="small" 
+                                    // Pass null to close the input
                                     onClick={() => onToggleReplyInput(null)} 
                                     disabled={isSubmittingReply}
                                 >
@@ -320,30 +328,11 @@ const Comment = React.memo(({
                                     onClick={handleInternalReplySubmit}
                                     disabled={!replyContent.trim() || isSubmittingReply}
                                 >
-                                    {isSubmittingReply ? <CircularProgress size={18} /> : isOffline ? '离线发布' : '发布'}
+                                    {isSubmittingReply ? <CircularProgress size={18} /> : '发布'}
                                 </Button>
                             </Box>
                         </Box>
                     </Box>
-                )}
-
-                {/* Add sync pending indicator if needed */}
-                {isPendingSync && (
-                    <Tooltip title="等待同步">
-                        <Chip 
-                            icon={<CloudOff fontSize="small" />}
-                            label="待同步" 
-                            size="small"
-                            className="sync-pending-badge"
-                            sx={{
-                                height: '16px',
-                                fontSize: '10px',
-                                backgroundColor: '#ff9800',
-                                color: 'white',
-                                marginLeft: '8px'
-                            }}
-                        />
-                    </Tooltip>
                 )}
             </Box>
         </Box>
@@ -355,36 +344,60 @@ const Comment = React.memo(({
 const buildCommentTreeOptimized = (comments) => {
     if (!comments || comments.length === 0) return [];
 
-    const commentMap = new Map();
-    const childrenMap = new Map(); // parentId -> [childComment, childComment, ...]
+    const commentMap = new Map(); // Stores comment objects keyed by commentId
+    const childrenMap = new Map(); // Stores arrays of children keyed by parentId
     const rootComments = [];
 
     // First pass: Map comments and group children by parentId
     comments.forEach(comment => {
-        // Store the original comment object in the map, maybe add replies array later if needed for display
-        commentMap.set(comment.commentId, { ...comment }); 
-        if (comment.parentId) {
-            if (!childrenMap.has(comment.parentId)) {
-                childrenMap.set(comment.parentId, []);
+        // Ensure we have a consistent object structure in the map
+        const commentData = { ...comment };
+        commentMap.set(commentData.commentId, commentData);
+
+        // Group children using parentId
+        if (commentData.parentId) {
+            // Ensure parentId doesn't point back to itself (sanity check)
+            if (commentData.parentId !== commentData.commentId) {
+                 if (!childrenMap.has(commentData.parentId)) {
+                    childrenMap.set(commentData.parentId, []);
+                }
+                childrenMap.get(commentData.parentId).push(commentData);
+            } else {
+                console.warn("Comment has parentId equal to its own commentId:", commentData);
             }
-            childrenMap.get(comment.parentId).push(comment); // Store the original comment object
-        } else {
-            // For root comments, get the object we just stored in the map
-            rootComments.push(commentMap.get(comment.commentId)); 
+        }
+
+        // Identify root comments using comment_type
+        if (comment.comment_type === 'comment') {
+            rootComments.push(commentData); // Add the object from the map
         }
     });
 
-    // Function to recursively find all descendants (flat)
-    const getFlatRepliesRecursive = (parentId) => {
+    // Function to recursively find all descendants (flat) and add targetAuthor
+    const getFlatRepliesRecursive = (currentParentId) => {
         let replies = [];
-        const directChildren = childrenMap.get(parentId) || [];
+        const directChildren = childrenMap.get(currentParentId) || [];
+
         directChildren.forEach(child => {
-            // Get the potentially enhanced comment object from the map
+            // Get the comment object from the map using the child's commentId
             const childFromMap = commentMap.get(child.commentId);
             if (childFromMap) {
-                replies.push(childFromMap); // Add the direct child (from map)
-                 // Recursively add its descendants
+                 // Find the parent comment from the map to get the target author
+                const parentComment = commentMap.get(currentParentId); // currentParentId IS the parent's commentId
+                if (parentComment) {
+                     // If the API didn't provide targetAuthor for subcomments, set it here
+                     if (!childFromMap.targetAuthor) {
+                         childFromMap.targetAuthor = parentComment.author;
+                     }
+                } else {
+                    console.warn("Parent comment not found in map for ID:", currentParentId);
+                }
+                replies.push(childFromMap); // Add the direct child
+
+                 // Recursively add its descendants using the child's commentId as the next parentId
                 replies = replies.concat(getFlatRepliesRecursive(child.commentId));
+            } else {
+                 console.warn("Child comment not found in map for ID:", child.commentId);
             }
         });
         return replies;
@@ -392,12 +405,14 @@ const buildCommentTreeOptimized = (comments) => {
 
     // Second pass: Build flatReplies for each root comment
     rootComments.forEach(root => {
+        // Use root.commentId to find replies for this root comment
         root.flatReplies = getFlatRepliesRecursive(root.commentId)
-                            .sort((a, b) => a.timestamp - b.timestamp); // Sort flat replies by time
+                            // Sort flat replies by timestamp
+                            .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)); 
     });
 
-    // Sort root comments by time
-    rootComments.sort((a, b) => a.timestamp - b.timestamp);
+    // Sort root comments by timestamp
+    rootComments.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)); 
 
     return rootComments;
 };
@@ -426,8 +441,6 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
     const [currentUserDisplayName, setCurrentUserDisplayName] = useState(null);
     const [activeReplyCommentId, setActiveReplyCommentId] = useState(null);
     const [userMetaDataMap, setUserMetaDataMap] = useState(new Map());
-    const [isOffline, setIsOffline] = useState(!navigator.onLine);
-    const [showOfflineNotice, setShowOfflineNotice] = useState(false);
     const fileInputRef = useRef(null);
     const quillRef = useRef(null);
 
@@ -437,18 +450,20 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
         setIsLoading(true);
         setError(null);
         try {
-            const fetchedComments = await getComments(postId, forceRefresh);
+            // Assume getComments now returns the array based on the new API format
+            const fetchedComments = await getComments(postId, forceRefresh); 
             // --- Start: Fetch metadata for comment authors ---
             const authorDisplayNames = new Set();
             fetchedComments.forEach(comment => {
                 if (comment.author) authorDisplayNames.add(comment.author);
+                 // Also add targetAuthor if it exists in the raw data (though likely not)
+                 // We derive targetAuthor in buildCommentTreeOptimized
             });
             
             const authorsToFetch = Array.from(authorDisplayNames).filter(name => !userMetaDataMap.has(name));
             
             if (authorsToFetch.length > 0) {
                 const metaPromises = authorsToFetch.map(name => 
-                    // Use getMetaData here as well
                     getMetaData(name.split("@")[0]).then(meta => ({ name, meta })) 
                 );
                 const metaResults = await Promise.allSettled(metaPromises);
@@ -459,7 +474,6 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                 metaResults.forEach(result => {
                     if (result.status === 'fulfilled') {
                         const { name, meta } = result.value;
-                        // Prepare to fetch avatar URL
                         avatarPromises.push(
                             getAvatar(meta?.Avatar, name).then(avatarUrl => ({ 
                                 name, 
@@ -469,8 +483,6 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                         );
                     } else {
                         console.error(`Failed to fetch metadata for ${result.reason?.config?.url}:`, result.reason);
-                        // Optionally store null data for failed authors to prevent re-fetching
-                        // newMetaData.set(failedAuthorName, { avatarUrl: null, latestYear: null });
                     }
                 });
 
@@ -482,59 +494,29 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                         newMetaData.set(name, { avatarUrl, latestYear });
                     } else {
                         console.error(`Failed to fetch avatar:`, result.reason);
-                        // Handle avatar fetch failure - maybe store null avatarUrl?
                     }
                 });
 
-                // Update the state map with newly fetched data
                 if (newMetaData.size > 0) {
                     setUserMetaDataMap(prevMap => new Map([...prevMap, ...newMetaData]));
                 }
             }
             // --- End: Fetch metadata for comment authors ---
-            
-            setComments(buildCommentTreeOptimized(fetchedComments)); // Use optimized function
+            const processedComments = buildCommentTreeOptimized(fetchedComments); // Use optimized function
+            setComments(processedComments);
         } catch (err) {
             console.error("Error fetching comments:", err);
             setError('Failed to load comments. Please try again later.');
         } finally {
             setIsLoading(false);
         }
-    }, [postId, userMetaDataMap]);
-
-    // Check online status
-    useEffect(() => {
-        function handleOnline() {
-            setIsOffline(false);
-            // When coming back online, attempt to sync any pending comments
-            syncPendingComments().then(() => {
-                // Refresh comments after syncing
-                fetchComments(true);
-            }).catch(error => {
-                console.error("Error syncing pending comments:", error);
-            });
-        }
-        
-        function handleOffline() {
-            setIsOffline(true);
-            setShowOfflineNotice(true);
-        }
-        
-        window.addEventListener('online', handleOnline);
-        window.addEventListener('offline', handleOffline);
-        
-        return () => {
-            window.removeEventListener('online', handleOnline);
-            window.removeEventListener('offline', handleOffline);
-        };
-    }, [fetchComments]);
+    }, [postId, userMetaDataMap]); // userMetaDataMap dependency is correct
 
     // Fetch current user info on mount
     useEffect(() => {
         getDisplayName().then(async displayName => {
             if (displayName) {
                 setCurrentUserDisplayName(displayName);
-                // Fetch metadata (avatar + year) for current user using getMetaData
                 try {
                     const metaData = await getMetaData(displayName.split("@")[0]);
                     const avatarUrl = await getAvatar(metaData?.Avatar, displayName);
@@ -542,7 +524,6 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                     setUserMetaDataMap(prevMap => new Map(prevMap).set(displayName, { avatarUrl, latestYear }));
                 } catch (err) {
                     console.error(`Failed to fetch metadata for ${displayName}:`, err);
-                    // Set default/empty data in map to avoid errors later?
                     setUserMetaDataMap(prevMap => new Map(prevMap).set(displayName, { avatarUrl: null, latestYear: null }));
                 }
             }
@@ -552,16 +533,14 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
     // Fetch comments on mount and when postId changes
     useEffect(() => {
         fetchComments();
-    }, [fetchComments]);
+    }, [fetchComments]); // fetchComments dependency is correct
 
     // Function to insert image (Base64) into Quill
     const insertImageIntoQuill = (base64Data) => {
         const quill = quillRef.current?.getEditor();
         if (quill) {
             const range = quill.getSelection(true); // Get current cursor position
-            // Insert image at cursor position
             quill.insertEmbed(range.index, 'image', base64Data, 'user'); 
-            // Move cursor after the image
             quill.setSelection(range.index + 1, 0, 'user');
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
@@ -569,13 +548,11 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
         }
     };
 
-    // Handle image selection from file input
     const handleImageSelect = (event) => {
         const file = event.target.files[0];
         if (file && file.type.startsWith('image/')) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                // Insert the Base64 image directly into Quill editor
                 insertImageIntoQuill(reader.result);
             };
             reader.readAsDataURL(file);
@@ -583,17 +560,14 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
         } else {
             setError("Please select a valid image file.");
         }
-        // Clear file input value in case user selects same file again
         if (fileInputRef.current) {
             fileInputRef.current.value = ''; 
         }
     };
     
-    // Handle pasting image from clipboard
     const handlePaste = (event) => {
         const items = event.clipboardData?.items;
         if (!items) return;
-
         for (let i = 0; i < items.length; i++) {
             if (items[i].type.indexOf('image') !== -1) {
                 const file = items[i].getAsFile();
@@ -601,7 +575,6 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                     event.preventDefault(); 
                     const reader = new FileReader();
                     reader.onloadend = () => {
-                        // Insert the Base64 image directly into Quill editor
                         insertImageIntoQuill(reader.result);
                     };
                     reader.readAsDataURL(file);
@@ -610,19 +583,17 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                 }
             }
         }
-        // Allow default paste for non-image content
     };
 
-    // Trigger hidden file input click
     const handleImageButtonClick = () => {
         fileInputRef.current?.click();
     };
-    
+
     // Handle MAIN comment submission (top level)
     const handleSubmitComment = async () => {
         const quill = quillRef.current?.getEditor();
         const delta = quill?.getContents();
-        const isEmpty = !delta || (delta.length() === 1 && delta.ops[0].insert === '\n'); // Check if editor is effectively empty
+        const isEmpty = !delta || (delta.length() === 1 && delta.ops[0].insert === '\n'); 
         
         if (isEmpty || isSubmitting || !currentUserDisplayName) {
             if (!currentUserDisplayName) {
@@ -636,17 +607,17 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
         setIsSubmitting(true);
         setError(null);
         
-        // Get content as HTML from Quill state
         const contentToSave = newCommentContent;
         
         try {
-            // Pass HTML content to addComment
-            await addComment({ postId, content: contentToSave, parentId: null }); 
+            // Pass postId, content, and parent_id: null
+            console.log("add comment with parent_id: null");
+            await addComment({ postId, content: contentToSave, parent_id: null }); 
             setNewCommentContent(''); // Clear Quill editor
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
-            await fetchComments(true); // Force refresh to get the latest data from server
+            await fetchComments(true); // Force refresh
         } catch (err) {
             console.error("Error adding comment:", err);
             setError(err.message || 'Failed to post comment.');
@@ -657,100 +628,71 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
 
     // Handle REPLY submission (called from Comment component)
     // Memoize with useCallback
-    const handleReplySubmit = useCallback(async (parentId, replyContent) => {
+    const handleReplySubmit = useCallback(async (parentId, replyContent) => { // parentId is the commentId of the comment being replied to
         try {
+             // Pass postId, content, and parent_id (using the received parentId which is a commentId)
+            console.log("add comment with parent_id: ", parentId);
             await addComment({ postId, content: replyContent, parentId });
-            await fetchComments(true); // Force refresh to get the latest data from server
+            await fetchComments(true); // Force refresh
         } catch (err) {
             console.error("Error adding reply:", err);
-            throw err; // Re-throw the error to be caught by the calling component (Comment's mini-form)
+            throw err; // Re-throw for the Comment component
         }
     }, [postId, fetchComments]); // Dependencies
 
     // Handle liking a comment
-    // Memoize with useCallback and remove optimistic update for now
-    const handleLikeComment = useCallback(async (commentId) => {
+    // Memoize with useCallback 
+    const handleLikeComment = useCallback(async (commentId) => { // commentId is the commentId of the comment being liked
         try {
-            // Call API (toggle) and get actual result
-            const isNowLiked = await toggleLikeComment(commentId);
-            // Refresh comments to get the accurate state after API call
-            await fetchComments(true); // Force refresh to get the latest data from server
-            return isNowLiked;
+            // Assuming toggleLikeComment expects commentId and postId
+            await toggleLikeComment(commentId, postId); 
+            await fetchComments(true); // Force refresh for accurate state
         } catch (err) {
             console.error("Error toggling like:", err);
-            // Revert back to accurate state on error
-            await fetchComments();
+            await fetchComments(); // Revert on error
             throw err;
         }
-    }, [fetchComments]); // Simplified dependencies
+    }, [fetchComments, postId]); // Dependencies
 
     // Handle deleting a comment
     // Memoize with useCallback
-    const handleDeleteComment = useCallback(async (commentId) => {
+    const handleDeleteComment = useCallback(async (commentId) => { // commentId is the commentId of the comment being deleted
         try {
-            await deleteComment(commentId);
-            // Refresh comments after successful deletion
-            await fetchComments(true); // Force refresh to get the latest data from server
+            // Assuming deleteComment expects commentId and postId
+            await deleteComment(commentId, postId); 
+            await fetchComments(true); // Force refresh
         } catch (err) {
             console.error("Error deleting comment:", err);
             throw err;
         }
-    }, [fetchComments]); // Dependency
+    }, [fetchComments, postId]); // Dependency
 
     // Callback to toggle the reply input for a specific comment
-    const handleToggleReplyInput = useCallback((commentId) => {
+    const handleToggleReplyInput = useCallback((commentId) => { // commentId is the commentId of the comment
         setActiveReplyCommentId(prevId => (prevId === commentId ? null : commentId));
     }, []);
 
     // Get current user meta for the input avatar link
     const currentUserMetaForInput = userMetaDataMap.get(currentUserDisplayName);
 
-    // Handle closing offline notice
-    const handleCloseOfflineNotice = () => {
-        setShowOfflineNotice(false);
-    };
-
     return (
         <Box className="comment-section-container">
-            <Typography variant="h6" className="comment-section-title">评论区 {`(${comments.reduce((acc, c) => acc + 1 + (c.replies?.length || 0), 0)})`}</Typography>
+             {/* Update comment count calculation based on flatReplies */}
+            <Typography variant="h6" className="comment-section-title">评论区 {`(${comments.reduce((acc, c) => acc + 1 + (c.flatReplies?.length || 0), 0)})`}</Typography>
             <Divider sx={{ my: 2 }} />
 
-            {/* Offline indicator */}
-            <Snackbar
-                open={showOfflineNotice}
-                autoHideDuration={6000}
-                onClose={handleCloseOfflineNotice}
-                message={
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <CloudOff fontSize="small" />
-                        <span>您当前处于离线状态。评论将在恢复网络连接后同步。</span>
-                    </Box>
-                }
-                sx={{ '& .MuiSnackbarContent-root': { bgcolor: 'warning.main' } }}
-            />
-
-            {isOffline && (
-                <Alert severity="warning" sx={{ mb: 2 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <CloudOff fontSize="small" />
-                        <Typography>您当前处于离线状态。评论将在恢复网络连接后同步。</Typography>
-                    </Box>
-                </Alert>
-            )}
-
-            {/* --- Modified Comment Input Field --- */}
+            {/* Comment Input Field */} 
             <Box className="comment-input-section">
-                {/* Wrap Avatar with Link - Update link and src */}
+               {/* ... (Avatar link remains similar) ... */}
                 <Link 
                     to={`/datapoints/applicant/${currentUserDisplayName}${currentUserMetaForInput?.latestYear ? '@' + currentUserMetaForInput.latestYear : ''}`}
                     style={{ textDecoration: 'none' }}
-                    // Prevent clicking when no user is loaded
                     onClick={(e) => !currentUserDisplayName && e.preventDefault()} 
                 >
-                    {/* Use avatarUrl from map */}
                     <Avatar src={currentUserMetaForInput?.avatarUrl} className="comment-input-avatar" /> 
                 </Link>
                 <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    {/* ... (Quill editor remains similar) ... */}
                     <ReactQuill 
                         ref={quillRef}
                         theme="snow" 
@@ -765,12 +707,12 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                     
                     {/* Action Buttons */} 
                     <Box className="comment-input-actions">
+                       {/* ... (Image button and input remain similar) ... */}
                         <Tooltip title="添加图片">
                             <IconButton size="small" onClick={handleImageButtonClick} disabled={isSubmitting}>
                                 <ImageOutlined fontSize="small" />
                             </IconButton>
                         </Tooltip>
-                        {/* Hidden File Input */} 
                         <Input 
                             type="file"
                             inputRef={fileInputRef}
@@ -779,13 +721,14 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                             inputProps={{ accept: "image/*" }} 
                         />
                         <Box sx={{ flexGrow: 1 }} />
+                        {/* ... (Submit button remains similar) ... */}
                         <Button 
                             variant="contained" 
                             className="comment-submit-button" 
                             onClick={handleSubmitComment}
                             disabled={isSubmitting || (!quillRef.current?.getEditor().getText().trim() && !quillRef.current?.getEditor().getContents().ops?.some(op => op.insert?.image))}
                         >
-                            {isSubmitting ? <CircularProgress size={24} /> : isOffline ? '离线发布' : '发布'}
+                            {isSubmitting ? <CircularProgress size={24} /> : '发布'}
                         </Button>
                     </Box>
                 </Box>
@@ -803,46 +746,46 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
             ) : comments.length > 0 ? (
                 <Box className="comment-list">
                     {/* Iterate through root comments */}
-                    {comments.map(rootComment => (
-                        <React.Fragment key={rootComment.commentId}>
-                            {/* Render the root comment */}
-                            <Comment 
-                                comment={rootComment} 
-                                onReplySubmit={handleReplySubmit} 
-                                onLikeComment={handleLikeComment}
-                                onDeleteComment={handleDeleteComment}
-                                currentUserDisplayName={currentUserDisplayName}
-                                isPostAuthor={rootComment.author === postAuthor}
-                                postAuthor={postAuthor}
-                                activeReplyCommentId={activeReplyCommentId}
-                                onToggleReplyInput={handleToggleReplyInput}
-                                userMetaDataMap={userMetaDataMap}
-                                isOffline={isOffline}
-                            />
-                            {/* Render all replies (flat) in an indented container */}
-                            {rootComment.flatReplies && rootComment.flatReplies.length > 0 && (
-                                <Box className="comment-replies">
-                                    {rootComment.flatReplies.map(reply => (
-                                        <Comment 
-                                            key={reply.commentId} 
-                                            comment={reply} 
-                                            onReplySubmit={handleReplySubmit} 
-                                            onLikeComment={handleLikeComment}
-                                            onDeleteComment={handleDeleteComment}
-                                            currentUserDisplayName={currentUserDisplayName}
-                                            isPostAuthor={reply.author === postAuthor}
-                                            postAuthor={postAuthor}
-                                            activeReplyCommentId={activeReplyCommentId}
-                                            onToggleReplyInput={handleToggleReplyInput}
-                                            isReply={true} 
-                                            userMetaDataMap={userMetaDataMap}
-                                            isOffline={isOffline}
-                                        />
-                                    ))}
-                                </Box>
-                            )}
-                        </React.Fragment>
-                    ))}
+                    {comments.map(rootComment => {
+                        return (
+                            <React.Fragment key={rootComment.commentId}> 
+                                {/* Render the root comment */}
+                                <Comment 
+                                    comment={rootComment} 
+                                    onReplySubmit={handleReplySubmit} 
+                                    onLikeComment={handleLikeComment}
+                                    onDeleteComment={handleDeleteComment}
+                                    currentUserDisplayName={currentUserDisplayName}
+                                    isPostAuthor={rootComment.author === postAuthor} 
+                                    postAuthor={postAuthor}
+                                    activeReplyCommentId={activeReplyCommentId}
+                                    onToggleReplyInput={handleToggleReplyInput}
+                                    userMetaDataMap={userMetaDataMap}
+                                />
+                                {/* Render all replies (flat) in an indented container */}
+                                {rootComment.flatReplies && rootComment.flatReplies.length > 0 && (
+                                    <Box className="comment-replies">
+                                        {rootComment.flatReplies.map(reply => (
+                                            <Comment 
+                                                key={reply.commentId} 
+                                                comment={reply} 
+                                                onReplySubmit={handleReplySubmit} 
+                                                onLikeComment={handleLikeComment}
+                                                onDeleteComment={handleDeleteComment}
+                                                currentUserDisplayName={currentUserDisplayName}
+                                                isPostAuthor={reply.author === postAuthor} 
+                                                postAuthor={postAuthor}
+                                                activeReplyCommentId={activeReplyCommentId}
+                                                onToggleReplyInput={handleToggleReplyInput}
+                                                isReply={true}
+                                                userMetaDataMap={userMetaDataMap}
+                                            />
+                                        ))}
+                                    </Box>
+                                )}
+                            </React.Fragment>
+                        );
+                    })}
                 </Box>
             ) : (
                 <Typography sx={{ textAlign: 'center', color: 'text.secondary', my: 3 }}>

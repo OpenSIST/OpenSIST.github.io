@@ -217,12 +217,17 @@ async function findLatestYearForApplicant(displayName) {
         const metadata = await localforage.getItem(`${displayName}-metadata`);
         
         if (!metadata || !metadata.result || !metadata.result.ApplicantIDs) {
-            console.log("No ApplicantIDs found in metadata");
-            return null;
+            return [];
+        }
+        
+        const applicantIDs = metadata.result.ApplicantIDs.filter(Boolean);
+        
+        if (applicantIDs.length === 0) {
+            return [];
         }
         
         // Extract years from ApplicantIDs which should be in format displayName@year
-        const years = metadata.result.ApplicantIDs
+        const validYears = applicantIDs
             .map(id => {
                 // Extract the part after @ which should be the year
                 const parts = id.split('@');
@@ -231,15 +236,14 @@ async function findLatestYearForApplicant(displayName) {
                 }
                 return null;
             })
-            .filter(year => year !== null && !isNaN(year));
+            .filter(Boolean); // Filter out any null results from invalid formats
         
-        if (years.length === 0) {
-            console.log("No valid years found in ApplicantIDs");
-            return null;
+        if (validYears.length === 0) {
+            return [];
         }
         
         // Return the most recent year
-        return Math.max(...years);
+        return Math.max(...validYears);
     } catch (error) {
         console.error("Error finding latest year for applicant:", error);
         return null;
