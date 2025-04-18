@@ -10,6 +10,11 @@
     font-size: 1.25rem;
 }
 
+/* 深色模式下标题颜色 */
+.dark-mode .comment-section-title {
+    color: #e0e0e0;
+}
+
 .comment-input-section {
     display: flex;
     align-items: flex-start;
@@ -32,6 +37,11 @@
 .comment-input-field .MuiOutlinedInput-root {
     background-color: #fff;
     border-radius: 8px;
+}
+
+/* 深色模式下输入框背景 */
+.dark-mode .comment-input-field .MuiOutlinedInput-root {
+    background-color: #333;
 }
 
 .comment-submit-button {
@@ -67,6 +77,11 @@
     background-color: #f5f5f5;
 }
 
+/* 深色模式下评论项悬停背景 */
+.dark-mode .comment-item:hover {
+    background-color: #383838;
+}
+
 .comment-avatar {
     width: 40px;
     height: 40px;
@@ -83,12 +98,22 @@
     line-height: 1.2;
 }
 
+/* 深色模式下作者名称颜色 */
+.dark-mode .comment-author {
+    color: #e0e0e0;
+}
+
 .comment-text {
     margin-top: 0.5rem;
     color: #333;
     line-height: 1.5;
     white-space: pre-wrap;
     word-break: break-word;
+}
+
+/* 深色模式下评论文本颜色 */
+.dark-mode .comment-text {
+    color: #cccccc;
 }
 
 .comment-actions {
@@ -109,6 +134,11 @@
     color: #999; /* Default color for items in footer */
 }
 
+/* 深色模式下底部操作区域颜色 */
+.dark-mode .comment-footer {
+    color: #aaaaaa;
+}
+
 .comment-timestamp {
     font-size: 0.75rem;
     /* color: #999; Moved color to parent */
@@ -127,6 +157,12 @@
     padding: 4px; /* Slightly adjust padding */
 }
 
+/* 深色模式下按钮颜色 */
+.dark-mode .like-button, 
+.dark-mode .reply-button {
+    color: #aaaaaa;
+}
+
 .like-button.liked {
     color: #00a1d6;
 }
@@ -142,6 +178,15 @@
 
 .comment-menu-button:hover {
     color: #666;
+}
+
+/* 深色模式下菜单按钮颜色 */
+.dark-mode .comment-menu-button {
+    color: #aaaaaa;
+}
+
+.dark-mode .comment-menu-button:hover {
+    color: #dddddd;
 }
 
 .delete-menu-item {
@@ -168,6 +213,11 @@
     border-radius: 8px;
 }
 
+/* 深色模式下回复输入区域背景 */
+.dark-mode .reply-input-section {
+    background-color: #333333;
+}
+
 .reply-input-avatar {
     width: 32px;
     height: 32px;
@@ -177,6 +227,15 @@
 .reply-input-section .MuiTextField-root {
     background-color: #fff;
     border-radius: 4px;
+}
+
+/* 深色模式下回复输入框背景 */
+.dark-mode .reply-input-section .MuiTextField-root {
+    background-color: #424242;
+}
+
+.dark-mode .reply-input-section .MuiInputBase-root {
+    color: #e0e0e0;
 }
 
 .reply-input-section .MuiTextField-root .MuiInputBase-inputMultiline {
@@ -237,6 +296,11 @@
     border: 1px solid #ddd;
 }
 
+/* 深色模式下图片预览边框 */
+.dark-mode .image-preview {
+    border-color: #555;
+}
+
 .remove-image-button {
     position: absolute;
     top: -8px;
@@ -266,27 +330,49 @@
     font-size: 15px;
     line-height: 1.6;
 }
+
+/* 深色模式下 Quill 编辑器容器 */
+.dark-mode .comment-input-editor .ql-container {
+    border-color: #555;
+    background-color: #333;
+}
+
 .comment-input-editor .ql-editor {
     padding: 12px 15px;
     height: auto;
 }
+
+/* 深色模式下 Quill 编辑器内容 */
+.dark-mode .comment-input-editor .ql-editor {
+    color: #e0e0e0;
+}
+
 .comment-input-editor .ql-editor.ql-blank::before {
   color: #999;
   font-style: normal;
   left: 15px;
 }
 
+/* 深色模式下 Quill 编辑器占位符 */
+.dark-mode .comment-input-editor .ql-editor.ql-blank::before {
+  color: #888;
+}
+
 /* Styling for Rendered Quill Content */
 .quill-render-content img {
-    max-width: 100%; /* Ensure images don't overflow */
-    max-height: 300px; /* Limit display height */
-    display: block; /* Prevent extra space below */
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    max-width: 100%;
+    height: auto;
     border-radius: 4px;
+    margin: 8px 0;
 }
+
 .quill-render-content p {
-    margin-bottom: 0; /* Adjust paragraph spacing if needed */
+    margin-top: 0;
+    margin-bottom: 0.8em;
+}
+
+.quill-render-content p:last-child {
+    margin-bottom: 0;
 }
 
 /* Hide separate image preview if editor is used */

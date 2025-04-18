@@ -16,6 +16,7 @@ import {
     Tooltip,
     Chip,
     Input,
+    useTheme,
 } from '@mui/material';
 import { 
     ThumbUpOutlined, 
@@ -90,6 +91,8 @@ const Comment = React.memo(({
     const [isLikeProcessing, setIsLikeProcessing] = useState(false);
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
     const isMenuOpen = Boolean(menuAnchorEl);
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === 'dark';
     
     // Get metadata for the comment author from the passed map
     const authorMeta = userMetaDataMap?.get(comment.author);
@@ -177,7 +180,7 @@ const Comment = React.memo(({
     const isReplyInputVisible = comment.commentId === activeReplyCommentId; // Use commentId
 
     return (
-        <Box className={`comment-item ${isReply ? 'comment-item-reply' : ''}`}>
+        <Box className={`comment-item ${isReply ? 'comment-item-reply' : ''} ${darkMode ? 'dark-mode' : ''}`}>
             <Link to={`/datapoints/applicant/${comment.author}${authorMeta?.latestYear ? '@' + authorMeta.latestYear : ''}`} style={{ textDecoration: 'none' }}>
                 <Avatar src={authorMeta?.avatarUrl} className="comment-avatar">
                     {!authorMeta?.avatarUrl ? comment.author?.[0]?.toUpperCase() : null}
@@ -434,6 +437,8 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
     const [userMetaDataMap, setUserMetaDataMap] = useState(new Map());
     const fileInputRef = useRef(null);
     const quillRef = useRef(null);
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === 'dark';
 
     // Fetch comments function - 移到这里以确保在使用之前定义
     const fetchComments = useCallback(async (forceRefresh = false) => {
@@ -668,7 +673,7 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
     const currentUserMetaForInput = userMetaDataMap.get(currentUserDisplayName);
 
     return (
-        <Box className="comment-section-container">
+        <Box className={`comment-section-container ${darkMode ? 'dark-mode' : ''}`}>
              {/* Update comment count calculation based on flatReplies */}
             <Typography variant="h6" className="comment-section-title">评论区 {`(${comments.reduce((acc, c) => acc + 1 + (c.flatReplies?.length || 0), 0)})`}</Typography>
             <Divider sx={{ my: 2 }} />
@@ -694,7 +699,7 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                         formats={quillFormats}
                         placeholder="发表你的评论..."
                         onPaste={handlePaste}
-                        className="comment-input-editor"
+                        className={`comment-input-editor ${darkMode ? 'dark-mode' : ''}`}
                     />
                     
                     {/* Action Buttons */} 
