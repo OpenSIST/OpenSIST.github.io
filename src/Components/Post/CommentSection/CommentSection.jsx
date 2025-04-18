@@ -34,7 +34,6 @@ import { Link } from 'react-router-dom';
 // Format timestamp in a more user-friendly way
 const formatTimestamp = (timestamp) => {
     if (!timestamp) return '';
-    
     try {
         const commentDate = new Date(timestamp);
         const now = new Date();
@@ -448,7 +447,7 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
         try {
             // Assume getComments now returns the array based on the new API format
             const fetchedComments = await getComments(postId, forceRefresh); 
-            console.log("DEBUG: Fetched Comments Raw:", fetchedComments); // Log raw data
+            // console.log("DEBUG: Fetched Comments Raw:", fetchedComments); // Log raw data
             // --- Start: Fetch metadata for comment authors ---
             const authorDisplayNames = new Set();
             fetchedComments.forEach(comment => {
@@ -499,12 +498,12 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                 }
             }
             // --- End: Fetch metadata for comment authors ---
-            console.log("DEBUG: Fetched Comments:", fetchedComments); // Log raw data
+            // console.log("DEBUG: Fetched Comments:", fetchedComments); // Log raw data
             const processedComments = buildCommentTreeOptimized(fetchedComments); // Use optimized function
-            console.log("DEBUG: Processed Comment Tree:", processedComments); // Log processed tree
+            // console.log("DEBUG: Processed Comment Tree:", processedComments); // Log processed tree
             setComments(processedComments);
         } catch (err) {
-            console.error("Error fetching comments:", err);
+            // console.error("Error fetching comments:", err);
             setError('Failed to load comments. Please try again later.');
         } finally {
             setIsLoading(false);
@@ -744,8 +743,8 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                 <Box className="comment-list">
                     {/* Iterate through root comments */}
                     {comments.map(rootComment => {
-                        console.log("DEBUG: Rendering Root Comment:", rootComment);
-                        console.log("DEBUG: Root Comment Flat Replies:", rootComment.flatReplies);
+                        // console.log("DEBUG: Rendering Root Comment:", rootComment);
+                        // console.log("DEBUG: Root Comment Flat Replies:", rootComment.flatReplies);
                         return (
                             <React.Fragment key={rootComment.commentId}> 
                                 {/* Render the root comment */}
