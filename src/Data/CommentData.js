@@ -283,8 +283,8 @@ export async function deleteComment(commentId, postId) { // Added postId paramet
             credentials: 'include',
             headers: await headerGenerator(true),
             body: JSON.stringify({ 
-                contentId: commentId, 
-                // title: null, // Not applicable for comment
+                contentId: commentId.toString(), 
+                title: null, // Not applicable for comment
                 content: '[评论已删除]', // Mark content as deleted
                 tags: null // Not applicable for comment
                 // If backend preferred marking via a flag:
