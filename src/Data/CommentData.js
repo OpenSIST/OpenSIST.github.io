@@ -22,13 +22,13 @@ const COMMENT_CACHE_EXPIRATION = 5 * 60 * 1000; // 5 minutes cache expiration
 //     parentId: string | null (for replies),
 //     targetAuthor: string | null, // Author of the parent comment, if it's a reply
 //     likes: number,
-//     likedBy: string[], // Array of user display names who liked this comment
+//     liked: boolean, // Whether the current user has liked this comment
 //     isDeleted: boolean // Whether this comment has been soft-deleted
 // }
 
 // --- Helper function to map API comment structure to frontend structure ---
-// API structure: { id, parentId, type, title, content, author, tags, like_count, is_deleted, created_at, updated_at }
-// Frontend structure: { commentId, postId, author, content, timestamp, parentId, targetAuthor, likes, likedBy, isDeleted, modified }
+// API structure: { id, parentId, type, title, content, author, tags, like_count, liked, is_deleted, created_at, updated_at }
+// Frontend structure: { commentId, postId, author, content, timestamp, parentId, targetAuthor, likes, liked, isDeleted, modified }
 const mapApiCommentToFrontend = (apiComment, allComments = [], originalPostId) => {
     if (!apiComment || (apiComment.type !== 'comment' && apiComment.type !== 'subcomment')) { // Ensure it's a comment
         return null; 
@@ -49,7 +49,7 @@ const mapApiCommentToFrontend = (apiComment, allComments = [], originalPostId) =
         parentId: frontendParentId, // Use derived parentId (null for root)
         targetAuthor: targetAuthor, // Add targetAuthor based on parent
         likes: apiComment.like_count, // Map like_count -> likes
-        likedBy: [], // API doesn't provide this, initialize as empty. Like status needs UI handling.
+        liked: apiComment.liked, // Map liked -> liked (boolean)
         isDeleted: apiComment.is_deleted, // Map is_deleted -> isDeleted
         modified: new Date(apiComment.updated_at).getTime(), // Map updated_at -> modified (number)
         comment_type: apiComment.type, // Add comment_type field
@@ -158,8 +158,6 @@ export async function addComment({ postId, content, parentId }) {
     // Determine the parentId for the API call
     // If parentId from frontend is null, it's a root comment, API parent is the postId
     // Otherwise, it's a reply, API parent is the parent comment's id
-    console.log("POST ID: ", postId);
-    console.log("PARENT ID: ", parentId);
     const apiParentId = parentId === null ? postId : parentId;
     
     // Ensure apiParentId is never null if postId is valid
@@ -167,7 +165,6 @@ export async function addComment({ postId, content, parentId }) {
          throw new Error('Cannot determine parent ID for comment creation.');
     }
 
-    console.log("API Parent ID: ", apiParentId);
     try {
         // Send to server using CREATE_COMMENT_API
         const response = await fetch(CREATE_COMMENT_API, {
@@ -212,7 +209,7 @@ export async function toggleLikeComment(commentId, postId) { // Added postId par
     if (!commentId) {
         throw new Error('Comment ID is required for like toggle');
     }
-     if (!postId) {
+    if (!postId) {
         // Need postId to invalidate cache correctly after operation
         console.error("Post ID is required to toggle like and invalidate cache.");
         throw new Error('Post ID is required for like toggle');
@@ -229,7 +226,7 @@ export async function toggleLikeComment(commentId, postId) { // Added postId par
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),
-            body: JSON.stringify({ contentId: commentId }) // API expects contentId
+            body: JSON.stringify({ contentId: commentId.toString() }) // API expects contentId
         });
         
         await handleErrors(response);

@@ -85,7 +85,8 @@ const Comment = React.memo(({
     const [replyContent, setReplyContent] = useState('');
     const [isSubmittingReply, setIsSubmittingReply] = useState(false);
     const [replyError, setReplyError] = useState(null);
-    const [isLiked, setIsLiked] = useState(false);
+    // console.log("COMMENT: ", comment);
+    const [isLiked, setIsLiked] = useState(comment.liked || false);
     const [isLikeProcessing, setIsLikeProcessing] = useState(false);
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
     const isMenuOpen = Boolean(menuAnchorEl);
@@ -98,16 +99,6 @@ const Comment = React.memo(({
     // Check if the current user is the author of this comment
     const isCommentAuthor = currentUserDisplayName === comment.author;
 
-    // Check if the current user has liked this comment
-    useEffect(() => {
-        // NOTE: Assuming likedBy structure is maintained or handled by API functions
-        if (comment.likedBy && currentUserDisplayName) { 
-            setIsLiked(comment.likedBy.includes(currentUserDisplayName));
-        }
-        // If likedBy is not available, we might rely solely on the API call result
-        // Or, the toggleLikeComment function might return the new like status/count
-    }, [comment.likedBy, currentUserDisplayName]);
-
     // Handle submitting a reply from the mini-form
     const handleInternalReplySubmit = async () => {
         if (!replyContent.trim() || isSubmittingReply) return;
@@ -116,9 +107,6 @@ const Comment = React.memo(({
         setReplyError(null);
         try {
             // Pass parent comment's commentId as parentId
-            console.log("COMMENT: ", comment);
-            console.log("COMMENT ID: ", comment.commentId);
-
             await onReplySubmit(comment.commentId, replyContent); 
             setReplyContent('');
             // Close the input after successful submission
@@ -282,16 +270,19 @@ const Comment = React.memo(({
                             </IconButton>
                         </Tooltip>
                         
-                        <Tooltip title="回复">
-                            <IconButton 
-                                size="small"
-                                // Pass comment's commentId to toggle input
-                                onClick={() => onToggleReplyInput(comment.commentId)} 
-                                className="reply-button"
-                            >
-                                <Reply fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
+                        {/* Only show Reply button if it's NOT a reply */}
+                        {!isReply && (
+                            <Tooltip title="回复">
+                                <IconButton 
+                                    size="small"
+                                    // Pass comment's commentId to toggle input
+                                    onClick={() => onToggleReplyInput(comment.commentId)} 
+                                    className="reply-button"
+                                >
+                                    <Reply fontSize="small" />
+                                </IconButton>
+                            </Tooltip>
+                        )}
                     </Box>
                 </Box>
 
@@ -611,7 +602,6 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
         
         try {
             // Pass postId, content, and parent_id: null
-            console.log("add comment with parent_id: null");
             await addComment({ postId, content: contentToSave, parent_id: null }); 
             setNewCommentContent(''); // Clear Quill editor
             if (fileInputRef.current) {
@@ -631,7 +621,6 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
     const handleReplySubmit = useCallback(async (parentId, replyContent) => { // parentId is the commentId of the comment being replied to
         try {
              // Pass postId, content, and parent_id (using the received parentId which is a commentId)
-            console.log("add comment with parent_id: ", parentId);
             await addComment({ postId, content: replyContent, parentId });
             await fetchComments(true); // Force refresh
         } catch (err) {

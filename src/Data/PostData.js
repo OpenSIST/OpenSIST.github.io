@@ -32,10 +32,12 @@ export async function setPosts(posts) {
 
 export async function getPost(postId, isRefresh = false) {
     const posts = await getPosts(isRefresh);
+    // console.log("POST ID: ", postId);
+    // console.log("POSTS: ", posts);
     if (!posts) {
         throw new Error('Post not found');
     }
-    return posts.find((post) => post.PostID === postId);
+    return posts.find((post) => post.id.toString() === postId);
 }
 
 export async function setPost(post) {
@@ -68,7 +70,7 @@ export async function getPostContent(postId, isRefresh = false) {
         throw e;
     }
     const postContent = await response.json();
-    console.log("POST CONTENT: ", postContent);
+    // console.log("POST CONTENT: ", postContent);
     await setPostContent(postId, postContent['post']['content']);
 
     return postContent['post']['content'];
@@ -85,8 +87,8 @@ export async function setPostContent(postId, content) {
 export async function getPostObject(postId, isRefresh = false) {
     const post = await getPost(postId, isRefresh);
     const content = await getPostContent(postId, isRefresh);
-    
-    console.log("CONTENT: ", content);
+    // console.log("POST: ", post);
+    // console.log("CONTENT: ", content);
     return {
         ...post,
         Content: content,

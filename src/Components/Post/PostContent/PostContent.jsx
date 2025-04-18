@@ -53,7 +53,6 @@ export async function action({request, params}) {
 
 export default function PostContent() {
     const {postObj, editable, avatar, latestYear, urlPostId} = useLoaderData();
-    console.log("POST OBJECT: ", postObj);
     const smallPage = useSmallPage();
     const [open, setOpen] = useState(false);
 
@@ -71,23 +70,23 @@ export default function PostContent() {
             <Box className="PostContentHeader" sx={{pb: "0.5rem"}}>
                 <Box sx={{pb: "0.5rem", display: 'flex', gap: '1rem'}}>
                     <Avatar src={avatar} sx={{height: (smallPage ? "5rem" : "4rem"), width: (smallPage ? "5rem" : "4rem"), cursor: 'pointer'}} component={Link}
-                            to={`/datapoints/applicant/${postObj.Author}${latestYear ? '@' + latestYear : ''}`}/>
+                            to={`/datapoints/applicant/${postObj.author}${latestYear ? '@' + latestYear : ''}`}/>
                     <Grid2 container>
                         <Grid2 xs={12}>
-                            <BoldTypography variant="h6" component={Link} to={`/datapoints/applicant/${postObj.Author}${latestYear ? '@' + latestYear : ''}`}
+                            <BoldTypography variant="h6" component={Link} to={`/datapoints/applicant/${postObj.author}${latestYear ? '@' + latestYear : ''}`}
                                             sx={{
                                                 cursor: 'pointer',
                                                 textDecoration: "none",
                                             }}
                             >
-                                {postObj.Author}
+                                {postObj.author}
                             </BoldTypography>
                         </Grid2>
                         <Grid2 component={Typography} xs={12} md={5}>
-                            创建于: {postObj.created}
+                            创建于: {postObj.created_at}
                         </Grid2>
                         <Grid2 component={Typography} xs={12} md={7}>
-                            最后修改于: {postObj.modified}
+                            最后修改于: {postObj.updated_at}
                         </Grid2>
                     </Grid2>
                 </Box>
@@ -106,12 +105,12 @@ export default function PostContent() {
                             </Tooltip>
                             <Dialog open={open} onClose={handleClose}>
                                 <DialogTitle>
-                                    是否要删除《{postObj.Title}》这篇文章？
+                                    是否要删除《{postObj.title}》这篇文章？
                                 </DialogTitle>
                                 <DialogActions>
                                     <Button onClick={handleClose}>取消</Button>
                                     <Form method="post">
-                                        <Input type="hidden" name="Author" value={postObj.Author}/>
+                                        <Input type="hidden" name="Author" value={postObj.author}/>
                                         <Button color='error' type="submit"
                                                 name="ActionType" value="Delete"
                                                 onClick={handleClose}
@@ -133,14 +132,14 @@ export default function PostContent() {
             </Box>
             <Paper sx={{display: 'flex', flexDirection: 'column', p: '1rem', height: '100%', overflowY: 'auto'}}>
                 <Typography variant={'h4'} sx={{display: 'flex', position: 'relative', mb: '1rem'}}>
-                    {postObj.Title}
+                    {postObj.title}
                 </Typography>
                 <ReactMarkdown>
-                    {postObj.Content}
+                    {postObj.content}
                 </ReactMarkdown>
                 <CommentSection 
                     postId={urlPostId} 
-                    postAuthor={postObj.Author}
+                    postAuthor={postObj.author}
                 />
             </Paper>
         </>
