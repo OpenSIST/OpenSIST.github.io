@@ -1,7 +1,6 @@
 import localforage from "localforage";
-import {ADD_POST, GET_CONTENT_API, MODIFY_POST, REMOVE_POST, LIST_POSTS_API, CREATE_POST_API, MODIFY_CONTENT_API} from "../APIs/APIs";
+import {GET_CONTENT_API, LIST_POSTS_API, CREATE_POST_API, MODIFY_CONTENT_API} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
-import {getApplicant, setApplicant} from "./ApplicantData";
 
 // const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
