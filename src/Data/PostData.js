@@ -3,7 +3,7 @@ import {ADD_POST, GET_CONTENT_API, MODIFY_POST, REMOVE_POST, LIST_POSTS_API} fro
 import {handleErrors, headerGenerator} from "./Common";
 import {getApplicant, setApplicant} from "./ApplicantData";
 
-const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+// const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
 export async function getPosts(isRefresh = false, query = {}) {
 

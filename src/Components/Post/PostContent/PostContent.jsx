@@ -1,5 +1,5 @@
 import {getPostObject, removePost} from "../../../Data/PostData";
-import {Form, Link, redirect, useLoaderData, useParams} from "react-router-dom";
+import {Form, Link, redirect, useLoaderData} from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import {
     Box,

@@ -10,7 +10,7 @@ import {
 import { headerGenerator, handleErrors } from './Common'; // Import common utilities
 
 // const COMMENT_KEY = 'comments'; // No longer primary storage, only fallback for getComments if API fails initially
-const COMMENT_CACHE_EXPIRATION = 5 * 60 * 1000; // 5 minutes cache expiration
+// const COMMENT_CACHE_EXPIRATION = 5 * 60 * 1000; // 5 minutes cache expiration
 
 // --- Comment Schema --- (Informal)
 // {

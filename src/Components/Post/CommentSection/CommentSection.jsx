@@ -86,7 +86,7 @@ const Comment = React.memo(({
     const [isSubmittingReply, setIsSubmittingReply] = useState(false);
     const [replyError, setReplyError] = useState(null);
     // console.log("COMMENT: ", comment);
-    const [isLiked, setIsLiked] = useState(comment.liked || false);
+    const [isLiked] = useState(comment.liked || false);
     const [isLikeProcessing, setIsLikeProcessing] = useState(false);
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
     const isMenuOpen = Boolean(menuAnchorEl);
@@ -270,19 +270,16 @@ const Comment = React.memo(({
                             </IconButton>
                         </Tooltip>
                         
-                        {/* Only show Reply button if it's NOT a reply */}
-                        {!isReply && (
-                            <Tooltip title="回复">
-                                <IconButton 
-                                    size="small"
-                                    // Pass comment's commentId to toggle input
-                                    onClick={() => onToggleReplyInput(comment.commentId)} 
-                                    className="reply-button"
-                                >
-                                    <Reply fontSize="small" />
-                                </IconButton>
-                            </Tooltip>
-                        )}
+                        <Tooltip title="回复">
+                            <IconButton 
+                                size="small"
+                                // Pass comment's commentId to toggle input
+                                onClick={() => onToggleReplyInput(comment.commentId)} 
+                                className="reply-button"
+                            >
+                                <Reply fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
                     </Box>
                 </Box>
 
@@ -443,6 +440,7 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
         try {
             // Assume getComments now returns the array based on the new API format
             const fetchedComments = await getComments(postId, forceRefresh); 
+            console.log("DEBUG: Fetched Comments Raw:", fetchedComments); // Log raw data
             // --- Start: Fetch metadata for comment authors ---
             const authorDisplayNames = new Set();
             fetchedComments.forEach(comment => {
@@ -493,7 +491,9 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                 }
             }
             // --- End: Fetch metadata for comment authors ---
+            console.log("DEBUG: Fetched Comments:", fetchedComments); // Log raw data
             const processedComments = buildCommentTreeOptimized(fetchedComments); // Use optimized function
+            console.log("DEBUG: Processed Comment Tree:", processedComments); // Log processed tree
             setComments(processedComments);
         } catch (err) {
             console.error("Error fetching comments:", err);
@@ -621,7 +621,7 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
     const handleReplySubmit = useCallback(async (parentId, replyContent) => { // parentId is the commentId of the comment being replied to
         try {
              // Pass postId, content, and parent_id (using the received parentId which is a commentId)
-            await addComment({ postId, content: replyContent, parentId });
+            await addComment({ postId, content: replyContent, parent_id: parentId });
             await fetchComments(true); // Force refresh
         } catch (err) {
             console.error("Error adding reply:", err);
@@ -736,6 +736,8 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                 <Box className="comment-list">
                     {/* Iterate through root comments */}
                     {comments.map(rootComment => {
+                        console.log("DEBUG: Rendering Root Comment:", rootComment);
+                        console.log("DEBUG: Root Comment Flat Replies:", rootComment.flatReplies);
                         return (
                             <React.Fragment key={rootComment.commentId}> 
                                 {/* Render the root comment */}
