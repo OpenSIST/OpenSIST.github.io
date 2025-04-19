@@ -5,7 +5,8 @@ import {
     GET_CONTENT_API, 
     CREATE_COMMENT_API, 
     TOGGLE_LIKE_API, 
-    MODIFY_CONTENT_API 
+    MODIFY_CONTENT_API, 
+    DELETE_POST_API 
 } from '../APIs/APIs'; // Import API endpoints
 import { headerGenerator, handleErrors } from './Common'; // Import common utilities
 
@@ -256,16 +257,16 @@ export async function toggleLikeComment(commentId, postId) { // Added postId par
 }
 
 /**
- * Deletes a comment using the modify API (marks as deleted).
+ * Deletes a comment using the new API.
  * @param {string} commentId - The ID of the comment to delete.
  * @param {string} postId - The ID of the post the comment belongs to (needed for cache invalidation).
- * @returns {Promise<void>}
+ * @returns {Promise<void>} - Resolves when the operation is complete.
  */
 export async function deleteComment(commentId, postId) { // Added postId parameter
     if (!commentId) {
         throw new Error('Comment ID is required for deletion');
     }
-     if (!postId) {
+    if (!postId) {
         console.error("Post ID is required to delete comment and invalidate cache.");
         throw new Error('Post ID is required for deletion');
     }
@@ -276,49 +277,80 @@ export async function deleteComment(commentId, postId) { // Added postId paramet
     }
 
     try {
-        // Send delete request using MODIFY_CONTENT_API
-        // We'll mark it as deleted by setting content to a specific marker
-        // or potentially an 'is_deleted' flag if the backend supports it via modify.
-        // Assuming setting content to '[deleted]' for now. Title/Tags are null for comments.
-        const response = await fetch(MODIFY_CONTENT_API, {
+        // Send delete request to server using DELETE_POST_API
+        const response = await fetch(DELETE_POST_API, { // <-- Use the new API endpoint
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),
-            body: JSON.stringify({ 
-                contentId: commentId.toString(), 
-                title: null, // Not applicable for comment
-                content: '[评论已删除]', // Mark content as deleted
-                tags: null // Not applicable for comment
-                // If backend preferred marking via a flag:
-                // is_deleted: true 
-            })
+            body: JSON.stringify({ contentId: commentId.toString() }) // <-- API expects contentId
         });
         
         await handleErrors(response);
         const result = await response.json();
 
-         if (!result.success) {
-            // Handle specific errors like 403 Unauthorized, 404 Not Found
-            if (response.status === 403) {
-                 throw new Error('Unauthorized to delete this comment.');
-            }
-             if (response.status === 404) {
-                 throw new Error('Comment not found or already deleted.');
-            }
+        if (!result.success) {
             throw new Error(result.error || 'Failed to delete comment on server.');
         }
         
-        // **Important**: API confirms modification success.
-        // We MUST force a refresh in the component.
+        // **Important**: API deletion successful.
+        // We MUST force a refresh in the component after this call.
         // Invalidate the cache.
         const cacheKey = `post-content-${postId}`;
         await localforage.removeItem(cacheKey);
-        
+
     } catch (error) {
         console.error("Error deleting comment via API:", error);
-        // Re-throw for UI handling
+        // Re-throw the error to be handled by the UI component
+        throw error; 
+        // Offline deletion removed
+    }
+}
+
+/**
+ * Modifies a comment's content using the new API.
+ * @param {string} commentId - The ID of the comment to modify.
+ * @param {string} newContent - The updated content.
+ * @param {string} postId - The ID of the post the comment belongs to (for cache invalidation).
+ * @returns {Promise<void>} - Resolves when the operation is complete.
+ */
+export async function modifyComment(commentId, newContent, postId) {
+    if (!commentId || !newContent || !postId) {
+        throw new Error('Comment ID, new content, and Post ID are required for modification');
+    }
+
+    const currentUser = await getDisplayName();
+    if (!currentUser) {
+        throw new Error('User not logged in');
+    }
+
+    try {
+        // Send modification to server using MODIFY_CONTENT_API
+        const response = await fetch(MODIFY_CONTENT_API, {
+            method: 'POST',
+            credentials: 'include',
+            headers: await headerGenerator(true),
+            body: JSON.stringify({
+                contentId: commentId.toString(),
+                title: null, // Comments don't have titles
+                content: newContent.trim(),
+                tags: null // Comments don't have tags
+            })
+        });
+
+        await handleErrors(response);
+        const result = await response.json();
+
+        if (!result.success) {
+            throw new Error(result.error || 'Failed to modify comment on server.');
+        }
+
+        // Invalidate the cache
+        const cacheKey = `post-content-${postId}`;
+        await localforage.removeItem(cacheKey);
+
+    } catch (error) {
+        console.error("Error modifying comment via API:", error);
         throw error;
-        // NOTE: Offline fallback for delete removed.
     }
 }
 

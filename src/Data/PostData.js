@@ -1,5 +1,5 @@
 import localforage from "localforage";
-import {GET_CONTENT_API, LIST_POSTS_API, CREATE_POST_API, MODIFY_CONTENT_API} from "../APIs/APIs";
+import {GET_CONTENT_API, LIST_POSTS_API, CREATE_POST_API, MODIFY_CONTENT_API, DELETE_POST_API} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
 
 // const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
@@ -121,17 +121,14 @@ export async function setPostObject(postObj) {
 }
 
 /**
- * Removes a post by marking it as deleted using the MODIFY_CONTENT_API.
+ * Removes a post using the new DELETE_POST_API.
  * @param {string} postId - The ID of the post to remove.
  * @param {string} author - The author's display name (may not be needed if backend uses auth context).
  */
 export async function removePost(postId, author) {
-    const API = MODIFY_CONTENT_API;
+    const API = DELETE_POST_API;
     const requestBody = {
-        contentId: postId.toString(),
-        title: null, // Not changing title when deleting
-        content: "[帖子已删除]", // Mark content as deleted
-        tags: null // Not changing tags when deleting
+        contentId: postId.toString()
     };
     console.log(`[PostData] Sending delete post request to ${API}:`, requestBody);
 
@@ -151,12 +148,14 @@ export async function removePost(postId, author) {
             throw new Error(result.error || `API request failed for delete post.`);
         }
     } catch (e) {
-        console.log(`[PostData] Delete post response from ${API}: No JSON content or error reading JSON.`);
+        console.log(`[PostData] Delete post response from ${API}: No JSON content or error reading JSON. Status: ${response.status}`);
+        if (!response.ok) {
+            throw new Error(`API request failed for delete post with status ${response.status}`);
+        }
     }
 
-    // Refresh the posts list to reflect the deletion
     await getPosts(true);
-    // No longer need to manually remove content or update applicant data, list refresh handles it.
+    await localforage.removeItem(`${postId}-Content`);
 }
 
 export async function deletePostContent(postId) {
