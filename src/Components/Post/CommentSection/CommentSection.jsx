@@ -43,7 +43,6 @@ const formatTimestamp = (timestamp) => {
         const diffHours = Math.floor(diffMins / 60);
         const diffDays = Math.floor(diffHours / 24);
         
-        // Show relative time for recent comments
         if (diffSecs < 60) {
             return '刚刚';
         } else if (diffMins < 60) {
@@ -54,7 +53,6 @@ const formatTimestamp = (timestamp) => {
             return `${diffDays}天前`;
         }
         
-        // For older comments, show the date in format: YYYY-MM-DD HH:MM
         const year = commentDate.getFullYear();
         const month = String(commentDate.getMonth() + 1).padStart(2, '0');
         const day = String(commentDate.getDate()).padStart(2, '0');
@@ -210,6 +208,10 @@ const Comment = React.memo(({
                                 }}
                             />
                         )}
+                        <Typography variant="caption" className="comment-timestamp" sx={{ display: 'inline-block' }}>
+                            {formatTimestamp(comment.timestamp)}
+                            {comment.modified > comment.timestamp ? ' (已编辑)' : ''}
+                        </Typography>
                     </Box>
                     
                     {isCommentAuthor && (
@@ -249,82 +251,96 @@ const Comment = React.memo(({
                 
                 {/* Group Timestamp and Action Buttons Below Content */}
                 <Box className="comment-footer">
-                    <Typography variant="caption" className="comment-timestamp">
-                        {/* Use timestamp */}
-                        {formatTimestamp(comment.timestamp)} 
+                    <Typography variant="caption" className="timestamp-mobile">
+                        {formatTimestamp(comment.timestamp)}
+                        {comment.modified > comment.timestamp ? ' (已编辑)' : ''}
                     </Typography>
                     
-                    <Box className="comment-action-buttons">
-                        <Tooltip title={isLiked ? "取消点赞" : "点赞"}>
-                            <IconButton 
-                                size="small" 
-                                onClick={handleLike}
-                                disabled={isLikeProcessing}
-                                className={`like-button ${isLiked ? 'liked' : ''}`}
-                            >
-                                {isLiked ? <ThumbUp fontSize="small" /> : <ThumbUpOutlined fontSize="small" />}
-                                {/* Use likes */}
-                                {comment.likes > 0 && ( 
-                                    <Typography variant="caption" sx={{ ml: 0.5 }}>
-                                        {comment.likes}
-                                    </Typography>
-                                )}
-                            </IconButton>
-                        </Tooltip>
+                    <Box className="comment-actions">
+                        <IconButton 
+                            onClick={handleLike} 
+                            size="small" 
+                            aria-label={isLiked ? "Unlike" : "Like"}
+                            disabled={isLikeProcessing}
+                            className={`like-button ${isLiked ? 'liked' : ''}`}
+                        >
+                            {isLiked ? <ThumbUp fontSize="small" /> : <ThumbUpOutlined fontSize="small" />}
+                            {/* Use likes */}
+                            {comment.likes > 0 && ( 
+                                <Typography variant="caption" sx={{ ml: 0.5 }}>
+                                    {comment.likes}
+                                </Typography>
+                            )}
+                        </IconButton>
                         
                         {/* Only show Reply button if it's NOT a reply */}
                         {!isReply && (
-                            <Tooltip title="回复">
-                                <IconButton 
-                                    size="small"
-                                    // Pass comment's commentId to toggle input
-                                    onClick={() => onToggleReplyInput(comment.commentId)} 
-                                    className="reply-button"
-                                >
-                                    <Reply fontSize="small" />
-                                </IconButton>
-                            </Tooltip>
+                            <IconButton 
+                                onClick={() => onToggleReplyInput(isReplyInputVisible ? null : comment.commentId)} 
+                                size="small" 
+                                aria-label="Reply"
+                                className="reply-button"
+                            >
+                                <Reply fontSize="small" />
+                            </IconButton>
                         )}
                     </Box>
                 </Box>
 
                 {/* Reply Input Section - Render based on external state */}
                 {isReplyInputVisible && (
-                    <Box className="reply-input-section">
-                        <Avatar src={currentUserMeta?.avatarUrl} className="reply-input-avatar" />
-                        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                            <TextField
-                                multiline
-                                fullWidth
-                                size="small"
-                                variant="outlined"
-                                // Use comment.author for the placeholder
-                                placeholder={`回复 @${comment.author || 'Anonymous'}...`} 
-                                value={replyContent}
-                                onChange={(e) => setReplyContent(e.target.value)}
-                                disabled={isSubmittingReply}
-                                error={!!replyError}
-                            />
-                            {replyError && <Alert severity="error" sx={{ fontSize: '0.75rem', p: '0 0.5rem' }}>{replyError}</Alert>}
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
-                                <Button 
-                                    size="small" 
-                                    // Pass null to close the input
-                                    onClick={() => onToggleReplyInput(null)} 
+                    <Box className="reply-input-container">
+                        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+                            <Avatar 
+                                src={currentUserMeta?.avatarUrl} 
+                                className="reply-avatar"
+                                sx={{ width: 32, height: 32 }}
+                            >
+                                {!currentUserMeta?.avatarUrl ? currentUserDisplayName?.[0]?.toUpperCase() : null}
+                            </Avatar>
+                            <Box sx={{ flexGrow: 1 }} className={darkMode ? 'dark-mode-input' : ''}>
+                                <TextField
+                                    fullWidth
+                                    multiline
+                                    rows={2}
+                                    placeholder={`回复 @${comment.author}...`}
+                                    value={replyContent}
+                                    onChange={(e) => setReplyContent(e.target.value)}
+                                    size="small"
                                     disabled={isSubmittingReply}
-                                >
-                                    取消
-                                </Button>
-                                <Button 
-                                    size="small" 
-                                    variant="contained" 
-                                    onClick={handleInternalReplySubmit}
-                                    disabled={!replyContent.trim() || isSubmittingReply}
-                                >
-                                    {isSubmittingReply ? <CircularProgress size={18} /> : '发布'}
-                                </Button>
+                                    variant="outlined"
+                                    className="reply-textfield"
+                                />
                             </Box>
                         </Box>
+                        
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
+                            <Button 
+                                onClick={() => onToggleReplyInput(null)} 
+                                size="small" 
+                                color="inherit" 
+                                sx={{ mr: 1 }}
+                                className="cancel-reply-btn"
+                            >
+                                取消
+                            </Button>
+                            <Button 
+                                onClick={handleInternalReplySubmit} 
+                                size="small" 
+                                variant="contained" 
+                                color="primary"
+                                disabled={!replyContent.trim() || isSubmittingReply}
+                                className="submit-reply-btn"
+                            >
+                                {isSubmittingReply ? <CircularProgress size={20} /> : "提交"}
+                            </Button>
+                        </Box>
+                        
+                        {replyError && (
+                            <Alert severity="error" sx={{ mt: 1 }}>
+                                {replyError}
+                            </Alert>
+                        )}
                     </Box>
                 )}
             </Box>

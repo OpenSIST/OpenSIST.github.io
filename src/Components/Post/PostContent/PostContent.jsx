@@ -26,12 +26,9 @@ export async function loader({params}) {
     const postId = params.postId;
     try {
         const postObj = await getPostObject(postId);
-        // console.log("[PostContent Loader] postObj:", postObj);
-        // console.log("[PostContent Loader] postObj.author:", postObj?.author);
         
         const authorId = postObj?.author;
         const editable = authorId ? await isAuthApplicant(authorId) : false;
-        // console.log("[PostContent Loader] Checking auth for:", authorId, "Result:", editable);
         
         const metaData = authorId ? await getMetaData(authorId.split("@")[0]) : {};
         const avatar = await getAvatar(metaData?.Avatar, authorId);

@@ -27,42 +27,36 @@ import { headerGenerator, handleErrors } from './Common'; // Import common utili
 //     isDeleted: boolean // Whether this comment has been soft-deleted
 // }
 
-// --- Helper function to map API comment structure to frontend structure ---
-// API structure: { id, parentId, type, title, content, author, tags, like_count, liked, is_deleted, created_at, updated_at }
-// Frontend structure: { commentId, postId, author, content, timestamp, parentId, targetAuthor, likes, liked, isDeleted, modified }
+/**
+ * Helper function to map API comment structure to frontend structure
+ */
 const mapApiCommentToFrontend = (apiComment, allComments = [], originalPostId) => {
-    if (!apiComment || (apiComment.type !== 'comment' && apiComment.type !== 'subcomment')) { // Ensure it's a comment
+    if (!apiComment || (apiComment.type !== 'comment' && apiComment.type !== 'subcomment')) {
         return null; 
     }
 
     const parentComment = allComments.find(c => c.id === apiComment.parent_id);
     const targetAuthor = parentComment ? parentComment.author : null;
-    
-    // Check if the parentId is the original postId, indicating a root comment
     const frontendParentId = apiComment.parent_id === originalPostId ? null : apiComment.parent_id;
 
     return {
-        commentId: apiComment.id, // Map id -> commentId
-        postId: originalPostId, // Add original postId
+        commentId: apiComment.id,
+        postId: originalPostId,
         author: apiComment.author,
         content: apiComment.content,
-        timestamp: new Date(apiComment.created_at).getTime(), // Map created_at -> timestamp (number)
-        parentId: frontendParentId, // Use derived parentId (null for root)
-        targetAuthor: targetAuthor, // Add targetAuthor based on parent
-        likes: apiComment.like_count, // Map like_count -> likes
-        liked: apiComment.liked, // Map liked -> liked (boolean)
-        isDeleted: apiComment.is_deleted, // Map is_deleted -> isDeleted
-        modified: new Date(apiComment.updated_at).getTime(), // Map updated_at -> modified (number)
-        comment_type: apiComment.type, // Add comment_type field
-        // Remove pendingSync flags as offline actions are removed
+        timestamp: new Date(apiComment.created_at).getTime(),
+        parentId: frontendParentId,
+        targetAuthor: targetAuthor,
+        likes: apiComment.like_count,
+        liked: apiComment.liked,
+        isDeleted: apiComment.is_deleted,
+        modified: new Date(apiComment.updated_at).getTime(),
+        comment_type: apiComment.type,
     };
 };
 
 /**
- * Fetches all comments for a specific post using the new API.
- * @param {string} postId - The ID of the post.
- * @param {boolean} forceRefresh - Whether to bypass cache.
- * @returns {Promise<Array<object>>} - A promise resolving to an array of frontend-formatted comment objects.
+ * Fetches all comments for a specific post
  */
 export async function getComments(postId, forceRefresh = false) {
     if (!postId) {
@@ -70,30 +64,15 @@ export async function getComments(postId, forceRefresh = false) {
         return [];
     }
     
-    const cacheKey = `post-content-${postId}`; // Use a different key for content
+    const cacheKey = `post-content-${postId}`;
     
-    // if (!forceRefresh) {
-    //     try {
-    //         const cachedData = await localforage.getItem(cacheKey);
-    //         if (cachedData && (Date.now() - cachedData.timestamp) < COMMENT_CACHE_EXPIRATION) {
-    //             // Ensure cached data is in the correct frontend format
-    //             // Re-run mapping if needed or assume it was stored correctly
-    //             return cachedData.comments; 
-    //         }
-    //     } catch (cacheError) {
-    //         console.error("Error reading comment cache:", cacheError);
-    //     }
-    // }
     try {
-        // Fetch from server using GET_CONTENT_API
         const response = await fetch(GET_CONTENT_API, {
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),
-            body: JSON.stringify({ postId }) // API expects postId
+            body: JSON.stringify({ postId })
         });
-        // console.log("Post_ID: ", postId);
-        // console.log("Response: ", response);
         
         await handleErrors(response);
         const result = await response.json();
@@ -102,50 +81,39 @@ export async function getComments(postId, forceRefresh = false) {
              throw new Error(result.error || 'Failed to fetch comments or invalid format');
         }
 
-        // Filter out the actual post if it's included, keep only comments
-        // And map API response to frontend format
         const apiComments = result.comments.filter(item => item.type === 'comment' || item.type === 'subcomment');
-        // console.log("API Comments: ", apiComments);
         const frontendComments = apiComments
             .map(apiComment => mapApiCommentToFrontend(apiComment, apiComments, postId))
-            .filter(comment => comment !== null); // Filter out any null results from mapping
+            .filter(comment => comment !== null);
         
-        // Update cache with frontend-formatted comments
         await localforage.setItem(cacheKey, {
             comments: frontendComments,
             timestamp: Date.now()
         });
-        // console.log("Frontend Comments: ", frontendComments);
+        
         return frontendComments.sort((a, b) => a.timestamp - b.timestamp);
     } catch (error) {
         console.error("Error fetching comments from server:", error);
         
-        // Fallback to local cache if available (even if expired)
         try {
             const cachedData = await localforage.getItem(cacheKey);
             if (cachedData && cachedData.comments) {
-                console.warn("Using expired/stale cached comments data as fallback");
+                console.warn("Using cached comments data as fallback");
                 return cachedData.comments;
             }
         } catch (fallbackError) {
              console.error("Error reading comment cache during fallback:", fallbackError);
         }
         
-        // If absolutely no cache, return empty
         return []; 
     }
 }
 
 /**
- * Adds a new comment using the new API.
- * @param {object} commentData - The comment data.
- * @param {string} commentData.postId - The ID of the post being commented on.
- * @param {string} commentData.content - The content of the comment.
- * @param {string | null} [commentData.parentId=null] - The ID of the parent comment if it's a reply.
- * @returns {Promise<void>} - Resolves when the operation is complete (doesn't return the new comment).
+ * Adds a new comment
  */
 export async function addComment({ postId, content, parentId=null }) {
-    const authorDisplayName = await getDisplayName(); // Still need this for potential errors
+    const authorDisplayName = await getDisplayName();
     if (!authorDisplayName) {
         throw new Error('User not logged in or display name not found.');
     }
@@ -156,27 +124,18 @@ export async function addComment({ postId, content, parentId=null }) {
         throw new Error('Post ID is required to add a comment.');
     }
 
-    // Determine the parentId for the API call
-    // If parentId from frontend is null, it's a root comment, API parent is the postId
-    // Otherwise, it's a reply, API parent is the parent comment's id
-    // console.log("Parent ID: ", parentId);
-    // console.log("Post ID: ", postId);
     const apiParentId = parentId === null ? postId : parentId;
 
-    // Ensure apiParentId is never null if postId is valid
     if (!apiParentId) {
          throw new Error('Cannot determine parent ID for comment creation.');
     }
-
     
     try {
-        // Send to server using CREATE_COMMENT_API
         const response = await fetch(CREATE_COMMENT_API, {
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),
             body: JSON.stringify({
-                // API expects parentId (post or comment id) and content
                 parentId: apiParentId.toString(), 
                 content: content.trim()
             })
@@ -189,32 +148,23 @@ export async function addComment({ postId, content, parentId=null }) {
             throw new Error(result.error || 'Failed to create comment on server.');
         }
         
-        // **Important**: API does not return the new comment object.
-        // We MUST force a refresh in the component after this call.
-        // We also invalidate the cache here so the refresh gets new data.
         const cacheKey = `post-content-${postId}`;
         await localforage.removeItem(cacheKey);
 
     } catch (error) {
         console.error("Error adding comment via API:", error);
-        // Re-throw the error to be handled by the UI component
-        throw error; 
-        // NOTE: Offline fallback for adding comments removed due to API limitations (no new ID returned).
+        throw error;
     }
 }
 
 /**
- * Likes/unlikes a comment using the new API.
- * @param {string} commentId - The ID of the comment to like/unlike.
- * @param {string} postId - The ID of the post the comment belongs to (needed for cache invalidation).
- * @returns {Promise<void>} - Resolves when the operation is complete.
+ * Likes/unlikes a comment
  */
-export async function toggleLikeComment(commentId, postId) { // Added postId parameter
+export async function toggleLikeComment(commentId, postId) {
     if (!commentId) {
         throw new Error('Comment ID is required for like toggle');
     }
     if (!postId) {
-        // Need postId to invalidate cache correctly after operation
         console.error("Post ID is required to toggle like and invalidate cache.");
         throw new Error('Post ID is required for like toggle');
     }
@@ -225,12 +175,11 @@ export async function toggleLikeComment(commentId, postId) { // Added postId par
     }
 
     try {
-        // Send like/unlike to server using TOGGLE_LIKE_API
         const response = await fetch(TOGGLE_LIKE_API, {
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),
-            body: JSON.stringify({ contentId: commentId.toString() }) // API expects contentId
+            body: JSON.stringify({ contentId: commentId.toString() })
         });
         
         await handleErrors(response);
@@ -240,30 +189,19 @@ export async function toggleLikeComment(commentId, postId) { // Added postId par
             throw new Error(result.error || 'Failed to toggle like on server.');
         }
         
-        // **Important**: API does not return the updated comment state.
-        // We MUST force a refresh in the component after this call.
-        // Invalidate the cache.
         const cacheKey = `post-content-${postId}`;
         await localforage.removeItem(cacheKey);
-        
-        // Cannot reliably return the new liked state. Component must rely on refresh.
-        // return result.isLiked; // This field doesn't exist in the new API response
 
     } catch (error) {
         console.error("Error toggling like via API:", error);
-        // Re-throw error for UI handling
         throw error;
-        // NOTE: Offline fallback for like toggle removed.
     }
 }
 
 /**
- * Deletes a comment using the new API.
- * @param {string} commentId - The ID of the comment to delete.
- * @param {string} postId - The ID of the post the comment belongs to (needed for cache invalidation).
- * @returns {Promise<void>} - Resolves when the operation is complete.
+ * Deletes a comment
  */
-export async function deleteComment(commentId, postId) { // Added postId parameter
+export async function deleteComment(commentId, postId) {
     if (!commentId) {
         throw new Error('Comment ID is required for deletion');
     }
@@ -278,12 +216,11 @@ export async function deleteComment(commentId, postId) { // Added postId paramet
     }
 
     try {
-        // Send delete request to server using DELETE_CONTENT_API
-        const response = await fetch(DELETE_CONTENT_API, { // <-- Use the new API endpoint
+        const response = await fetch(DELETE_CONTENT_API, {
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),
-            body: JSON.stringify({ contentId: commentId.toString() }) // <-- API expects contentId
+            body: JSON.stringify({ contentId: commentId.toString() })
         });
         
         await handleErrors(response);
@@ -293,26 +230,17 @@ export async function deleteComment(commentId, postId) { // Added postId paramet
             throw new Error(result.error || 'Failed to delete comment on server.');
         }
         
-        // **Important**: API deletion successful.
-        // We MUST force a refresh in the component after this call.
-        // Invalidate the cache.
         const cacheKey = `post-content-${postId}`;
         await localforage.removeItem(cacheKey);
 
     } catch (error) {
         console.error("Error deleting comment via API:", error);
-        // Re-throw the error to be handled by the UI component
-        throw error; 
-        // Offline deletion removed
+        throw error;
     }
 }
 
 /**
- * Modifies a comment's content using the new API.
- * @param {string} commentId - The ID of the comment to modify.
- * @param {string} newContent - The updated content.
- * @param {string} postId - The ID of the post the comment belongs to (for cache invalidation).
- * @returns {Promise<void>} - Resolves when the operation is complete.
+ * Modifies a comment's content
  */
 export async function modifyComment(commentId, newContent, postId) {
     if (!commentId || !newContent || !postId) {
@@ -325,16 +253,15 @@ export async function modifyComment(commentId, newContent, postId) {
     }
 
     try {
-        // Send modification to server using MODIFY_CONTENT_API
         const response = await fetch(MODIFY_CONTENT_API, {
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),
             body: JSON.stringify({
                 contentId: commentId.toString(),
-                title: null, // Comments don't have titles
+                title: null,
                 content: newContent.trim(),
-                tags: null // Comments don't have tags
+                tags: null
             })
         });
 
@@ -345,7 +272,6 @@ export async function modifyComment(commentId, newContent, postId) {
             throw new Error(result.error || 'Failed to modify comment on server.');
         }
 
-        // Invalidate the cache
         const cacheKey = `post-content-${postId}`;
         await localforage.removeItem(cacheKey);
 
