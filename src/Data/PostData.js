@@ -86,9 +86,9 @@ export async function setPostContent(postId, content) {
 export async function getPostObject(postId, isRefresh = false) {
     const post = await getPost(postId, isRefresh);
     const content = await getPostContent(postId, isRefresh);
-    console.log("[PostData] Getting post object:", postId);
-    console.log("[PostData] Post data:", post);
-    console.log("[PostData] Content data:", content);
+    // console.log("[PostData] Getting post object:", postId);
+    // console.log("[PostData] Post data:", post);
+    // console.log("[PostData] Content data:", content);
     
     if (!post || !content) {
         throw new Error("Post or content not found");
@@ -104,7 +104,7 @@ export async function setPostObject(postObj) {
     if (!postObj) {
         return;
     }
-    console.log("[PostData] Setting post object:", postObj);
+    // console.log("[PostData] Setting post object:", postObj);
     
     if (postObj.content) {
         await setPostContent(postObj.id, postObj.content);
@@ -130,7 +130,7 @@ export async function removePost(postId, author) {
     const requestBody = {
         contentId: postId.toString()
     };
-    console.log(`[PostData] Sending delete post request to ${API}:`, requestBody);
+    // console.log(`[PostData] Sending delete post request to ${API}:`, requestBody);
 
     const response = await fetch(API, {
         method: 'POST',
@@ -143,12 +143,12 @@ export async function removePost(postId, author) {
 
     try {
         const result = await response.json();
-        console.log(`[PostData] Delete post response from ${API}:`, result);
+        // console.log(`[PostData] Delete post response from ${API}:`, result);
         if (!result.success) {
             throw new Error(result.error || `API request failed for delete post.`);
         }
     } catch (e) {
-        console.log(`[PostData] Delete post response from ${API}: No JSON content or error reading JSON. Status: ${response.status}`);
+        // console.log(`[PostData] Delete post response from ${API}: No JSON content or error reading JSON. Status: ${response.status}`);
         if (!response.ok) {
             throw new Error(`API request failed for delete post with status ${response.status}`);
         }
@@ -186,7 +186,7 @@ export async function addModifyPost(requestData, type) {
             content: requestData.content.Content,
             tags: [] // Defaulting to empty tags
         };
-        console.log(`[PostData] Sending ${type} post request to ${API}:`, requestBody);
+        // console.log(`[PostData] Sending ${type} post request to ${API}:`, requestBody);
     } else if (type === 'edit') {
         API = MODIFY_CONTENT_API; // Use /api/post/modify_content
         // API Spec: { contentId: string, title: string|null, content: string, tags: array|null }
@@ -196,7 +196,7 @@ export async function addModifyPost(requestData, type) {
             content: requestData.content.Content,
             tags: null // Setting tags to null for modification as we don't handle them yet
         };
-        console.log(`[PostData] Sending ${type} post request to ${API}:`, requestBody);
+        // console.log(`[PostData] Sending ${type} post request to ${API}:`, requestBody);
     } else {
         throw new Error(`Invalid type specified for addModifyPost: ${type}`);
     }
@@ -212,7 +212,7 @@ export async function addModifyPost(requestData, type) {
 
     try {
         const result = await response.json();
-        console.log(`[PostData] ${type} post response from ${API}:`, result);
+        // console.log(`[PostData] ${type} post response from ${API}:`, result);
         if (!result.success) {
             throw new Error(result.error || `API request failed for ${type} post.`);
         }

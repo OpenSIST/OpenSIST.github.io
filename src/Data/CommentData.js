@@ -159,8 +159,8 @@ export async function addComment({ postId, content, parentId=null }) {
     // Determine the parentId for the API call
     // If parentId from frontend is null, it's a root comment, API parent is the postId
     // Otherwise, it's a reply, API parent is the parent comment's id
-    console.log("Parent ID: ", parentId);
-    console.log("Post ID: ", postId);
+    // console.log("Parent ID: ", parentId);
+    // console.log("Post ID: ", postId);
     const apiParentId = parentId === null ? postId : parentId;
 
     // Ensure apiParentId is never null if postId is valid

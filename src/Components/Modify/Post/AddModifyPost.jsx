@@ -10,7 +10,7 @@ import {list2Options} from "../../../Data/Schemas";
 export async function loader({params}) {
     const postId = params?.postId;
     const postObj = postId ? await getPostObject(postId) : null;
-    console.log("postObj", postObj)
+    // console.log("postObj", postObj)
     const isAuth = await isAuthApplicant(postObj?.author);
     if (!isAuth && postObj) {
         await getApplicants(true);
