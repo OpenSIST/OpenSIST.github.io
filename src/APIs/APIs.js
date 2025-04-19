@@ -43,4 +43,4 @@ export const MODIFY_CONTENT_API = ROOT + "api/post/modify_content";
 export const TOGGLE_LIKE_API = ROOT + "api/post/toggle_like";
 export const LIST_POSTS_API = ROOT + "api/post/list_posts";
 export const GET_CONTENT_API = ROOT + "api/post/get_content";
-export const DELETE_POST_API = ROOT + "api/post/delete_content";
+export const DELETE_CONTENT_API = ROOT + "api/post/delete_content";

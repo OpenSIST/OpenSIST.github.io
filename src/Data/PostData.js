@@ -1,5 +1,5 @@
 import localforage from "localforage";
-import {GET_CONTENT_API, LIST_POSTS_API, CREATE_POST_API, MODIFY_CONTENT_API, DELETE_POST_API} from "../APIs/APIs";
+import {GET_CONTENT_API, LIST_POSTS_API, CREATE_POST_API, MODIFY_CONTENT_API, DELETE_CONTENT_API} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
 
 // const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
@@ -121,12 +121,12 @@ export async function setPostObject(postObj) {
 }
 
 /**
- * Removes a post using the new DELETE_POST_API.
+ * Removes a post using the new DELETE_CONTENT_API.
  * @param {string} postId - The ID of the post to remove.
  * @param {string} author - The author's display name (may not be needed if backend uses auth context).
  */
 export async function removePost(postId, author) {
-    const API = DELETE_POST_API;
+    const API = DELETE_CONTENT_API;
     const requestBody = {
         contentId: postId.toString()
     };

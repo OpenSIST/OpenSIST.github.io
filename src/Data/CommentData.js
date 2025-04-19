@@ -6,7 +6,7 @@ import {
     CREATE_COMMENT_API, 
     TOGGLE_LIKE_API, 
     MODIFY_CONTENT_API, 
-    DELETE_POST_API 
+    DELETE_CONTENT_API 
 } from '../APIs/APIs'; // Import API endpoints
 import { headerGenerator, handleErrors } from './Common'; // Import common utilities
 
@@ -159,7 +159,8 @@ export async function addComment({ postId, content, parentId=null }) {
     // Determine the parentId for the API call
     // If parentId from frontend is null, it's a root comment, API parent is the postId
     // Otherwise, it's a reply, API parent is the parent comment's id
-
+    console.log("Parent ID: ", parentId);
+    console.log("Post ID: ", postId);
     const apiParentId = parentId === null ? postId : parentId;
 
     // Ensure apiParentId is never null if postId is valid
@@ -277,8 +278,8 @@ export async function deleteComment(commentId, postId) { // Added postId paramet
     }
 
     try {
-        // Send delete request to server using DELETE_POST_API
-        const response = await fetch(DELETE_POST_API, { // <-- Use the new API endpoint
+        // Send delete request to server using DELETE_CONTENT_API
+        const response = await fetch(DELETE_CONTENT_API, { // <-- Use the new API endpoint
             method: 'POST',
             credentials: 'include',
             headers: await headerGenerator(true),

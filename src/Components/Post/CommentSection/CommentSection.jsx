@@ -628,7 +628,8 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
     const handleReplySubmit = useCallback(async (parentId, replyContent) => { // parentId is the commentId of the comment being replied to
         try {
              // Pass postId, content, and parent_id (using the received parentId which is a commentId)
-            await addComment({ postId, content: replyContent, parent_id: parentId });
+            console.log("DEBUG: Parent ID:", parentId);
+            await addComment({ postId, content: replyContent, parentId: parentId });
             await fetchComments(true); // Force refresh
         } catch (err) {
             console.error("Error adding reply:", err);
