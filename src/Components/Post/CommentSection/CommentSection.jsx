@@ -452,8 +452,30 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
     const [userMetaDataMap, setUserMetaDataMap] = useState(new Map());
     const fileInputRef = useRef(null);
     const quillRef = useRef(null);
+    const quillContainerRef = useRef(null);
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
+
+    // Function to focus the Quill editor
+    const focusQuillEditor = () => {
+        const quill = quillRef.current?.getEditor();
+        if (quill) {
+            quill.focus();
+            // Optional: Place cursor at the end of existing content
+            const length = quill.getLength();
+            quill.setSelection(length, 0);
+        }
+    };
+    
+    // Handle click on the editor container to focus
+    const handleQuillContainerClick = (e) => {
+        // Only handle direct clicks on the container, not on its children
+        if (e.target === e.currentTarget || 
+            e.target.classList.contains('ql-container') ||
+            e.target.classList.contains('ql-editor')) {
+            focusQuillEditor();
+        }
+    };
 
     // Fetch comments function - 移到这里以确保在使用之前定义
     const fetchComments = useCallback(async (forceRefresh = false) => {
@@ -696,7 +718,6 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
 
             {/* Comment Input Field */} 
             <Box className="comment-input-section">
-               {/* ... (Avatar link remains similar) ... */}
                 <Link 
                     to={`/datapoints/applicant/${currentUserDisplayName}${currentUserMetaForInput?.latestYear ? '@' + currentUserMetaForInput.latestYear : ''}`}
                     style={{ textDecoration: 'none' }}
@@ -704,8 +725,12 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                 >
                     <Avatar src={currentUserMetaForInput?.avatarUrl} className="comment-input-avatar" /> 
                 </Link>
-                <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    {/* ... (Quill editor remains similar) ... */}
+                <Box 
+                    sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
+                    ref={quillContainerRef}
+                    onClick={handleQuillContainerClick}
+                    className="quill-editor-container"
+                >
                     <ReactQuill 
                         ref={quillRef}
                         theme="snow" 
@@ -720,7 +745,6 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                     
                     {/* Action Buttons */} 
                     <Box className="comment-input-actions">
-                       {/* ... (Image button and input remain similar) ... */}
                         <Tooltip title="添加图片">
                             <IconButton size="small" onClick={handleImageButtonClick} disabled={isSubmitting}>
                                 <ImageOutlined fontSize="small" />
@@ -734,7 +758,6 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
                             inputProps={{ accept: "image/*" }} 
                         />
                         <Box sx={{ flexGrow: 1 }} />
-                        {/* ... (Submit button remains similar) ... */}
                         <Button 
                             variant="contained" 
                             className="comment-submit-button" 
@@ -810,5 +833,18 @@ const CommentSection = React.memo(({ postId, postAuthor }) => {
         </Box>
     );
 }); // Close React.memo wrapper
+
+// Optionally, let's add some CSS to make the editor container more clickable
+const styleTag = document.createElement('style');
+styleTag.textContent = `
+.quill-editor-container {
+    position: relative;
+    cursor: text;
+}
+.quill-editor-container .ql-container {
+    min-height: 100px;
+}
+`;
+document.head.appendChild(styleTag);
 
 export default CommentSection; 
