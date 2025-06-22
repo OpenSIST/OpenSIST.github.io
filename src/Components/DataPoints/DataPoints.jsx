@@ -1,5 +1,3 @@
-import {DataTable} from "primereact/datatable";
-import {Column} from "primereact/column";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByRecordIDs} from "../../Data/RecordData";
 import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
@@ -26,6 +24,7 @@ import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import {BoldTypography, DraggableFAB, InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import { PlainTable } from './PlainTable'
 
 export async function loader() {
     let programs = await getPrograms();
@@ -309,6 +308,36 @@ function AdvancedSearchFilter({
     );
 }
 
+/**
+ * @typedef {Object} Timeline
+ * @property {string?} Decision
+ * @property {string?} Interview
+ * @property {string?} Submit
+ */
+
+/**
+ * @typedef {Object} RecordData
+ * @property {string} ApplicantID
+ * @property {string} Detail
+ * @property {boolean} Final
+ * @property {string} ProgramID
+ * @property {number} ProgramYear
+ * @property {string} RecordID
+ * @property {string} Season
+ * @property {string} Semester
+ * @property {string} Status
+ * @property {Timeline} TimeLine
+ */
+
+/**
+ * DataGrid
+ *
+ * @param {RecordData[]} records
+ * @param {boolean} insideProgramPage
+ * @param {any} style
+ * @returns {Element}
+ * @constructor
+ */
 export function DataGrid({records, insideProgramPage, style = {}}) {
     const navigate = useNavigate();
     const theme = useTheme();
@@ -528,107 +557,6 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         setFilteredRecords(records);
     }, [records]);
 
-    const groupSubheaderTemplate = (data) => {
-        return (
-            <InlineTypography component='span' sx={{gap: '0.5rem'}}>
-                <BoldTypography sx={{fontSize: 'clamp(14px, 1.5vw, 16px)'}}>{data.ProgramID}</BoldTypography>
-                <Tooltip title="添加申请记录" arrow>
-                    <ControlPointIcon fontSize='0.5rem' onClick={() => navigate(`/profile/new-record`, {
-                        state: {
-                            programID: data.ProgramID,
-                            from: window.location.pathname
-                        }
-                    })} sx={{
-                        cursor: 'pointer',
-                        "&:hover": {color: (theme) => theme.palette.mode === "dark" ? "#a1a1a1" : "#6b6b6b"}
-                    }}/>
-                </Tooltip>
-            </InlineTypography>
-        );
-    };
-
-    const statusBodyTemplate = (rowData) => {
-        return <Chip
-            label={rowData.Status}
-            color={RecordStatusPalette[rowData.Status]}
-            sx={{
-                height: {xs: '1.4rem', sm: '1.6rem'},
-                width: {xs: '4rem', sm: '4.5rem'},
-                fontSize: {xs: '0.7rem', sm: '0.8rem'},
-                '& .MuiChip-label': {
-                    padding: {xs: '0 4px', sm: '0 6px'}
-                }
-            }}
-        />
-    };
-
-    const finalBodyTemplate = (rowData) => {
-        return <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            {rowData.Final ? <Check color='success' fontSize='small'/> : null}
-        </div>
-    };
-
-    const semesterBodyTemplate = (rowData) => {
-        return <Chip
-            label={`${rowData.ProgramYear}${rowData.Semester}`}
-            color={SemesterPalette[rowData.Semester]}
-            sx={{
-                height: {xs: '1.4rem', sm: '1.6rem'},
-                width: {xs: '5rem', sm: '6rem'},
-                fontSize: {xs: '0.7rem', sm: '0.8rem'},
-                '& .MuiChip-label': {
-                    padding: {xs: '0 4px', sm: '0 6px'}
-                }
-            }}
-        />
-    };
-
-    const timelineBodyTemplate = (rowData, columnBodyOption) => {
-        const field = columnBodyOption.field;
-        const timelineKey = field.split('.')[1];
-        return <div style={{fontSize: 'clamp(11px, 1.5vw, 14px)'}}>
-            {rowData.TimeLine[timelineKey]?.split('T')[0]}
-        </div>
-    };
-
-    const applicantBodyTemplate = (rowData) => {
-        return (
-            <Tooltip title='查看申请人信息' arrow>
-                <Chip
-                    label={rowData.ApplicantID}
-                    sx={{
-                        maxWidth: {xs: "6rem", sm: "8rem"},
-                        height: {xs: '1.4rem', sm: '1.6rem'},
-                        fontSize: {xs: '0.7rem', sm: '0.8rem'},
-                        '& .MuiChip-label': {
-                            padding: {xs: '0 6px', sm: '0 8px'}
-                        }
-                    }}
-                    onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}
-                />
-            </Tooltip>
-        )
-    };
-
-    const programBodyTemplate = (rowData) => {
-        return (
-            <Tooltip title='查看项目描述' arrow>
-                <Chip
-                    label={rowData.ProgramID}
-                    sx={{
-                        maxWidth: {xs: "7rem", sm: "9rem"},
-                        height: {xs: '1.4rem', sm: '1.6rem'},
-                        fontSize: {xs: '0.7rem', sm: '0.8rem'},
-                        '& .MuiChip-label': {
-                            padding: {xs: '0 6px', sm: '0 8px'}
-                        }
-                    }}
-                    onClick={() => navigate(`/datapoints/program/${encodeURIComponent(rowData.ProgramID)}`)}
-                />
-            </Tooltip>
-        )
-    };
-
     return (
         <div className="data-grid-container">
             <AdvancedSearchFilter
@@ -664,96 +592,9 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                         }}
                     >
-                        <DataTable
-                            value={filteredRecords}
-                            dataKey="RecordID"
-                            rowGroupMode={insideProgramPage ? null : "subheader"}
-                            groupRowsBy="ProgramID"
-                            sortMode="multiple"
-                            multiSortMeta={[{field: 'ProgramID', order: 0}, {field: 'Season', order: -1}]}
-                            size="small"
-                            scrollable
-                            scrollHeight={insideProgramPage ? undefined : windowWidth <= 768 ? "calc(100vh - 220px)" : "calc(100vh - 280px)"}
-                            virtualScrollerOptions={{
-                                itemSize: windowWidth <= 768 ? 45 : 50,
-                                delay: 5,
-                            }}
-                            rowGroupHeaderTemplate={groupSubheaderTemplate}
-                            rowHover
-                            emptyMessage={insideProgramPage ? "该项目暂无申请记录" : "未找到任何匹配内容"}
-                            className="DataTableStyle"
-                            style={{
-                                ...style, 
-                                fontSize: windowWidth <= 768 ? 'clamp(12px, 1.5vw, 14px)' : 'clamp(14px, 1.5vw, 16px)', 
-                                width: '100%'
-                            }}
-                        >
-                            <Column
-                                field='ApplicantID'
-                                header='申请人'
-                                body={applicantBodyTemplate}
-                                className="ApplicantIDColumn"
-                                style={{minWidth: '8rem', maxWidth: '8rem'}}
-                            />
-                            {insideProgramPage ? null : <Column
-                                field='ProgramID'
-                                header='申请项目'
-                                body={programBodyTemplate}
-                                className="ProgramIDColumn"
-                                style={{minWidth: '10rem', maxWidth: '10rem'}}
-                            />}
-                            <Column
-                                field='Status'
-                                header='申请结果'
-                                body={statusBodyTemplate}
-                                className="StatusColumn"
-                                style={{minWidth: '4rem', maxWidth: '6rem'}}
-                            />
-                            <Column
-                                field='Final'
-                                header='最终去向'
-                                body={finalBodyTemplate}
-                                dataType="boolean"
-                                className="FinalColumn"
-                                style={{minWidth: '5rem', maxWidth: '8rem'}}
-                            />
-                            <Column
-                                field='Season'
-                                header='申请季'
-                                body={semesterBodyTemplate}
-                                className="SeasonColumn"
-                                style={{minWidth: '5rem', maxWidth: '8rem'}}
-                            />
-                            <Column
-                                field='TimeLine.Decision'
-                                header='结果时间'
-                                body={timelineBodyTemplate}
-                                style={{minWidth: '6rem', maxWidth: '8rem'}}
-                            />
-                            <Column
-                                field='TimeLine.Interview'
-                                header='面试时间'
-                                body={timelineBodyTemplate}
-                                style={{minWidth: '6rem', maxWidth: '8rem'}}
-                            />
-                            <Column
-                                field='TimeLine.Submit'
-                                header='申请时间'
-                                body={timelineBodyTemplate}
-                                style={{minWidth: '6rem', maxWidth: '8rem'}}
-                            />
-                            <Column
-                                field='Detail'
-                                header='备注、补充说明等'
-                                bodyStyle={{
-                                    fontSize: 'clamp(11px, 1.5vw, 14px)',
-                                    whiteSpace: 'nowrap',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    maxWidth: '20rem'
-                                }}
-                            />
-                        </DataTable>
+                        <div style={{ height: '75vh' }}>
+                            <PlainTable records={filteredRecords} />
+                        </div>
                     </Paper>
                 )}
             </ThemeSwitcherProvider>
