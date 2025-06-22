@@ -86,8 +86,6 @@ function StickyRow({record, width, style}) {
         textAlign: 'start',
         width: `${width}px`,
         verticalAlign: 'middle',
-        marginTop: '5px',
-        marginBottom: '5px',
         position: 'sticky',
         top: '40px',
         zIndex: 10,
@@ -237,7 +235,12 @@ function Row({record}) {
 
   /** @param {RecordData} rowData */
   const detailTemplate = (rowData) => (
-    <div style={{fontSize: '14px'}}>
+    <div style={{
+      fontSize: '14px',
+      // 用于解决detail备注过长也不会自动换行的问题
+      // 写成inline style是为了防止被TableLight.css,TableDark.css里的 whiteSpace: nowrap 覆盖.
+      whiteSpace: 'normal'
+    }}>
       {rowData.Detail}
     </div>
   )
