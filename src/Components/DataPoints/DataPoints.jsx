@@ -364,6 +364,10 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     const [filteredRecords, setFilteredRecords] = useState(records);
     const [isSearching, setIsSearching] = useState(false);
 
+    // 按照申请季排序之后的records
+    // 排序方式: 申请学期年份越大越靠前, 相同年份Fall比Spring靠前
+    const [sortedFilteredRecords, setSortedFilteredRecords] = useState(records);
+
     // 创建索引用于快速搜索 - 这是一种优化技术
     const searchIndexes = useRef({
         applicantIndex: new Map(),
@@ -552,10 +556,60 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         }, 0);
     }, [records, handleFilterChange]);
 
+    /**
+     * 将records按照申请季排序. 年份越大越靠前, 相同年份Fall比Spring靠前
+     *
+     * @param {RecordData[]} records The input RecordData list
+     * @return {RecordData[]} RecordData list sorted by Semester
+     */
+    function sortRecords(records) {
+        // Sort records by program (already sorted) and then by semester (newer semesters appears first)
+
+        /** @var {RecordData[]} newRecords */
+        let newRecords = []
+        /** @var {RecordData[]} currentProgramRecords */
+        let currentProgramRecords = []
+        let currentProgramID = '';
+
+        const semesterNum = (semester) => {
+            switch (semester) {
+                case "Fall": {return 2}
+                case "Spring": {return 1}
+                default: {return 0}
+            }
+        }
+
+        records.forEach((r) => {
+            if (currentProgramID !== r.ProgramID) {
+                currentProgramRecords.sort((a, b) => (
+                    a.ProgramYear === b.ProgramYear ?
+                        semesterNum(b.Semester) - semesterNum(a.Semester) :
+                        b.ProgramYear - a.ProgramYear
+                ));
+                currentProgramRecords.forEach((r) => newRecords.push(r))
+                currentProgramRecords = []
+                currentProgramID = r.ProgramID
+            }
+            currentProgramRecords.push(r)
+        })
+        currentProgramRecords.sort((a, b) => (
+            a.ProgramYear === b.ProgramYear ?
+                semesterNum(b.Semester) - semesterNum(a.Semester) :
+                b.ProgramYear - a.ProgramYear
+        ));
+        currentProgramRecords.forEach((r) => newRecords.push(r))
+
+        return newRecords;
+    }
+
     // 组件加载时初始化过滤数据
     useEffect(() => {
         setFilteredRecords(records);
     }, [records]);
+
+    useEffect(() => {
+        setSortedFilteredRecords(sortRecords(filteredRecords));
+    }, [filteredRecords, records])
 
     return (
         <div className="data-grid-container">
@@ -594,7 +648,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                         }}
                     >
                         <div style={{ height: insideProgramPage? '35vh': 'calc(100vh - 180px)' }}>
-                            <PlainTable records={filteredRecords} insideProgramPage={insideProgramPage} />
+                            <PlainTable records={sortedFilteredRecords} insideProgramPage={insideProgramPage} />
                         </div>
                     </Paper>
                 )}

@@ -57,17 +57,17 @@ function TopStickyRow({width, style}) {
         {/* 申请结果 */}
         <Cell item={"申请结果"} minWidth={'8rem'}/>
         {/* 最终去向 */}
-        <Cell item={"最终去向"} minWidth={'8rem'}/>
+        <Cell item={"最终去向"} minWidth={'5rem'}/>
         {/* 学期 */}
         <Cell item={"申请季"} minWidth={'8rem'}/>
         {/*/!* 结果通知时间 *!/*/}
-        <Cell item={"结果时间"} minWidth={'8rem'}/>
+        <Cell item={"结果时间"} minWidth={'6rem'}/>
         {/*/!* 面试时间 *!/*/}
-        <Cell item={"面试时间"} minWidth={'8rem'}/>
+        <Cell item={"面试时间"} minWidth={'6rem'}/>
         {/*/!* 申请提交时间 *!/*/}
-        <Cell item={"申请时间"} minWidth={'8rem'}/>
+        <Cell item={"申请时间"} minWidth={'6rem'}/>
         {/*/!* 备注 *!/*/}
-        <Cell item={"备注、补充说明等"} minWidth={'15rem'} style={{width: '15rem'}}/>
+        <Cell item={"备注、补充说明等"} minWidth={'15rem'}/>
       </div>
   );
 }
@@ -257,17 +257,17 @@ function Row({record}) {
       {/* 申请结果 */}
       <Cell item={statusBodyTemplate(record)} minWidth={'8rem'}/>
       {/* 最终去向 */}
-      <Cell item={finalBodyTemplate(record)} minWidth={'8rem'}/>
+      <Cell item={finalBodyTemplate(record)} minWidth={'5rem'}/>
       {/* 学期 */}
       <Cell item={semesterBodyTemplate(record)} minWidth={'8rem'}/>
       {/* 结果通知时间 */}
-      <Cell item={timelineBodyTemplate(record, 'Decision')} minWidth={'8rem'}/>
+      <Cell item={timelineBodyTemplate(record, 'Decision')} minWidth={'6rem'}/>
       {/* 面试时间 */}
-      <Cell item={timelineBodyTemplate(record, 'Interview')} minWidth={'8rem'}/>
+      <Cell item={timelineBodyTemplate(record, 'Interview')} minWidth={'6rem'}/>
       {/* 申请提交时间 */}
-      <Cell item={timelineBodyTemplate(record, 'Submit')} minWidth={'8rem'}/>
+      <Cell item={timelineBodyTemplate(record, 'Submit')} minWidth={'6rem'}/>
       {/* 备注 */}
-      <Cell item={detailTemplate(record)} minWidth={'23rem'} style={{width:'23rem'}}/>
+      <Cell item={detailTemplate(record)} minWidth={'15rem'}/>
     </div>
   );
 }
