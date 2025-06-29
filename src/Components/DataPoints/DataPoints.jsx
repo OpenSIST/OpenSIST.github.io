@@ -593,7 +593,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                         }}
                     >
-                        <div style={{ height: insideProgramPage? '35vh': '75vh' }}>
+                        <div style={{ height: insideProgramPage? '35vh': 'calc(100vh - 180px)' }}>
                             <PlainTable records={filteredRecords} insideProgramPage={insideProgramPage} />
                         </div>
                     </Paper>

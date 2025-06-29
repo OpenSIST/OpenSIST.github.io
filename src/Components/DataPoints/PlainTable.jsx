@@ -89,12 +89,13 @@ function StickyRow({record, width, style}) {
         verticalAlign: 'middle',
         position: 'sticky',
         top: '40px',
+        paddingTop: '10px',
         zIndex: 10,
         height: '40px',
         ...style,
       }}
     >
-      <div style={{verticalAlign: 'middle'}}>
+      <div style={{verticalAlign: 'middle', paddingLeft: '10px'}}>
         <InlineTypography component='span' sx={{gap: '0.5rem'}}>
           <BoldTypography sx={{fontSize: 'clamp(14px, 1.5vw, 16px)'}}>{record.ProgramID}</BoldTypography>
           <Tooltip title="添加申请记录" arrow>
@@ -128,7 +129,8 @@ function Cell({item, minWidth, style}) {
         minWidth: minWidth,
         verticalAlign: 'middle',
         marginTop: '5px',
-        marginBottom: '5px',
+        marginBottom: '6px',
+        paddingLeft: '10px',
         ...style,
       }}
     >
@@ -297,7 +299,7 @@ export function PlainTable({records, insideProgramPage}) {
 
   return (
       <>
-        <div style={{height: '97%', overflowY: 'scroll'}}>
+        <div style={{height: '100%', overflowY: 'scroll'}}>
           {resultJsx}
         </div>
       </>

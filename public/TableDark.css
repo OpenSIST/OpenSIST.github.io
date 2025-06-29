@@ -1082,6 +1082,7 @@
         overflow: hidden;
         display: flex;
         align-items: center;
+        border-bottom: 1px solid #2a2a2a;
     }
 
     .p-dropdown-item-group {
@@ -9421,6 +9422,7 @@
 
 .p-rowgroup-header {
     background-color: #3b3b3b;
+    border-bottom: 1px solid #2a2a2a;
 }
 
 .p-datatable-thead > tr > th {
@@ -9428,9 +9430,9 @@
 }
 
 .p-datatable-header {
-    background-color: #313131;
+    background-color: #2b2b2b;
 }
 
 .p-dropdown-item:hover {
-    background-color: #3d3d3d;
+    background-color: #2f3033;
 }
