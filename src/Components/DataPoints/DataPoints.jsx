@@ -588,12 +588,13 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                         elevation={0}
                         sx={{
                             borderRadius: '12px',
-                            overflow: 'hidden',
+                            overflow: 'scroll',
+                            maxWidth: '100%',
                             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                         }}
                     >
                         <div style={{ height: insideProgramPage? '35vh': '75vh' }}>
-                            <PlainTable records={filteredRecords} />
+                            <PlainTable records={filteredRecords} insideProgramPage={insideProgramPage} />
                         </div>
                     </Paper>
                 )}

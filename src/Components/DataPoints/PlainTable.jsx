@@ -30,7 +30,7 @@ import ControlPointIcon from "@mui/icons-material/ControlPoint";
 
 /**
  * 最上面的顶栏, 相当于原来的thead
- * @param {{ width: number, style: any }} props
+ * @param {{ width: string, style: any }} props
  * @returns {JSX.Element}
  */
 function TopStickyRow({width, style}) {
@@ -40,7 +40,7 @@ function TopStickyRow({width, style}) {
           style={{
             display: 'inline-block',
             textAlign: 'start',
-            width: `${width}px`,
+            minWidth: width,
             verticalAlign: 'middle',
             position: 'sticky',
             top: '0px',
@@ -50,30 +50,31 @@ function TopStickyRow({width, style}) {
             ...style,
           }}
       >
-        <Cell item={"申请项目"} width={180}/>
         {/* 申请人 */}
-        <Cell item={"申请人"} width={200}/>
+        <Cell item={"申请人"} minWidth={'10rem'}/>
+        {/* 申请项目 */}
+        <Cell item={"申请项目"} minWidth={'10rem'}/>
         {/* 申请结果 */}
-        <Cell item={"申请结果"} width={100}/>
+        <Cell item={"申请结果"} minWidth={'8rem'}/>
         {/* 最终去向 */}
-        <Cell item={"最终去向"} width={100}/>
+        <Cell item={"最终去向"} minWidth={'8rem'}/>
         {/* 学期 */}
-        <Cell item={"申请季"} width={120}/>
+        <Cell item={"申请季"} minWidth={'8rem'}/>
         {/*/!* 结果通知时间 *!/*/}
-        <Cell item={"结果时间"} width={105}/>
+        <Cell item={"结果时间"} minWidth={'8rem'}/>
         {/*/!* 面试时间 *!/*/}
-        <Cell item={"面试时间"} width={105}/>
+        <Cell item={"面试时间"} minWidth={'8rem'}/>
         {/*/!* 申请提交时间 *!/*/}
-        <Cell item={"申请时间"} width={105}/>
+        <Cell item={"申请时间"} minWidth={'8rem'}/>
         {/*/!* 备注 *!/*/}
-        <Cell item={"备注、补充说明等"} width={300}/>
+        <Cell item={"备注、补充说明等"} minWidth={'15rem'} style={{width: '15rem'}}/>
       </div>
   );
 }
 
 /**
  * 相当于原来的Row Group Header, 只有项目名称和添加记录的加号按钮
- * @param {{ record: RecordData, width: number, style: any }} props
+ * @param {{ record: RecordData, width: string, style: any }} props
  * @returns {JSX.Element}
  */
 function StickyRow({record, width, style}) {
@@ -84,7 +85,7 @@ function StickyRow({record, width, style}) {
       style={{
         display: 'inline-block',
         textAlign: 'start',
-        width: `${width}px`,
+        minWidth: width,
         verticalAlign: 'middle',
         position: 'sticky',
         top: '40px',
@@ -115,16 +116,16 @@ function StickyRow({record, width, style}) {
 
 /**
  * 普通的一条Cell, 一条Row由多个Cell组成
- * @param {{ item: JSX.Element, width: number, style: any }} props
+ * @param {{ item: JSX.Element | string, minWidth: string, style: any }} props
  * @returns {JSX.Element}
  */
-function Cell({item, width, style}) {
+function Cell({item, minWidth, style}) {
   return (
     <div
       style={{
         display: 'inline-block',
         textAlign: 'start',
-        width: `${width}px`,
+        minWidth: minWidth,
         verticalAlign: 'middle',
         marginTop: '5px',
         marginBottom: '5px',
@@ -246,25 +247,25 @@ function Row({record}) {
   )
 
   return (
-    <div className="p-dropdown-item" style={{width: '1315px'}}>
-      {/* 项目 */}
-      <Cell item={programBodyTemplate(record)} width={180}/>
+    <div className="p-dropdown-item" style={{minWidth: '97rem'}}>
       {/* 申请人 */}
-      <Cell item={applicantBodyTemplate(record)} width={200}/>
+      <Cell item={applicantBodyTemplate(record)} minWidth={'10rem'}/>
+      {/* 项目 */}
+      <Cell item={programBodyTemplate(record)} minWidth={'10rem'}/>
       {/* 申请结果 */}
-      <Cell item={statusBodyTemplate(record)} width={100}/>
+      <Cell item={statusBodyTemplate(record)} minWidth={'8rem'}/>
       {/* 最终去向 */}
-      <Cell item={finalBodyTemplate(record)} width={100}/>
+      <Cell item={finalBodyTemplate(record)} minWidth={'8rem'}/>
       {/* 学期 */}
-      <Cell item={semesterBodyTemplate(record)} width={120}/>
+      <Cell item={semesterBodyTemplate(record)} minWidth={'8rem'}/>
       {/* 结果通知时间 */}
-      <Cell item={timelineBodyTemplate(record, 'Decision')} width={105}/>
+      <Cell item={timelineBodyTemplate(record, 'Decision')} minWidth={'8rem'}/>
       {/* 面试时间 */}
-      <Cell item={timelineBodyTemplate(record, 'Interview')} width={105}/>
+      <Cell item={timelineBodyTemplate(record, 'Interview')} minWidth={'8rem'}/>
       {/* 申请提交时间 */}
-      <Cell item={timelineBodyTemplate(record, 'Submit')} width={105}/>
+      <Cell item={timelineBodyTemplate(record, 'Submit')} minWidth={'8rem'}/>
       {/* 备注 */}
-      <Cell item={detailTemplate(record)} width={300}/>
+      <Cell item={detailTemplate(record)} minWidth={'23rem'} style={{width:'23rem'}}/>
     </div>
   );
 }
@@ -273,21 +274,21 @@ function Row({record}) {
  * A scrollable table that groups records by ProgramID.
  * Inserts a StickyCell header each time the ProgramID changes.
  *
- * @param {{ records: RecordData[] }} props
+ * @param {{ records: RecordData[], insideProgramPage: boolean }} props
  * @returns {JSX.Element}
  */
-export function PlainTable({records}) {
+export function PlainTable({records, insideProgramPage}) {
   const resultJsx = [
-    <TopStickyRow key="header-topbar" width={1315} />
+    <TopStickyRow key="header-topbar" width={'97rem'} />
   ];
   let currentProgramID = '';
 
   records.forEach((r) => {
     // If a different program name is detected, create a new group header
-    if (currentProgramID !== r.ProgramID) {
+    if (!insideProgramPage && currentProgramID !== r.ProgramID) {
       currentProgramID = r.ProgramID;
       resultJsx.push(
-          <StickyRow key={`header-${r.ProgramID}`} record={r} width={1315}/>
+          <StickyRow key={`header-${r.ProgramID}`} record={r} width={'97rem'}/>
       );
     }
     // A row for this record
