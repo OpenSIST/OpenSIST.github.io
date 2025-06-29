@@ -236,10 +236,11 @@ const router = createBrowserRouter([
                     }, {
                         path: '/about-us',
                         element: <AboutUs/>,
-                    }, {
-                        path: '/how-to-use',
-                        element: <HowToUse/>,
-                    }
+                    },
+                    // {
+                    //     path: '/how-to-use',
+                    //     element: <HowToUse/>,
+                    // }
                 ]
             }
         ]
