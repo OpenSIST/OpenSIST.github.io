@@ -45,12 +45,16 @@ import {grey} from "@mui/material/colors";
 import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
 import {HomeRounded, LinkedIn, Link as LinkIcon, Mail} from "@mui/icons-material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {getPostContent} from "../../../Data/PostData";
 import {BoldTypography} from "../../common";
+import {getFileContent} from "../../../Data/FileData";
 
 const contactIcons = {
-    "QQ": <FontAwesomeIcon icon={faQq} fontSize='large' width='1.5rem' height='1.5rem'/>,
-    "WeChat": <FontAwesomeIcon icon={faWeixin} fontSize='large' width='1.5rem' height='1.5rem'/>,
+    "QQ": <FontAwesomeIcon icon={faQq} fontSize='large'
+                           // width='1.5rem' height='1.5rem'
+    />,
+    "WeChat": <FontAwesomeIcon icon={faWeixin} fontSize='large'
+                               // width='1.5rem' height='1.5rem'
+    />,
     "LinkedIn": <LinkedIn/>,
     "HomePage": <HomeRounded/>,
     "OtherLink": <LinkIcon/>,
@@ -303,7 +307,7 @@ function BasicInfoBlock({avatarUrl, contact, applicant, records, editable}) {
         const file_type = postId.startsWith('CV') ? "CV" : "SoP";
         const link = document.createElement("a");
         link.download = `${applicant.ApplicantID}_${file_type}.pdf`;
-        link.href = await getPostContent(postId);
+        link.href = await getFileContent(postId);
         link.click();
     }
 

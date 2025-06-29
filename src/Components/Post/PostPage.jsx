@@ -26,6 +26,7 @@ export async function loader({request}) {
     return {posts, searchStr};
 }
 
+// TODO: Now post don't have cache system, so actually we can remove this... (also the refresh button)
 export async function action() {
     return await getPosts(true);
 }

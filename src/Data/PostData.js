@@ -19,34 +19,12 @@ export async function getPosts(isRefresh = false, query = {}) {
     return posts['posts'];
 }
 
-export async function setPosts(posts) {
-    if (!posts) {
-        return;
-    }
-    posts = {'data': posts, 'Date': Date.now()};
-    await localforage.setItem('posts', posts);
-}
-
 export async function getPost(postId, isRefresh = false) {
     const posts = await getPosts(isRefresh);
     if (!posts) {
         throw new Error('Post not found');
     }
     return posts.find((post) => post.id.toString() === postId);
-}
-
-export async function setPost(post) {
-    if (!post) {
-        return;
-    }
-    const posts = await getPosts();
-    const index = posts.findIndex((p) => p.PostID === post.PostID);
-    if (index !== -1) {
-        posts[index] = post;
-    } else {
-        posts.push(post);
-    }
-    await setPosts(posts);
 }
 
 export async function getPostContent(postId, isRefresh = false) {
@@ -65,17 +43,8 @@ export async function getPostContent(postId, isRefresh = false) {
         throw e;
     }
     const postContent = await response.json();
-    await setPostContent(postId, postContent['post']['content']);
 
     return postContent['post']['content'];
-}
-
-export async function setPostContent(postId, content) {
-    if (!content) {
-        return;
-    }
-    content = {'content': content, 'Date': Date.now()};
-    await localforage.setItem(`${postId}-Content`, content);
 }
 
 export async function getPostObject(postId, isRefresh = false) {
@@ -90,24 +59,6 @@ export async function getPostObject(postId, isRefresh = false) {
         ...post,
         content: content,
     };
-}
-
-export async function setPostObject(postObj) {
-    if (!postObj) {
-        return;
-    }
-    
-    if (postObj.content) {
-        await setPostContent(postObj.id, postObj.content);
-    }
-    
-    const posts = await getPosts(false);
-    const index = posts.findIndex(p => p.id === postObj.id);
-    
-    if (index !== -1) {
-        posts[index] = { ...posts[index], ...postObj };
-        await setPosts(posts);
-    }
 }
 
 /**
