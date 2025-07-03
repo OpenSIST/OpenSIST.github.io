@@ -32,6 +32,7 @@
     flex-wrap: wrap;
     gap: 16px;
     align-items: flex-start;
+    padding-left: 8px;
 }
 
 /* 优化每个过滤器元素的宽度和样式 */

@@ -16,7 +16,7 @@ import {
     Refresh,
     Search,
     FilterAltOff,
-    QuestionMark,
+    QuestionMark, ExpandMore, NavigateNext,
 } from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import {recordStatusList, RecordStatusPalette, SemesterPalette} from "../../Data/Schemas";
@@ -24,7 +24,7 @@ import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import {BoldTypography, DraggableFAB, InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import { PlainTable } from './PlainTable'
+import {PlainTable, TopStickyRow} from './PlainTable'
 
 export async function loader() {
     let programs = await getPrograms();
@@ -97,7 +97,9 @@ function AdvancedSearchFilter({
                                   onFilterChange,
                                   insideProgramPage,
                                   filteredCount = 0,
-                                  totalCount = 0
+                                  totalCount = 0,
+                                  filterExpanded,
+                                  setFilterExpanded,
                               }) {
     const [filters, setFilters] = useState({
         applicant: '',
@@ -166,123 +168,126 @@ function AdvancedSearchFilter({
 
     return (
         <>
-            <div className="filter-container-wrapper">
-                <div className="filter-container">
-                    <TextField
-                        label="申请人"
-                        size="small"
-                        value={filters.applicant}
-                        onChange={(e) => handleFilterChange('applicant', e.target.value)}
-                        placeholder="搜索申请人"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <Search fontSize="small"/>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
+            {/*<div className="filter-container-wrapper">*/}
+            <div className="filter-container">
 
-                    <TextField
-                        label="申请项目"
-                        size="small"
-                        value={filters.program}
-                        onChange={(e) => handleFilterChange('program', e.target.value)}
-                        placeholder="搜索项目"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <Search fontSize="small"/>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
+                {/*<input*/}
+                {/*    type='text'*/}
+                {/*    placeholder='   搜索申请人'*/}
+                {/*    value={filters.applicant}*/}
+                {/*    onChange={(e) => handleFilterChange('applicant', e.target.value)}*/}
+                {/*    style={{*/}
+                {/*        maxWidth: '6rem', height: '30px',*/}
+                {/*        marginLeft: '2rem'*/}
+                {/*    }}*/}
+                {/*/>*/}
 
-                    <Select
-                        size="small"
-                        value={filters.status}
-                        onChange={(e) => handleFilterChange('status', e.target.value)}
-                        displayEmpty
-                        renderValue={selected => {
-                            if (!selected) {
-                                return <span style={{color: 'gray'}}>申请结果</span>;
-                            }
-                            return (
-                                <Chip
-                                    label={selected}
-                                    color={RecordStatusPalette[selected]}
-                                    size="small"
-                                />
-                            );
-                        }}
-                        sx={{minWidth: '120px', flex: '0 0 auto'}}
-                    >
-                        <MenuItem value="">
-                            <em>所有结果</em>
+                {/*<input*/}
+                {/*    type='text'*/}
+                {/*    placeholder='   搜索申请项目'*/}
+                {/*    value={filters.program}*/}
+                {/*    onChange={(e) => handleFilterChange('program', e.target.value)}*/}
+                {/*    style={{*/}
+                {/*        maxWidth: '6rem', height: '30px',*/}
+                {/*        marginLeft: '2rem'*/}
+                {/*    }}*/}
+                {/*/>*/}
+
+                <TextField
+                    label="搜索申请人"
+                    size="small"
+                    value={filters.applicant}
+                    onChange={(e) => handleFilterChange('applicant', e.target.value)}
+                    sx={{maxWidth: '10rem'}}
+                />
+
+                <TextField
+                    label="搜索申请项目"
+                    size="small"
+                    value={filters.program}
+                    onChange={(e) => handleFilterChange('program', e.target.value)}
+                    sx={{maxWidth: '10rem'}}
+                />
+
+                <Select
+                    size="small"
+                    value={filters.status}
+                    onChange={(e) => handleFilterChange('status', e.target.value)}
+                    displayEmpty
+                    renderValue={selected => {
+                        if (!selected) {
+                            return <span style={{color: 'gray'}}>申请结果</span>;
+                        }
+                        return (
+                            <Chip
+                                label={selected}
+                                color={RecordStatusPalette[selected]}
+                                size="small"
+                            />
+                        );
+                    }}
+                    sx={{maxWidth: '8rem', flex: '0 0 auto'}}
+                >
+                    <MenuItem value="">
+                        <em>所有结果</em>
+                    </MenuItem>
+                    {recordStatusList.map(status => (
+                        <MenuItem key={status} value={status}>
+                            <Chip
+                                label={status}
+                                color={RecordStatusPalette[status]}
+                                size="small"
+                            />
                         </MenuItem>
-                        {recordStatusList.map(status => (
-                            <MenuItem key={status} value={status}>
-                                <Chip
-                                    label={status}
-                                    color={RecordStatusPalette[status]}
-                                    size="small"
-                                />
-                            </MenuItem>
-                        ))}
-                    </Select>
+                    ))}
+                </Select>
 
-                    <Select
-                        size="small"
-                        value={filters.final === null ? "" : filters.final ? "true" : "false"}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            handleFilterChange('final', value === "" ? null : value === "true");
-                        }}
-                        displayEmpty
-                        renderValue={selected => {
-                            if (selected === "") {
-                                return <span style={{color: 'gray'}}>最终去向</span>;
-                            }
-                            return selected === "true" ? "已确认" : "未确认";
-                        }}
-                        sx={{minWidth: '120px', flex: '0 0 auto'}}
-                    >
-                        <MenuItem value="">
-                            <em>全部</em>
-                        </MenuItem>
-                        <MenuItem value="true">是</MenuItem>
-                        <MenuItem value="false">否</MenuItem>
-                    </Select>
+                <Select
+                    size="small"
+                    value={filters.final === null ? "" : filters.final ? "true" : "false"}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        handleFilterChange('final', value === "" ? null : value === "true");
+                    }}
+                    displayEmpty
+                    renderValue={selected => {
+                        if (selected === "") {
+                            return <span style={{color: 'gray'}}>最终去向</span>;
+                        }
+                        return selected === "true" ? "已确认" : "未确认";
+                    }}
+                    sx={{minWidth: '120px', flex: '0 0 auto'}}
+                >
+                    <MenuItem value="">
+                        <em>全部</em>
+                    </MenuItem>
+                    <MenuItem value="true">是</MenuItem>
+                    <MenuItem value="false">否</MenuItem>
+                </Select>
 
-                    <TextField
-                        label="申请季"
-                        size="small"
-                        value={filters.season}
-                        onChange={(e) => handleFilterChange('season', e.target.value)}
-                        placeholder="如: 2023 Fall"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <Search fontSize="small"/>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
+                <TextField
+                    label="搜索申请季"
+                    size="small"
+                    value={filters.season}
+                    onChange={(e) => handleFilterChange('season', e.target.value)}
+                    placeholder="如: 2023 Fall"
+                    sx={{maxWidth: '5rem'}}
+                />
 
-                    <Tooltip title="重置所有过滤器">
-                        <IconButton
-                            size="small"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                resetFilters();
-                            }}
-                            color="primary"
-                        >
-                            <FilterAltOff fontSize="small"/>
-                        </IconButton>
-                    </Tooltip>
-                </div>
+                {/*<Tooltip title="重置所有过滤器">*/}
+                {/*    <IconButton*/}
+                {/*        size="small"*/}
+                {/*        onClick={(e) => {*/}
+                {/*            e.stopPropagation();*/}
+                {/*            resetFilters();*/}
+                {/*        }}*/}
+                {/*        color="primary"*/}
+                {/*    >*/}
+                {/*        <FilterAltOff fontSize="small"/>*/}
+                {/*    </IconButton>*/}
+                {/*</Tooltip>*/}
             </div>
+            {/*</div>*/}
 
             {/* 搜索结果统计指示器 */}
             {activeFiltersCount > 0 && filteredCount !== totalCount && (
@@ -342,19 +347,19 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     const navigate = useNavigate();
     const theme = useTheme();
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-    
+
     // Add event listener to track window size changes
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
         };
-        
+
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-    
+
     const themeMap = {
         light: "/TableLight.css",
         dark: "/TableDark.css"
@@ -378,6 +383,8 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
     // 创建搜索结果缓存
     const searchCache = useRef(new Map());
+
+    const [filterExpanded, setFilterExpanded] = useState(false)
 
     // 构建搜索索引以加速搜索
     useEffect(() => {
@@ -573,9 +580,15 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
         const semesterNum = (semester) => {
             switch (semester) {
-                case "Fall": {return 2}
-                case "Spring": {return 1}
-                default: {return 0}
+                case "Fall": {
+                    return 2
+                }
+                case "Spring": {
+                    return 1
+                }
+                default: {
+                    return 0
+                }
             }
         }
 
@@ -613,45 +626,42 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
     return (
         <div className="data-grid-container">
-            <AdvancedSearchFilter
-                records={records}
-                onFilterChange={handleAdvancedSearch}
-                insideProgramPage={insideProgramPage}
-                filteredCount={filteredRecords.length}
-                totalCount={records.length}
-            />
             <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap}>
-                {isSearching ? (
-                    <Paper
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            padding: '20px',
-                            bgcolor: theme.palette.mode === 'dark' ? 'rgba(30, 30, 30, 0.8)' : 'rgba(245, 245, 245, 0.9)',
-                            borderRadius: '8px',
-                            marginBottom: '16px'
-                        }}
-                    >
-                        <BoldTypography>
-                            正在搜索中...
-                        </BoldTypography>
-                    </Paper>
-                ) : (
-                    <Paper
-                        elevation={0}
-                        sx={{
-                            borderRadius: '12px',
-                            overflow: 'scroll',
-                            maxWidth: '100%',
-                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                        }}
-                    >
-                        <div style={{ height: insideProgramPage? '35vh': 'calc(100vh - 180px)' }}>
-                            <PlainTable records={sortedFilteredRecords} insideProgramPage={insideProgramPage} />
-                        </div>
-                    </Paper>
-                )}
+                <Paper
+                    elevation={0}
+                    sx={{
+                        borderRadius: '12px',
+                        overflow: 'scroll',
+                        maxWidth: '100%',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                    }}
+                >
+                    <div style={{
+                        height: insideProgramPage ? '35vh' : 'calc(100vh - 120px)',
+                        overflowX: 'scroll',
+                        overflowY: 'hidden',
+                    }}>
+                        <TopStickyRow
+                            filterElem={
+                                <AdvancedSearchFilter
+                                    records={records}
+                                    onFilterChange={handleAdvancedSearch}
+                                    insideProgramPage={insideProgramPage}
+                                    filteredCount={filteredRecords.length}
+                                    totalCount={records.length}
+                                    filterExpanded={filterExpanded}
+                                    setFilterExpanded={setFilterExpanded}
+                                />
+                            }
+                            insideProgramPage={insideProgramPage}
+                        />
+                        <PlainTable
+                            records={sortedFilteredRecords}
+                            insideProgramPage={insideProgramPage}
+                        />
+                    </div>
+                </Paper>
+                {/*)}*/}
             </ThemeSwitcherProvider>
         </div>
     )
@@ -663,7 +673,7 @@ function UsageGuidance() {
         width: window.innerWidth,
         height: window.innerHeight
     });
-    
+
     // Add event listener to track window size changes
     useEffect(() => {
         const handleResize = () => {
@@ -672,19 +682,19 @@ function UsageGuidance() {
                 height: window.innerHeight
             });
         };
-        
+
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-    
+
     // Determine if we're on mobile - check width
     const isMobile = windowSize.width <= 768;
-    
+
     // Calculate appropriate max height based on screen dimensions
     const maxHeightValue = Math.min(windowSize.height * 0.6, 500);
-    
+
     return (
         <Box
             sx={{
@@ -697,12 +707,12 @@ function UsageGuidance() {
                 zIndex: 25,
             }}
         >
-            <Paper 
-                elevation={6} 
+            <Paper
+                elevation={6}
                 sx={{
-                    borderRadius: 2, 
-                    overflow: 'hidden', 
-                    px: isMobile ? 2 : 3, 
+                    borderRadius: 2,
+                    overflow: 'hidden',
+                    px: isMobile ? 2 : 3,
                     py: 2,
                     overflowY: 'auto',
                     maxHeight: isMobile ? `${Math.min(maxHeightValue - 20, windowSize.height - 150)}px` : 'none',
@@ -714,9 +724,9 @@ function UsageGuidance() {
                         left: 0,
                         right: 0,
                         height: '40px',
-                        background: (theme) => 
-                            theme.palette.mode === 'dark' 
-                                ? 'linear-gradient(to top, rgba(18,18,18,0.8), rgba(18,18,18,0))' 
+                        background: (theme) =>
+                            theme.palette.mode === 'dark'
+                                ? 'linear-gradient(to top, rgba(18,18,18,0.8), rgba(18,18,18,0))'
                                 : 'linear-gradient(to top, rgba(255,255,255,0.8), rgba(255,255,255,0))',
                         pointerEvents: 'none',
                         zIndex: 5
@@ -724,8 +734,8 @@ function UsageGuidance() {
                 }}
             >
                 <InlineTypography sx={{
-                    display: 'flex', 
-                    alignItems: 'center', 
+                    display: 'flex',
+                    alignItems: 'center',
                     mb: 1,
                     fontSize: isMobile ? '15px' : 'inherit',
                     fontWeight: 'bold'
@@ -734,7 +744,7 @@ function UsageGuidance() {
                     请先阅读使用指南
                 </InlineTypography>
                 <ol style={{
-                    paddingLeft: isMobile ? 16 : 20, 
+                    paddingLeft: isMobile ? 16 : 20,
                     marginBottom: 0,
                     fontSize: isMobile ? '14px' : 'inherit',
                     lineHeight: isMobile ? 1.4 : 'inherit',
@@ -761,7 +771,10 @@ function UsageGuidance() {
                     </li>
                     <li>
                         <InlineTypography sx={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '3px'}}>
-                            表格会每十分钟自动从服务器获取一次最新数据，您也可以点击右下角<Refresh fontSize="small" sx={{mx: '2px', verticalAlign: 'middle'}}/>
+                            表格会每十分钟自动从服务器获取一次最新数据，您也可以点击右下角<Refresh fontSize="small" sx={{
+                            mx: '2px',
+                            verticalAlign: 'middle'
+                        }}/>
                             按钮手动获取。
                         </InlineTypography>
                     </li>
@@ -774,19 +787,19 @@ function UsageGuidance() {
 function FloatingControls() {
     const [showGuide, setShowGuide] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-    
+
     // Add event listener to track window size changes
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
         };
-        
+
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-    
+
     // Determine if we're on mobile
     const isMobile = windowWidth <= 768;
 

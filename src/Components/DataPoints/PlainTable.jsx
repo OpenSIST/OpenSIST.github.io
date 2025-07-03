@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import './DataPoints.css';
-import React from "react";
-import { Chip, Tooltip } from "@mui/material";
-import { Check } from "@mui/icons-material";
+import "./DataPoints.css";
+import React, { useState } from "react";
+import { Button, Chip, Tooltip } from "@mui/material";
+import { Check, ExpandMore } from "@mui/icons-material";
 import { RecordStatusPalette, SemesterPalette } from "../../Data/Schemas";
-import {BoldTypography, InlineTypography} from "../common";
+import { BoldTypography, InlineTypography } from "../common";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 
 /**
@@ -28,47 +28,152 @@ import ControlPointIcon from "@mui/icons-material/ControlPoint";
  * @property {Timeline} TimeLine
  */
 
+export const topStickyRowWidth = "90rem";
+export const stickyHeaderWidth = "90rem";
+export const columnWidthMap = [
+  "10rem", // applicant
+  "10rem", // program
+  "7rem", // status 申请结果
+  "7rem", // final 最终去向
+  "8rem", // season 申请季
+  "6rem", // timeline - decision
+  "6rem", // timeline - interview
+  "6rem", // timeline - submit
+  "24rem", // detail 备注
+];
+
 /**
  * 最上面的顶栏, 相当于原来的thead
- * @param {{ width: string, style: any }} props
+ * @param {{ style: any, filterElem: JSX.Element, insideProgramPage: boolean }} props
  * @returns {JSX.Element}
  */
-function TopStickyRow({width, style}) {
-  return (
-      <div
-          className="p-datatable-header"
-          style={{
-            display: 'inline-block',
-            textAlign: 'start',
-            minWidth: width,
-            verticalAlign: 'middle',
-            position: 'sticky',
-            top: '0px',
-            zIndex: 99,
-            height: '40px',
-            fontWeight: 'bolder',
-            ...style,
-          }}
+export function TopStickyRow({ style, filterElem, insideProgramPage }) {
+  const [expanded, setExpanded] = useState(false);
+
+  /**
+   *
+   * @param {string} minWidth
+   * @param {string} text
+   * @returns {JSX.Element}
+   * @constructor
+   */
+  function ExpandableButton({ minWidth, text }) {
+    return (
+      <Button
+        onClick={insideProgramPage ? () => {} : () => setExpanded(!expanded)}
+        color="default"
+        sx={{
+          minWidth: minWidth,
+          justifyContent: "flex-start",
+          paddingLeft: "0px",
+          paddingRight: "0px",
+        }}
       >
+        {insideProgramPage || (
+          <ExpandMore
+            fontSize="small"
+            style={{
+              transform: expanded ? "rotate(0deg)" : "rotate(-90deg)",
+              transition: "transform 0.5s ease",
+            }}
+          />
+        )}
+        <BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>
+          {text}
+        </BoldTypography>
+      </Button>
+    );
+  }
+
+  return (
+    <div
+      className="p-datatable-header"
+      style={{
+        display: "inline-block",
+        textAlign: "start",
+        minWidth: topStickyRowWidth,
+        verticalAlign: "middle",
+        position: "sticky",
+        top: "0px",
+        zIndex: 99,
+        height: expanded ? "100px" : "40px",
+        fontWeight: "bolder",
+        transition: "height 0.5s ease",
+        overflowY: "hidden",
+        ...style,
+      }}
+    >
+      <div>
         {/* 申请人 */}
-        <Cell item={"申请人"} minWidth={'10rem'}/>
+        <Cell
+          item={<ExpandableButton minWidth={columnWidthMap[0]} text="申请人" />}
+          minWidth={columnWidthMap[0]}
+        />
         {/* 申请项目 */}
-        <Cell item={"申请项目"} minWidth={'10rem'}/>
+        <Cell
+          item={
+            <ExpandableButton minWidth={columnWidthMap[1]} text="申请项目" />
+          }
+          minWidth={columnWidthMap[1]}
+        />
         {/* 申请结果 */}
-        <Cell item={"申请结果"} minWidth={'8rem'}/>
+        <Cell
+          item={
+            <ExpandableButton minWidth={columnWidthMap[2]} text="申请结果" />
+          }
+          minWidth={columnWidthMap[2]}
+        />
         {/* 最终去向 */}
-        <Cell item={"最终去向"} minWidth={'5rem'}/>
+        <Cell
+          item={
+            <ExpandableButton minWidth={columnWidthMap[3]} text="最终去向" />
+          }
+          minWidth={columnWidthMap[3]}
+        />
         {/* 学期 */}
-        <Cell item={"申请季"} minWidth={'8rem'}/>
+        <Cell
+          item={<ExpandableButton minWidth={columnWidthMap[4]} text="申请季" />}
+          minWidth={columnWidthMap[4]}
+        />
         {/*/!* 结果通知时间 *!/*/}
-        <Cell item={"结果时间"} minWidth={'6rem'}/>
+        <Cell
+          item={
+            <BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>
+              结果时间
+            </BoldTypography>
+          }
+          minWidth={columnWidthMap[5]}
+        />
         {/*/!* 面试时间 *!/*/}
-        <Cell item={"面试时间"} minWidth={'6rem'}/>
+        <Cell
+          item={
+            <BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>
+              面试时间
+            </BoldTypography>
+          }
+          minWidth={columnWidthMap[6]}
+        />
         {/*/!* 申请提交时间 *!/*/}
-        <Cell item={"申请时间"} minWidth={'6rem'}/>
+        <Cell
+          item={
+            <BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>
+              申请时间
+            </BoldTypography>
+          }
+          minWidth={columnWidthMap[7]}
+        />
         {/*/!* 备注 *!/*/}
-        <Cell item={"备注、补充说明等"} minWidth={'15rem'}/>
+        <Cell
+          item={
+            <BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>
+              备注、补充说明等
+            </BoldTypography>
+          }
+          minWidth={columnWidthMap[8]}
+        />
       </div>
+      {filterElem}
+    </div>
   );
 }
 
@@ -77,37 +182,48 @@ function TopStickyRow({width, style}) {
  * @param {{ record: RecordData, width: string, style: any }} props
  * @returns {JSX.Element}
  */
-function StickyRow({record, width, style}) {
+function StickyRow({ record, width, style }) {
   const navigate = useNavigate();
   return (
     <div
       className="p-rowgroup-header"
       style={{
-        display: 'inline-block',
-        textAlign: 'start',
+        display: "inline-block",
+        textAlign: "start",
         minWidth: width,
-        verticalAlign: 'middle',
-        position: 'sticky',
-        top: '40px',
-        paddingTop: '10px',
+        verticalAlign: "middle",
+        position: "sticky",
+        top: "0px",
+        paddingTop: "10px",
         zIndex: 10,
-        height: '40px',
+        height: "40px",
         ...style,
       }}
     >
-      <div style={{verticalAlign: 'middle', paddingLeft: '10px'}}>
-        <InlineTypography component='span' sx={{gap: '0.5rem'}}>
-          <BoldTypography sx={{fontSize: 'clamp(14px, 1.5vw, 16px)'}}>{record.ProgramID}</BoldTypography>
+      <div style={{ verticalAlign: "middle", paddingLeft: "10px" }}>
+        <InlineTypography component="span" sx={{ gap: "0.5rem" }}>
+          <BoldTypography sx={{ fontSize: "clamp(14px, 1.5vw, 16px)" }}>
+            {record.ProgramID}
+          </BoldTypography>
           <Tooltip title="添加申请记录" arrow>
-            <ControlPointIcon fontSize='0.5rem' onClick={() => navigate(`/profile/new-record`, {
-              state: {
-                programID: record.ProgramID,
-                from: window.location.pathname
+            <ControlPointIcon
+              fontSize="0.5rem"
+              onClick={() =>
+                navigate(`/profile/new-record`, {
+                  state: {
+                    programID: record.ProgramID,
+                    from: window.location.pathname,
+                  },
+                })
               }
-            })} sx={{
-              cursor: 'pointer',
-              "&:hover": {color: (theme) => theme.palette.mode === "dark" ? "#a1a1a1" : "#6b6b6b"}
-            }}/>
+              sx={{
+                cursor: "pointer",
+                "&:hover": {
+                  color: (theme) =>
+                    theme.palette.mode === "dark" ? "#a1a1a1" : "#6b6b6b",
+                },
+              }}
+            />
           </Tooltip>
         </InlineTypography>
       </div>
@@ -120,17 +236,17 @@ function StickyRow({record, width, style}) {
  * @param {{ item: JSX.Element | string, minWidth: string, style: any }} props
  * @returns {JSX.Element}
  */
-function Cell({item, minWidth, style}) {
+function Cell({ item, minWidth, style }) {
   return (
     <div
       style={{
-        display: 'inline-block',
-        textAlign: 'start',
+        display: "inline-block",
+        textAlign: "start",
         minWidth: minWidth,
-        verticalAlign: 'middle',
-        marginTop: '5px',
-        marginBottom: '6px',
-        paddingLeft: '10px',
+        verticalAlign: "middle",
+        marginTop: "5px",
+        marginBottom: "6px",
+        paddingLeft: "10px",
         ...style,
       }}
     >
@@ -144,46 +260,58 @@ function Cell({item, minWidth, style}) {
  * @param {{ record: RecordData }} props
  * @returns {JSX.Element}
  */
-function Row({record}) {
+function Row({ record }) {
   const navigate = useNavigate();
 
   /** @param {RecordData} rowData */
   const statusBodyTemplate = (rowData) => {
-    return <Chip
+    return (
+      <Chip
         label={rowData.Status}
         color={RecordStatusPalette[rowData.Status]}
         sx={{
-          height: {xs: '1.4rem', sm: '1.6rem'},
-          width: {xs: '4rem', sm: '4.5rem'},
-          fontSize: {xs: '0.7rem', sm: '0.8rem'},
-          '& .MuiChip-label': {
-            padding: {xs: '0 4px', sm: '0 6px'}
-          }
+          height: { xs: "1.4rem", sm: "1.6rem" },
+          width: { xs: "4rem", sm: "4.5rem" },
+          fontSize: { xs: "0.7rem", sm: "0.8rem" },
+          "& .MuiChip-label": {
+            padding: { xs: "0 4px", sm: "0 6px" },
+          },
         }}
-    />
+      />
+    );
   };
 
   /** @param {RecordData} rowData */
   const finalBodyTemplate = (rowData) => {
-    return <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-      {rowData.Final ? <Check color='success' fontSize='small'/> : null}
-    </div>
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {rowData.Final ? <Check color="success" fontSize="small" /> : null}
+      </div>
+    );
   };
 
   /** @param {RecordData} rowData */
   const semesterBodyTemplate = (rowData) => {
-    return <Chip
+    return (
+      <Chip
         label={`${rowData.ProgramYear}${rowData.Semester}`}
         color={SemesterPalette[rowData.Semester]}
         sx={{
-          height: {xs: '1.4rem', sm: '1.6rem'},
-          width: {xs: '5rem', sm: '6rem'},
-          fontSize: {xs: '0.7rem', sm: '0.8rem'},
-          '& .MuiChip-label': {
-            padding: {xs: '0 4px', sm: '0 6px'}
-          }
+          height: { xs: "1.4rem", sm: "1.6rem" },
+          width: { xs: "5rem", sm: "6rem" },
+          fontSize: { xs: "0.7rem", sm: "0.8rem" },
+          "& .MuiChip-label": {
+            padding: { xs: "0 4px", sm: "0 6px" },
+          },
         }}
-    />
+      />
+    );
   };
 
   /**
@@ -191,83 +319,106 @@ function Row({record}) {
    * @param {string} timelineKey
    */
   const timelineBodyTemplate = (rowData, timelineKey) => {
-    return <div style={{fontSize: 'clamp(11px, 1.5vw, 14px)'}}>
-      {rowData.TimeLine[timelineKey]?.split('T')[0]}
-    </div>
+    return (
+      <div style={{ fontSize: "clamp(11px, 1.5vw, 14px)" }}>
+        {rowData.TimeLine[timelineKey]?.split("T")[0]}
+      </div>
+    );
   };
 
   /** @param {RecordData} rowData */
   const applicantBodyTemplate = (rowData) => {
     return (
-        <Tooltip title='查看申请人信息' arrow>
-          <Chip
-              label={rowData.ApplicantID}
-              sx={{
-                maxWidth: {xs: "6rem", sm: "8rem"},
-                height: {xs: '1.4rem', sm: '1.6rem'},
-                fontSize: {xs: '0.7rem', sm: '0.8rem'},
-                '& .MuiChip-label': {
-                  padding: {xs: '0 6px', sm: '0 8px'}
-                }
-              }}
-              onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}
-          />
-        </Tooltip>
-    )
+      <Tooltip title="查看申请人信息" arrow>
+        <Chip
+          label={rowData.ApplicantID}
+          sx={{
+            maxWidth: { xs: "6rem", sm: "8rem" },
+            height: { xs: "1.4rem", sm: "1.6rem" },
+            fontSize: { xs: "0.7rem", sm: "0.8rem" },
+            "& .MuiChip-label": {
+              padding: { xs: "0 6px", sm: "0 8px" },
+            },
+          }}
+          onClick={() =>
+            navigate(`/datapoints/applicant/${rowData.ApplicantID}`)
+          }
+        />
+      </Tooltip>
+    );
   };
 
   /** @param {RecordData} rowData */
   const programBodyTemplate = (rowData) => {
     return (
-        <Tooltip title='查看项目描述' arrow>
-          <Chip
-              label={rowData.ProgramID}
-              sx={{
-                maxWidth: {xs: "7rem", sm: "9rem"},
-                height: {xs: '1.4rem', sm: '1.6rem'},
-                fontSize: {xs: '0.7rem', sm: '0.8rem'},
-                '& .MuiChip-label': {
-                  padding: {xs: '0 6px', sm: '0 8px'}
-                }
-              }}
-              onClick={() => navigate(`/datapoints/program/${encodeURIComponent(rowData.ProgramID)}`)}
-          />
-        </Tooltip>
-    )
+      <Tooltip title="查看项目描述" arrow>
+        <Chip
+          label={rowData.ProgramID}
+          sx={{
+            maxWidth: { xs: "7rem", sm: "9rem" },
+            height: { xs: "1.4rem", sm: "1.6rem" },
+            fontSize: { xs: "0.7rem", sm: "0.8rem" },
+            "& .MuiChip-label": {
+              padding: { xs: "0 6px", sm: "0 8px" },
+            },
+          }}
+          onClick={() =>
+            navigate(
+              `/datapoints/program/${encodeURIComponent(rowData.ProgramID)}`
+            )
+          }
+        />
+      </Tooltip>
+    );
   };
 
   /** @param {RecordData} rowData */
   const detailTemplate = (rowData) => (
-    <div style={{
-      fontSize: '14px',
-      // 用于解决detail备注过长也不会自动换行的问题
-      // 写成inline style是为了防止被TableLight.css,TableDark.css里的 whiteSpace: nowrap 覆盖.
-      whiteSpace: 'normal'
-    }}>
+    <div
+      style={{
+        fontSize: "14px",
+        // 用于解决detail备注过长也不会自动换行的问题
+        // 写成inline style是为了防止被TableLight.css,TableDark.css里的 whiteSpace: nowrap 覆盖.
+        whiteSpace: "normal",
+      }}
+    >
       {rowData.Detail}
     </div>
-  )
+  );
 
   return (
-    <div className="p-dropdown-item" style={{minWidth: '97rem'}}>
+    <div className="p-dropdown-item" style={{ minWidth: stickyHeaderWidth }}>
       {/* 申请人 */}
-      <Cell item={applicantBodyTemplate(record)} minWidth={'10rem'}/>
+      <Cell item={applicantBodyTemplate(record)} minWidth={columnWidthMap[0]} />
       {/* 项目 */}
-      <Cell item={programBodyTemplate(record)} minWidth={'10rem'}/>
+      <Cell item={programBodyTemplate(record)} minWidth={columnWidthMap[1]} />
       {/* 申请结果 */}
-      <Cell item={statusBodyTemplate(record)} minWidth={'8rem'}/>
+      <Cell item={statusBodyTemplate(record)} minWidth={columnWidthMap[2]} />
       {/* 最终去向 */}
-      <Cell item={finalBodyTemplate(record)} minWidth={'5rem'}/>
+      <Cell item={finalBodyTemplate(record)} minWidth={columnWidthMap[3]} />
       {/* 学期 */}
-      <Cell item={semesterBodyTemplate(record)} minWidth={'8rem'}/>
+      <Cell item={semesterBodyTemplate(record)} minWidth={columnWidthMap[4]} />
       {/* 结果通知时间 */}
-      <Cell item={timelineBodyTemplate(record, 'Decision')} minWidth={'6rem'}/>
+      <Cell
+        item={timelineBodyTemplate(record, "Decision")}
+        minWidth={columnWidthMap[5]}
+      />
       {/* 面试时间 */}
-      <Cell item={timelineBodyTemplate(record, 'Interview')} minWidth={'6rem'}/>
+      <Cell
+        item={timelineBodyTemplate(record, "Interview")}
+        minWidth={columnWidthMap[6]}
+      />
       {/* 申请提交时间 */}
-      <Cell item={timelineBodyTemplate(record, 'Submit')} minWidth={'6rem'}/>
+      <Cell
+        item={timelineBodyTemplate(record, "Submit")}
+        minWidth={columnWidthMap[7]}
+      />
       {/* 备注 */}
-      <Cell item={detailTemplate(record)} minWidth={'15rem'}/>
+      <Cell
+        item={detailTemplate(record)}
+        minWidth={columnWidthMap[8]}
+        style={{ width: columnWidthMap[8] }}
+      />
     </div>
   );
 }
@@ -279,30 +430,42 @@ function Row({record}) {
  * @param {{ records: RecordData[], insideProgramPage: boolean }} props
  * @returns {JSX.Element}
  */
-export function PlainTable({records, insideProgramPage}) {
-  const resultJsx = [
-    <TopStickyRow key="header-topbar" width={'97rem'} />
-  ];
-  let currentProgramID = '';
+export function PlainTable({ records, insideProgramPage }) {
+  if (records.length === 0) {
+    return <div style={{ textAlign: "center" }}>未找到任何匹配结果</div>;
+  }
+
+  const resultJsx = [];
+  let currentProgramID = "";
 
   records.forEach((r) => {
     // If a different program name is detected, create a new group header
     if (!insideProgramPage && currentProgramID !== r.ProgramID) {
       currentProgramID = r.ProgramID;
       resultJsx.push(
-          <StickyRow key={`header-${r.ProgramID}`} record={r} width={'97rem'}/>
+        <StickyRow
+          key={`header-${r.ProgramID}`}
+          record={r}
+          width={stickyHeaderWidth}
+        />
       );
     }
     // A row for this record
-    resultJsx.push(<Row key={r.RecordID} record={r}/>);
+    resultJsx.push(<Row key={r.RecordID} record={r} />);
   });
 
   return (
-      <>
-        <div style={{height: '100%', overflowY: 'scroll'}}>
-          {resultJsx}
-        </div>
-      </>
+    <>
+      <div
+        style={{
+          height: "100%",
+          minWidth: "90rem",
+          overflowY: "scroll",
+          overflowX: "hidden",
+        }}
+      >
+        {resultJsx}
+      </div>
+    </>
   );
 }
-
