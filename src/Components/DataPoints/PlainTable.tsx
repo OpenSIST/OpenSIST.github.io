@@ -261,9 +261,7 @@ const applicantBodyTemplate = (rowData: RecordData, navigate: NavigateFunction) 
           padding: { xs: "0 6px", sm: "0 8px" },
         },
       }}
-      onClick={() =>
-        navigate(`/datapoints/applicant/${rowData.ApplicantID}`)
-      }
+      onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}
     />
   </Tooltip>
 );
