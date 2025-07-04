@@ -6,20 +6,18 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {
     Box, Button,
     Chip, Dialog, DialogActions, DialogContent, Fade,
-    IconButton, InputAdornment, MenuItem, Paper,
-    Select, TextField, Tooltip, useTheme
+    IconButton, MenuItem, Paper,
+    Select, TextField, useTheme
 } from "@mui/material";
 import {
-    Check,
     Close,
     Explore,
     Refresh,
-    Search,
     FilterAltOff,
-    QuestionMark, ExpandMore, NavigateNext,
+    QuestionMark,
 } from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
-import {recordStatusList, RecordStatusPalette, SemesterPalette} from "../../Data/Schemas";
+import {recordStatusList, RecordStatusPalette} from "../../Data/Schemas";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import {BoldTypography, DraggableFAB, InlineTypography} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
@@ -168,31 +166,7 @@ function AdvancedSearchFilter({
 
     return (
         <>
-            {/*<div className="filter-container-wrapper">*/}
             <div className="filter-container">
-
-                {/*<input*/}
-                {/*    type='text'*/}
-                {/*    placeholder='   搜索申请人'*/}
-                {/*    value={filters.applicant}*/}
-                {/*    onChange={(e) => handleFilterChange('applicant', e.target.value)}*/}
-                {/*    style={{*/}
-                {/*        maxWidth: '6rem', height: '30px',*/}
-                {/*        marginLeft: '2rem'*/}
-                {/*    }}*/}
-                {/*/>*/}
-
-                {/*<input*/}
-                {/*    type='text'*/}
-                {/*    placeholder='   搜索申请项目'*/}
-                {/*    value={filters.program}*/}
-                {/*    onChange={(e) => handleFilterChange('program', e.target.value)}*/}
-                {/*    style={{*/}
-                {/*        maxWidth: '6rem', height: '30px',*/}
-                {/*        marginLeft: '2rem'*/}
-                {/*    }}*/}
-                {/*/>*/}
-
                 <TextField
                     label="搜索申请人"
                     size="small"
@@ -274,20 +248,7 @@ function AdvancedSearchFilter({
                     sx={{maxWidth: '5rem'}}
                 />
 
-                {/*<Tooltip title="重置所有过滤器">*/}
-                {/*    <IconButton*/}
-                {/*        size="small"*/}
-                {/*        onClick={(e) => {*/}
-                {/*            e.stopPropagation();*/}
-                {/*            resetFilters();*/}
-                {/*        }}*/}
-                {/*        color="primary"*/}
-                {/*    >*/}
-                {/*        <FilterAltOff fontSize="small"/>*/}
-                {/*    </IconButton>*/}
-                {/*</Tooltip>*/}
             </div>
-            {/*</div>*/}
 
             {/* 搜索结果统计指示器 */}
             {activeFiltersCount > 0 && filteredCount !== totalCount && (
@@ -626,7 +587,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
     return (
         <div className="data-grid-container">
-            <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap}>
+            <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap} style={{width: '70%'}}>
                 <Paper
                     elevation={0}
                     sx={{
@@ -655,10 +616,14 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                             }
                             insideProgramPage={insideProgramPage}
                         />
-                        <PlainTable
-                            records={sortedFilteredRecords}
-                            insideProgramPage={insideProgramPage}
-                        />
+                        {isSearching ? (
+                            <></>
+                        ) : (
+                            <PlainTable
+                                records={sortedFilteredRecords}
+                                insideProgramPage={insideProgramPage}
+                            />
+                        )}
                     </div>
                 </Paper>
                 {/*)}*/}
@@ -873,21 +838,21 @@ export default function DataPoints() {
     });
 
     return (
-        <>
+        <div style={{overflowY: 'hidden'}}>
             <Paper
                 className="DataPointsContent"
                 sx={{
                     bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA",
-                    padding: '12px',
+                    // padding: '12px',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '16px'
+                    // gap: '16px'
                 }}
             >
                 <DataGrid records={records} insideProgramPage={false}/>
                 <Outlet/>
             </Paper>
             <FloatingControls/>
-        </>
+        </div>
     )
 }
