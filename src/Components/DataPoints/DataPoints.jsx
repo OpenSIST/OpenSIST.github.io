@@ -603,7 +603,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     }}
                 >
                     <div style={{
-                        height: insideProgramPage ? '35vh' : 'calc(100vh - 120px)',
+                        height: insideProgramPage ? '100%' : 'calc(100vh - 120px)',
                         overflowX: 'scroll',
                         overflowY: 'hidden',
                     }}>
