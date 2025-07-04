@@ -69,7 +69,7 @@ export const TopStickyRow: FC<{
         position: "sticky",
         top: "0px",
         zIndex: 99,
-        height: expanded ? "100px" : "40px",
+        height: expanded ? "150px" : "40px",
         fontWeight: "bolder",
         transition: "height 0.5s ease",
         overflowY: "hidden",
@@ -87,7 +87,9 @@ export const TopStickyRow: FC<{
         <Cell item={<BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>申请时间</BoldTypography>} width={columnWidthMap[7]} />
         <Cell item={<BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>备注、补充说明等</BoldTypography>} width={columnWidthMap[8]} />
       </div>
-      {filterElem}
+      <div>
+        <Cell item={filterElem} width={topStickyRowWidth} />
+      </div>
     </div>
   );
 };
@@ -345,7 +347,7 @@ export const PlainTable: FC<{
       }}
     >
       {resultJsx}
-      {insideProgramPage || <div style={{ height: "100px" }}></div>}
+      {insideProgramPage || <div style={{ height: "150px" }}></div>}
     </div>
   );
 };

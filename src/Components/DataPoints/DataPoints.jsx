@@ -172,7 +172,7 @@ function AdvancedSearchFilter({
                     size="small"
                     value={filters.applicant}
                     onChange={(e) => handleFilterChange('applicant', e.target.value)}
-                    sx={{maxWidth: '10rem'}}
+                    sx={{maxWidth: '10rem', paddingRight: '15px'}}
                 />
 
                 <TextField
@@ -180,7 +180,7 @@ function AdvancedSearchFilter({
                     size="small"
                     value={filters.program}
                     onChange={(e) => handleFilterChange('program', e.target.value)}
-                    sx={{maxWidth: '10rem'}}
+                    sx={{maxWidth: '10rem', paddingRight: '15px'}}
                 />
 
                 <Select
@@ -200,7 +200,7 @@ function AdvancedSearchFilter({
                             />
                         );
                     }}
-                    sx={{maxWidth: '8rem', flex: '0 0 auto'}}
+                    sx={{maxWidth: '7rem', marginRight: '15px'}}
                 >
                     <MenuItem value="">
                         <em>所有结果</em>
@@ -230,7 +230,7 @@ function AdvancedSearchFilter({
                         }
                         return selected === "true" ? "已确认" : "未确认";
                     }}
-                    sx={{minWidth: '120px', flex: '0 0 auto'}}
+                    sx={{maxWidth: '7rem', marginRight: '15px'}}
                 >
                     <MenuItem value="">
                         <em>全部</em>
@@ -251,12 +251,17 @@ function AdvancedSearchFilter({
             </div>
 
             {/* 搜索结果统计指示器 */}
-            {activeFiltersCount > 0 && filteredCount !== totalCount && (
+            {(
                 <div className="search-results-indicator">
-                    <BoldTypography variant="body2">
-                        已找到 <b>{filteredCount}</b> 条记录 (共 {totalCount} 条)
-                    </BoldTypography>
-
+                    {filteredCount === totalCount ? (
+                        <BoldTypography variant="body2">
+                            正在显示全部 <b>{filteredCount}</b> 条记录
+                        </BoldTypography>
+                    ) : (
+                        <BoldTypography variant="body2">
+                            已找到 <b>{filteredCount}</b> 条记录 (共 {totalCount} 条)
+                        </BoldTypography>
+                    )}
                     {filteredCount === 0 ? (
                         <Button
                             size="small"
