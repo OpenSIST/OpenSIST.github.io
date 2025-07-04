@@ -1,6 +1,6 @@
 import React, { useState, FC, CSSProperties, ReactNode } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { Button, Chip, Tooltip, Typography, TypographyProps } from "@mui/material";
+import { Button, Tooltip, Typography, TypographyProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { Check, ExpandMore } from "@mui/icons-material";
@@ -199,19 +199,23 @@ const Row: FC<{ record: RecordData }> = ({ record }) => {
 };
 
 const statusBodyTemplate = (rowData: RecordData) => (
-  <Chip
-    label={rowData.Status}
-    // @ts-expect-error
-    color={RecordStatusPalette[rowData.Status]}
-    sx={{
-      height: { xs: "1.4rem", sm: "1.6rem" },
-      width: { xs: "4rem", sm: "4.5rem" },
-      fontSize: { xs: "0.7rem", sm: "0.8rem" },
-      "& .MuiChip-label": {
-        padding: { xs: "0 4px", sm: "0 6px" },
-      },
+  <div
+    style={{
+      display: "inline-block",
+      // FIXME: color
+      // @ts-expect-error
+      background: RecordStatusPalette[rowData.Status],
+      borderRadius: "16px",
+      padding: "0 10px",
+      height: "1.6rem",
+      lineHeight: "1.6rem",
+      fontSize: "0.8rem",
+      minWidth: "4.5rem",
+      textAlign: "center",
     }}
-  />
+  >
+    {rowData.Status}
+  </div>
 );
 
 const finalBodyTemplate = (rowData: RecordData) => (
@@ -227,19 +231,23 @@ const finalBodyTemplate = (rowData: RecordData) => (
 );
 
 const semesterBodyTemplate = (rowData: RecordData) => (
-  <Chip
-    label={`${rowData.ProgramYear}${rowData.Semester}`}
-    // @ts-expect-error
-    color={SemesterPalette[rowData.Semester]}
-    sx={{
-      height: { xs: "1.4rem", sm: "1.6rem" },
-      width: { xs: "5rem", sm: "6rem" },
-      fontSize: { xs: "0.7rem", sm: "0.8rem" },
-      "& .MuiChip-label": {
-        padding: { xs: "0 4px", sm: "0 6px" },
-      },
+  <div
+    style={{
+      display: "inline-block",
+      // FIXME: color
+      // @ts-expect-error
+      background: SemesterPalette[rowData.Semester],
+      borderRadius: "16px",
+      padding: "0 10px",
+      height: "1.6rem",
+      lineHeight: "1.6rem",
+      fontSize: "0.8rem",
+      minWidth: "6rem",
+      textAlign: "center",
     }}
-  />
+  >
+    {`${rowData.ProgramYear}${rowData.Semester}`}
+  </div>
 );
 
 const timelineBodyTemplate = (rowData: RecordData, timelineKey: string) => (
@@ -252,41 +260,54 @@ const timelineBodyTemplate = (rowData: RecordData, timelineKey: string) => (
 );
 
 const applicantBodyTemplate = (rowData: RecordData, navigate: NavigateFunction) => (
-  <Tooltip title="查看申请人信息" arrow>
-    <Chip
-      label={rowData.ApplicantID}
-      sx={{
-        maxWidth: { xs: "6rem", sm: "8rem" },
-        height: { xs: "1.4rem", sm: "1.6rem" },
-        fontSize: { xs: "0.7rem", sm: "0.8rem" },
-        "& .MuiChip-label": {
-          padding: { xs: "0 6px", sm: "0 8px" },
-        },
-      }}
-      onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}
-    />
-  </Tooltip>
+  <div
+    title="查看申请人信息"
+    style={{
+      display: "inline-block",
+      // FIXME: color
+      background: "#e0e0e0",
+      borderRadius: "16px",
+      padding: "0 10px",
+      height: "1.6rem",
+      lineHeight: "1.6rem",
+      fontSize: "0.8rem",
+      maxWidth: "8rem",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+    }}
+    onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}
+  >
+    {rowData.ApplicantID}
+  </div>
 );
 
 const programBodyTemplate = (rowData: RecordData, navigate: NavigateFunction) => (
-  <Tooltip title="查看项目描述" arrow>
-    <Chip
-      label={rowData.ProgramID}
-      sx={{
-        maxWidth: { xs: "7rem", sm: "9rem" },
-        height: { xs: "1.4rem", sm: "1.6rem" },
-        fontSize: { xs: "0.7rem", sm: "0.8rem" },
-        "& .MuiChip-label": {
-          padding: { xs: "0 6px", sm: "0 8px" },
-        },
-      }}
-      onClick={() =>
-        navigate(
-          `/datapoints/program/${encodeURIComponent(rowData.ProgramID)}`
-        )
-      }
-    />
-  </Tooltip>
+  <div
+    title="查看项目描述"
+    style={{
+      display: "inline-block",
+      // FIXME: color
+      background: "#e0e0e0",
+      borderRadius: "16px",
+      padding: "0 10px",
+      height: "1.6rem",
+      lineHeight: "1.6rem",
+      fontSize: "0.8rem",
+      maxWidth: "9rem",
+      cursor: "pointer",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+    }}
+    onClick={() =>
+      navigate(
+        `/datapoints/program/${encodeURIComponent(rowData.ProgramID)}`
+      )
+    }
+  >
+    {rowData.ProgramID}
+  </div>
 );
 
 const detailTemplate = (rowData: RecordData) => (
