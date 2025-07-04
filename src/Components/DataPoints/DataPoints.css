@@ -121,12 +121,6 @@
     form .MuiFab-root {
         z-index: 1060 !important; /* Match the z-index with the close button */
     }
-    
-    /* Ensure the help/close button is always visible and on top */
-    .HiddenHelpButton {
-        z-index: 1070 !important; /* Higher than everything else */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important; /* Enhanced shadow */
-    }
 }
 
 .DataTableStyle {
