@@ -109,7 +109,7 @@ const StickyRow: FC<{
 
   return (
     <div
-      className="p-rowgroup-header"
+      className="p-rowgroup-header group-header"
       style={{
         display: "inline-block",
         textAlign: "start",
@@ -117,9 +117,9 @@ const StickyRow: FC<{
         verticalAlign: "middle",
         position: "sticky",
         top: "0px",
-        paddingTop: "10px",
         zIndex: 10,
-        height: "40px",
+        // paddingTop: "10px",
+        // height: "40px",  // moved into DataPoints.css
         ...style,
       }}
     >

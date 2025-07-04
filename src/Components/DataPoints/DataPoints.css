@@ -253,3 +253,15 @@
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
     padding: 5px 1rem 5px 1rem;
 }
+
+.group-header {
+    height: 40px;
+    padding-top: 10px;
+}
+
+@media (max-width: 1024px) {
+    .group-header {
+        height: 25px;
+        padding-top: 6px;
+    }
+}
