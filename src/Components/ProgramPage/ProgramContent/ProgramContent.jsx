@@ -79,7 +79,7 @@ function ProgramContent({editable = true, inDialog=false}) {
             <Box sx={{ 
                 display: 'flex', 
                 flexDirection: 'column', 
-                height: 'calc(100vh - 180px)', 
+                // height: 'calc(100vh - 180px)',
                 overflow: 'hidden' 
             }}>
                 <Paper sx={{
