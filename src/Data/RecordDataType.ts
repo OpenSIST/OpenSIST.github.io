@@ -1,8 +1,8 @@
 
 export type Timeline = {
-  Decision: string;
-  Interview: string;
-  Submit: string;
+  Decision: string | null;
+  Interview: string | null;
+  Submit: string | null;
 };
 
 export type RecordData = {
@@ -13,7 +13,7 @@ export type RecordData = {
   ProgramYear: number;
   RecordID: string;
   Season: string;
-  Semester: string;
-  Status: string;
+  Semester: 'Fall' | 'Spring' | 'Summer' | 'Winter';
+  Status: 'Admit' | 'Reject' | 'Defer' | 'Waitlist';
   TimeLine: Timeline;
 };

@@ -198,13 +198,21 @@ const Row: FC<{ record: RecordData }> = ({ record }) => {
   );
 };
 
+/**
+ * @see ./TableLight.css ./TableDark.css
+ */
+const statusChipColorMap = {
+    'Admit': 'chip-status-admit-green',
+    'Reject': 'chip-status-reject-red',
+    'Waitlist': 'chip-status-waitlist-grey',
+    'Defer': 'chip-status-defer-orange',
+}
+
 const statusBodyTemplate = (rowData: RecordData) => (
   <div
+    className={statusChipColorMap[rowData.Status]}
     style={{
       display: "inline-block",
-      // FIXME: color
-      // @ts-expect-error
-      background: RecordStatusPalette[rowData.Status],
       borderRadius: "16px",
       padding: "0 10px",
       height: "1.6rem",
@@ -230,13 +238,22 @@ const finalBodyTemplate = (rowData: RecordData) => (
   </div>
 );
 
+/**
+ * @see ./TableLight.css ./TableDark.css
+ */
+const semesterBodyColorMap = {
+    'Fall': 'chip-semester-fall-orange',
+    'Spring': 'chip-semester-spring-cyan',
+    'Summer': 'chip-semester-spring-cyan',
+    'Winter': 'chip-semester-spring-cyan',
+}
+
 const semesterBodyTemplate = (rowData: RecordData) => (
   <div
+    className={semesterBodyColorMap[rowData.Semester]}
     style={{
       display: "inline-block",
-      // FIXME: color
-      // @ts-expect-error
-      background: SemesterPalette[rowData.Semester],
+      color: 'white',
       borderRadius: "16px",
       padding: "0 10px",
       height: "1.6rem",
@@ -262,10 +279,9 @@ const timelineBodyTemplate = (rowData: RecordData, timelineKey: string) => (
 const applicantBodyTemplate = (rowData: RecordData, navigate: NavigateFunction) => (
   <div
     title="查看申请人信息"
+    className="chip-plain"
     style={{
       display: "inline-block",
-      // FIXME: color
-      background: "#e0e0e0",
       borderRadius: "16px",
       padding: "0 10px",
       height: "1.6rem",
@@ -285,10 +301,9 @@ const applicantBodyTemplate = (rowData: RecordData, navigate: NavigateFunction) 
 const programBodyTemplate = (rowData: RecordData, navigate: NavigateFunction) => (
   <div
     title="查看项目描述"
+    className="chip-plain"
     style={{
       display: "inline-block",
-      // FIXME: color
-      background: "#e0e0e0",
       borderRadius: "16px",
       padding: "0 10px",
       height: "1.6rem",

@@ -9436,3 +9436,38 @@
 .p-dropdown-item:hover {
     background-color: #2f3033;
 }
+
+.chip-plain {
+    color: white;
+    background-color: #414041;
+}
+
+.chip-status-admit-green {
+    color: white;
+    background-color: #5cc754;
+}
+
+.chip-status-reject-red {
+    color: white;
+    background-color: #e54757;
+}
+
+.chip-status-waitlist-grey {
+    color: white;
+    background-color: #414041;
+}
+
+.chip-status-defer-orange {
+    color: white;
+    background-color: #ec9727;
+}
+
+.chip-semester-fall-orange {
+    color: white;
+    background-color: #eb7f2b;
+}
+
+.chip-semester-spring-cyan {
+    color: white;
+    background-color: #51b991;
+}
