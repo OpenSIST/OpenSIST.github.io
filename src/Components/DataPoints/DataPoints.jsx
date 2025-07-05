@@ -333,6 +333,11 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         setSortedFilteredRecords(sortRecords(filteredRecords));
     }, [filteredRecords])
 
+    useEffect(() => {
+        if (insideProgramPage)
+            setFilteredRecords(records);
+    }, [insideProgramPage, records]);
+
     return (
         <div className="data-grid-container">
             <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap} style={{width: '70%'}}>
