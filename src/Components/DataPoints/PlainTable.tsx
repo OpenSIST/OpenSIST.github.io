@@ -4,7 +4,6 @@ import { Button, Tooltip, Typography, TypographyProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { Check, ExpandMore } from "@mui/icons-material";
-import { RecordStatusPalette, SemesterPalette } from "../../Data/Schemas";
 import { BoldTypography } from "../common";
 import type { RecordData } from "../../Data/RecordDataType";
 import "./DataPoints.css";
@@ -70,7 +69,7 @@ export const TopStickyRow: FC<{
         position: "sticky",
         top: "0px",
         zIndex: 99,
-        height: expanded ? "100px" : "40px",
+        height: expanded ? "90px" : "40px",
         fontWeight: "bolder",
         transition: "height 0.5s ease",
         overflowY: "hidden",
@@ -97,7 +96,7 @@ export const TopStickyRow: FC<{
         <Cell item={<BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>备注、补充说明等</BoldTypography>} width={columnWidthMap[8]} />
       </div>
       <div>
-        <Cell item={filterElem} width={insideProgramPage ? topStickyRowWidthWithoutProgram : topStickyRowWidth} />
+        <NoMarginCell item={filterElem} width={insideProgramPage ? topStickyRowWidthWithoutProgram : topStickyRowWidth} />
       </div>
     </div>
   );
@@ -181,6 +180,24 @@ const Cell: FC<{
       marginTop: "6px",
       marginBottom: "6px",
       paddingLeft: "10px",
+      ...style,
+    }}
+  >
+    {item}
+  </div>
+);
+
+const NoMarginCell: FC<{
+  item: ReactNode;
+  width: string;
+  style?: CSSProperties;
+}> = ({ item, width, style }) => (
+  <div
+    style={{
+      display: "inline-block",
+      textAlign: "start",
+      width: width,
+      verticalAlign: "middle",
       ...style,
     }}
   >

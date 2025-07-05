@@ -20,6 +20,7 @@
     "@testing-library/react": "13.4.0",
     "@testing-library/user-event": "13.5.0",
     "ajv": "6.12.6",
+    "antd": "^5.26.3",
     "babel-plugin-macros": "3.1.0",
     "buffer": "6.0.3",
     "cm6-theme-basic-dark": "0.2.0",

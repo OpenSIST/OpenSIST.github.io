@@ -1,20 +1,19 @@
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
+import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
+import {Dialog, DialogActions, DialogContent, IconButton, Paper, useTheme} from "@mui/material";
+import {Close, Refresh } from "@mui/icons-material";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByRecordIDs} from "../../Data/RecordData";
-import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import './DataPoints.css';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {
-    Chip, Dialog, DialogActions, DialogContent,
-    IconButton, MenuItem, Paper,
-    Select, TextField, useTheme
-} from "@mui/material";
-import {Close, Refresh } from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
-import {recordStatusList, RecordStatusPalette} from "../../Data/Schemas";
+import {recordStatusList} from "../../Data/Schemas";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import {BoldTypography, DraggableFAB} from "../common";
-import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
-import {columnWidthMap, PlainTable, TopStickyRow, topStickyRowWidth} from './PlainTable'
+import {columnWidthMap, PlainTable, TopStickyRow} from './PlainTable'
+import { Input, Select } from 'antd';
+import { ConfigProvider, theme } from 'antd';
+const { Option } = Select;
 
 export async function loader() {
     let programs = await getPrograms();
@@ -110,69 +109,95 @@ function SearchFilter({ onFilterChange }) {
         });
     }, [onFilterChange]);
 
+    const theme1 = useTheme();
+    const isDark = theme1.palette.mode === 'dark';
+
     return (
-        <>
-            <div className="filter-container">
+        <div className="filter-container">
+            {/* Using antd's Input and Select elements */}
+            {/* "ConfigProvider" is used for antd's light/dark mode */}
+            <ConfigProvider theme={{algorithm: isDark ? theme.darkAlgorithm : theme.compactAlgorithm}} >
                 {/* 搜索申请人 */}
-                <input
+                <Input
                     id="applicant"
-                    type="text"
+                    size="small"
+                    placeholder="搜索申请人"
                     value={filters.applicant}
-                    placeholder='搜索申请人'
                     onChange={e => handleFilterChange('applicant', e.target.value)}
-                    style={{ marginLeft: '8px', marginRight: '8px', height: '1.5rem', fontSize: '0.875rem', maxWidth: columnWidthMap[0] }}
+                    style={{
+                        margin: '0 8px',
+                        maxWidth: columnWidthMap[0],
+                    }}
                 />
 
-
                 {/* 搜索申请项目 */}
-                <input
+                <Input
                     id="program"
-                    type="text"
-                    value={filters.program}
+                    size="small"
                     placeholder="搜索申请项目"
+                    value={filters.program}
                     onChange={e => handleFilterChange('program', e.target.value)}
-                    style={{ marginLeft: '8px', marginRight: '8px', height: '1.5rem', fontSize: '0.875rem', maxWidth: columnWidthMap[1] }}
+                    style={{
+                        margin: '0 8px',
+                        maxWidth: columnWidthMap[1],
+                    }}
                 />
 
                 {/* 申请结果 */}
-                <select
+                <Select
                     id="status"
+                    size="small"
                     value={filters.status || ''}
-                    onChange={e => handleFilterChange('status', e.target.value)}
-                    style={{ marginLeft: '8px', marginRight: '8px', height: '1.8rem', fontSize: '0.875rem', maxWidth: columnWidthMap[2], width: columnWidthMap[2] }}
-                >
-                    <option value="">所有结果</option>
-                    {recordStatusList.map(status => (
-                        <option key={status} value={status}>
-                            {status}
-                        </option>
-                    ))}
-                </select>
-
-                <select
-                    id="final"
-                    value={filters.final === null ? '' : filters.final ? 'true' : 'false'}
-                    onChange={e => {
-                        const v = e.target.value;
-                        handleFilterChange('final', v === '' ? null : v === 'true');
+                    onChange={value => handleFilterChange('status', value)}
+                    placeholder="所有结果"
+                    style={{
+                        margin: '0 8px',
+                        maxWidth: columnWidthMap[2],
+                        width: columnWidthMap[2],
                     }}
-                    style={{ marginLeft: '8px', marginRight: '8px', height: '1.8rem', fontSize: '0.875rem', maxWidth: columnWidthMap[3], width: columnWidthMap[3] }}
                 >
-                    <option value="">全部</option>
-                    <option value="true">是</option>
-                    <option value="false">否</option>
-                </select>
+                    <Option value="">所有结果</Option>
+                    {recordStatusList.map(status => (
+                        <Option key={status} value={status}>
+                            {status}
+                        </Option>
+                    ))}
+                </Select>
 
-                <input
+                {/* 最终去向 */}
+                <Select
+                    id="final"
+                    size="small"
+                    value={filters.final === null ? '' : filters.final ? 'true' : 'false'}
+                    onChange={value => {
+                        handleFilterChange('final', value === '' ? null : value === 'true');
+                    }}
+                    placeholder="最终去向"
+                    style={{
+                        margin: '0 8px',
+                        maxWidth: columnWidthMap[3],
+                        width: columnWidthMap[3],
+                    }}
+                >
+                    <Option value="">全部</Option>
+                    <Option value="true">是</Option>
+                    <Option value="false">否</Option>
+                </Select>
+
+                {/* 搜索申请季 */}
+                <Input
                     id="season"
-                    type="text"
+                    size="small"
                     placeholder="搜索申请季"
                     value={filters.season}
                     onChange={e => handleFilterChange('season', e.target.value)}
-                    style={{ marginLeft: '8px', marginRight: '8px', height: '1.5rem', fontSize: '1rem', maxWidth: columnWidthMap[4] }}
+                    style={{
+                        margin: '0 8px',
+                        maxWidth: columnWidthMap[4],
+                    }}
                 />
-            </div>
-        </>
+            </ConfigProvider>
+        </div>
     );
 }
 
