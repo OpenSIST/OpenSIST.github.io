@@ -185,8 +185,8 @@ const Row: FC<{ record: RecordData }> = ({ record }) => {
 
   return (
     <div className="p-dropdown-item" style={{ minWidth: stickyHeaderWidth }}>
-      <Cell item={applicantBodyTemplate(record, navigate)} width={columnWidthMap[0]} style={{paddingTop: '7px'}} />
-      <Cell item={programBodyTemplate(record, navigate)} width={columnWidthMap[1]} style={{paddingTop: '7px'}} />
+      <Cell item={applicantBodyTemplate(record, navigate)} width={columnWidthMap[0]}/>
+      <Cell item={programBodyTemplate(record, navigate)} width={columnWidthMap[1]}/>
       <Cell item={statusBodyTemplate(record)} width={columnWidthMap[2]} />
       <Cell item={finalBodyTemplate(record)} width={columnWidthMap[3]} />
       <Cell item={semesterBodyTemplate(record)} width={columnWidthMap[4]} />
@@ -281,13 +281,14 @@ const applicantBodyTemplate = (rowData: RecordData, navigate: NavigateFunction) 
     title="查看申请人信息"
     className="chip-plain"
     style={{
-      display: "inline-block",
+      display: "block",
       borderRadius: "16px",
       padding: "0 10px",
       height: "1.6rem",
       lineHeight: "1.6rem",
       fontSize: "0.8rem",
       maxWidth: "8rem",
+      width: "fit-content",
       overflow: "hidden",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
@@ -303,13 +304,14 @@ const programBodyTemplate = (rowData: RecordData, navigate: NavigateFunction) =>
     title="查看项目描述"
     className="chip-plain"
     style={{
-      display: "inline-block",
+      display: "block",
       borderRadius: "16px",
       padding: "0 10px",
       height: "1.6rem",
       lineHeight: "1.6rem",
       fontSize: "0.8rem",
       maxWidth: "9rem",
+      width: "fit-content",
       cursor: "pointer",
       overflow: "hidden",
       textOverflow: "ellipsis",
