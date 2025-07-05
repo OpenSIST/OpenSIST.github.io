@@ -1,6 +1,6 @@
 .DataPointsContent {
     width: 100%;
-    margin: 10px;
+    margin-top: 10px;
     overflow-x: auto;
     user-select: text;
     height: calc(100% - 20px);
@@ -20,18 +20,6 @@
 
 .filter-container-wrapper {
     padding: 8px;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.filter-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    align-items: flex-start;
 }
 
 /* 优化每个过滤器元素的宽度和样式 */
@@ -54,12 +42,12 @@
 /* 搜索结果指示器 */
 .search-results-indicator {
     background-color: rgba(128, 128, 128, 0.08);
-    padding: 8px 16px;
+    padding: 6px 16px;
     border-radius: 8px;
-    margin-bottom: 12px;
+    margin: 6px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     animation: fadeIn 0.3s ease;
 }
 
@@ -118,12 +106,6 @@
     /* Ensure floating action buttons don't overlap important content */
     form .MuiFab-root {
         z-index: 1060 !important; /* Match the z-index with the close button */
-    }
-    
-    /* Ensure the help/close button is always visible and on top */
-    .HiddenHelpButton {
-        z-index: 1070 !important; /* Higher than everything else */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important; /* Enhanced shadow */
     }
 }
 
@@ -256,4 +238,29 @@
 
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
     padding: 5px 1rem 5px 1rem;
+}
+
+.group-header {
+    height: 40px;
+    padding-top: 10px;
+}
+
+@media (max-width: 1024px) {
+    .group-header {
+        height: 25px;
+        padding-top: 6px;
+    }
+}
+
+.refresh-button {
+    position: fixed;
+    z-index: 20;
+    bottom: 40px;
+    right: 20px;
+}
+
+@media (max-width: 768px) {
+    bottom: 20px;
+    right: 16px;
+    transform: scale(0.9);
 }
