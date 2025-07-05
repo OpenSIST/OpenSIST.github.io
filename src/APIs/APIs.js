@@ -29,11 +29,12 @@ export const GET_AVATAR = ROOT + "api/user/get_avatar";
 export const TOGGLE_NICKNAME = ROOT + "api/my/toggle_nickname";
 export const UPDATE_CONTACT = ROOT + "api/user/update_contact";
 
-export const FILE_LIST = ROOT + "api/list/posts";
-export const GET_FILE_CONTENT = ROOT + "api/query/post_content";
-export const REMOVE_FILE = ROOT + "api/mutating/remove_post";
-export const ADD_FILE = ROOT + "api/mutating/new_post";
-export const MODIFY_FILE = ROOT + "api/mutating/modify_post";
+export const FILE_LIST = ROOT + "api/list/files";
+export const GET_FILE_CONTENT = ROOT + "api/query/file_content";
+export const REMOVE_FILE = ROOT + "api/mutating/remove_file";
+export const ADD_FILE = ROOT + "api/mutating/new_file";
+export const MODIFY_FILE = ROOT + "api/mutating/modify_file";
+
 export const COLLECT_PROGRAM = ROOT + "api/user/collect_program";
 export const UNCOLLECT_PROGRAM = ROOT + "api/user/un_collect_program";
 
