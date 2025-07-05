@@ -14,7 +14,7 @@ import {recordStatusList, RecordStatusPalette} from "../../Data/Schemas";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import {BoldTypography, DraggableFAB} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
-import {PlainTable, TopStickyRow} from './PlainTable'
+import {columnWidthMap, PlainTable, TopStickyRow} from './PlainTable'
 
 export async function loader() {
     let programs = await getPrograms();
@@ -113,85 +113,63 @@ function SearchFilter({ onFilterChange }) {
     return (
         <>
             <div className="filter-container">
-                <TextField
-                    label="搜索申请人"
-                    size="small"
+                {/* 搜索申请人 */}
+                <input
+                    id="applicant"
+                    type="text"
                     value={filters.applicant}
-                    onChange={(e) => handleFilterChange('applicant', e.target.value)}
-                    sx={{maxWidth: '10rem', paddingRight: '15px'}}
+                    placeholder='搜索申请人'
+                    onChange={e => handleFilterChange('applicant', e.target.value)}
+                    style={{ marginLeft: '8px', marginRight: '8px', height: '1.5rem', fontSize: '0.875rem', maxWidth: columnWidthMap[0] }}
                 />
 
-                <TextField
-                    label="搜索申请项目"
-                    size="small"
+
+                {/* 搜索申请项目 */}
+                <input
+                    id="program"
+                    type="text"
                     value={filters.program}
-                    onChange={(e) => handleFilterChange('program', e.target.value)}
-                    sx={{maxWidth: '10rem', paddingRight: '15px'}}
+                    placeholder="搜索申请项目"
+                    onChange={e => handleFilterChange('program', e.target.value)}
+                    style={{ marginLeft: '8px', marginRight: '8px', height: '1.5rem', fontSize: '0.875rem', maxWidth: columnWidthMap[1] }}
                 />
 
-                <Select
-                    size="small"
-                    value={filters.status}
-                    onChange={(e) => handleFilterChange('status', e.target.value)}
-                    displayEmpty
-                    renderValue={selected => {
-                        if (!selected) {
-                            return <span style={{color: 'gray'}}>申请结果</span>;
-                        }
-                        return (
-                            <Chip
-                                label={selected}
-                                color={RecordStatusPalette[selected]}
-                                size="small"
-                            />
-                        );
-                    }}
-                    sx={{maxWidth: '7rem', marginRight: '15px'}}
+                {/* 申请结果 */}
+                <select
+                    id="status"
+                    value={filters.status || ''}
+                    onChange={e => handleFilterChange('status', e.target.value)}
+                    style={{ marginLeft: '8px', marginRight: '8px', height: '1.8rem', fontSize: '0.875rem', maxWidth: columnWidthMap[2], width: columnWidthMap[2] }}
                 >
-                    <MenuItem value="">
-                        <em>所有结果</em>
-                    </MenuItem>
+                    <option value="">所有结果</option>
                     {recordStatusList.map(status => (
-                        <MenuItem key={status} value={status}>
-                            <Chip
-                                label={status}
-                                color={RecordStatusPalette[status]}
-                                size="small"
-                            />
-                        </MenuItem>
+                        <option key={status} value={status}>
+                            {status}
+                        </option>
                     ))}
-                </Select>
+                </select>
 
-                <Select
-                    size="small"
-                    value={filters.final === null ? "" : filters.final ? "true" : "false"}
-                    onChange={(e) => {
-                        const value = e.target.value;
-                        handleFilterChange('final', value === "" ? null : value === "true");
+                <select
+                    id="final"
+                    value={filters.final === null ? '' : filters.final ? 'true' : 'false'}
+                    onChange={e => {
+                        const v = e.target.value;
+                        handleFilterChange('final', v === '' ? null : v === 'true');
                     }}
-                    displayEmpty
-                    renderValue={selected => {
-                        if (selected === "") {
-                            return <span style={{color: 'gray'}}>最终去向</span>;
-                        }
-                        return selected === "true" ? "已确认" : "未确认";
-                    }}
-                    sx={{maxWidth: '7rem', marginRight: '15px'}}
+                    style={{ marginLeft: '8px', marginRight: '8px', height: '1.8rem', fontSize: '0.875rem', maxWidth: columnWidthMap[3], width: columnWidthMap[3] }}
                 >
-                    <MenuItem value="">
-                        <em>全部</em>
-                    </MenuItem>
-                    <MenuItem value="true">是</MenuItem>
-                    <MenuItem value="false">否</MenuItem>
-                </Select>
+                    <option value="">全部</option>
+                    <option value="true">是</option>
+                    <option value="false">否</option>
+                </select>
 
-                <TextField
-                    label="搜索申请季"
-                    size="small"
+                <input
+                    id="season"
+                    type="text"
+                    placeholder="搜索申请季"
                     value={filters.season}
-                    onChange={(e) => handleFilterChange('season', e.target.value)}
-                    placeholder="如: 2023 Fall"
-                    sx={{maxWidth: '5rem'}}
+                    onChange={e => handleFilterChange('season', e.target.value)}
+                    style={{ marginLeft: '8px', marginRight: '8px', height: '1.5rem', fontSize: '1rem', maxWidth: columnWidthMap[4] }}
                 />
             </div>
         </>
