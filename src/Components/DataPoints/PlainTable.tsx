@@ -28,7 +28,7 @@ export const columnWidthMap = [
 /** 最上面的顶栏, 相当于原来的<thead> */
 export const TopStickyRow: FC<{
   style?: CSSProperties;
-  filterElem: ReactNode;
+  filterElem?: ReactNode;
   insideProgramPage: boolean;
 }> = ({ style, filterElem, insideProgramPage }) => {
   const [expanded, setExpanded] = useState(false);

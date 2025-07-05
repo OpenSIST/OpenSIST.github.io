@@ -4,24 +4,16 @@ import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "rea
 import './DataPoints.css';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {
-    Box, Button,
-    Chip, Dialog, DialogActions, DialogContent, Fade,
+    Chip, Dialog, DialogActions, DialogContent,
     IconButton, MenuItem, Paper,
     Select, TextField, useTheme
 } from "@mui/material";
-import {
-    Close,
-    Explore,
-    Refresh,
-    FilterAltOff,
-    QuestionMark,
-} from "@mui/icons-material";
+import {Close, Refresh } from "@mui/icons-material";
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import {recordStatusList, RecordStatusPalette} from "../../Data/Schemas";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
-import {BoldTypography, DraggableFAB, InlineTypography} from "../common";
+import {BoldTypography, DraggableFAB} from "../common";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import {PlainTable, TopStickyRow} from './PlainTable'
 
 export async function loader() {
@@ -90,15 +82,7 @@ export function ProgramContentInDataPoints() {
 }
 
 // 高效的搜索过滤器，替代原有PrimeReact过滤器
-function AdvancedSearchFilter({
-                                  records,
-                                  onFilterChange,
-                                  insideProgramPage,
-                                  filteredCount = 0,
-                                  totalCount = 0,
-                                  filterExpanded,
-                                  setFilterExpanded,
-                              }) {
+function SearchFilter({ onFilterChange }) {
     const [filters, setFilters] = useState({
         applicant: '',
         program: '',
@@ -107,15 +91,6 @@ function AdvancedSearchFilter({
         season: ''
     });
     const searchDebounceRef = useRef(null);
-    const activeFiltersCount = useMemo(() => {
-        let count = 0;
-        if (filters.applicant) count++;
-        if (filters.program) count++;
-        if (filters.status) count++;
-        if (filters.final !== null) count++;
-        if (filters.season) count++;
-        return count;
-    }, [filters]);
 
     // 添加防抖函数提高搜索性能
     const handleFilterChange = useCallback((name, value) => {
@@ -134,35 +109,6 @@ function AdvancedSearchFilter({
             return newFilters;
         });
     }, [onFilterChange]);
-
-    // 重置所有过滤器
-    const resetFilters = () => {
-        if (searchDebounceRef.current) {
-            clearTimeout(searchDebounceRef.current);
-        }
-
-        setFilters({
-            applicant: '',
-            program: '',
-            status: '',
-            final: null,
-            season: ''
-        });
-
-        // 使用空过滤器触发搜索重置
-        onFilterChange({
-            applicant: '',
-            program: '',
-            status: '',
-            final: null,
-            season: ''
-        });
-    };
-
-    // 如果在程序页面内，则不显示搜索过滤器
-    if (insideProgramPage) {
-        return null;
-    }
 
     return (
         <>
@@ -247,34 +193,7 @@ function AdvancedSearchFilter({
                     placeholder="如: 2023 Fall"
                     sx={{maxWidth: '5rem'}}
                 />
-
             </div>
-
-            {/* 搜索结果统计指示器 */}
-            {
-                // <div className="search-results-indicator">
-                //     {filteredCount === totalCount ? (
-                //         <BoldTypography variant="body2">
-                //             总计 <b>{filteredCount}</b> 条记录
-                //         </BoldTypography>
-                //     ) : (
-                //         <BoldTypography variant="body2">
-                //             已找到 <b>{filteredCount}</b> 条记录 (共 {totalCount} 条)
-                //         </BoldTypography>
-                //     )}
-                //     {filteredCount === 0 ? (
-                //         <Button
-                //             size="small"
-                //             variant="outlined"
-                //             color="primary"
-                //             onClick={resetFilters}
-                //             startIcon={<FilterAltOff/>}
-                //         >
-                //             清除过滤器
-                //         </Button>
-                //     ) : null}
-                // </div>
-            }
         </>
     );
 }
@@ -310,22 +229,7 @@ function AdvancedSearchFilter({
  * @constructor
  */
 export function DataGrid({records, insideProgramPage, style = {}}) {
-    const navigate = useNavigate();
     const theme = useTheme();
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-    // Add event listener to track window size changes
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
     const themeMap = {
         light: "/TableLight.css",
         dark: "/TableDark.css"
@@ -349,8 +253,6 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
     // 创建搜索结果缓存
     const searchCache = useRef(new Map());
-
-    const [filterExpanded, setFilterExpanded] = useState(false)
 
     // 构建搜索索引以加速搜索
     useEffect(() => {
@@ -608,17 +510,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                         overflowY: 'hidden',
                     }}>
                         <TopStickyRow
-                            filterElem={
-                                <AdvancedSearchFilter
-                                    records={records}
-                                    onFilterChange={handleAdvancedSearch}
-                                    insideProgramPage={insideProgramPage}
-                                    filteredCount={filteredRecords.length}
-                                    totalCount={records.length}
-                                    filterExpanded={filterExpanded}
-                                    setFilterExpanded={setFilterExpanded}
-                                />
-                            }
+                            filterElem={insideProgramPage || <SearchFilter onFilterChange={handleAdvancedSearch}/>}
                             insideProgramPage={insideProgramPage}
                         />
                         {isSearching ? (
