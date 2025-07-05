@@ -395,7 +395,10 @@ export const PlainTable: FC<{
       }}
     >
       {resultJsx}
-      <div style={{height: '50px'}}></div>
+      <div style={{
+        height: insideProgramPage ? '50px' : '110px',
+        backgroundColor: "rgba(128, 128, 128, 0.1)",
+      }}></div>
     </div>
   );
 };
