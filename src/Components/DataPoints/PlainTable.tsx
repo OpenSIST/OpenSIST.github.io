@@ -44,16 +44,17 @@ export const TopStickyRow: FC<{
         minWidth,
         justifyContent: "flex-start",
         paddingLeft: "0px",
-        paddingRight: "0px",
       }}
     >
-      <ExpandMore
-        fontSize="small"
-        style={{
-          transform: expanded ? "rotate(0deg)" : "rotate(-90deg)",
-          transition: "transform 0.5s ease",
-        }}
-      />
+      {insideProgramPage || (
+        <ExpandMore
+          fontSize="small"
+          style={{
+            transform: expanded ? "rotate(0deg)" : "rotate(-90deg)",
+            transition: "transform 0.5s ease",
+          }}
+        />
+      )}
       <BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>{text}</BoldTypography>
     </Button>
   );
@@ -77,11 +78,19 @@ export const TopStickyRow: FC<{
       }}
     >
       <div>
-        <Cell item={<ExpandableButton minWidth={columnWidthMap[0]} text="申请人" />} width={columnWidthMap[0]} />
+        <Cell item={<ExpandableButton minWidth={columnWidthMap[0]} text="申请人" />} width={columnWidthMap[0]}
+          style={{marginRight: insideProgramPage ? '5px' : '0px'}}
+        />
         {insideProgramPage || <Cell item={<ExpandableButton minWidth={columnWidthMap[1]} text="申请项目" />} width={columnWidthMap[1]} />}
-        <Cell item={<ExpandableButton minWidth={columnWidthMap[2]} text="申请结果" />} width={columnWidthMap[2]} />
-        <Cell item={<ExpandableButton minWidth={columnWidthMap[3]} text="最终去向" />} width={columnWidthMap[3]} />
-        <Cell item={<ExpandableButton minWidth={columnWidthMap[4]} text="申请季" />} width={columnWidthMap[4]} />
+        <Cell item={<ExpandableButton minWidth={columnWidthMap[2]} text="申请结果" />} width={columnWidthMap[2]}
+          style={{marginRight: insideProgramPage ? '15px' : '0px'}}
+        />
+        <Cell item={<ExpandableButton minWidth={columnWidthMap[3]} text="最终去向" />} width={columnWidthMap[3]}
+          style={{marginRight: insideProgramPage ? '15px' : '0px'}}
+        />
+        <Cell item={<ExpandableButton minWidth={columnWidthMap[4]} text="申请季" />} width={columnWidthMap[4]}
+          style={{marginRight: insideProgramPage ? '-35px' : '0px'}}
+        />
         <Cell item={<BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>结果时间</BoldTypography>} width={columnWidthMap[5]} />
         <Cell item={<BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>面试时间</BoldTypography>} width={columnWidthMap[6]} />
         <Cell item={<BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>申请时间</BoldTypography>} width={columnWidthMap[7]} />
