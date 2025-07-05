@@ -10,7 +10,9 @@ import type { RecordData } from "../../Data/RecordDataType";
 import "./DataPoints.css";
 
 export const topStickyRowWidth = "90rem";
+export const topStickyRowWidthWithoutProgram = "80rem"
 export const stickyHeaderWidth = "90rem";
+export const stickyHeaderWidthWithoutProgram = "80rem"
 export const columnWidthMap = [
   "10rem", // applicant
   "10rem", // program
@@ -45,15 +47,13 @@ export const TopStickyRow: FC<{
         paddingRight: "0px",
       }}
     >
-      {!insideProgramPage && (
-        <ExpandMore
-          fontSize="small"
-          style={{
-            transform: expanded ? "rotate(0deg)" : "rotate(-90deg)",
-            transition: "transform 0.5s ease",
-          }}
-        />
-      )}
+      <ExpandMore
+        fontSize="small"
+        style={{
+          transform: expanded ? "rotate(0deg)" : "rotate(-90deg)",
+          transition: "transform 0.5s ease",
+        }}
+      />
       <BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>{text}</BoldTypography>
     </Button>
   );
@@ -64,7 +64,7 @@ export const TopStickyRow: FC<{
       style={{
         display: "inline-block",
         textAlign: "start",
-        minWidth: topStickyRowWidth,
+        minWidth: insideProgramPage ? topStickyRowWidthWithoutProgram : topStickyRowWidth,
         verticalAlign: "middle",
         position: "sticky",
         top: "0px",
@@ -78,7 +78,7 @@ export const TopStickyRow: FC<{
     >
       <div>
         <Cell item={<ExpandableButton minWidth={columnWidthMap[0]} text="申请人" />} width={columnWidthMap[0]} />
-        <Cell item={<ExpandableButton minWidth={columnWidthMap[1]} text="申请项目" />} width={columnWidthMap[1]} />
+        {insideProgramPage || <Cell item={<ExpandableButton minWidth={columnWidthMap[1]} text="申请项目" />} width={columnWidthMap[1]} />}
         <Cell item={<ExpandableButton minWidth={columnWidthMap[2]} text="申请结果" />} width={columnWidthMap[2]} />
         <Cell item={<ExpandableButton minWidth={columnWidthMap[3]} text="最终去向" />} width={columnWidthMap[3]} />
         <Cell item={<ExpandableButton minWidth={columnWidthMap[4]} text="申请季" />} width={columnWidthMap[4]} />
@@ -88,7 +88,7 @@ export const TopStickyRow: FC<{
         <Cell item={<BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>备注、补充说明等</BoldTypography>} width={columnWidthMap[8]} />
       </div>
       <div>
-        <Cell item={filterElem} width={topStickyRowWidth} />
+        <Cell item={filterElem} width={insideProgramPage ? topStickyRowWidthWithoutProgram : topStickyRowWidth} />
       </div>
     </div>
   );
@@ -180,13 +180,13 @@ const Cell: FC<{
 );
 
 /** One row in the table, rendering all the fields of a single RecordData. */
-const Row: FC<{ record: RecordData }> = ({ record }) => {
+const Row: FC<{ record: RecordData, hideProgramColumn: boolean }> = ({ record, hideProgramColumn }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="p-dropdown-item" style={{ minWidth: stickyHeaderWidth }}>
+    <div className="p-dropdown-item" style={{ minWidth: hideProgramColumn ? stickyHeaderWidthWithoutProgram : stickyHeaderWidth }}>
       <Cell item={applicantBodyTemplate(record, navigate)} width={columnWidthMap[0]}/>
-      <Cell item={programBodyTemplate(record, navigate)} width={columnWidthMap[1]}/>
+      {hideProgramColumn || <Cell item={programBodyTemplate(record, navigate)} width={columnWidthMap[1]}/>}
       <Cell item={statusBodyTemplate(record)} width={columnWidthMap[2]} />
       <Cell item={finalBodyTemplate(record)} width={columnWidthMap[3]} />
       <Cell item={semesterBodyTemplate(record)} width={columnWidthMap[4]} />
@@ -363,14 +363,15 @@ export const PlainTable: FC<{
         <StickyRow
           // key={`header-${r.ProgramID}-${Date.now()}`}
           record={r}
-          width={stickyHeaderWidth}
+          width={insideProgramPage ? stickyHeaderWidthWithoutProgram : stickyHeaderWidth}
         />
       );
     }
     // A row for this record
     resultJsx.push(<Row 
       // key={r.RecordID+Date.now()} 
-      record={r} 
+      record={r}
+      hideProgramColumn={insideProgramPage}
       />);
   });
 
@@ -378,7 +379,7 @@ export const PlainTable: FC<{
     <div
       style={{
         height: "100%",
-        width: "90rem",
+        width: insideProgramPage ? topStickyRowWidthWithoutProgram : topStickyRowWidth,
         overflowY: "scroll",
         overflowX: "hidden",
         scrollbarWidth: "none",
