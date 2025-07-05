@@ -252,6 +252,8 @@ function SearchFilter({ onFilterChange }) {
  * @constructor
  */
 export function DataGrid({records, insideProgramPage, style = {}}) {
+    console.log("DataGrid is rerendered")
+
     const theme = useTheme();
     const themeMap = {
         light: "/TableLight.css",
@@ -351,14 +353,9 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         return newRecords;
     }
 
-    // 组件加载时初始化过滤数据
-    useEffect(() => {
-        setFilteredRecords(records);
-    }, [records]);
-
     useEffect(() => {
         setSortedFilteredRecords(sortRecords(filteredRecords));
-    }, [filteredRecords, records])
+    }, [filteredRecords])
 
     return (
         <div className="data-grid-container">
