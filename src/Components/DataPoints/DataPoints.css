@@ -55,13 +55,12 @@
 /* 搜索结果指示器 */
 .search-results-indicator {
     background-color: rgba(128, 128, 128, 0.08);
-    padding: 8px 16px;
+    padding: 6px 16px;
     border-radius: 8px;
-    margin-top: 12px;
-    margin-bottom: 12px;
+    margin: 12px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     animation: fadeIn 0.3s ease;
 }
 

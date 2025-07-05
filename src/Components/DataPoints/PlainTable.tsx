@@ -69,7 +69,7 @@ export const TopStickyRow: FC<{
         position: "sticky",
         top: "0px",
         zIndex: 99,
-        height: expanded ? "150px" : "40px",
+        height: expanded ? "120px" : "40px",
         fontWeight: "bolder",
         transition: "height 0.5s ease",
         overflowY: "hidden",

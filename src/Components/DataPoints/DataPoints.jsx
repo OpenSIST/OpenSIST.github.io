@@ -251,30 +251,30 @@ function AdvancedSearchFilter({
             </div>
 
             {/* 搜索结果统计指示器 */}
-            {(
-                <div className="search-results-indicator">
-                    {filteredCount === totalCount ? (
-                        <BoldTypography variant="body2">
-                            正在显示全部 <b>{filteredCount}</b> 条记录
-                        </BoldTypography>
-                    ) : (
-                        <BoldTypography variant="body2">
-                            已找到 <b>{filteredCount}</b> 条记录 (共 {totalCount} 条)
-                        </BoldTypography>
-                    )}
-                    {filteredCount === 0 ? (
-                        <Button
-                            size="small"
-                            variant="outlined"
-                            color="primary"
-                            onClick={resetFilters}
-                            startIcon={<FilterAltOff/>}
-                        >
-                            清除过滤器
-                        </Button>
-                    ) : null}
-                </div>
-            )}
+            {
+                // <div className="search-results-indicator">
+                //     {filteredCount === totalCount ? (
+                //         <BoldTypography variant="body2">
+                //             总计 <b>{filteredCount}</b> 条记录
+                //         </BoldTypography>
+                //     ) : (
+                //         <BoldTypography variant="body2">
+                //             已找到 <b>{filteredCount}</b> 条记录 (共 {totalCount} 条)
+                //         </BoldTypography>
+                //     )}
+                //     {filteredCount === 0 ? (
+                //         <Button
+                //             size="small"
+                //             variant="outlined"
+                //             color="primary"
+                //             onClick={resetFilters}
+                //             startIcon={<FilterAltOff/>}
+                //         >
+                //             清除过滤器
+                //         </Button>
+                //     ) : null}
+                // </div>
+            }
         </>
     );
 }
@@ -597,7 +597,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     elevation={0}
                     sx={{
                         borderRadius: '12px',
-                        overflow: 'scroll',
+                        overflow: 'hidden',
                         maxWidth: '100%',
                         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                     }}
@@ -630,7 +630,21 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                             />
                         )}
                     </div>
+
                 </Paper>
+                {insideProgramPage || (
+                    <div className="search-results-indicator" style={{textAlign: 'center'}} >
+                        {filteredRecords.length === records.length ? (
+                            <BoldTypography variant="body2">
+                                总计 <b>{records.length}</b> 条记录
+                            </BoldTypography>
+                        ) : (
+                            <BoldTypography variant="body2">
+                                已找到 <b>{filteredRecords.length}</b> 条记录 (共 {records.length} 条)
+                            </BoldTypography>
+                        )}
+                    </div>
+                )}
                 {/*)}*/}
             </ThemeSwitcherProvider>
         </div>
