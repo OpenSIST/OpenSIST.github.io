@@ -112,21 +112,6 @@ function SearchFilter({ onFilterChange }) {
     const theme1 = useTheme();
     const isDark = theme1.palette.mode === 'dark';
 
-    const applicantRef = useRef()
-    const programRef = useRef()
-    const statusRef = useRef()
-    const finalRef = useRef()
-    const seasonRef = useRef()
-
-    // TODO: FIXME:
-    // const getCurrentFilters = () => ({
-    //     applicant: applicantRef.current.input?.value ?? applicantRef.current.value,
-    //     program:   programRef.current.input?.value   ?? programRef.current.value,
-    //     status:    statusRef.current.nativeElement?.firstChild?.firstChild?.lastChild?.textContent,
-    //     final:     finalRef.current.nativeElement?.firstChild?.firstChild?.lastChild?.textContent,
-    //     season:    seasonRef.current.input?.value    ?? seasonRef.current.value,
-    // })
-
     return (
         <div className="filter-container">
             {/* Using antd's Input and Select elements */}
@@ -135,7 +120,6 @@ function SearchFilter({ onFilterChange }) {
                 {/* 搜索申请人 */}
                 <Input
                     id="applicant"
-                    ref={applicantRef}
                     size="small"
                     placeholder="搜索申请人"
                     value={filters.applicant}
@@ -149,7 +133,6 @@ function SearchFilter({ onFilterChange }) {
                 {/* 搜索申请项目 */}
                 <Input
                     id="program"
-                    ref={programRef}
                     size="small"
                     placeholder="搜索申请项目"
                     value={filters.program}
@@ -163,7 +146,6 @@ function SearchFilter({ onFilterChange }) {
                 {/* 申请结果 */}
                 <Select
                     id="status"
-                    ref={statusRef}
                     size="small"
                     value={filters.status || ''}
                     onChange={value => handleFilterChange('status', value)}
@@ -185,7 +167,6 @@ function SearchFilter({ onFilterChange }) {
                 {/* 最终去向 */}
                 <Select
                     id="final"
-                    ref={finalRef}
                     size="small"
                     value={filters.final === null ? '' : filters.final ? 'true' : 'false'}
                     onChange={value => {
@@ -206,7 +187,6 @@ function SearchFilter({ onFilterChange }) {
                 {/* 搜索申请季 */}
                 <Input
                     id="season"
-                    ref={seasonRef}
                     size="small"
                     placeholder="搜索申请季"
                     value={filters.season}
@@ -252,8 +232,6 @@ function SearchFilter({ onFilterChange }) {
  * @constructor
  */
 export function DataGrid({records, insideProgramPage, style = {}}) {
-    console.log("DataGrid is rerendered")
-
     const theme = useTheme();
     const themeMap = {
         light: "/TableLight.css",
@@ -279,7 +257,6 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
     /** @param {Filter} filter */
     const handleSearch = (filter) => {
-        // console.log("handle search with filter: ", filter)
         setIsSearching(true)
 
         setTimeout(() => {
@@ -302,9 +279,8 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 return true;
             })
             setFilteredRecords(filteredRecords)
-
             setIsSearching(false)
-        })
+        }, 0)
     }
 
     /**
@@ -403,52 +379,18 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     )
 }
 
-function FloatingControls() {
-    const [showGuide, setShowGuide] = useState(false);
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-    // Add event listener to track window size changes
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
-    // Determine if we're on mobile
-    const isMobile = windowWidth <= 768;
-
-    const handleToggleGuide = () => {
-        setShowGuide(prev => !prev);
-    };
-
-    return (
-        <>
-            {/* Refresh FAB */}
-            <Form method="post">
-                <DraggableFAB
-                    Icon={<Refresh/>}
-                    ActionType="Refresh"
-                    ButtonClassName="HiddenRefreshButton"
-                    color="primary"
-                    style={{
-                        position: 'fixed',
-                        bottom: isMobile ? '20px' : '40px',
-                        right: isMobile ? '16px' : '20px',
-                        zIndex: 20,
-                        transform: isMobile ? 'scale(0.9)' : 'none',
-                    }}
-                    tooltipTitle="刷新表格"
-                />
-            </Form>
-        </>
-    );
-}
-
+const FloatingControls = () => (
+    /* Refresh FAB */
+    <Form method="post" className="refresh-button">
+        <DraggableFAB
+            Icon={<Refresh/>}
+            ActionType="Refresh"
+            ButtonClassName="HiddenRefreshButton"
+            color="primary"
+            tooltipTitle="刷新表格"
+        />
+    </Form>
+)
 
 export default function DataPoints() {
     const loaderRecords = useLoaderData();
@@ -463,16 +405,14 @@ export default function DataPoints() {
                 className="DataPointsContent"
                 sx={{
                     bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA",
-                    // padding: '12px',
                     display: 'flex',
                     flexDirection: 'column',
-                    // gap: '16px'
                 }}
             >
                 <DataGrid records={records} insideProgramPage={false}/>
                 <Outlet/>
+                <FloatingControls/>
             </Paper>
-            <FloatingControls/>
         </div>
     )
 }

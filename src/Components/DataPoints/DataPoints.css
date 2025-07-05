@@ -251,3 +251,16 @@
         padding-top: 6px;
     }
 }
+
+.refresh-button {
+    position: fixed;
+    z-index: 20;
+    bottom: 40px;
+    right: 20px;
+}
+
+@media (max-width: 768px) {
+    bottom: 20px;
+    right: 16px;
+    transform: scale(0.9);
+}
