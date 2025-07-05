@@ -65,7 +65,7 @@ export const TopStickyRow: FC<{
       style={{
         display: "inline-block",
         textAlign: "start",
-        minWidth: insideProgramPage ? topStickyRowWidthWithoutProgram : topStickyRowWidth,
+        width: insideProgramPage ? topStickyRowWidthWithoutProgram : topStickyRowWidth,
         verticalAlign: "middle",
         position: "sticky",
         top: "0px",
@@ -395,7 +395,7 @@ export const PlainTable: FC<{
       }}
     >
       {resultJsx}
-      <div style={{height: insideProgramPage ? '50px' : '150px'}}></div>
+      <div style={{height: insideProgramPage ? '0' : '50px'}}></div>
     </div>
   );
 };

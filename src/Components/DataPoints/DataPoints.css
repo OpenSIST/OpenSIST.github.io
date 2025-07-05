@@ -1,6 +1,6 @@
 .DataPointsContent {
     width: 100%;
-    margin: 10px;
+    margin-top: 10px;
     overflow-x: auto;
     user-select: text;
     height: calc(100% - 20px);
@@ -21,19 +21,6 @@
 .filter-container-wrapper {
     padding: 8px;
 }
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/*.filter-container {*/
-/*    display: flex;*/
-/*    flex-wrap: wrap;*/
-/*    gap: 16px;*/
-/*    align-items: flex-start;*/
-/*    padding-left: 8px;*/
-/*}*/
 
 /* 优化每个过滤器元素的宽度和样式 */
 .filter-container > .MuiTextField-root,
@@ -57,7 +44,7 @@
     background-color: rgba(128, 128, 128, 0.08);
     padding: 6px 16px;
     border-radius: 8px;
-    margin: 12px;
+    margin: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
