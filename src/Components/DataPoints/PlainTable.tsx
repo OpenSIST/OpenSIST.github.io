@@ -169,7 +169,7 @@ const Cell: FC<{
       textAlign: "start",
       width: width,
       verticalAlign: "middle",
-      marginTop: "5px",
+      marginTop: "6px",
       marginBottom: "6px",
       paddingLeft: "10px",
       ...style,
@@ -185,8 +185,8 @@ const Row: FC<{ record: RecordData }> = ({ record }) => {
 
   return (
     <div className="p-dropdown-item" style={{ minWidth: stickyHeaderWidth }}>
-      <Cell item={applicantBodyTemplate(record, navigate)} width={columnWidthMap[0]} />
-      <Cell item={programBodyTemplate(record, navigate)} width={columnWidthMap[1]} />
+      <Cell item={applicantBodyTemplate(record, navigate)} width={columnWidthMap[0]} style={{paddingTop: '7px'}} />
+      <Cell item={programBodyTemplate(record, navigate)} width={columnWidthMap[1]} style={{paddingTop: '7px'}} />
       <Cell item={statusBodyTemplate(record)} width={columnWidthMap[2]} />
       <Cell item={finalBodyTemplate(record)} width={columnWidthMap[3]} />
       <Cell item={semesterBodyTemplate(record)} width={columnWidthMap[4]} />
@@ -383,7 +383,7 @@ export const PlainTable: FC<{
       }}
     >
       {resultJsx}
-      {insideProgramPage || <div style={{ height: "150px" }}></div>}
+      <div style={{height: insideProgramPage ? '50px' : '150px'}}></div>
     </div>
   );
 };
