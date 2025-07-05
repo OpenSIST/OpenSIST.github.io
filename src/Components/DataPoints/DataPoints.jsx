@@ -112,6 +112,21 @@ function SearchFilter({ onFilterChange }) {
     const theme1 = useTheme();
     const isDark = theme1.palette.mode === 'dark';
 
+    const applicantRef = useRef()
+    const programRef = useRef()
+    const statusRef = useRef()
+    const finalRef = useRef()
+    const seasonRef = useRef()
+
+    // TODO: FIXME:
+    // const getCurrentFilters = () => ({
+    //     applicant: applicantRef.current.input?.value ?? applicantRef.current.value,
+    //     program:   programRef.current.input?.value   ?? programRef.current.value,
+    //     status:    statusRef.current.nativeElement?.firstChild?.firstChild?.lastChild?.textContent,
+    //     final:     finalRef.current.nativeElement?.firstChild?.firstChild?.lastChild?.textContent,
+    //     season:    seasonRef.current.input?.value    ?? seasonRef.current.value,
+    // })
+
     return (
         <div className="filter-container">
             {/* Using antd's Input and Select elements */}
@@ -120,6 +135,7 @@ function SearchFilter({ onFilterChange }) {
                 {/* 搜索申请人 */}
                 <Input
                     id="applicant"
+                    ref={applicantRef}
                     size="small"
                     placeholder="搜索申请人"
                     value={filters.applicant}
@@ -133,6 +149,7 @@ function SearchFilter({ onFilterChange }) {
                 {/* 搜索申请项目 */}
                 <Input
                     id="program"
+                    ref={programRef}
                     size="small"
                     placeholder="搜索申请项目"
                     value={filters.program}
@@ -146,6 +163,7 @@ function SearchFilter({ onFilterChange }) {
                 {/* 申请结果 */}
                 <Select
                     id="status"
+                    ref={statusRef}
                     size="small"
                     value={filters.status || ''}
                     onChange={value => handleFilterChange('status', value)}
@@ -167,6 +185,7 @@ function SearchFilter({ onFilterChange }) {
                 {/* 最终去向 */}
                 <Select
                     id="final"
+                    ref={finalRef}
                     size="small"
                     value={filters.final === null ? '' : filters.final ? 'true' : 'false'}
                     onChange={value => {
@@ -187,6 +206,7 @@ function SearchFilter({ onFilterChange }) {
                 {/* 搜索申请季 */}
                 <Input
                     id="season"
+                    ref={seasonRef}
                     size="small"
                     placeholder="搜索申请季"
                     value={filters.season}
@@ -246,193 +266,44 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     // 排序方式: 申请学期年份越大越靠前, 相同年份Fall比Spring靠前
     const [sortedFilteredRecords, setSortedFilteredRecords] = useState(records);
 
-    // 创建索引用于快速搜索 - 这是一种优化技术
-    const searchIndexes = useRef({
-        applicantIndex: new Map(),
-        programIndex: new Map(),
-        statusIndex: new Map(),
-        seasonIndex: new Map()
-    });
+    /**
+     * @typedef {Object} Filter
+     * @property {string} applicant
+     * @property {string} program
+     * @property {'Admit' | 'Reject' | 'Waitlist' | 'Defer' | ''} status
+     * @property {boolean | null} final
+     * @property {string} season
+     */
 
-    // 创建搜索结果缓存
-    const searchCache = useRef(new Map());
+    /** @param {Filter} filter */
+    const handleSearch = (filter) => {
+        // console.log("handle search with filter: ", filter)
+        setIsSearching(true)
 
-    // 构建搜索索引以加速搜索
-    useEffect(() => {
-        // 重置缓存，因为数据已更改
-        searchCache.current.clear();
-
-        // 创建新索引
-        const newApplicantIndex = new Map();
-        const newProgramIndex = new Map();
-        const newStatusIndex = new Map();
-        const newSeasonIndex = new Map();
-
-        records.forEach((record, idx) => {
-            // 索引申请人
-            const applicantKey = record.ApplicantID.toLowerCase();
-            if (!newApplicantIndex.has(applicantKey)) {
-                newApplicantIndex.set(applicantKey, []);
-            }
-            newApplicantIndex.get(applicantKey).push(idx);
-
-            // 索引项目
-            const programKey = record.ProgramID.toLowerCase();
-            if (!newProgramIndex.has(programKey)) {
-                newProgramIndex.set(programKey, []);
-            }
-            newProgramIndex.get(programKey).push(idx);
-
-            // 索引状态
-            const statusKey = record.Status;
-            if (!newStatusIndex.has(statusKey)) {
-                newStatusIndex.set(statusKey, []);
-            }
-            newStatusIndex.get(statusKey).push(idx);
-
-            // 索引申请季
-            const seasonKey = `${record.ProgramYear} ${record.Semester}`.toLowerCase();
-            if (!newSeasonIndex.has(seasonKey)) {
-                newSeasonIndex.set(seasonKey, []);
-            }
-            newSeasonIndex.get(seasonKey).push(idx);
-        });
-
-        searchIndexes.current = {
-            applicantIndex: newApplicantIndex,
-            programIndex: newProgramIndex,
-            statusIndex: newStatusIndex,
-            seasonIndex: newSeasonIndex
-        };
-
-        setFilteredRecords(records);
-    }, [records]);
-
-    // 处理过滤结果的回调 - 使用索引和缓存提升性能
-    const handleFilterChange = useCallback((newFilteredRecords) => {
-        setIsSearching(true);
-        // 使用批处理和异步处理来避免UI阻塞
         setTimeout(() => {
-            setFilteredRecords(newFilteredRecords);
-            setIsSearching(false);
-        }, 0);
-    }, []);
-
-    // 高级搜索处理函数 - 使用索引加速搜索
-    const handleAdvancedSearch = useCallback((filters) => {
-        // 创建缓存键
-        const cacheKey = JSON.stringify(filters);
-
-        // 检查缓存
-        if (searchCache.current.has(cacheKey)) {
-            handleFilterChange(searchCache.current.get(cacheKey));
-            return;
-        }
-
-        // 如果是空过滤器，则显示所有记录
-        if (!filters.applicant && !filters.program && !filters.status &&
-            filters.final === null && !filters.season) {
-            handleFilterChange(records);
-            return;
-        }
-
-        // 使用批处理处理搜索
-        setIsSearching(true);
-
-        // 异步处理搜索以避免UI阻塞
-        setTimeout(() => {
-            // 预处理可能的匹配索引
-            let potentialMatches;
-
-            // 尝试用最具体的过滤器开始，以尽快缩小搜索范围
-            if (filters.status) {
-                // 状态过滤是精确匹配，开始效率较高
-                potentialMatches = searchIndexes.current.statusIndex.get(filters.status) || [];
-            } else if (filters.final !== null) {
-                // Final是布尔值，需要全表扫描，但可以提前筛选部分
-                potentialMatches = Array.from({length: records.length}, (_, i) => i)
-                    .filter(idx => records[idx].Final === filters.final);
-            } else if (filters.applicant) {
-                // 找出可能包含搜索词的所有申请人
-                const applicantSearchKey = filters.applicant.toLowerCase();
-                potentialMatches = [];
-
-                // 增量搜索 - 找出所有可能匹配的记录索引
-                searchIndexes.current.applicantIndex.forEach((indexes, key) => {
-                    if (key.includes(applicantSearchKey)) {
-                        potentialMatches.push(...indexes);
-                    }
-                });
-            } else if (filters.program) {
-                // 找出可能包含搜索词的所有项目
-                const programSearchKey = filters.program.toLowerCase();
-                potentialMatches = [];
-
-                searchIndexes.current.programIndex.forEach((indexes, key) => {
-                    if (key.includes(programSearchKey)) {
-                        potentialMatches.push(...indexes);
-                    }
-                });
-            } else if (filters.season) {
-                // 找出可能包含搜索词的所有申请季
-                const seasonSearchKey = filters.season.toLowerCase();
-                potentialMatches = [];
-
-                searchIndexes.current.seasonIndex.forEach((indexes, key) => {
-                    if (key.includes(seasonSearchKey)) {
-                        potentialMatches.push(...indexes);
-                    }
-                });
-            } else {
-                // 没有过滤器，使用所有记录
-                potentialMatches = Array.from({length: records.length}, (_, i) => i);
-            }
-
-            // 应用其他过滤器进一步筛选结果
-            const filteredIndexes = potentialMatches.filter(idx => {
-                const record = records[idx];
-
-                // 筛选申请人
-                if (filters.applicant &&
-                    !record.ApplicantID.toLowerCase().includes(filters.applicant.toLowerCase())) {
+            const filteredRecords = records.filter((record) => {
+                // status和final这两项是精确匹配
+                if (filter.status && record.Status !== filter.status)
+                    return false;
+                if (filter.final && record.Final !== filter.final)
+                    return false;
+                // applicant, program, season 这三项是"字符串包含"匹配
+                if (filter.applicant && !record.ApplicantID.toLowerCase().includes(filter.applicant.toLowerCase()))
+                    return false;
+                if (filter.program && !record.ProgramID.toLowerCase().includes(filter.program.toLowerCase()))
+                    return false;
+                if (filter.season &&
+                    // 这么写是为了让 "2023Fall" 和 "2023 Fall" (注意空格)等多种输入格式都能得到匹配
+                    !(`${record.Season} ${record.ProgramYear}${record.Semester}`).toLowerCase().includes(filter.season.toLowerCase())) {
                     return false;
                 }
-
-                // 筛选项目
-                if (filters.program &&
-                    !record.ProgramID.toLowerCase().includes(filters.program.toLowerCase())) {
-                    return false;
-                }
-
-                // 筛选状态
-                if (filters.status && record.Status !== filters.status) {
-                    return false;
-                }
-
-                // 筛选最终去向
-                if (filters.final !== null && record.Final !== filters.final) {
-                    return false;
-                }
-
-                // 筛选申请季
-                if (filters.season &&
-                    !(`${record.ProgramYear} ${record.Semester}`).toLowerCase().includes(filters.season.toLowerCase())) {
-                    return false;
-                }
-
                 return true;
-            });
+            })
+            setFilteredRecords(filteredRecords)
 
-            // 根据索引获取记录
-            const finalFilteredRecords = filteredIndexes.map(idx => records[idx]);
-
-            // 存入缓存
-            searchCache.current.set(cacheKey, finalFilteredRecords);
-
-            // 更新UI
-            handleFilterChange(finalFilteredRecords);
-        }, 0);
-    }, [records, handleFilterChange]);
+            setIsSearching(false)
+        })
+    }
 
     /**
      * 将records按照申请季排序. 年份越大越靠前, 相同年份Fall比Spring靠前
@@ -451,15 +322,9 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
 
         const semesterNum = (semester) => {
             switch (semester) {
-                case "Fall": {
-                    return 2
-                }
-                case "Spring": {
-                    return 1
-                }
-                default: {
-                    return 0
-                }
+                case "Fall": { return 2 }
+                case "Spring": { return 1 }
+                default: { return 0 }
             }
         }
 
@@ -511,7 +376,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                         overflowY: 'hidden',
                     }}>
                         <TopStickyRow
-                            filterElem={insideProgramPage || <SearchFilter onFilterChange={handleAdvancedSearch}/>}
+                            filterElem={insideProgramPage || <SearchFilter onFilterChange={handleSearch}/>}
                             insideProgramPage={insideProgramPage}
                         />
                         {isSearching ? (
