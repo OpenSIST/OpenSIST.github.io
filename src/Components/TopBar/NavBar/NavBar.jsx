@@ -29,9 +29,6 @@ export default function NavBar() {
             name: "首页",
             path: "/",
         }, {
-            name: "使用指南",
-            path: "/how-to-use",
-        }, {
             name: "申请季数据汇总",
             path: "/datapoints",
         }, {

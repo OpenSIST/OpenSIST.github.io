@@ -215,11 +215,8 @@ function WelcomeBlock() {
                 [![GitHub Repo
                 stars](https://img.shields.io/github/stars/opensist/opensist.github.io?style=social)](https://github.com/opensist/opensist.github.io)
             </ReactMarkdown>
-            <Button variant='contained' component={Link} to='/how-to-use'>
-                使用指南
-            </Button>
-            <Button variant='outlined' component={Link} to='https://qm.qq.com/q/U1QvSyE6u6'
-                    sx={{ml: '1rem', textTransform: 'none'}}>
+            <Button variant='contained' component={Link} to='https://qm.qq.com/q/U1QvSyE6u6'
+                    sx={{textTransform: 'none'}}>
                 OpenSIST QQ群
             </Button>
         </Box>

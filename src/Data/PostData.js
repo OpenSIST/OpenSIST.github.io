@@ -1,44 +1,22 @@
 import localforage from "localforage";
-import {ADD_POST, GET_POST_CONTENT, MODIFY_POST, POST_LIST, REMOVE_POST} from "../APIs/APIs";
+import {GET_CONTENT_API, LIST_POSTS_API, CREATE_POST_API, MODIFY_CONTENT_API, DELETE_CONTENT_API} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
-import {getApplicant, getApplicants, setApplicant} from "./ApplicantData";
 
-const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
+// const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 
 export async function getPosts(isRefresh = false, query = {}) {
-    const applicants = await getApplicants(isRefresh);
-    let posts = await localforage.getItem('posts');
-    if (isRefresh || posts === null || (Date.now() - posts.Date) > CACHE_EXPIRATION) {
-        const response = await fetch(POST_LIST, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-        });
-        await handleErrors(response);
-        posts = await response.json();
-        posts['data'] = posts['data'].map((post) => {
-            const applicant = applicants.find((applicant) => applicant?.Posts?.includes(post.PostID));
-            if (applicant) {
-                post.Author = applicant.ApplicantID;
-            }
-            return post;
-        });
-        // TODO: potential problem of asynchronized cache
-        await setPosts(posts['data']);
-    }
-    posts['data'] = posts['data'].sort((a, b) => new Date(b.modified) - new Date(a.modified));
-    posts['data'] = posts['data'].filter((post) => {
-        return (post.Title.toLowerCase().includes(query.searchStr?.toLowerCase() ?? '') || post.Author.toLowerCase().includes(query.searchStr?.toLowerCase() ?? ''));
+    const response = await fetch(LIST_POSTS_API, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
     });
-    return posts['data'];
-}
+    
+    await handleErrors(response);
+    const posts = await response.json();
 
-export async function setPosts(posts) {
-    if (!posts) {
-        return;
-    }
-    posts = {'data': posts, 'Date': Date.now()};
-    await localforage.setItem('posts', posts);
+    posts['posts'] = posts['posts'].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+
+    return posts['posts'];
 }
 
 export async function getPost(postId, isRefresh = false) {
@@ -46,123 +24,126 @@ export async function getPost(postId, isRefresh = false) {
     if (!posts) {
         throw new Error('Post not found');
     }
-    return posts.find((post) => post.PostID === postId);
-}
-
-export async function setPost(post) {
-    if (!post) {
-        return;
-    }
-    const posts = await getPosts();
-    const index = posts.findIndex((p) => p.PostID === post.PostID);
-    if (index !== -1) {
-        posts[index] = post;
-    } else {
-        posts.push(post);
-    }
-    await setPosts(posts);
+    return posts.find((post) => post.id.toString() === postId);
 }
 
 export async function getPostContent(postId, isRefresh = false) {
-    let postContent = await localforage.getItem(`${postId}-Content`);
-    if (isRefresh || postContent === null || (Date.now() - postContent.Date) > CACHE_EXPIRATION) {
-        const response = await fetch(GET_POST_CONTENT, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-            body: JSON.stringify({PostID: postId}),
-        });
-        try {
-            await handleErrors(response);
-        } catch (e) {
-            if (e.status === 404) {
-                await getPosts(true);
-            }
-            throw e;
+    const response = await fetch(GET_CONTENT_API, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
+        body: JSON.stringify({postId}),
+    });
+    try {
+        await handleErrors(response);
+    } catch (e) {
+        if (e.status === 404) {
+            await getPosts(true);
         }
-        postContent = await response.json();
-        await setPostContent(postId, postContent['content']);
+        throw e;
     }
-    return postContent['content'];
-}
+    const postContent = await response.json();
 
-export async function setPostContent(postId, content) {
-    if (!content) {
-        return;
-    }
-    content = {'content': content, 'Date': Date.now()};
-    await localforage.setItem(`${postId}-Content`, content);
+    return postContent['post']['content'];
 }
 
 export async function getPostObject(postId, isRefresh = false) {
     const post = await getPost(postId, isRefresh);
     const content = await getPostContent(postId, isRefresh);
+    
+    if (!post || !content) {
+        throw new Error("Post or content not found");
+    }
+    
     return {
         ...post,
-        Content: content,
+        content: content,
     };
 }
 
-export async function setPostObject(postObj) {
-    if (!postObj) {
-        return;
-    }
-    await setPostContent(postObj.PostID, postObj.Content);
-    delete postObj.Content;
-    await setPost(postObj)
-}
-
+/**
+ * Removes a post
+ */
 export async function removePost(postId, author) {
-    const response = await fetch(REMOVE_POST, {
-        method: 'POST',
-        credentials: 'include',
-        headers: await headerGenerator(true),
-        body: JSON.stringify({PostID: postId}),
-    });
-    await handleErrors(response);
-    await deletePostContent(postId);
-    const applicant = await getApplicant(author);
-    applicant.Posts = applicant.Posts.filter((post) => post !== postId);
-    await setApplicant(applicant);
-    const posts = await getPosts();
-    await setPosts(posts.filter((post) => post.PostID !== postId));
-}
+    const API = DELETE_CONTENT_API;
+    const requestBody = {
+        contentId: postId.toString()
+    };
 
-export async function deletePostContent(postId) {
-    await localforage.removeItem(`${postId}-Content`);
-}
-
-export async function addModifyPost(requestBody, type) {
-    const API = type === 'new' ? ADD_POST : MODIFY_POST;
     const response = await fetch(API, {
         method: 'POST',
         credentials: 'include',
         headers: await headerGenerator(true),
         body: JSON.stringify(requestBody),
     });
+
     await handleErrors(response);
-    if (type === 'new') {
-        const postId = (await response.json()).PostID;
-        const postObj = {
-            Title: requestBody.content.Title,
-            PostID: postId,
-            Author: requestBody.ApplicantID,
-            type: requestBody.content.type,
-            created: Date.now(),
-            modified: Date.now()
-        };
-        await setPostObject(postObj);
-        const applicant = await getApplicant(postObj.Author);
-        if (!applicant.Posts) {
-            applicant.Posts = [];
+
+    try {
+        const result = await response.json();
+        if (!result.success) {
+            throw new Error(result.error || `API request failed for delete post.`);
         }
-        applicant.Posts.push(postId);
-        await setApplicant(applicant);
-    } else if (type === 'edit') {
-        let postObj = await getPostObject(requestBody.PostID);
-        postObj.Title = requestBody.content.Title;
-        postObj.Content = requestBody.content.Content;
-        postObj.modified = Date.now();
-        await setPostObject(postObj);
+    } catch (e) {
+        if (!response.ok) {
+            throw new Error(`API request failed for delete post with status ${response.status}`);
+        }
     }
+
+    await getPosts(true);
+    await localforage.removeItem(`${postId}-Content`);
+}
+
+export async function deletePostContent(postId) {
+    await localforage.removeItem(`${postId}-Content`);
+}
+
+/**
+ * Adds a new post or modifies an existing one
+ */
+export async function addModifyPost(requestData, type) {
+    let API;
+    let requestBody;
+    const headers = await headerGenerator(true);
+
+    if (type === 'new') {
+        API = CREATE_POST_API;
+        requestBody = {
+            title: requestData.content.Title,
+            content: requestData.content.Content,
+            tags: []
+        };
+    } else if (type === 'edit') {
+        API = MODIFY_CONTENT_API;
+        requestBody = {
+            contentId: requestData.PostID.toString(),
+            title: requestData.content.Title,
+            content: requestData.content.Content,
+            tags: null
+        };
+    } else {
+        throw new Error(`Invalid type specified for addModifyPost: ${type}`);
+    }
+
+    const response = await fetch(API, {
+        method: 'POST',
+        credentials: 'include',
+        headers: headers,
+        body: JSON.stringify(requestBody),
+    });
+
+    await handleErrors(response);
+
+    try {
+        const result = await response.json();
+        if (!result.success) {
+            throw new Error(result.error || `API request failed for ${type} post.`);
+        }
+    } catch (e) {
+        if (!response.ok) {
+            throw new Error(`API request failed for ${type} post with status ${response.status}`);
+        }
+    }
+
+    await getPosts(true);
 }

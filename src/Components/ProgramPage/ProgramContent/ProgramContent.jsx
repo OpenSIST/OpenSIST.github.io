@@ -75,34 +75,64 @@ function ProgramContent({editable = true, inDialog=false}) {
                     </IconButton>}
                 </div>
             </Box>
-            <Paper sx={{p: '1.5rem', height: '100%', overflowY: 'auto'}}>
-                <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    className='ProgramDescription'
-                >
-                    {programContent.description}
-                </ReactMarkdown>
-            </Paper>
-            {editable && <>
-                <DataGrid records={records} style={{padding: '1rem 0 1rem 0', height: '100%'}}
-                          insideProgramPage={true}/>
-                <DraggableFAB
-                    Icon={<AddRounded/>}
-                    ActionType="AddRecord"
-                    ButtonClassName="HiddenAddButton"
-                    color="primary"
-                    onClick={() => {
-                        navigate(`/profile/new-record`, {
-                            state: {
-                                programID: programContent.ProgramID,
-                                from: window.location.pathname
-                            }
-                        });
-                    }}
-                    style={{position: 'absolute', bottom: '20%', right: '1rem'}}
-                    tooltipTitle="添加记录"
-                />
-            </>}
+            
+            <Box sx={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                height: '100%',
+                overflow: 'hidden' 
+            }}>
+                <Paper sx={{
+                    p: '1.5rem', 
+                    height: '48%', 
+                    overflowY: 'auto',
+                    marginBottom: '1rem'
+                }}>
+                    <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        className='ProgramDescription'
+                    >
+                        {programContent.description}
+                    </ReactMarkdown>
+                </Paper>
+                
+                {editable && 
+                    <Box sx={{ 
+                        height: '48%', 
+                        position: 'relative',
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
+                        <DataGrid 
+                            records={records} 
+                            style={{
+                                padding: '0',
+                                flex: 1,
+                                minHeight: 0,
+                                display: 'flex',
+                                flexDirection: 'column'
+                            }}
+                            insideProgramPage={true}
+                        />
+                        <DraggableFAB
+                            Icon={<AddRounded/>}
+                            ActionType="AddRecord"
+                            ButtonClassName="HiddenAddButton"
+                            color="primary"
+                            onClick={() => {
+                                navigate(`/profile/new-record`, {
+                                    state: {
+                                        programID: programContent.ProgramID,
+                                        from: window.location.pathname
+                                    }
+                                });
+                            }}
+                            style={{position: 'absolute', bottom: '20px', right: '20px'}}
+                            tooltipTitle="添加记录"
+                        />
+                    </Box>
+                }
+            </Box>
         </>
     );
 }

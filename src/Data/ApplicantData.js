@@ -183,8 +183,12 @@ export async function isAuthApplicant(applicantId) {
     * @return: [Boolean]: whether the user is authorized to access the applicant
     */
     if (!applicantId) {
+        // console.log("[isAuthApplicant] Received null or empty applicantId.");
         return false;
     }
     const displayName = await getDisplayName();
-    return applicantId.split('@')[0] === displayName;
+    const applicantUsername = applicantId.split('@')[0];
+    const isMatch = applicantUsername === displayName;
+    // console.log(`[isAuthApplicant] Checking: applicantId='${applicantId}', applicantUsername='${applicantUsername}', currentDisplayName='${displayName}', isMatch=${isMatch}`);
+    return isMatch;
 }

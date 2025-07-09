@@ -1,5 +1,5 @@
 import {Form, Link, redirect, useLoaderData, useNavigate} from "react-router-dom";
-import {Button, ButtonGroup, FormControl, MenuItem, TextField, Typography,} from "@mui/material";
+import {Button, ButtonGroup, FormControl, MenuItem, TextField, Typography, useTheme} from "@mui/material";
 import React, {useState} from "react";
 import MarkDownEditor from "../Program/MarkDownEditor/MarkDownEditor";
 import {addModifyPost, getPostObject} from "../../../Data/PostData";
@@ -10,10 +10,11 @@ import {list2Options} from "../../../Data/Schemas";
 export async function loader({params}) {
     const postId = params?.postId;
     const postObj = postId ? await getPostObject(postId) : null;
-    const isAuth = await isAuthApplicant(postObj?.Author);
+    // console.log("postObj", postObj)
+    const isAuth = await isAuthApplicant(postObj?.author);
     if (!isAuth && postObj) {
         await getApplicants(true);
-        const doubleCheck = await isAuthApplicant(postObj?.Author);
+        const doubleCheck = await isAuthApplicant(postObj?.author);
         if (!doubleCheck) {
             // We can guarantee that the user is not authorized to view the profile page.
             throw new Error(`Sorry, you are not authorized to edit this post.`);
@@ -41,8 +42,14 @@ export async function action({request, params}) {
     } else if (ActionType === 'edit') {
         requestBody.PostID = params.postId;
     }
-    await addModifyPost(requestBody, ActionType);
-    return redirect("/posts");
+    
+    try {
+        await addModifyPost(requestBody, ActionType);
+        return redirect("/posts");
+    } catch (error) {
+        console.error("Error in post action:", error);
+        throw error;
+    }
 }
 
 export default function AddModifyPost({type}) {
@@ -51,9 +58,12 @@ export default function AddModifyPost({type}) {
     const loaderData = useLoaderData();
     const postObj = loaderData?.postObj;
     const authorOption = loaderData?.authorOption;
-    const [title, setTitle] = useState(postObj?.Title ?? "");
-    const [author, setAuthor] = useState(authorOption.find((author => author.value === postObj?.Author)) ?? null);
-    const [content, setContent] = useState(postObj?.Content ?? "");
+    const [title, setTitle] = useState(postObj?.title ?? "");
+    const [author, setAuthor] = useState(authorOption.find((author => author.value === postObj?.author)) ?? null);
+    const [content, setContent] = useState(postObj?.content ?? "");
+    const theme = useTheme();
+    const darkMode = theme.palette.mode === 'dark';
+
     return (
         <Form method='post' style={{display: 'flex', flexDirection: 'column', height: "100%", gap: "1rem"}}>
             <Typography variant="h4" sx={{alignSelf: 'center'}}>{mode}文章</Typography>
@@ -77,7 +87,7 @@ export default function AddModifyPost({type}) {
                                 {...params}
                                 label={"作者" + (type === "edit" ? "（不可更改）" : "")}
                                 variant="standard" required
-                                helperText={<Link to={`/profile/new-applicant`}>暂无申请人选项？点击添加</Link>}
+                                helperText={type === "new" ? <Link to={`/profile/new-applicant`}>暂无申请人选项？点击添加</Link> : null}
                             />
                             <TextField sx={{display: "none"}} name="Author" value={author?.value || ""}/>
                         </>
@@ -92,11 +102,15 @@ export default function AddModifyPost({type}) {
                     ))}
                 </Autocomplete>
             </FormControl>
-            <MarkDownEditor Description={content} setDescription={setContent}/>
+            <MarkDownEditor 
+                Description={content} 
+                setDescription={setContent} 
+                darkMode={darkMode}
+            />
             <textarea name="Content" hidden={true} value={content} readOnly/>
             <ButtonGroup>
                 <Button type="submit" name="ActionType" value={type}> 提交 </Button>
-                <Button onClick={() => navigate("..")}> 取消 </Button>
+                <Button onClick={() => navigate(-1)}> 取消 </Button>
             </ButtonGroup>
         </Form>
     )

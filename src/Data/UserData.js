@@ -16,7 +16,7 @@ import {blobToBase64, emptyCache, handleErrors, headerGenerator} from "./Common"
 import {useState} from "react";
 import {getApplicants, setApplicants} from "./ApplicantData";
 import {getRecordByApplicant, setRecord} from "./RecordData";
-import {getPosts, setPosts} from "./PostData";
+import {getPosts} from "./PostData";
 
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 // const CACHE_EXPIRATION = 1; // 10 min
@@ -34,11 +34,8 @@ export async function login(email, password) {
         alert(`${content.error}, Error code: ${response.status}`)
         return redirect("/login");
     } else {
-        let data = await (await response).json();
         const user_info = {
-            user: username,
-            session: data.token,
-            expireAt: data.expireAt,
+            user: username
         }
         await setUserInfo(user_info);
         return redirect("/");
@@ -163,6 +160,12 @@ export async function setAvatar(avatar, displayName = null) {
     await localforage.setItem(`${displayName}-avatar`, avatar);
 }
 
+/**
+ * Get applicant metadata
+ * @param {string} displayName - The display name of the applicant
+ * @param {boolean} isRefresh - Whether to refresh cache
+ * @returns {Promise<object>} - A promise resolving to metadata with Avatar and latestYear
+ */
 export async function getMetaData(displayName = null, isRefresh = false) {
     /*
     * Get the user metadata from the server or local storage
@@ -187,7 +190,64 @@ export async function getMetaData(displayName = null, isRefresh = false) {
         metadata = await response.json();
         await setMetaData(metadata['result'], displayName);
     }
+    
+    // Add latestYear to metadata before returning
+    try {
+        const latestYear = await findLatestYearForApplicant(displayName);
+        metadata['result'] = {
+            ...metadata['result'],
+            latestYear
+        };
+    } catch (error) {
+        console.error("Error finding latest year:", error);
+        // Continue even if finding latest year fails
+    }
+    
     return metadata['result'];
+}
+
+/**
+ * Find the latest year with data for a given applicant
+ * @param {string} displayName - The display name of the applicant
+ * @returns {Promise<number|null>} - Latest year or null if no data found
+ */
+async function findLatestYearForApplicant(displayName) {
+    try {
+        // Get the user's metadata which should contain ApplicantIDs
+        const metadata = await localforage.getItem(`${displayName}-metadata`);
+        
+        if (!metadata || !metadata.result || !metadata.result.ApplicantIDs) {
+            return [];
+        }
+        
+        const applicantIDs = metadata.result.ApplicantIDs.filter(Boolean);
+        
+        if (applicantIDs.length === 0) {
+            return [];
+        }
+        
+        // Extract years from ApplicantIDs which should be in format displayName@year
+        const validYears = applicantIDs
+            .map(id => {
+                // Extract the part after @ which should be the year
+                const parts = id.split('@');
+                if (parts.length > 1) {
+                    return parseInt(parts[1], 10);
+                }
+                return null;
+            })
+            .filter(Boolean); // Filter out any null results from invalid formats
+        
+        if (validYears.length === 0) {
+            return [];
+        }
+        
+        // Return the most recent year
+        return Math.max(...validYears);
+    } catch (error) {
+        console.error("Error finding latest year for applicant:", error);
+        return null;
+    }
 }
 
 export async function setMetaData(metadata, displayName = null) {
@@ -241,7 +301,6 @@ export async function toggleAnonymous() {
     let ori_applicant_records = await Promise.all(ori_applicants.map(async (applicant) => {
         return await getRecordByApplicant(applicant);
     }))
-    let ori_posts = await getPosts();
 
     const response = await fetch(TOGGLE_NICKNAME, {
         method: 'POST',
@@ -278,13 +337,6 @@ export async function toggleAnonymous() {
             await setRecord(content);
         }))
     }))
-    const new_posts = ori_posts.map((post) => {
-        if (post?.Author?.split("@")[0] === ori_displayName) {
-            post.Author = `${displayName}@${post.Author.split('@')[1]}`;
-        }
-        return post;
-    })
-    await setPosts(new_posts);
 
 }
 

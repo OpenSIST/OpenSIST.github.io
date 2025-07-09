@@ -14,6 +14,7 @@ import {getDisplayName} from "../../../Data/UserData";
 import {getPrograms} from "../../../Data/ProgramData";
 import {blobToBase64} from "../../../Data/Common";
 import {addModifyPost, getPostObject, removePost} from "../../../Data/PostData";
+import {addModifyFile, getFileObject, removeFile} from "../../../Data/FileData";
 
 export async function loader({params}) {
     let programs = await getPrograms();
@@ -26,9 +27,9 @@ export async function loader({params}) {
         if (applicant.Posts && applicant.Posts.length > 0) {
             for (const postId of applicant.Posts) {
                 if (postId.startsWith("CV")) {
-                    cvPost = await getPostObject(postId);
+                    cvPost = await getFileObject(postId);
                 } else if (postId.startsWith("SoP")) {
-                    sopPost = await getPostObject(postId);
+                    sopPost = await getFileObject(postId);
                 }
             }
         }
@@ -182,12 +183,12 @@ export async function action({request}) {
                 return;
             }
             const requestBody = PDFEditRequestBody(type, postID, pdfContent, title);
-            await addModifyPost(requestBody, 'edit');
+            await addModifyFile(requestBody, 'edit');
         } else if (Posts.includes(postID) && !title) {
-            await removePost(postID, ApplicantID);
+            await removeFile(postID, ApplicantID);
         } else if (!Posts.includes(postID) && title) {
             const requestBody = PDFNewRequestBody(type, pdfContent, title);
-            await addModifyPost(requestBody, 'new');
+            await addModifyFile(requestBody, 'new');
         }
     }
 

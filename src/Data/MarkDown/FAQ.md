@@ -22,6 +22,7 @@
 ##### 网站/申请相关
 > - dp: datapoints
 > - IE: 信息学院的研究生专业，全称Information Engineering
+> - SCA: 创意与艺术学院的简称，全称School of Creativity and Art
 > - AD: Admission
 > - Rej: Rejection
 > - PoI: Professor of Interest
