@@ -62,7 +62,7 @@ const ProgramCard = ({ program }) => {
                 }}
                 onClick={() =>
                     navigate(
-                        `/favorites/${program.ProgramID}${window.location.search}`
+                        `/favorites/${encodeURIComponent(program.ProgramID)}${window.location.search}`
                     )
                 }
             >
