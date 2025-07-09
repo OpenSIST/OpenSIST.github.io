@@ -47,7 +47,7 @@ export async function action({request}) {
         }
     };
     await addModifyProgram(requestBody);
-    return redirect(`/programs/${ProgramID}`)
+    return redirect(`/programs/${encodeURIComponent(ProgramID)}`)
 }
 
 export default function AddModifyProgram({type}) {
