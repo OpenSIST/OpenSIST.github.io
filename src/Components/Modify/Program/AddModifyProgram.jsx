@@ -60,7 +60,7 @@ export default function AddModifyProgram({type}) {
     const [univ, setUniv] = useState(univOptions.find((univ) => univ.value === programContent?.University) ?? null);
     const [major, setMajor] = useState(majorOptions.filter((m) => programContent?.TargetApplicantMajor.includes(m.value)) ?? []);
     const [programName, setProgramName] = useState(programContent?.Program ?? '');
-    const programNameInvalid = ['@', '|', '/', '$', '\\', '?', '!'].some(char => programName.includes(char));
+    // const programNameInvalid = ['@', '|', '/', '$', '\\', '?', '!'].some(char => programName.includes(char));
     return (
         <Form method="post"
               style={{display: 'flex', flexDirection: 'column', height: "100%"}}
@@ -105,8 +105,8 @@ export default function AddModifyProgram({type}) {
                     label={"项目名称" + (AddMode ? "" : " (不可修改)")}
                     value={programName}
                     onChange={(event) => setProgramName(event.target.value)}
-                    error={programNameInvalid}
-                    helperText={programNameInvalid ? "项目名称中不可包含@, |, /, \\, ?, !, $，如果必须要使用'/'字符，请用'&'代替" : ""}
+                    // error={programNameInvalid}
+                    // helperText={programNameInvalid ? "项目名称中不可包含@, |, /, \\, ?, !, $，如果必须要使用'/'字符，请用'&'代替" : ""}
                     placeholder="硕士写简称 (e.g. MSCS)，博士要加院系 (e.g. EECS PhD)"
                     sx={AddMode ? {} : {color: 'gray', cursor: 'not-allowed', pointerEvents: 'none'}}
                     fullWidth
@@ -194,7 +194,8 @@ export default function AddModifyProgram({type}) {
             <MarkDownEditor Description={Description} setDescription={setDescription}/>
             <textarea id='Description' name='Description' hidden={true} value={Description} readOnly/>
             <ButtonGroup sx={{mt: '1vh'}}>
-                <Button type="submit" disabled={programNameInvalid}> 提交 </Button>
+                {/*<Button type="submit" disabled={programNameInvalid}> 提交 </Button>*/}
+                <Button type="submit"> 提交 </Button>
                 <Button onClick={() => navigate("..")}> 取消 </Button>
             </ButtonGroup>
         </Form>
