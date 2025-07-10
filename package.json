@@ -51,7 +51,7 @@
     "start:alpha": "dotenv -e env/local -e env/alpha -- react-scripts start",
     "start:beta": "dotenv -e env/local -e env/beta -- react-scripts start",
     "build": "CI=false react-scripts build",
-    "build:alpha": "dotenv -e env/alpha -- CI=false react-scripts build"
+    "build:alpha": "dotenv -e env/alpha -- cross-env CI=false react-scripts build"
   },
   "eslintConfig": {
     "extends": [
@@ -73,6 +73,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "7.21.0",
+    "cross-env": "^7.0.3",
     "dotenv-cli": "^8.0.0",
     "webpack": "5.94.0"
   }
