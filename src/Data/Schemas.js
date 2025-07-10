@@ -66,7 +66,7 @@ export const currentDegreeMapping = {
 }
 export const currentDegreeOptions = dict2Options(currentDegreeMapping);
 
-export const applicationYearOptions = Array.from({length: 10}, (_, i) => {
+export const applicationYearOptions = Array.from({length: 12}, (_, i) => {
     const year = 2016 + i;
     return {value: year, label: `${year}`};
 }).reverse();
