@@ -31,7 +31,7 @@ export function dict2Options(dict) {
     })
 }
 
-export const majorList = ['CS', 'EE', 'IE', 'BME', 'SCA'];
+export const majorList = ['CS', 'EE', 'IE', 'BME', 'SCA', 'BioSci', 'BioTech'];
 export const majorOptions = list2Options(majorList);
 
 export const degreeList = ['Master', 'PhD'];
@@ -66,7 +66,7 @@ export const currentDegreeMapping = {
 }
 export const currentDegreeOptions = dict2Options(currentDegreeMapping);
 
-export const applicationYearOptions = Array.from({length: 10}, (_, i) => {
+export const applicationYearOptions = Array.from({length: 12}, (_, i) => {
     const year = 2016 + i;
     return {value: year, label: `${year}`};
 }).reverse();
