@@ -48,11 +48,9 @@
     "zod": "3.22.4"
   },
   "scripts": {
-    "start_win": "set PORT=61234 && react-scripts start",
-    "start_unix": "export PORT=61234 HTTPS=true && react-scripts start",
-    "build": "CI=false react-scripts build",
-    "test": "react-scripts test",
-    "eject": "臭小子别乱碰这个 react-scripts eject"
+    "start:alpha": "dotenv -e env/alpha -- react-scripts start",
+    "start:beta": "dotenv -e env/beta -- react-scripts start",
+    "build": "CI=false react-scripts build"
   },
   "eslintConfig": {
     "extends": [
@@ -74,6 +72,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "7.21.0",
+    "dotenv-cli": "^8.0.0",
     "webpack": "5.94.0"
   }
 }

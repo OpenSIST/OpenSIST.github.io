@@ -1,4 +1,9 @@
-const ROOT = "https://opensist.tech/";
+const defaultRoot = "https://opensist.tech/";
+const ROOT = process.env.REACT_APP_BACKEND_SPECIFIC_API?.trim() || defaultRoot;
+if (ROOT !== defaultRoot) {
+    console.log("Using Alpha API: " + ROOT);
+}
+
 export const PROGRAM_LIST = ROOT + "api/list/programs";
 export const PROGRAM_DESC = ROOT + "api/query/program_description";
 export const ADD_MODIFY_PROGRAM = ROOT + "api/mutating/new_modify_program";
