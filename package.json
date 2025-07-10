@@ -48,9 +48,10 @@
     "zod": "3.22.4"
   },
   "scripts": {
-    "start:alpha": "dotenv -e env/alpha -- react-scripts start",
-    "start:beta": "dotenv -e env/beta -- react-scripts start",
-    "build": "CI=false react-scripts build"
+    "start:alpha": "dotenv -e env/local -e env/alpha -- react-scripts start",
+    "start:beta": "dotenv -e env/local -e env/beta -- react-scripts start",
+    "build": "CI=false react-scripts build",
+    "build:alpha": "dotenv -e env/alpha -- CI=false react-scripts build"
   },
   "eslintConfig": {
     "extends": [
