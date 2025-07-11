@@ -58,7 +58,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
 
     const navigate = useNavigate();
     const isError = () => {
-        return !formValues.Gender || !formValues.CurrentDegree || !formValues.ApplicationYear || !formValues.Major || !formValues.GPA || !formValues.Ranking || !formValues.EnglishOption || !formValues.EnglishTotal || !formValues.R || !formValues.L || !formValues.S || !formValues.W || (isGRETotalRequired && !formValues.GRETotal) || (isGREVRequired && !formValues.V) || (isGREQRequired && !formValues.Q) || (isGREAWRequired && !formValues.AW) || isGPAError || isEnglishTotalError || isReadingError || isListeningError || isSpeakingError || isWritingError || isGRETotalError || isGREVError || isGREQError || isGREAWError;
+        return !formValues.Gender || !formValues.CurrentDegree || !formValues.ApplicationYear || !formValues.Major || !formValues.GPA || !formValues.Ranking || (isGRETotalRequired && !formValues.GRETotal) || (isGREVRequired && !formValues.V) || (isGREQRequired && !formValues.Q) || (isGREAWRequired && !formValues.AW) || isGPAError || isEnglishTotalError || isReadingError || isListeningError || isSpeakingError || isWritingError || isGRETotalError || isGREVError || isGREQError || isGREAWError;
     }
 
     const smallPage = useSmallPage();
@@ -298,7 +298,6 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
                                     name="EnglishOption"
                                     label="选择考试"
                                     variant="outlined"
-                                    required
                                 />
                             }
                             value={formValues.EnglishOption ? englishOptions.find((option) => {
@@ -323,7 +322,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
                                     value={formValues.EnglishTotal || ""}
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
-                                    required
+                                    // required
                                     error={isEnglishTotalError}
                                     helperText={isEnglishTotalError ? (formValues.EnglishOption === 'TOEFL' ? "TOEFL总分应在0-120之间" : "IELTS总分应在0-9之间") : null}
                                     sx={disableNumberUpDown}
@@ -339,7 +338,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
                                     value={formValues.R || ""}
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
-                                    required
+                                    // required
                                     error={isReadingError}
                                     helperText={isReadingError ? (formValues.EnglishOption === 'TOEFL' ? "TOEFL阅读分应在0-30之间" : "IELTS阅读分应在0-9之间") : null}
                                     sx={disableNumberUpDown}
@@ -355,7 +354,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
                                     value={formValues.L || ""}
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
-                                    required
+                                    // required
                                     error={isListeningError}
                                     helperText={isListeningError ? (formValues.EnglishOption === 'TOEFL' ? "TOEFL听力分应在0-30之间" : "IELTS听力分应在0-9之间") : null}
                                     sx={disableNumberUpDown}
@@ -371,7 +370,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
                                     value={formValues.S || ""}
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
-                                    required
+                                    // required
                                     error={isSpeakingError}
                                     helperText={isSpeakingError ? (formValues.EnglishOption === 'TOEFL' ? "TOEFL口语分应在0-30之间" : "IELTS口语分应在0-9之间") : null}
                                     sx={disableNumberUpDown}
@@ -387,7 +386,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
                                     value={formValues.W || ""}
                                     onChange={(event) => {handleChange(event)}}
                                     type="number"
-                                    required
+                                    // required
                                     error={isWritingError}
                                     helperText={isWritingError ? (formValues.EnglishOption === 'TOEFL' ? "TOEFL写作分应在0-30之间" : "IELTS写作分应在0-9之间") : null}
                                     sx={disableNumberUpDown}
