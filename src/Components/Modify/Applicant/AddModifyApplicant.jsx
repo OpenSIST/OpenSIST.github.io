@@ -13,7 +13,6 @@ import SoftBackground from "./FormComponent/SoftBackground";
 import {getDisplayName} from "../../../Data/UserData";
 import {getPrograms} from "../../../Data/ProgramData";
 import {blobToBase64} from "../../../Data/Common";
-import {addModifyPost, getPostObject, removePost} from "../../../Data/PostData";
 import {addModifyFile, getFileObject, removeFile} from "../../../Data/FileData";
 
 export async function loader({params}) {
@@ -67,14 +66,16 @@ export async function action({request}) {
     const L = formValues.L;
     const S = formValues.S;
     const EnglishProficiency = {
-        [EnglishOption === 'TOEFL' ? 'TOEFL' : 'IELTS']: {
-            'Total': Number(EnglishTotal),
-            'R': Number(R),
-            'W': Number(W),
-            'L': Number(L),
-            'S': Number(S),
+        [EnglishOption === 'IELTS' ? 'IELTS' : 'TOEFL']: {
+            'Total': EnglishTotal ? Number(EnglishTotal) : null,
+            'R': R ? Number(R) : null,
+            'W': W ? Number(W) : null,
+            'L': L ? Number(L) : null,
+            'S': S ? Number(S) : null,
         }
     }
+    console.log(EnglishProficiency);
+    console.log(((EnglishTotal && R && W && L && S) && {'EnglishProficiency': EnglishProficiency}))
     const Exchange = formValues.Exchange ? removeEmptyDictInList(formValues.Exchange) : [];
     const Publication = formValues.Publication ? removeEmptyDictInList(formValues.Publication) : [];
     const Recommendation = formValues.Recommendation ? removeEmptyDictInList(formValues.Recommendation) : [];
@@ -124,14 +125,15 @@ export async function action({request}) {
             'Major': Major,
             'GPA': GPA,
             'Ranking': Ranking,
-            ...((GRE.Total !== 260 || GRE.V !== 130 || GRE.Q !== 130 || GRE.AW !== 0) && { 'GRE': GRE }),
-            'EnglishProficiency': EnglishProficiency,
-            ...(Exchange.length !== 0 && { 'Exchange': Exchange }),
-            ...(Publication.length !== 0 && { 'Publication': Publication }),
+            ...((GRE.Total !== 260 || GRE.V !== 130 || GRE.Q !== 130 || GRE.AW !== 0) && {'GRE': GRE}),
+            // 'EnglishProficiency': EnglishProficiency,
+            ...{'EnglishProficiency': ((EnglishTotal && R && W && L && S) ? EnglishProficiency : {})},
+            ...(Exchange.length !== 0 && {'Exchange': Exchange}),
+            ...(Publication.length !== 0 && {'Publication': Publication}),
             'Research': Research,
             'Internship': Internship,
-            ...(Recommendation.length !== 0 && { 'Recommendation': Recommendation }),
-            ...(Competition !== undefined && { 'Competition': Competition }),
+            ...(Recommendation.length !== 0 && {'Recommendation': Recommendation}),
+            ...(Competition !== undefined && {'Competition': Competition}),
             'Programs': ActionType === 'new' ? {} : Programs,
             'Final': Final === undefined ? "" : Final,
             'Posts': Posts
@@ -201,9 +203,11 @@ export async function action({request}) {
 const FormContent = (activeStep, formValues, handleBack, handleNext, handleChange, type, loaderData) => {
     switch (activeStep) {
         case 0:
-            return <BasicInfo formValues={formValues} handleNext={handleNext} handleChange={handleChange} actionType={type} loaderData={loaderData}/>;
+            return <BasicInfo formValues={formValues} handleNext={handleNext} handleChange={handleChange}
+                              actionType={type} loaderData={loaderData}/>;
         case 1:
-            return <SoftBackground formValues={formValues} handleBack={handleBack} handleChange={handleChange} loaderData={loaderData}/>;
+            return <SoftBackground formValues={formValues} handleBack={handleBack} handleChange={handleChange}
+                                   loaderData={loaderData}/>;
         default:
             return null;
     }
@@ -280,8 +284,27 @@ export default function AddModifyApplicant({type}) {
     }
     const [formValues, setFormValues] = useState(applicantContent ?? {});
     const handleChange = (event, value, name) => {
-        setFormValues({...formValues, [event?.target.name ? event?.target.name : name]: value ? value : event?.target.value});
+        console.log(event?.target?.name, event?.target?.value, value, name)
+        console.log({[event?.target.name ? event?.target.name : name]: value ? value : event?.target.value})
+        setFormValues({
+            ...formValues,
+            [event?.target.name ? event?.target.name : name]: value ? value : event?.target.value
+        });
+        console.log(formValues);
         if (event?.target.value === "" || (event?.target.name === undefined && (value === "" || value === undefined || value === null || value === '[]'))) {
+            if (name === "EnglishOption" || name === "R" || name === "W" || name === "L" || name === "S" || name === "EnglishTotal") {
+                if (name === "EnglishOption") {
+                    setFormValues({
+                        ...formValues,
+                        'EnglishTotal': undefined,
+                        'R': undefined,
+                        'W': undefined,
+                        'L': undefined,
+                        'S': undefined
+                    });
+                }
+                return
+            }
             const {[event?.target.name ? event?.target.name : name]: _, ...rest} = formValues;
             setFormValues(rest);
         }
@@ -293,14 +316,16 @@ export default function AddModifyApplicant({type}) {
                 nonLinear
                 alternativeLabel
                 activeStep={activeStep}
-                sx={{ mt: 10 }}
+                sx={{mt: 10}}
             >
                 {steps.map((label) => (
                     <Step key={label}>
-                        <StepButton color="inherit" sx={{"&.MuiButtonBase-root:hover": {
+                        <StepButton color="inherit" sx={{
+                            "&.MuiButtonBase-root:hover": {
                                 bgcolor: "transparent",
                                 cursor: "default"
-                            }}}>
+                            }
+                        }}>
                             {label}
                         </StepButton>
                     </Step>
