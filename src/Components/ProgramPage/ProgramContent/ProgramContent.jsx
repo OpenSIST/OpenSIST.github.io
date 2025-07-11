@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import './ProgramContent.css'
-import {Form, Link, useLoaderData, useNavigate, redirect} from "react-router-dom";
+import {Form, Link, useLoaderData, useNavigate, redirect, Outlet} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 import {getMetaData, collectProgram, uncollectProgram} from '../../../Data/UserData';
 import {Box, IconButton, Paper, Tooltip, Typography} from "@mui/material";
@@ -133,6 +133,8 @@ function ProgramContent({editable = true, inDialog=false}) {
                     </Box>
                 }
             </Box>
+
+            <Outlet/>
         </>
     );
 }
