@@ -1,5 +1,5 @@
 import React, { useState, FC, CSSProperties, ReactNode } from "react";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import {useLocation, NavigateFunction, useNavigate, Location } from "react-router-dom";
 import { Button, Tooltip, Typography, TypographyProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
@@ -36,26 +36,24 @@ export const TopStickyRow: FC<{
     minWidth: string;
     text: string;
   }> = ({ minWidth, text }) => (
-    <Button
-      onClick={insideProgramPage ? undefined : () => setExpanded(!expanded)}
-      color="inherit"
-      sx={{
-        minWidth,
-        justifyContent: "flex-start",
-        paddingLeft: "0px",
-      }}
-    >
-      {insideProgramPage || (
-        <ExpandMore
-          fontSize="small"
-          style={{
-            transform: expanded ? "rotate(0deg)" : "rotate(-90deg)",
-            transition: "transform 0.5s ease",
+      insideProgramPage ? <BoldTypography sx={{fontSize: "clamp(13px, 1.5vw, 15px)"}}>{text}</BoldTypography> : <Button
+          onClick={() => setExpanded(!expanded)}
+          color="inherit"
+          sx={{
+              minWidth,
+              justifyContent: "flex-start",
+              paddingLeft: "0px",
           }}
-        />
-      )}
-      <BoldTypography sx={{ fontSize: "clamp(13px, 1.5vw, 15px)" }}>{text}</BoldTypography>
-    </Button>
+      >
+          <ExpandMore
+              fontSize="small"
+              style={{
+                  transform: expanded ? "rotate(0deg)" : "rotate(-90deg)",
+                  transition: "transform 0.5s ease",
+              }}
+          />
+          <BoldTypography sx={{fontSize: "clamp(13px, 1.5vw, 15px)"}}>{text}</BoldTypography>
+      </Button>
   );
 
   return (
@@ -208,10 +206,11 @@ const NoMarginCell: FC<{
 /** One row in the table, rendering all the fields of a single RecordData. */
 const Row: FC<{ record: RecordData, hideProgramColumn: boolean }> = ({ record, hideProgramColumn }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <div className="p-dropdown-item" style={{ minWidth: hideProgramColumn ? stickyHeaderWidthWithoutProgram : stickyHeaderWidth }}>
-      <Cell item={applicantBodyTemplate(record, navigate)} width={columnWidthMap[0]}/>
+      <Cell item={applicantBodyTemplate(record, navigate, location)} width={columnWidthMap[0]}/>
       {hideProgramColumn || <Cell item={programBodyTemplate(record, navigate)} width={columnWidthMap[1]}/>}
       <Cell item={statusBodyTemplate(record)} width={columnWidthMap[2]} />
       <Cell item={finalBodyTemplate(record)} width={columnWidthMap[3]} />
@@ -302,28 +301,37 @@ const timelineBodyTemplate = (rowData: RecordData, timelineKey: string) => (
   </div>
 );
 
-const applicantBodyTemplate = (rowData: RecordData, navigate: NavigateFunction) => (
-  <div
-    title="查看申请人信息"
-    className="chip-plain"
-    style={{
-      display: "block",
-      borderRadius: "16px",
-      padding: "0 10px",
-      height: "1.6rem",
-      lineHeight: "1.6rem",
-      fontSize: "0.8rem",
-      maxWidth: "8rem",
-      width: "fit-content",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-    }}
-    onClick={() => navigate(`/datapoints/applicant/${rowData.ApplicantID}`)}
-  >
-    {rowData.ApplicantID}
-  </div>
-);
+const applicantBodyTemplate = (rowData: RecordData, navigate: NavigateFunction, location: Location) => {
+    const handleClick = () => {
+        if (location.pathname.startsWith("/datapoints")) {
+            navigate(`/datapoints/applicant/${rowData.ApplicantID}`);
+        } else if (location.pathname.startsWith("/programs")) {
+            navigate(`/programs/${encodeURIComponent(rowData.ProgramID)}/applicant/${rowData.ApplicantID}`);
+        }
+    };
+    return (
+        <div
+            title="查看申请人信息"
+            className="chip-plain"
+            style={{
+                display: "block",
+                borderRadius: "16px",
+                padding: "0 10px",
+                height: "1.6rem",
+                lineHeight: "1.6rem",
+                fontSize: "0.8rem",
+                maxWidth: "8rem",
+                width: "fit-content",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+            }}
+            onClick={handleClick}
+        >
+            {rowData.ApplicantID}
+        </div>
+    )
+};
 
 const programBodyTemplate = (rowData: RecordData, navigate: NavigateFunction) => (
   <div
@@ -390,6 +398,7 @@ export const PlainTable: FC<{
           // key={`header-${r.ProgramID}-${Date.now()}`}
           record={r}
           width={insideProgramPage ? stickyHeaderWidthWithoutProgram : stickyHeaderWidth}
+          key={r.ProgramID}
         />
       );
     }
@@ -398,6 +407,7 @@ export const PlainTable: FC<{
       // key={r.RecordID+Date.now()} 
       record={r}
       hideProgramColumn={insideProgramPage}
+      key={r.RecordID}
       />);
   });
 

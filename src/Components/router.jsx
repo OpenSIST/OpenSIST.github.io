@@ -38,7 +38,6 @@ import Login, {action as loginAction} from "./Auth/Login/Login";
 import RegisterAndReset, {action as registerAndResetAction} from "./Auth/RegisterAndReset/RegisterAndReset";
 import Agreement from "./Agreement/Agreement";
 import {AboutUs} from "./AboutUs/AboutUs";
-import {HowToUse} from "./HowToUse/HowToUse";
 import React from "react";
 import FAQMDPath from "../Data/MarkDown/FAQ.md";
 import ProgramIndexMDPath from "../Data/MarkDown/ProgramIndex.md"
@@ -80,7 +79,15 @@ const router = createBrowserRouter([
                                         path: '/programs/:programId',
                                         element: <ProgramContent/>,
                                         loader: programContentLoader,
-                                        action: programContentAction
+                                        action: programContentAction,
+                                        children: [
+                                            {
+                                                path: '/programs/:programId/applicant/:applicantId',
+                                                element: <ApplicantProfileInDataPoints/>,
+                                                loader: ProfileDataPointsLoader,
+                                                action: ProfileDataPointsAction,
+                                            },
+                                        ]
                                     }, {
                                         path: '/programs/:programId/edit',
                                         element: <AddModifyProgram key='edit' type='edit'/>,
