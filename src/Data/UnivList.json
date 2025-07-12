@@ -1,2120 +1,4665 @@
 [
     {
         "fullName": "Massachusetts Institute of Technology",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "MIT",
         "latitude": 42.3582529,
         "longitude": -71.0966272383055,
-        "color": [232, 200, 206]
+        "color": [
+            232,
+            200,
+            206
+        ],
+        "cs_rank": 1,
+        "bio_rank": 3
     },
     {
         "fullName": "University of California - Berkeley",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UCB",
         "latitude": 37.875499649999995,
         "longitude": -122.23906851395179,
-        "color": [196, 135, 21]
+        "color": [
+            196,
+            135,
+            21
+        ],
+        "cs_rank": 2,
+        "bio_rank": 5
     },
     {
         "fullName": "Stanford University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Stanford",
         "latitude": 37.431313849999995,
         "longitude": -122.16936535498309,
-        "color": [145, 31, 31]
+        "color": [
+            145,
+            31,
+            31
+        ],
+        "cs_rank": 3,
+        "bio_rank": 4
     },
     {
         "fullName": "Carnegie Mellon University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "CMU",
         "latitude": 40.444189699999995,
         "longitude": -79.94271918393466,
-        "color": [236, 171, 53]
+        "color": [
+            236,
+            171,
+            53
+        ],
+        "cs_rank": 4,
+        "bio_rank": 33
     },
     {
         "fullName": "University of Illinois at Urbana-Champaign",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UIUC",
         "latitude": 40.076154450000004,
         "longitude": -88.22331340640494,
-        "color": [211, 213, 216]
+        "color": [
+            211,
+            213,
+            216
+        ],
+        "cs_rank": 5,
+        "bio_rank": 68
     },
     {
         "fullName": "University of Washington",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UW",
         "latitude": 47.65566435,
         "longitude": -122.30270718903485,
-        "color": [91, 63, 142]
+        "color": [
+            91,
+            63,
+            142
+        ],
+        "cs_rank": 6,
+        "bio_rank": 10
     },
     {
         "fullName": "Princeton University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Princeton",
         "latitude": 40.33867515,
         "longitude": -74.65836549131683,
-        "color": [232, 116, 39]
+        "color": [
+            232,
+            116,
+            39
+        ],
+        "cs_rank": 7,
+        "bio_rank": 1
     },
     {
         "fullName": "California Institute of Technology",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Caltech",
         "latitude": 34.13701375,
         "longitude": -118.12528833668254,
-        "color": [243, 116, 36]
+        "color": [
+            243,
+            116,
+            36
+        ],
+        "cs_rank": 8,
+        "bio_rank": 21
     },
     {
-        "fullName": "ETH Z\u00fcrich",
-        "region": ["EU"],
+        "fullName": "ETH Zürich",
+        "region": [
+            "EU"
+        ],
         "abbr": "ETH",
         "latitude": 47.56277165,
         "longitude": 7.580947334069263,
-        "color": [4, 4, 12]
+        "color": [
+            4,
+            4,
+            12
+        ],
+        "cs_rank": 9,
+        "bio_rank": 49
     },
     {
         "fullName": "Harvard University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Harvard",
         "latitude": 42.365743249999994,
         "longitude": -71.12221394207614,
-        "color": [27, 33, 38]
+        "color": [
+            27,
+            33,
+            38
+        ],
+        "cs_rank": 10,
+        "bio_rank": 2
     },
     {
-        "fullName": "\u00c9cole Polytechnique F\u00e9d\u00e9rale de Lausanne",
-        "region": ["EU"],
+        "fullName": "École Polytechnique Fédérale de Lausanne",
+        "region": [
+            "EU"
+        ],
         "abbr": "EPFL",
         "latitude": 46.518659400000004,
-        "longitude": 6.566561505148001
+        "longitude": 6.566561505148001,
+        "cs_rank": 11,
+        "bio_rank": 62
     },
     {
         "fullName": "University of California - San Diego",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UCSD",
         "latitude": 32.87924375,
         "longitude": -117.23112468377349,
-        "color": [31, 46, 74]
+        "color": [
+            31,
+            46,
+            74
+        ],
+        "cs_rank": 12,
+        "bio_rank": 7
     },
     {
         "fullName": "Georgia Institute of Technology",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "GaTech",
         "latitude": 33.776094799999996,
         "longitude": -84.3988076699857,
-        "color": [10, 56, 87]
+        "color": [
+            10,
+            56,
+            87
+        ],
+        "cs_rank": 13,
+        "bio_rank": 114
     },
     {
         "fullName": "University of Michigan",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UMich",
         "latitude": 42.2942142,
         "longitude": -83.71003893509601,
-        "color": [227, 231, 232]
+        "color": [
+            227,
+            231,
+            232
+        ],
+        "cs_rank": 14,
+        "bio_rank": 19
     },
     {
         "fullName": "University of Texas at Austin",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UT-Austin",
         "latitude": 30.2851494,
         "longitude": -97.73393515146053,
-        "color": [191, 91, 12]
+        "color": [
+            191,
+            91,
+            12
+        ],
+        "cs_rank": 15,
+        "bio_rank": 75
     },
     {
         "fullName": "Cornell University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Cornell",
         "latitude": 42.4529076,
         "longitude": -76.48008423030923,
-        "color": [198, 84, 84]
+        "color": [
+            198,
+            84,
+            84
+        ],
+        "cs_rank": 16,
+        "bio_rank": 17
     },
     {
         "fullName": "University of Maryland - College Park",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UMD",
         "latitude": 38.990412449999994,
         "longitude": -76.9438585924238,
-        "color": [215, 182, 63]
+        "color": [
+            215,
+            182,
+            63
+        ],
+        "cs_rank": 17,
+        "bio_rank": 141
     },
     {
         "fullName": "University of California - Los Angeles",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UCLA",
         "latitude": 34.070877749999994,
         "longitude": -118.44685070595054,
-        "color": [49, 123, 177]
+        "color": [
+            49,
+            123,
+            177
+        ],
+        "cs_rank": 18,
+        "bio_rank": 13
     },
     {
         "fullName": "Yale University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Yale",
         "latitude": 41.25713055,
         "longitude": -72.98966960152231,
-        "color": [224, 186, 81]
+        "color": [
+            224,
+            186,
+            81
+        ],
+        "cs_rank": 19,
+        "bio_rank": 14
     },
     {
         "fullName": "University of Pennsylvania",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UPenn",
         "latitude": 39.9493382,
         "longitude": -75.1896439962691,
-        "color": [22, 43, 100]
+        "color": [
+            22,
+            43,
+            100
+        ],
+        "cs_rank": 20,
+        "bio_rank": 16
     },
     {
         "fullName": "University of Wisconsin - Madison",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UW-Madison",
         "latitude": 43.080274450000005,
         "longitude": -89.43095871991434,
-        "color": [17, 17, 17]
+        "color": [
+            17,
+            17,
+            17
+        ],
+        "cs_rank": 21,
+        "bio_rank": 53
     },
     {
         "fullName": "Duke University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Duke",
         "latitude": 36.00015569999999,
         "longitude": -78.94422972195878,
-        "color": [4, 28, 84]
+        "color": [
+            4,
+            28,
+            84
+        ],
+        "cs_rank": 22,
+        "bio_rank": 26
     },
     {
         "fullName": "University of Toronto",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "UToronto",
         "latitude": 43.663461999999996,
         "longitude": -79.39775966248058,
-        "color": [205, 214, 225]
+        "color": [
+            205,
+            214,
+            225
+        ],
+        "cs_rank": 23,
+        "bio_rank": 58
     },
     {
         "fullName": "University of British Columbia",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "UBC",
         "latitude": 49.25783145,
         "longitude": -123.24624198622213,
-        "color": [7, 69, 131]
+        "color": [
+            7,
+            69,
+            131
+        ],
+        "cs_rank": 24,
+        "bio_rank": 95
     },
     {
         "fullName": "Max Planck Society",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Max Planck",
         "latitude": 48.1411551,
-        "longitude": 11.5820779
+        "longitude": 11.5820779,
+        "cs_rank": 25,
+        "bio_rank": 63
     },
     {
         "fullName": "European Laboratory for Learning and Intelligent Systems",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "ELLIS",
         "latitude": 48.7139028,
-        "longitude": 2.2141074106393925
+        "longitude": 2.2141074106393925,
+        "cs_rank": 26,
+        "bio_rank": 142
     },
     {
         "fullName": "International Programme in Vision and Robotics",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "VIBOT",
         "latitude": 47.3133052,
-        "longitude": 5.068862575081764
+        "longitude": 5.068862575081764,
+        "cs_rank": 27,
+        "bio_rank": 143
     },
     {
         "fullName": "Purdue University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Purdue",
         "latitude": 40.430028,
         "longitude": -86.92642114650494,
-        "color": [196, 196, 204]
+        "color": [
+            196,
+            196,
+            204
+        ],
+        "cs_rank": 28,
+        "bio_rank": 132
     },
     {
         "fullName": "Northwestern University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "NWU",
         "latitude": 42.0557157,
         "longitude": -87.67529454739416,
-        "color": [91, 61, 142]
+        "color": [
+            91,
+            61,
+            142
+        ],
+        "cs_rank": 29,
+        "bio_rank": 25
     },
     {
         "fullName": "Brown University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Brown",
         "latitude": 41.8186395,
         "longitude": -71.4088008716793,
-        "color": [211, 211, 211]
+        "color": [
+            211,
+            211,
+            211
+        ],
+        "cs_rank": 30,
+        "bio_rank": 32
     },
     {
         "fullName": "Chinese University of Hong Kong",
-        "region": ["HK"],
+        "region": [
+            "HK"
+        ],
         "abbr": "CUHK",
         "latitude": 22.4140914,
         "longitude": 114.2100208,
-        "color": [111, 40, 107]
+        "color": [
+            111,
+            40,
+            107
+        ],
+        "cs_rank": 31,
+        "bio_rank": 127
     },
     {
         "fullName": "The Hong Kong University of Science and Technology",
-        "region": ["HK"],
+        "region": [
+            "HK"
+        ],
         "abbr": "HKUST",
         "latitude": 22.3358031,
         "longitude": 114.2659087549023,
-        "color": [164, 132, 52]
+        "color": [
+            164,
+            132,
+            52
+        ],
+        "cs_rank": 32,
+        "bio_rank": 144
     },
     {
         "fullName": "University of Hong Kong",
-        "region": ["HK"],
+        "region": [
+            "HK"
+        ],
         "abbr": "HKU",
         "latitude": 22.28269745,
         "longitude": 114.13845499995571,
-        "color": [80, 49, 28]
+        "color": [
+            80,
+            49,
+            28
+        ],
+        "cs_rank": 33,
+        "bio_rank": 82
     },
     {
         "fullName": "National University of Singapore",
-        "region": ["SG"],
+        "region": [
+            "SG"
+        ],
         "abbr": "NUS",
         "latitude": 1.2962018,
         "longitude": 103.77689765953073,
-        "color": [35, 71, 123]
+        "color": [
+            35,
+            71,
+            123
+        ],
+        "cs_rank": 34,
+        "bio_rank": 77
     },
     {
         "fullName": "Nanyang Technological University",
-        "region": ["SG"],
+        "region": [
+            "SG"
+        ],
         "abbr": "NTU",
         "latitude": 1.3484104000000001,
         "longitude": 103.68293320728537,
-        "color": [213, 47, 56]
+        "color": [
+            213,
+            47,
+            56
+        ],
+        "cs_rank": 35,
+        "bio_rank": 84
     },
     {
         "fullName": "University of Waterloo",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "UWaterloo",
         "latitude": 43.4701994,
         "longitude": -80.54524293779451,
-        "color": [230, 201, 116]
+        "color": [
+            230,
+            201,
+            116
+        ],
+        "cs_rank": 36,
+        "bio_rank": 145
     },
     {
         "fullName": "University of Oxford",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Oxford",
         "latitude": 51.75870755,
         "longitude": -1.2556684826092037,
-        "color": [215, 178, 113]
+        "color": [
+            215,
+            178,
+            113
+        ],
+        "cs_rank": 37,
+        "bio_rank": 87
     },
     {
         "fullName": "University of Cambridge",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Cambridge",
         "latitude": 52.210945550000005,
         "longitude": 0.09200497637871279,
-        "color": [28, 20, 11]
+        "color": [
+            28,
+            20,
+            11
+        ],
+        "cs_rank": 38,
+        "bio_rank": 105
     },
     {
         "fullName": "University of California - Santa Barbara",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UCSB",
         "latitude": 34.414602450000004,
         "longitude": -119.84581004701371,
-        "color": [46, 91, 117]
+        "color": [
+            46,
+            91,
+            117
+        ],
+        "cs_rank": 39,
+        "bio_rank": 146
     },
     {
         "fullName": "Cornell Tech",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Cornell Tech",
         "latitude": 40.7544531,
-        "longitude": -73.9557927
+        "longitude": -73.9557927,
+        "cs_rank": 40,
+        "bio_rank": 147
     },
     {
         "fullName": "University of California - Irvine",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UCI",
         "latitude": 33.64294685,
         "longitude": -117.84016055716225,
-        "color": [10, 103, 163]
+        "color": [
+            10,
+            103,
+            163
+        ],
+        "cs_rank": 41,
+        "bio_rank": 123
     },
     {
         "fullName": "Technical University of Munich",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "TUM",
         "latitude": 48.2655696,
         "longitude": 11.669345610437997,
-        "color": [52, 116, 180]
+        "color": [
+            52,
+            116,
+            180
+        ],
+        "cs_rank": 42,
+        "bio_rank": 98
     },
     {
         "fullName": "New York University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "NYU",
         "latitude": 40.729205300000004,
         "longitude": -73.99501481290962,
-        "color": [84, 4, 140]
+        "color": [
+            84,
+            4,
+            140
+        ],
+        "cs_rank": 43,
+        "bio_rank": 22
     },
     {
         "fullName": "Johns Hopkins University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "JHU",
         "latitude": 39.33020225,
         "longitude": -76.62185357858337,
-        "color": [130, 142, 148]
+        "color": [
+            130,
+            142,
+            148
+        ],
+        "cs_rank": 44,
+        "bio_rank": 11
     },
     {
         "fullName": "Columbia University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Columbia",
         "latitude": 40.80775585,
         "longitude": -73.96164946987652,
-        "color": [16, 89, 168]
+        "color": [
+            16,
+            89,
+            168
+        ],
+        "cs_rank": 45,
+        "bio_rank": 15
     },
     {
         "fullName": "Rice University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Rice",
         "latitude": 29.716791450000002,
         "longitude": -95.40478113393792,
-        "color": [5, 28, 108]
+        "color": [
+            5,
+            28,
+            108
+        ],
+        "cs_rank": 46,
+        "bio_rank": 124
     },
     {
         "fullName": "University of Southern California",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "USC",
         "latitude": 34.02186895,
         "longitude": -118.285857923125,
-        "color": [36, 28, 36]
+        "color": [
+            36,
+            28,
+            36
+        ],
+        "cs_rank": 47,
+        "bio_rank": 51
     },
     {
         "fullName": "Texas A&M University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "TAMU",
         "latitude": 30.6108618,
         "longitude": -96.35206061388457,
-        "color": [84, 4, 4]
+        "color": [
+            84,
+            4,
+            4
+        ],
+        "cs_rank": 48,
+        "bio_rank": 103
     },
     {
         "fullName": "Dartmouth College",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Dartmouth",
         "latitude": 43.70467565,
         "longitude": -72.29420886774966,
-        "color": [4, 108, 60]
+        "color": [
+            4,
+            108,
+            60
+        ],
+        "cs_rank": 49,
+        "bio_rank": 34
     },
     {
         "fullName": "University of Chicago",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UChicago",
         "latitude": 41.784977,
         "longitude": -87.5905237123017,
-        "color": [226, 197, 197]
+        "color": [
+            226,
+            197,
+            197
+        ],
+        "cs_rank": 50,
+        "bio_rank": 24
     },
     {
         "fullName": "Northeastern University",
-        "region": ["US", "CA"],
+        "region": [
+            "US",
+            "CA"
+        ],
         "abbr": "NEU",
         "latitude": 42.33907025,
         "longitude": -71.08783833987422,
-        "color": [91, 61, 142]
+        "color": [
+            91,
+            61,
+            142
+        ],
+        "cs_rank": 51,
+        "bio_rank": 148
     },
     {
         "fullName": "King Abdullah University of Science and Technology",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "KAUST",
         "latitude": 22.32237535,
         "longitude": 39.11738351837985,
-        "color": [237, 182, 11]
+        "color": [
+            237,
+            182,
+            11
+        ],
+        "cs_rank": 52,
+        "bio_rank": 112
     },
     {
         "fullName": "Boston University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "BU",
         "latitude": 42.3504324,
         "longitude": -71.10170122505716,
-        "color": [248, 220, 220]
+        "color": [
+            248,
+            220,
+            220
+        ],
+        "cs_rank": 53,
+        "bio_rank": 29
     },
     {
         "fullName": "University of California - Davis",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UCD",
         "latitude": 38.533790350000004,
         "longitude": -121.79079892146456,
-        "color": [216, 176, 32]
+        "color": [
+            216,
+            176,
+            32
+        ],
+        "cs_rank": 54,
+        "bio_rank": 27
     },
     {
         "fullName": "University of Massachusetts Amherst",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UMass-Amherst",
         "latitude": 42.3869382,
         "longitude": -72.52991477067445,
-        "color": [148, 46, 46]
+        "color": [
+            148,
+            46,
+            46
+        ],
+        "cs_rank": 55,
+        "bio_rank": 106
     },
     {
         "fullName": "The University of North Carolina at Chapel Hill",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UNC-Chapel Hill",
         "latitude": 35.9131542,
         "longitude": -79.05578,
-        "color": [83, 160, 213]
+        "color": [
+            83,
+            160,
+            213
+        ],
+        "cs_rank": 56,
+        "bio_rank": 23
     },
     {
         "fullName": "Stony Brook University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Stony Brook",
         "latitude": 40.9090809,
         "longitude": -73.12055180275716,
-        "color": [150, 32, 32]
+        "color": [
+            150,
+            32,
+            32
+        ],
+        "cs_rank": 57,
+        "bio_rank": 149
     },
     {
         "fullName": "Imperial College London",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Imperial",
         "latitude": 51.4989595,
         "longitude": -0.17564069276310426,
-        "color": [18, 42, 77]
+        "color": [
+            18,
+            42,
+            77
+        ],
+        "cs_rank": 58,
+        "bio_rank": 93
     },
     {
         "fullName": "University of Edinburgh",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Edinburgh",
         "latitude": 55.94407645,
         "longitude": -3.1883735563964555,
-        "color": [43, 123, 203]
+        "color": [
+            43,
+            123,
+            203
+        ],
+        "cs_rank": 59,
+        "bio_rank": 50
     },
     {
         "fullName": "Politecnico di Milano",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Polimi",
         "latitude": 45.04850495,
-        "longitude": 9.701694744265293
+        "longitude": 9.701694744265293,
+        "cs_rank": 60,
+        "bio_rank": 150
     },
     {
-        "fullName": "Universit\u00e9 Paris-Saclay",
-        "region": ["EU"],
+        "fullName": "Université Paris-Saclay",
+        "region": [
+            "EU"
+        ],
         "abbr": "Saclay",
         "latitude": 48.7123928,
         "longitude": 2.1725958,
-        "color": [139, 20, 59]
+        "color": [
+            139,
+            20,
+            59
+        ],
+        "cs_rank": 61,
+        "bio_rank": 151
     },
     {
         "fullName": "Institut Polytechnique de Paris",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "IP-Paris",
         "latitude": 48.7139028,
         "longitude": 2.2141074106393925,
-        "color": [26, 26, 26]
+        "color": [
+            26,
+            26,
+            26
+        ],
+        "cs_rank": 62,
+        "bio_rank": 152
     },
     {
         "fullName": "Eindhoven University of Technology",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "TU/e",
         "latitude": 51.4486602,
         "longitude": 5.4903995655080475,
-        "color": [203, 45, 52]
+        "color": [
+            203,
+            45,
+            52
+        ],
+        "cs_rank": 63,
+        "bio_rank": 153
     },
     {
         "fullName": "Rutgers University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Rutgers",
         "latitude": 40.492977800000006,
         "longitude": -74.44510808059266,
-        "color": [246, 233, 147]
+        "color": [
+            246,
+            233,
+            147
+        ],
+        "cs_rank": 64,
+        "bio_rank": 90
     },
     {
         "fullName": "University of California - Riverside",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UCR",
         "latitude": 33.9642567,
         "longitude": -117.3397858271953,
-        "color": [44, 108, 196]
+        "color": [
+            44,
+            108,
+            196
+        ],
+        "cs_rank": 65,
+        "bio_rank": 154
     },
     {
         "fullName": "Ohio State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "OSU",
         "latitude": 40.7988105,
         "longitude": -82.5782294,
-        "color": [33, 20, 11]
+        "color": [
+            33,
+            20,
+            11
+        ],
+        "cs_rank": 66,
+        "bio_rank": 28
     },
     {
         "fullName": "Pennsylvania State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "PSU",
         "latitude": 40.8025835,
         "longitude": -77.85593833184565,
-        "color": [110, 125, 30]
+        "color": [
+            110,
+            125,
+            30
+        ],
+        "cs_rank": 67,
+        "bio_rank": 109
     },
     {
         "fullName": "University of Utah",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Utah",
         "latitude": 40.762813699999995,
         "longitude": -111.83687191368261,
-        "color": [17, 17, 17]
+        "color": [
+            17,
+            17,
+            17
+        ],
+        "cs_rank": 68,
+        "bio_rank": 134
     },
     {
         "fullName": "North Carolina State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "NCSU",
         "latitude": 35.7714749,
         "longitude": -78.6741935,
-        "color": [204, 32, 56]
+        "color": [
+            204,
+            32,
+            56
+        ],
+        "cs_rank": 69,
+        "bio_rank": 111
     },
     {
         "fullName": "Simon Fraser University",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "SFU",
         "latitude": 49.276709600000004,
         "longitude": -122.91780296438841,
-        "color": [31, 87, 171]
+        "color": [
+            31,
+            87,
+            171
+        ],
+        "cs_rank": 70,
+        "bio_rank": 155
     },
     {
         "fullName": "University of Virginia",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UVA",
         "latitude": 38.0410576,
         "longitude": -78.50550841214823,
-        "color": [22, 22, 22]
+        "color": [
+            22,
+            22,
+            22
+        ],
+        "cs_rank": 71,
+        "bio_rank": 107
     },
     {
         "fullName": "University of California - Santa Cruz",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UCSC",
         "latitude": 37.00012445,
         "longitude": -122.06221224829252,
-        "color": [18, 72, 117]
+        "color": [
+            18,
+            72,
+            117
+        ],
+        "cs_rank": 72,
+        "bio_rank": 110
     },
     {
         "fullName": "University College London",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "UCL",
         "latitude": 51.52420305,
         "longitude": -0.13300072425929543,
-        "color": [36, 28, 36]
+        "color": [
+            36,
+            28,
+            36
+        ],
+        "cs_rank": 73,
+        "bio_rank": 64
     },
     {
         "fullName": "Delft University of Technology",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "TU Delft",
         "latitude": 51.99882735,
         "longitude": 4.373960368154041,
-        "color": [36, 36, 37]
+        "color": [
+            36,
+            36,
+            37
+        ],
+        "cs_rank": 74,
+        "bio_rank": 156
     },
     {
         "fullName": "Katholieke Universiteit Leuven",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "KU Leuven",
         "latitude": 51.220506799999995,
         "longitude": 4.404626282608695,
-        "color": [96, 180, 220]
+        "color": [
+            96,
+            180,
+            220
+        ],
+        "cs_rank": 75,
+        "bio_rank": 80
     },
     {
         "fullName": "Lund University",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Lund",
         "latitude": 55.7126504,
         "longitude": 13.210758659399971,
-        "color": [159, 85, 11]
+        "color": [
+            159,
+            85,
+            11
+        ],
+        "cs_rank": 76,
+        "bio_rank": 157
     },
     {
         "fullName": "Ghent University",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Ghent",
         "latitude": 51.00784845,
         "longitude": 3.710883068491984,
-        "color": [29, 101, 204]
+        "color": [
+            29,
+            101,
+            204
+        ],
+        "cs_rank": 77,
+        "bio_rank": 158
     },
     {
         "fullName": "University at Buffalo",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UBuffalo",
         "latitude": 43.0007502,
         "longitude": -78.7887138,
-        "color": [83, 83, 83]
+        "color": [
+            83,
+            83,
+            83
+        ],
+        "cs_rank": 78,
+        "bio_rank": 159
     },
     {
         "fullName": "Washington University in St. Louis",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "WUSTL",
         "latitude": 38.64724015,
         "longitude": -90.3084017323959,
-        "color": [222, 195, 178]
+        "color": [
+            222,
+            195,
+            178
+        ],
+        "cs_rank": 79,
+        "bio_rank": 18
     },
     {
         "fullName": "Emory University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Emory",
         "latitude": 33.80045465,
         "longitude": -84.31723780466274,
-        "color": [198, 198, 198]
+        "color": [
+            198,
+            198,
+            198
+        ],
+        "cs_rank": 80,
+        "bio_rank": 30
     },
     {
         "fullName": "Vanderbilt University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Vanderbilt",
         "latitude": 36.14380105,
         "longitude": -86.80281889095295,
-        "color": [21, 21, 21]
+        "color": [
+            21,
+            21,
+            21
+        ],
+        "cs_rank": 81,
+        "bio_rank": 86
     },
     {
         "fullName": "Korea Advanced Institute of Science and Technology",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "KAIST",
         "latitude": 36.3697191,
         "longitude": 127.36253700115094,
-        "color": [29, 76, 157]
+        "color": [
+            29,
+            76,
+            157
+        ],
+        "cs_rank": 82,
+        "bio_rank": 160
     },
     {
         "fullName": "Seoul National University",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "SNU",
         "latitude": 37.46691,
         "longitude": 126.94771,
-        "color": [4, 52, 132]
+        "color": [
+            4,
+            52,
+            132
+        ],
+        "cs_rank": 83,
+        "bio_rank": 140
     },
     {
-        "fullName": "Technische Universit\u00e4t Berlin",
-        "region": ["EU"],
+        "fullName": "Technische Universität Berlin",
+        "region": [
+            "EU"
+        ],
         "abbr": "TU Berlin",
         "latitude": 52.51101585,
         "longitude": 13.326954140959668,
-        "color": [212, 4, 12]
+        "color": [
+            212,
+            4,
+            12
+        ],
+        "cs_rank": 84,
+        "bio_rank": 161
     },
     {
-        "fullName": "Rheinisch-Westf\u00e4lische Technische Hochschule Aachen University",
-        "region": ["EU"],
+        "fullName": "Rheinisch-Westfälische Technische Hochschule Aachen University",
+        "region": [
+            "EU"
+        ],
         "abbr": "RWTH-Aachen",
         "latitude": 50.7791657,
-        "longitude": 6.068920935592383
+        "longitude": 6.068920935592383,
+        "cs_rank": 85,
+        "bio_rank": 162
     },
     {
         "fullName": "Aalborg University",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "AAU",
         "latitude": 57.015907049999996,
         "longitude": 9.975308243557345,
-        "color": [36, 28, 84]
+        "color": [
+            36,
+            28,
+            84
+        ],
+        "cs_rank": 86,
+        "bio_rank": 163
     },
     {
         "fullName": "George Mason University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "George Mason",
         "latitude": 38.83133325,
         "longitude": -77.30798838879116,
-        "color": [38, 100, 60]
+        "color": [
+            38,
+            100,
+            60
+        ],
+        "cs_rank": 87,
+        "bio_rank": 164
     },
     {
-        "fullName": "Technische Universit\u00e4t Darmstadt",
-        "region": ["EU"],
+        "fullName": "Technische Universität Darmstadt",
+        "region": [
+            "EU"
+        ],
         "abbr": "TU Darmstadt",
         "latitude": 49.86115175,
         "longitude": 8.681943998674633,
-        "color": [170, 170, 170]
+        "color": [
+            170,
+            170,
+            170
+        ],
+        "cs_rank": 88,
+        "bio_rank": 165
     },
     {
         "fullName": "University of Colorado Boulder",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Colorado Boulder",
         "latitude": 40.011137149999996,
         "longitude": -105.2470157043634,
-        "color": [196, 180, 119]
+        "color": [
+            196,
+            180,
+            119
+        ],
+        "cs_rank": 89,
+        "bio_rank": 166
     },
     {
         "fullName": "University of Illinois at Chicago",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UIC",
         "latitude": 41.868922299999994,
         "longitude": -87.64858476010119,
-        "color": [236, 52, 68]
+        "color": [
+            236,
+            52,
+            68
+        ],
+        "cs_rank": 90,
+        "bio_rank": 167
     },
     {
         "fullName": "University of Minnesota",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UMN",
         "latitude": 44.9863392,
         "longitude": -93.17945580218503,
-        "color": [124, 60, 68]
+        "color": [
+            124,
+            60,
+            68
+        ],
+        "cs_rank": 91,
+        "bio_rank": 70
     },
     {
         "fullName": "Arizona State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "ASU",
         "latitude": 33.4213174,
         "longitude": -111.93316305413154,
-        "color": [166, 10, 74]
+        "color": [
+            166,
+            10,
+            74
+        ],
+        "cs_rank": 92,
+        "bio_rank": 39
     },
     {
         "fullName": "University of Sydney",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "USyd",
         "latitude": -33.88888125,
         "longitude": 151.18941425705117,
-        "color": [207, 135, 84]
+        "color": [
+            207,
+            135,
+            84
+        ],
+        "cs_rank": 93,
+        "bio_rank": 69
     },
     {
         "fullName": "Virginia Polytechnic Institute and State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Virginia Tech",
         "latitude": 37.22192675,
         "longitude": -80.42728184013652,
-        "color": [201, 68, 32]
+        "color": [
+            201,
+            68,
+            32
+        ],
+        "cs_rank": 94,
+        "bio_rank": 168
     },
     {
         "fullName": "Indiana University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "IU",
         "latitude": 39.1802358,
         "longitude": -86.50935262731483,
-        "color": [155, 27, 31]
+        "color": [
+            155,
+            27,
+            31
+        ],
+        "cs_rank": 95,
+        "bio_rank": 169
     },
     {
         "fullName": "Singapore Management University",
-        "region": ["SG"],
+        "region": [
+            "SG"
+        ],
         "abbr": "SMU",
         "latitude": 1.29616795,
-        "longitude": 103.85004365998248
+        "longitude": 103.85004365998248,
+        "cs_rank": 96,
+        "bio_rank": 170
     },
     {
         "fullName": "Oregon State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Oregon State",
         "latitude": 44.56305595,
         "longitude": -123.28392363395751,
-        "color": [4, 4, 4]
+        "color": [
+            4,
+            4,
+            4
+        ],
+        "cs_rank": 97,
+        "bio_rank": 117
     },
     {
         "fullName": "University of Tokyo",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "UTokyo",
         "latitude": 35.71171565,
         "longitude": 139.76374569517452,
-        "color": [251, 187, 4]
+        "color": [
+            251,
+            187,
+            4
+        ],
+        "cs_rank": 98,
+        "bio_rank": 72
     },
     {
         "fullName": "Technical University of Denmark",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "DTU",
         "latitude": 55.785414450000005,
         "longitude": 12.520215144442094,
-        "color": [196, 20, 52]
+        "color": [
+            196,
+            20,
+            52
+        ],
+        "cs_rank": 99,
+        "bio_rank": 171
     },
     {
         "fullName": "Saarland University",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Saarland",
         "latitude": 49.25428530000001,
         "longitude": 7.04150707562534,
-        "color": [20, 68, 124]
+        "color": [
+            20,
+            68,
+            124
+        ],
+        "cs_rank": 100,
+        "bio_rank": 172
     },
     {
         "fullName": "Aarhus University",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Aarhus",
         "latitude": 56.1670905,
         "longitude": 10.202617693592895,
-        "color": [4, 84, 156]
+        "color": [
+            4,
+            84,
+            156
+        ],
+        "cs_rank": 101,
+        "bio_rank": 173
     },
     {
         "fullName": "CISPA Helmholtz Center",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "CISPA",
         "latitude": 49.2593545,
-        "longitude": 7.050992224567377
+        "longitude": 7.050992224567377,
+        "cs_rank": 102,
+        "bio_rank": 174
     },
     {
         "fullName": "City University of Hong Kong",
-        "region": ["HK"],
+        "region": [
+            "HK"
+        ],
         "abbr": "CityU",
         "latitude": 22.3400204,
         "longitude": 114.16971664362887,
-        "color": [147, 38, 88]
+        "color": [
+            147,
+            38,
+            88
+        ],
+        "cs_rank": 103,
+        "bio_rank": 133
     },
     {
         "fullName": "Monash University",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "Monash",
         "latitude": -37.8774234,
         "longitude": 145.04496691740303,
-        "color": [11, 54, 148]
+        "color": [
+            11,
+            54,
+            148
+        ],
+        "cs_rank": 104,
+        "bio_rank": 175
     },
     {
         "fullName": "University of Central Florida",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UCF",
         "latitude": 28.59899755,
         "longitude": -81.19712501183949,
-        "color": [13, 12, 9]
+        "color": [
+            13,
+            12,
+            9
+        ],
+        "cs_rank": 105,
+        "bio_rank": 176
     },
     {
         "fullName": "National Institute of Informatics",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "NII",
         "latitude": 35.8932615,
-        "longitude": 139.9449382
+        "longitude": 139.9449382,
+        "cs_rank": 106,
+        "bio_rank": 177
     },
     {
         "fullName": "University of New South Wales",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "UNSW",
         "latitude": -33.91759945,
         "longitude": 151.23126487290787,
-        "color": [191, 81, 51]
+        "color": [
+            191,
+            81,
+            51
+        ],
+        "cs_rank": 107,
+        "bio_rank": 85
     },
     {
         "fullName": "Universidade de Lisboa",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "ULisboa",
         "latitude": 38.7525379,
         "longitude": -9.156845594636383,
-        "color": [53, 69, 89]
+        "color": [
+            53,
+            69,
+            89
+        ],
+        "cs_rank": 108,
+        "bio_rank": 178
     },
     {
         "fullName": "University of Melbourne",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "UniMelb",
         "latitude": -37.8038271,
         "longitude": 144.9597056360034,
-        "color": [196, 178, 176]
+        "color": [
+            196,
+            178,
+            176
+        ],
+        "cs_rank": 109,
+        "bio_rank": 67
     },
     {
         "fullName": "University of Rochester",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Rochester",
         "latitude": 43.1226985,
         "longitude": -77.6307297,
-        "color": [4, 4, 4]
+        "color": [
+            4,
+            4,
+            4
+        ],
+        "cs_rank": 110,
+        "bio_rank": 46
     },
     {
         "fullName": "Bar-Ilan University",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "BIU",
         "latitude": 32.069329249999996,
         "longitude": 34.84334338615306,
-        "color": [123, 204, 235]
+        "color": [
+            123,
+            204,
+            235
+        ],
+        "cs_rank": 111,
+        "bio_rank": 179
     },
     {
-        "fullName": "Technische Universit\u00e4t Wien",
-        "region": ["EU"],
+        "fullName": "Technische Universität Wien",
+        "region": [
+            "EU"
+        ],
         "abbr": "TU Wien",
         "latitude": 48.19853965,
         "longitude": 16.369861676286614,
-        "color": [212, 4, 12]
+        "color": [
+            212,
+            4,
+            12
+        ],
+        "cs_rank": 112,
+        "bio_rank": 180
     },
     {
         "fullName": "University of Copenhagen",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "UCPH",
         "latitude": 55.6801502,
         "longitude": 12.57232700140625,
-        "color": [145, 26, 27]
+        "color": [
+            145,
+            26,
+            27
+        ],
+        "cs_rank": 113,
+        "bio_rank": 181
     },
     {
         "fullName": "University of Texas at Dallas",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UT-Dallas",
         "latitude": 32.9875855,
         "longitude": -96.74978396047038,
-        "color": [12, 72, 112]
+        "color": [
+            12,
+            72,
+            112
+        ],
+        "cs_rank": 114,
+        "bio_rank": 182
     },
     {
         "fullName": "Yonsei University",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "Yonsei",
         "latitude": 37.280096549999996,
         "longitude": 127.90150303233045,
-        "color": [4, 60, 116]
+        "color": [
+            4,
+            60,
+            116
+        ],
+        "cs_rank": 115,
+        "bio_rank": 61
     },
     {
         "fullName": "Mohamed bin Zayed University of Artificial Intelligence",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "MBZUAI",
         "latitude": 24.4324903,
-        "longitude": 54.618379
+        "longitude": 54.618379,
+        "cs_rank": 116,
+        "bio_rank": 183
     },
     {
         "fullName": "Michigan State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "MSU",
         "latitude": 42.70237935,
         "longitude": -84.48038686520441,
-        "color": [46, 84, 76]
+        "color": [
+            46,
+            84,
+            76
+        ],
+        "cs_rank": 117,
+        "bio_rank": 108
     },
     {
         "fullName": "Pohang University of Science and Technology",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "POSTECH",
         "latitude": 36.0180795,
         "longitude": 129.32085559784392,
-        "color": [52, 52, 52]
+        "color": [
+            52,
+            52,
+            52
+        ],
+        "cs_rank": 118,
+        "bio_rank": 184
     },
     {
         "fullName": "Rochester Institute of Technology",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "RIT",
         "latitude": 43.08248835,
         "longitude": -77.67291102378641,
-        "color": [44, 52, 148]
+        "color": [
+            44,
+            52,
+            148
+        ],
+        "cs_rank": 119,
+        "bio_rank": 185
     },
     {
         "fullName": "Sapienza University of Rome",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Sapienza",
         "latitude": 41.856085,
         "longitude": 12.634443354865688,
-        "color": [136, 61, 74]
+        "color": [
+            136,
+            61,
+            74
+        ],
+        "cs_rank": 120,
+        "bio_rank": 186
     },
     {
         "fullName": "University of Amsterdam",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "UAmsterdam",
         "latitude": 52.36813335,
         "longitude": 4.889804155733945,
-        "color": [4, 4, 4]
+        "color": [
+            4,
+            4,
+            4
+        ],
+        "cs_rank": 121,
+        "bio_rank": 96
     },
     {
         "fullName": "University of Warwick",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Warwick",
         "latitude": 52.3813073,
         "longitude": -1.5639569481637439,
-        "color": [210, 173, 42]
+        "color": [
+            210,
+            173,
+            42
+        ],
+        "cs_rank": 122,
+        "bio_rank": 187
     },
     {
         "fullName": "Aalto University",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Aalto",
         "latitude": 60.1860789,
         "longitude": 24.828102074406736,
-        "color": [245, 217, 30]
+        "color": [
+            245,
+            217,
+            30
+        ],
+        "cs_rank": 123,
+        "bio_rank": 188
     },
     {
         "fullName": "Institute of Science and Technology Austria",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "IST Austria",
         "latitude": 48.3109736,
         "longitude": 16.258631088976628,
-        "color": [220, 108, 113]
+        "color": [
+            220,
+            108,
+            113
+        ],
+        "cs_rank": 124,
+        "bio_rank": 189
     },
     {
         "fullName": "King's College London",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "KCL",
         "latitude": 51.503403199999994,
         "longitude": -0.08946614662781002,
-        "color": [43, 70, 111]
+        "color": [
+            43,
+            70,
+            111
+        ],
+        "cs_rank": 125,
+        "bio_rank": 57
     },
     {
         "fullName": "Ludwig Maximilian University of Munich",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "LMU Munich",
         "latitude": 48.15047575,
-        "longitude": 11.579835648337658
+        "longitude": 11.579835648337658,
+        "cs_rank": 126,
+        "bio_rank": 190
     },
     {
         "fullName": "McGill University",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "McGill",
         "latitude": 45.50688565,
         "longitude": -73.57908460423829,
-        "color": [251, 210, 207]
+        "color": [
+            251,
+            210,
+            207
+        ],
+        "cs_rank": 127,
+        "bio_rank": 71
     },
     {
         "fullName": "University of Notre Dame",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Notre Dame",
         "latitude": 41.704567749999995,
         "longitude": -86.23822026017265,
-        "color": [218, 210, 175]
+        "color": [
+            218,
+            210,
+            175
+        ],
+        "cs_rank": 128,
+        "bio_rank": 35
     },
     {
         "fullName": "University of Pittsburgh",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UPitt",
         "latitude": 40.44415295,
         "longitude": -79.96246095144505,
-        "color": [227, 188, 96]
+        "color": [
+            227,
+            188,
+            96
+        ],
+        "cs_rank": 129,
+        "bio_rank": 56
     },
     {
         "fullName": "University of Stuttgart",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Uni Stuttgart",
         "latitude": 48.7784485,
         "longitude": 9.1800132,
-        "color": [186, 186, 186]
+        "color": [
+            186,
+            186,
+            186
+        ],
+        "cs_rank": 130,
+        "bio_rank": 191
     },
     {
         "fullName": "University of Texas at Arlington",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UT-Arlington",
         "latitude": 32.728471299999995,
         "longitude": -97.11202127009975,
-        "color": [209, 74, 46]
+        "color": [
+            209,
+            74,
+            46
+        ],
+        "cs_rank": 131,
+        "bio_rank": 192
     },
     {
         "fullName": "Australian National University",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "ANU",
         "latitude": -35.2813935,
         "longitude": 149.11714511802117,
-        "color": [195, 194, 166]
+        "color": [
+            195,
+            194,
+            166
+        ],
+        "cs_rank": 132,
+        "bio_rank": 126
     },
     {
         "fullName": "Graz University of Technology",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "TU Graz",
         "latitude": 47.058199900000005,
         "longitude": 15.460187434162261,
-        "color": [236, 36, 84]
+        "color": [
+            236,
+            36,
+            84
+        ],
+        "cs_rank": 133,
+        "bio_rank": 193
     },
     {
         "fullName": "Sungkyunkwan University",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "SKKU",
         "latitude": 37.3003187,
         "longitude": 126.9697911,
-        "color": [174, 207, 43]
+        "color": [
+            174,
+            207,
+            43
+        ],
+        "cs_rank": 134,
+        "bio_rank": 194
     },
     {
         "fullName": "University of Bristol",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Bristol",
         "latitude": 51.4905582,
         "longitude": -2.6304824978595356,
-        "color": [37, 38, 24]
+        "color": [
+            37,
+            38,
+            24
+        ],
+        "cs_rank": 135,
+        "bio_rank": 129
     },
     {
         "fullName": "University of Delaware",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UD",
         "latitude": 39.6803338,
         "longitude": -75.75307489920786,
-        "color": [7, 86, 158]
+        "color": [
+            7,
+            86,
+            158
+        ],
+        "cs_rank": 136,
+        "bio_rank": 195
     },
     {
         "fullName": "University of Liverpool",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Liverpool",
         "latitude": 53.40724285,
         "longitude": -2.965833661018871,
-        "color": [27, 55, 111]
+        "color": [
+            27,
+            55,
+            111
+        ],
+        "cs_rank": 137,
+        "bio_rank": 196
     },
     {
         "fullName": "Centre de Recherche en Informatique, Signal et Automatique de Lille",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "CRIStAL",
         "latitude": 43.9097185,
-        "longitude": 4.888863469357361
+        "longitude": 4.888863469357361,
+        "cs_rank": 138,
+        "bio_rank": 197
     },
     {
         "fullName": "The Hong Kong Polytechnic University",
-        "region": ["HK"],
+        "region": [
+            "HK"
+        ],
         "abbr": "PolyU",
         "latitude": 22.304486699999998,
         "longitude": 114.17969345847592,
-        "color": [140, 20, 44]
+        "color": [
+            140,
+            20,
+            44
+        ],
+        "cs_rank": 139,
+        "bio_rank": 135
     },
     {
         "fullName": "University of California - Merced",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UCM",
         "latitude": 37.36513585,
         "longitude": -120.42253889071495,
-        "color": [12, 43, 83]
+        "color": [
+            12,
+            43,
+            83
+        ],
+        "cs_rank": 140,
+        "bio_rank": 198
     },
     {
         "fullName": "University of Adelaide",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "Adelaide",
         "latitude": -34.9189226,
         "longitude": 138.60423667410745,
-        "color": [184, 151, 64]
+        "color": [
+            184,
+            151,
+            64
+        ],
+        "cs_rank": 141,
+        "bio_rank": 199
     },
     {
         "fullName": "University of Alberta",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "Alberta",
         "latitude": 53.52682,
         "longitude": -113.5244937350756,
-        "color": [242, 230, 213]
+        "color": [
+            242,
+            230,
+            213
+        ],
+        "cs_rank": 142,
+        "bio_rank": 92
     },
     {
         "fullName": "University of Birmingham",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Birmingham",
         "latitude": 52.4522956,
         "longitude": -1.9312856726008194,
-        "color": [214, 174, 6]
+        "color": [
+            214,
+            174,
+            6
+        ],
+        "cs_rank": 143,
+        "bio_rank": 200
     },
     {
         "fullName": "University of Connecticut",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UConn",
         "latitude": 41.82175755,
         "longitude": -72.24277535505323,
-        "color": [5, 14, 45]
+        "color": [
+            5,
+            14,
+            45
+        ],
+        "cs_rank": 144,
+        "bio_rank": 201
     },
     {
         "fullName": "University of Florida",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UF",
         "latitude": 29.6328837,
         "longitude": -82.34901302237435,
-        "color": [16, 47, 169]
+        "color": [
+            16,
+            47,
+            169
+        ],
+        "cs_rank": 145,
+        "bio_rank": 55
     },
     {
         "fullName": "Binghamton University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Binghamton",
         "latitude": 42.08779975,
         "longitude": -75.97066065614858,
-        "color": [187, 212, 201]
+        "color": [
+            187,
+            212,
+            201
+        ],
+        "cs_rank": 146,
+        "bio_rank": 202
     },
     {
         "fullName": "Ecole Normale Superieure",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "ENS Paris",
         "latitude": 48.8430502,
         "longitude": 2.346015821392692,
-        "color": [28, 20, 28]
+        "color": [
+            28,
+            20,
+            28
+        ],
+        "cs_rank": 147,
+        "bio_rank": 203
     },
     {
         "fullName": "IT University of Copenhagen",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "ITU Copenhagen",
         "latitude": 55.65965525,
         "longitude": 12.591076889344563,
-        "color": [145, 26, 27]
+        "color": [
+            145,
+            26,
+            27
+        ],
+        "cs_rank": 148,
+        "bio_rank": 204
     },
     {
         "fullName": "KTH Royal Institute of Technology",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "KTH",
         "latitude": 59.2016758,
         "longitude": 17.6203201,
-        "color": [202, 215, 235]
+        "color": [
+            202,
+            215,
+            235
+        ],
+        "cs_rank": 149,
+        "bio_rank": 205
     },
     {
         "fullName": "Singapore University of Technology and Design",
-        "region": ["SG"],
+        "region": [
+            "SG"
+        ],
         "abbr": "SUTD",
         "latitude": 1.3401441,
         "longitude": 103.9631302,
-        "color": [234, 32, 48]
+        "color": [
+            234,
+            32,
+            48
+        ],
+        "cs_rank": 150,
+        "bio_rank": 206
     },
     {
-        "fullName": "Technische Universit\u00e4t Dresden",
-        "region": ["EU"],
+        "fullName": "Technische Universität Dresden",
+        "region": [
+            "EU"
+        ],
         "abbr": "TU Dresden",
         "latitude": 51.028276500000004,
         "longitude": 13.735982754935176,
-        "color": [170, 170, 170]
+        "color": [
+            170,
+            170,
+            170
+        ],
+        "cs_rank": 151,
+        "bio_rank": 207
     },
     {
-        "fullName": "University of T\u00fcbingen",
-        "region": ["EU"],
-        "abbr": "T\u00fcbingen",
+        "fullName": "University of Tübingen",
+        "region": [
+            "EU"
+        ],
+        "abbr": "Tübingen",
         "latitude": 48.53405945,
         "longitude": 9.071244429234808,
-        "color": [236, 179, 191]
+        "color": [
+            236,
+            179,
+            191
+        ],
+        "cs_rank": 152,
+        "bio_rank": 208
     },
     {
         "fullName": "Weizmann Institute of Science",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "Weizmann",
         "latitude": 31.907849900000002,
         "longitude": 34.81334092444211,
-        "color": [174, 174, 174]
+        "color": [
+            174,
+            174,
+            174
+        ],
+        "cs_rank": 153,
+        "bio_rank": 76
     },
     {
         "fullName": "Karlsruhe Institute of Technology",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "KIT",
         "latitude": 49.101853399999996,
         "longitude": 8.433120159201868,
-        "color": [52, 164, 140]
+        "color": [
+            52,
+            164,
+            140
+        ],
+        "cs_rank": 154,
+        "bio_rank": 209
     },
     {
         "fullName": "Osaka University",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "UOsaka",
         "latitude": 34.51119925,
         "longitude": 135.63144797553792,
-        "color": [36, 52, 148]
+        "color": [
+            36,
+            52,
+            148
+        ],
+        "cs_rank": 155,
+        "bio_rank": 210
     },
     {
         "fullName": "Ruhr-University Bochum",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "RUB",
         "latitude": 51.444157649999994,
         "longitude": 7.260965412383296,
-        "color": [4, 52, 100]
+        "color": [
+            4,
+            52,
+            100
+        ],
+        "cs_rank": 156,
+        "bio_rank": 211
     },
     {
         "fullName": "Ulsan National Institute of Science and Technology",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "UNIST",
         "latitude": 35.57374845,
         "longitude": 129.18972658449857,
-        "color": [27, 37, 83]
+        "color": [
+            27,
+            37,
+            83
+        ],
+        "cs_rank": 157,
+        "bio_rank": 212
     },
     {
         "fullName": "University of Bonn",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Bonn",
         "latitude": 50.7338124,
         "longitude": 7.1022465,
-        "color": [4, 68, 140]
+        "color": [
+            4,
+            68,
+            140
+        ],
+        "cs_rank": 158,
+        "bio_rank": 115
     },
     {
         "fullName": "University of Montreal",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "UMontreal",
         "latitude": 45.5092094,
         "longitude": -73.58075877093961,
-        "color": [203, 168, 82]
+        "color": [
+            203,
+            168,
+            82
+        ],
+        "cs_rank": 159,
+        "bio_rank": 213
     },
     {
         "fullName": "University of Surrey",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Surrey",
         "latitude": 51.24307815,
         "longitude": -0.5900544877514773,
-        "color": [141, 112, 54]
+        "color": [
+            141,
+            112,
+            54
+        ],
+        "cs_rank": 160,
+        "bio_rank": 214
     },
     {
         "fullName": "University of Trento",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Trento",
         "latitude": 46.0661497,
         "longitude": 11.11662318758863,
-        "color": [22, 22, 22]
+        "color": [
+            22,
+            22,
+            22
+        ],
+        "cs_rank": 161,
+        "bio_rank": 215
     },
     {
         "fullName": "University of Tsukuba",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "Tsukuba",
         "latitude": 36.1070526,
         "longitude": 140.10066020403983,
-        "color": [84, 68, 156]
+        "color": [
+            84,
+            68,
+            156
+        ],
+        "cs_rank": 162,
+        "bio_rank": 216
     },
     {
         "fullName": "University of Warsaw",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "UWarsaw",
         "latitude": 52.2394966,
         "longitude": 21.015693129786936,
-        "color": [49, 43, 45]
+        "color": [
+            49,
+            43,
+            45
+        ],
+        "cs_rank": 163,
+        "bio_rank": 217
     },
     {
         "fullName": "University of Zurich",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "UZH",
         "latitude": 47.49684345,
         "longitude": 8.72980716809498,
-        "color": [4, 4, 4]
+        "color": [
+            4,
+            4,
+            4
+        ],
+        "cs_rank": 164,
+        "bio_rank": 60
     },
     {
         "fullName": "Worcester Polytechnic Institute",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "WPI",
         "latitude": 42.274315,
         "longitude": -71.80845674552586,
-        "color": [232, 31, 46]
+        "color": [
+            232,
+            31,
+            46
+        ],
+        "cs_rank": 165,
+        "bio_rank": 218
     },
     {
         "fullName": "Chalmers University of Technology",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Chalmers/GU",
         "latitude": 57.6897462,
         "longitude": 11.97652929499342,
-        "color": [36, 28, 28]
+        "color": [
+            36,
+            28,
+            28
+        ],
+        "cs_rank": 166,
+        "bio_rank": 219
     },
     {
         "fullName": "College of William and Mary",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "William and Mary",
         "latitude": 37.269093350000006,
-        "longitude": -76.7220488639414
+        "longitude": -76.7220488639414,
+        "cs_rank": 167,
+        "bio_rank": 220
     },
     {
         "fullName": "Florida State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "FSU",
         "latitude": 30.44235995,
         "longitude": -84.29747867166262,
-        "color": [87, 55, 59]
+        "color": [
+            87,
+            55,
+            59
+        ],
+        "cs_rank": 168,
+        "bio_rank": 44
     },
     {
         "fullName": "Hasso Plattner Institute",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "HPI",
         "latitude": 52.3933919,
-        "longitude": 13.13156397679563
+        "longitude": 13.13156397679563,
+        "cs_rank": 169,
+        "bio_rank": 221
     },
     {
         "fullName": "Iowa State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "ISU",
         "latitude": 42.0279608,
         "longitude": -93.64473746093857,
-        "color": [204, 21, 45]
+        "color": [
+            204,
+            21,
+            45
+        ],
+        "cs_rank": 170,
+        "bio_rank": 45
     },
     {
         "fullName": "Queen Mary University of London",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "QMUL",
         "latitude": 51.52492685,
         "longitude": -0.03924405317429028,
-        "color": [21, 43, 63]
+        "color": [
+            21,
+            43,
+            63
+        ],
+        "cs_rank": 171,
+        "bio_rank": 222
     },
     {
         "fullName": "Radboud University",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Radboud",
         "latitude": 51.82151725,
         "longitude": 5.863403442541042,
-        "color": [43, 35, 42]
+        "color": [
+            43,
+            35,
+            42
+        ],
+        "cs_rank": 172,
+        "bio_rank": 223
     },
     {
         "fullName": "Royal Holloway University of London",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Royal Holloway",
         "latitude": 51.424449550000006,
         "longitude": -0.5642561069587715,
-        "color": [43, 40, 37]
+        "color": [
+            43,
+            40,
+            37
+        ],
+        "cs_rank": 173,
+        "bio_rank": 224
     },
     {
         "fullName": "Stevens Institute of Technology",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Stevens",
         "latitude": 40.744809599999996,
         "longitude": -74.0252392276461,
-        "color": [44, 52, 148]
+        "color": [
+            44,
+            52,
+            148
+        ],
+        "cs_rank": 174,
+        "bio_rank": 225
     },
     {
         "fullName": "University of Freiburg",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Freiburg",
         "latitude": 47.9960901,
         "longitude": 7.8494005,
-        "color": [4, 4, 4]
+        "color": [
+            4,
+            4,
+            4
+        ],
+        "cs_rank": 175,
+        "bio_rank": 88
     },
     {
         "fullName": "University of Macau",
-        "region": ["HK"],
+        "region": [
+            "HK"
+        ],
         "abbr": "UMacau",
         "latitude": 22.1284604,
         "longitude": 113.5438378,
-        "color": [38, 33, 109]
+        "color": [
+            38,
+            33,
+            109
+        ],
+        "cs_rank": 176,
+        "bio_rank": 226
     },
     {
         "fullName": "European Institute of Innovation & Technology",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "EIT",
-        "latitude": 47.470849, 
+        "latitude": 47.470849,
         "longitude": 19.061396,
-        "color": [0, 74, 152]
+        "color": [
+            0,
+            74,
+            152
+        ],
+        "cs_rank": 177,
+        "bio_rank": 227
     },
     {
         "fullName": "Vrije Universiteit Amsterdam",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "VU Amsterdam",
         "latitude": 52.3340539,
         "longitude": 4.865188201518784,
-        "color": [11, 140, 206]
+        "color": [
+            11,
+            140,
+            206
+        ],
+        "cs_rank": 178,
+        "bio_rank": 228
     },
     {
         "fullName": "Washington State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "WSU",
         "latitude": 46.7337716,
         "longitude": -117.14980348311619,
-        "color": [100, 100, 100]
+        "color": [
+            100,
+            100,
+            100
+        ],
+        "cs_rank": 179,
+        "bio_rank": 36
     },
     {
         "fullName": "Cardiff University",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Cardiff",
         "latitude": 51.49332655,
         "longitude": -3.1860369709224132,
-        "color": [203, 5, 59]
+        "color": [
+            203,
+            5,
+            59
+        ],
+        "cs_rank": 180,
+        "bio_rank": 229
     },
     {
         "fullName": "Georgetown University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Georgetown",
         "latitude": 38.90893925,
         "longitude": -77.07457962060826,
-        "color": [4, 4, 4]
+        "color": [
+            4,
+            4,
+            4
+        ],
+        "cs_rank": 181,
+        "bio_rank": 139
     },
     {
         "fullName": "Hong Kong Baptist University",
-        "region": ["HK"],
+        "region": [
+            "HK"
+        ],
         "abbr": "HKBU",
         "latitude": 22.33798795,
         "longitude": 114.18262590878285,
-        "color": [17, 91, 156]
+        "color": [
+            17,
+            91,
+            156
+        ],
+        "cs_rank": 182,
+        "bio_rank": 113
     },
     {
         "fullName": "Kyoto University",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "UKyoto",
         "latitude": 35.0234513,
         "longitude": 135.7798129,
-        "color": [4, 38, 104]
+        "color": [
+            4,
+            38,
+            104
+        ],
+        "cs_rank": 183,
+        "bio_rank": 100
     },
     {
         "fullName": "New Jersey Institute of Technology",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "NJIT",
         "latitude": 40.7421254,
         "longitude": -74.17903159685589,
-        "color": [201, 11, 11]
+        "color": [
+            201,
+            11,
+            11
+        ],
+        "cs_rank": 184,
+        "bio_rank": 230
     },
     {
-        "fullName": "Technische Universit\u00e4t Dortmund",
-        "region": ["EU"],
+        "fullName": "Technische Universität Dortmund",
+        "region": [
+            "EU"
+        ],
         "abbr": "TU Dortmund",
         "latitude": 51.49148435,
         "longitude": 7.4122738886856805,
-        "color": [68, 204, 4]
+        "color": [
+            68,
+            204,
+            4
+        ],
+        "cs_rank": 185,
+        "bio_rank": 231
     },
     {
-        "fullName": "Technische Universit\u00e4t Kaiserslautern",
-        "region": ["EU"],
+        "fullName": "Technische Universität Kaiserslautern",
+        "region": [
+            "EU"
+        ],
         "abbr": "TU Kaiserslautern",
         "latitude": 49.4246142,
-        "longitude": 7.754214153273509
+        "longitude": 7.754214153273509,
+        "cs_rank": 186,
+        "bio_rank": 232
     },
     {
         "fullName": "Tufts University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Tufts",
         "latitude": 42.40649125,
         "longitude": -71.11800725402092,
-        "color": [100, 100, 108]
+        "color": [
+            100,
+            100,
+            108
+        ],
+        "cs_rank": 187,
+        "bio_rank": 41
     },
     {
         "fullName": "Tulane University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Tulane",
         "latitude": 29.94121955,
         "longitude": -90.12010089179185,
-        "color": [120, 109, 78]
+        "color": [
+            120,
+            109,
+            78
+        ],
+        "cs_rank": 188,
+        "bio_rank": 233
     },
     {
         "fullName": "University of Arizona",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UArizona",
         "latitude": 33.45205165,
         "longitude": -112.06367894217559,
-        "color": [174, 13, 43]
+        "color": [
+            174,
+            13,
+            43
+        ],
+        "cs_rank": 189,
+        "bio_rank": 128
     },
     {
         "fullName": "University of Georgia",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UGA",
         "latitude": 33.9404278,
         "longitude": -83.37304904988295,
-        "color": [26, 26, 26]
+        "color": [
+            26,
+            26,
+            26
+        ],
+        "cs_rank": 190,
+        "bio_rank": 131
     },
     {
         "fullName": "University of Glasgow",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Glasgow",
         "latitude": 55.872315349999994,
         "longitude": -4.289219112981823,
-        "color": [213, 215, 160]
+        "color": [
+            213,
+            215,
+            160
+        ],
+        "cs_rank": 191,
+        "bio_rank": 78
     },
     {
         "fullName": "University of Hamburg",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "UHH",
         "latitude": 53.5641091,
         "longitude": 9.994978875267606,
-        "color": [252, 4, 4]
+        "color": [
+            252,
+            4,
+            4
+        ],
+        "cs_rank": 192,
+        "bio_rank": 116
     },
     {
         "fullName": "Leibniz University Hannover",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "UniHannover",
         "latitude": 52.376532850000004,
         "longitude": 9.721217957520619,
-        "color": [4, 82, 155]
+        "color": [
+            4,
+            82,
+            155
+        ],
+        "cs_rank": 193,
+        "bio_rank": 234
     },
     {
         "fullName": "University of Southampton",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Southampton",
         "latitude": 50.93418045,
         "longitude": -1.3974843578245824,
-        "color": [31, 56, 67]
+        "color": [
+            31,
+            56,
+            67
+        ],
+        "cs_rank": 194,
+        "bio_rank": 235
     },
     {
         "fullName": "Uppsala University",
-        "region": ["EU"],
+        "region": [
+            "EU"
+        ],
         "abbr": "Uppsala",
         "latitude": 59.841953700000005,
         "longitude": 17.634420389231323,
-        "color": [188, 44, 52]
+        "color": [
+            188,
+            44,
+            52
+        ],
+        "cs_rank": 195,
+        "bio_rank": 94
     },
     {
         "fullName": "Illinois Institute of Technology",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "IIT",
         "latitude": 41.83616405,
         "longitude": -87.62647227745128,
-        "color": [4, 4, 4]
+        "color": [
+            4,
+            4,
+            4
+        ],
+        "cs_rank": 196,
+        "bio_rank": 236
     },
     {
         "fullName": "Rensselaer Polytechnic Institute",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "RPI",
         "latitude": 42.7298969,
         "longitude": -73.67966781998861,
-        "color": [232, 31, 46]
+        "color": [
+            232,
+            31,
+            46
+        ],
+        "cs_rank": 197,
+        "bio_rank": 237
     },
     {
         "fullName": "Tokyo Institute of Technology",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "Tokyo Tech",
         "latitude": 35.605038050000005,
         "longitude": 139.6827406514703,
-        "color": [4, 84, 148]
+        "color": [
+            4,
+            84,
+            148
+        ],
+        "cs_rank": 198,
+        "bio_rank": 238
     },
     {
         "fullName": "The University of North Carolina at Charlotte",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UNC-Charlotte",
         "latitude": 35.30649445,
         "longitude": -80.73497049689712,
-        "color": [83, 160, 213]
+        "color": [
+            83,
+            160,
+            213
+        ],
+        "cs_rank": 199,
+        "bio_rank": 239
     },
     {
         "fullName": "University of Bath",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Bath",
         "latitude": 51.37658725,
         "longitude": -2.323432593859133,
-        "color": [83, 86, 100]
+        "color": [
+            83,
+            86,
+            100
+        ],
+        "cs_rank": 200,
+        "bio_rank": 240
     },
     {
         "fullName": "University of Nebraska",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UNebraska",
         "latitude": 40.8206834,
         "longitude": -96.70048317521739,
-        "color": [49, 49, 49]
+        "color": [
+            49,
+            49,
+            49
+        ],
+        "cs_rank": 201,
+        "bio_rank": 241
     },
     {
         "fullName": "University of Oregon",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UOregon",
         "latitude": 44.04441965,
         "longitude": -123.07176029673084,
-        "color": [160, 160, 161]
+        "color": [
+            160,
+            160,
+            161
+        ],
+        "cs_rank": 202,
+        "bio_rank": 118
     },
     {
         "fullName": "University of Sheffield",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Sheffield",
         "latitude": 53.381504199999995,
         "longitude": -1.4833687805861575,
-        "color": [214, 197, 135]
+        "color": [
+            214,
+            197,
+            135
+        ],
+        "cs_rank": 203,
+        "bio_rank": 242
     },
     {
         "fullName": "University of Tennessee",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UT Knoxville",
         "latitude": 35.9515612,
         "longitude": -83.93087998929315,
-        "color": [181, 28, 44]
+        "color": [
+            181,
+            28,
+            44
+        ],
+        "cs_rank": 204,
+        "bio_rank": 243
     },
     {
         "fullName": "University of Victoria",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "UVic",
         "latitude": 48.46205995,
         "longitude": -123.31141980604804,
-        "color": [28, 32, 31]
+        "color": [
+            28,
+            32,
+            31
+        ],
+        "cs_rank": 205,
+        "bio_rank": 244
     },
     {
         "fullName": "York University",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "YorkU",
         "latitude": 43.77383185,
         "longitude": -79.49981056529253,
-        "color": [171, 59, 29]
+        "color": [
+            171,
+            59,
+            29
+        ],
+        "cs_rank": 206,
+        "bio_rank": 245
     },
     {
         "fullName": "Brigham Young University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "BYU",
         "latitude": 40.25501105,
         "longitude": -111.64968264312222,
-        "color": [13, 53, 99]
+        "color": [
+            13,
+            53,
+            99
+        ],
+        "cs_rank": 207,
+        "bio_rank": 246
     },
     {
         "fullName": "Drexel University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Drexel",
         "latitude": 39.9569305,
         "longitude": -75.18992654517834,
-        "color": [36, 28, 36]
+        "color": [
+            36,
+            28,
+            36
+        ],
+        "cs_rank": 208,
+        "bio_rank": 247
     },
     {
         "fullName": "George Washington University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "GWU",
         "latitude": 38.899893750000004,
         "longitude": -77.04744828062584,
-        "color": [206, 218, 225]
+        "color": [
+            206,
+            218,
+            225
+        ],
+        "cs_rank": 209,
+        "bio_rank": 47
     },
     {
         "fullName": "Hanyang University",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "Hanyang",
         "latitude": 37.5557232,
         "longitude": 127.0436441,
-        "color": [17, 51, 114]
+        "color": [
+            17,
+            51,
+            114
+        ],
+        "cs_rank": 210,
+        "bio_rank": 248
     },
     {
         "fullName": "Lehigh University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Lehigh",
         "latitude": 40.6068028,
         "longitude": -75.3782488,
-        "color": [84, 44, 12]
+        "color": [
+            84,
+            44,
+            12
+        ],
+        "cs_rank": 211,
+        "bio_rank": 249
     },
     {
         "fullName": "Queen's University Belfast",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "QUB",
         "latitude": 54.58414875,
         "longitude": -5.933721043274003,
-        "color": [5, 31, 71]
+        "color": [
+            5,
+            31,
+            71
+        ],
+        "cs_rank": 212,
+        "bio_rank": 250
     },
     {
         "fullName": "University of Calgary",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "UCalgary",
         "latitude": 51.0783651,
         "longitude": -114.1283072,
-        "color": [242, 211, 22]
+        "color": [
+            242,
+            211,
+            22
+        ],
+        "cs_rank": 213,
+        "bio_rank": 251
     },
     {
         "fullName": "University of Houston",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UHouston",
         "latitude": 29.7207902,
         "longitude": -95.34406271491369,
-        "color": [204, 24, 49]
+        "color": [
+            204,
+            24,
+            49
+        ],
+        "cs_rank": 214,
+        "bio_rank": 252
     },
     {
         "fullName": "University of Leeds",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Leeds",
         "latitude": 53.80677435,
         "longitude": -1.5562877504739676,
-        "color": [192, 165, 159]
+        "color": [
+            192,
+            165,
+            159
+        ],
+        "cs_rank": 215,
+        "bio_rank": 253
     },
     {
         "fullName": "University of Massachusetts Lowell",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UMass-Lowell",
         "latitude": 42.651909700000004,
         "longitude": -71.31736283953776,
-        "color": [6, 101, 180]
+        "color": [
+            6,
+            101,
+            180
+        ],
+        "cs_rank": 216,
+        "bio_rank": 254
     },
     {
         "fullName": "University of Queensland",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "UQueensland",
         "latitude": -27.498142350000002,
         "longitude": 153.01115355575917,
-        "color": [34, 44, 69]
+        "color": [
+            34,
+            44,
+            69
+        ],
+        "cs_rank": 217,
+        "bio_rank": 99
     },
     {
         "fullName": "University of South Carolina",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UofSC",
         "latitude": 33.9968529,
         "longitude": -81.0276709,
-        "color": [220, 233, 240]
+        "color": [
+            220,
+            233,
+            240
+        ],
+        "cs_rank": 218,
+        "bio_rank": 255
     },
     {
         "fullName": "University of York",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "York",
         "latitude": 53.9453903,
         "longitude": -1.0314592943104675,
-        "color": [188, 195, 193]
+        "color": [
+            188,
+            195,
+            193
+        ],
+        "cs_rank": 219,
+        "bio_rank": 256
     },
     {
         "fullName": "Boston College",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "BC",
         "latitude": 42.3354481,
         "longitude": -71.16826648999114,
-        "color": [151, 23, 49]
+        "color": [
+            151,
+            23,
+            49
+        ],
+        "cs_rank": 220,
+        "bio_rank": 257
     },
     {
         "fullName": "Brandeis University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Brandeis",
         "latitude": 42.36650945,
         "longitude": -71.2580196483813,
-        "color": [20, 52, 116]
+        "color": [
+            20,
+            52,
+            116
+        ],
+        "cs_rank": 221,
+        "bio_rank": 40
     },
     {
         "fullName": "Durham University",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Durham",
         "latitude": 54.76412815,
         "longitude": -1.5863066451588925,
-        "color": [171, 9, 9]
+        "color": [
+            171,
+            9,
+            9
+        ],
+        "cs_rank": 222,
+        "bio_rank": 258
     },
     {
         "fullName": "Lancaster University",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Lancaster",
         "latitude": 54.00975365,
         "longitude": -2.7875727317728654,
-        "color": [179, 21, 27]
+        "color": [
+            179,
+            21,
+            27
+        ],
+        "cs_rank": 223,
+        "bio_rank": 259
     },
     {
         "fullName": "Open University UK",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "OU UK",
         "latitude": 52.02453775,
         "longitude": -0.7092748093945007,
-        "color": [49, 36, 47]
+        "color": [
+            49,
+            36,
+            47
+        ],
+        "cs_rank": 224,
+        "bio_rank": 260
     },
     {
         "fullName": "Syracuse University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Syracuse",
         "latitude": 43.017112850000004,
         "longitude": -76.11855360009726,
-        "color": [60, 60, 60]
+        "color": [
+            60,
+            60,
+            60
+        ],
+        "cs_rank": 225,
+        "bio_rank": 261
     },
     {
         "fullName": "University of Iowa",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UIowa",
         "latitude": 41.631102350000006,
         "longitude": -91.54075201642047,
-        "color": [39, 32, 4]
+        "color": [
+            39,
+            32,
+            4
+        ],
+        "cs_rank": 226,
+        "bio_rank": 137
     },
     {
         "fullName": "University of Manchester",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Manchester",
         "latitude": 53.465651449999996,
         "longitude": -2.2326316129336994,
-        "color": [232, 202, 98]
+        "color": [
+            232,
+            202,
+            98
+        ],
+        "cs_rank": 227,
+        "bio_rank": 83
     },
     {
         "fullName": "University of New Hampshire",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UNH",
         "latitude": 43.1350987,
         "longitude": -70.94620785070498,
-        "color": [34, 35, 35]
+        "color": [
+            34,
+            35,
+            35
+        ],
+        "cs_rank": 228,
+        "bio_rank": 262
     },
     {
         "fullName": "University of Nottingham",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Nottingham",
         "latitude": 52.9387428,
         "longitude": -1.2002956927457427,
-        "color": [205, 13, 40]
+        "color": [
+            205,
+            13,
+            40
+        ],
+        "cs_rank": 229,
+        "bio_rank": 120
     },
     {
         "fullName": "University of Ottawa",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "uOttawa",
         "latitude": 45.42580945,
         "longitude": -75.68736498199888,
-        "color": [84, 84, 84]
+        "color": [
+            84,
+            84,
+            84
+        ],
+        "cs_rank": 230,
+        "bio_rank": 263
     },
     {
         "fullName": "University of Strathclyde",
-        "region": ["UK"],
+        "region": [
+            "UK"
+        ],
         "abbr": "Strathclyde",
         "latitude": 55.8618812,
         "longitude": -4.241956565778082,
-        "color": [53, 44, 47]
+        "color": [
+            53,
+            44,
+            47
+        ],
+        "cs_rank": 231,
+        "bio_rank": 264
     },
     {
         "fullName": "Waseda University",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "Waseda",
         "latitude": 35.709179750000004,
         "longitude": 139.71972128895072,
-        "color": [140, 28, 44]
+        "color": [
+            140,
+            28,
+            44
+        ],
+        "cs_rank": 232,
+        "bio_rank": 265
     },
     {
         "fullName": "Auburn University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Auburn",
         "latitude": 32.59195285,
         "longitude": -85.49597748562812,
-        "color": [225, 95, 17]
+        "color": [
+            225,
+            95,
+            17
+        ],
+        "cs_rank": 233,
+        "bio_rank": 266
     },
     {
         "fullName": "Case Western Reserve University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "CWRU",
         "latitude": 41.50138695,
         "longitude": -81.60070216600491,
-        "color": [4, 4, 4]
+        "color": [
+            4,
+            4,
+            4
+        ],
+        "cs_rank": 234,
+        "bio_rank": 119
     },
     {
         "fullName": "Colorado State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "CSU",
         "latitude": 40.570656650000004,
         "longitude": -105.08539947634978,
-        "color": [21, 113, 94]
+        "color": [
+            21,
+            113,
+            94
+        ],
+        "cs_rank": 235,
+        "bio_rank": 43
     },
     {
         "fullName": "Michigan Technological University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Michigan Tech",
         "latitude": 47.1099114,
         "longitude": -88.55115132129092,
-        "color": [234, 198, 51]
+        "color": [
+            234,
+            198,
+            51
+        ],
+        "cs_rank": 236,
+        "bio_rank": 267
     },
     {
         "fullName": "Nara Institute of Science and Technology",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "NAIST",
         "latitude": 34.731811300000004,
         "longitude": 135.73358745177381,
-        "color": [220, 108, 113]
+        "color": [
+            220,
+            108,
+            113
+        ],
+        "cs_rank": 237,
+        "bio_rank": 268
     },
     {
         "fullName": "Qatar Computing Research Institute",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "QCRI",
         "latitude": 51.2295295,
-        "longitude": 25.3336984
+        "longitude": 25.3336984,
+        "cs_rank": 238,
+        "bio_rank": 269
     },
     {
         "fullName": "Texas State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "TSU",
         "latitude": 29.8910941,
         "longitude": -97.93768392991333,
-        "color": [9, 119, 191]
+        "color": [
+            9,
+            119,
+            191
+        ],
+        "cs_rank": 239,
+        "bio_rank": 270
     },
     {
         "fullName": "University of Colorado Colorado Springs",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UCCS",
         "latitude": 38.8924932,
         "longitude": -104.7996978,
-        "color": [196, 180, 119]
+        "color": [
+            196,
+            180,
+            119
+        ],
+        "cs_rank": 240,
+        "bio_rank": 271
     },
     {
         "fullName": "University of Kansas",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UKansas",
         "latitude": 38.953491799999995,
         "longitude": -95.26308879955823,
-        "color": [16, 92, 191]
+        "color": [
+            16,
+            92,
+            191
+        ],
+        "cs_rank": 241,
+        "bio_rank": 272
     },
     {
         "fullName": "University of Kentucky",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UKentucky",
         "latitude": 38.026629099999994,
         "longitude": -84.50472223981663,
-        "color": [218, 226, 241]
+        "color": [
+            218,
+            226,
+            241
+        ],
+        "cs_rank": 242,
+        "bio_rank": 273
     },
     {
         "fullName": "University of South Florida",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "USF",
         "latitude": 28.0599999,
         "longitude": -82.41383619025117,
-        "color": [13, 106, 75]
+        "color": [
+            13,
+            106,
+            75
+        ],
+        "cs_rank": 243,
+        "bio_rank": 274
     },
     {
         "fullName": "University of Texas at San Antonio",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UT-SA",
         "latitude": 29.583331049999998,
         "longitude": -98.6194450505688,
-        "color": [18, 44, 62]
+        "color": [
+            18,
+            44,
+            62
+        ],
+        "cs_rank": 244,
+        "bio_rank": 275
     },
     {
         "fullName": "University of Western Australia",
-        "region": ["Others"],
+        "region": [
+            "Others"
+        ],
         "abbr": "UWA",
         "latitude": -31.95040445,
         "longitude": 115.79790157357621,
-        "color": [218, 184, 48]
+        "color": [
+            218,
+            184,
+            48
+        ],
+        "cs_rank": 245,
+        "bio_rank": 121
     },
     {
         "fullName": "Georgia State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "GSU",
         "latitude": 33.7535889,
         "longitude": -84.38542086620515,
-        "color": [218, 205, 214]
+        "color": [
+            218,
+            205,
+            214
+        ],
+        "cs_rank": 246,
+        "bio_rank": 276
     },
     {
         "fullName": "Kansas State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "KSU",
         "latitude": 39.20883,
         "longitude": -96.58845116318602,
-        "color": [225, 218, 234]
+        "color": [
+            225,
+            218,
+            234
+        ],
+        "cs_rank": 247,
+        "bio_rank": 277
     },
     {
         "fullName": "Louisiana State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "LSU",
         "latitude": 30.405761849999998,
         "longitude": -91.18597450265686,
-        "color": [46, 84, 76]
+        "color": [
+            46,
+            84,
+            76
+        ],
+        "cs_rank": 248,
+        "bio_rank": 278
     },
     {
         "fullName": "New Mexico State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "NMSU",
         "latitude": 32.2729032,
         "longitude": -106.74349267153694,
-        "color": [179, 148, 134]
+        "color": [
+            179,
+            148,
+            134
+        ],
+        "cs_rank": 249,
+        "bio_rank": 279
     },
     {
         "fullName": "Polytechnique Montreal",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "Poly Montreal",
         "latitude": 45.5045875,
-        "longitude": -73.612996
+        "longitude": -73.612996,
+        "cs_rank": 250,
+        "bio_rank": 280
     },
     {
         "fullName": "Queen's University",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "Queen's U",
         "latitude": 44.22634885,
         "longitude": -76.49575545601735,
-        "color": [184, 47, 68]
+        "color": [
+            184,
+            47,
+            68
+        ],
+        "cs_rank": 251,
+        "bio_rank": 281
     },
     {
         "fullName": "Texas Tech University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Texas Tech",
         "latitude": 33.59375255,
         "longitude": -101.89959552302756,
-        "color": [23, 17, 17]
+        "color": [
+            23,
+            17,
+            17
+        ],
+        "cs_rank": 252,
+        "bio_rank": 282
     },
     {
         "fullName": "The University of Alabama",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UAlabama",
         "latitude": 33.2099791,
         "longitude": -87.51722089982663,
-        "color": [37, 85, 126]
+        "color": [
+            37,
+            85,
+            126
+        ],
+        "cs_rank": 253,
+        "bio_rank": 283
     },
     {
         "fullName": "University of Arkansas",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UArkansas",
         "latitude": 36.09352375,
         "longitude": -94.17708979491738,
-        "color": [16, 92, 191]
+        "color": [
+            16,
+            92,
+            191
+        ],
+        "cs_rank": 254,
+        "bio_rank": 284
     },
     {
         "fullName": "University of Massachusetts Boston",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UMass-Boston",
         "latitude": 42.314068,
         "longitude": -71.03871320767618,
-        "color": [14, 14, 14]
+        "color": [
+            14,
+            14,
+            14
+        ],
+        "cs_rank": 255,
+        "bio_rank": 285
     },
     {
         "fullName": "University of Nevada",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UNLV",
         "latitude": 36.10782625,
         "longitude": -115.14186111825259,
-        "color": [153, 14, 20]
+        "color": [
+            153,
+            14,
+            20
+        ],
+        "cs_rank": 256,
+        "bio_rank": 286
     },
     {
         "fullName": "University of New Mexico",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UNM",
         "latitude": 35.08663275,
         "longitude": -106.62020940505188,
-        "color": [124, 60, 68]
+        "color": [
+            124,
+            60,
+            68
+        ],
+        "cs_rank": 257,
+        "bio_rank": 287
     },
     {
         "fullName": "University of Vermont",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UVermont",
         "latitude": 44.4737365,
         "longitude": -73.19414679705882,
-        "color": [10, 110, 77]
+        "color": [
+            10,
+            110,
+            77
+        ],
+        "cs_rank": 258,
+        "bio_rank": 288
     },
     {
         "fullName": "Utah State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "USU",
         "latitude": 41.752695900000006,
         "longitude": -111.808733045283,
-        "color": [33, 54, 75]
+        "color": [
+            33,
+            54,
+            75
+        ],
+        "cs_rank": 259,
+        "bio_rank": 289
     },
     {
         "fullName": "West Virginia University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "WVU",
         "latitude": 39.6256302,
         "longitude": -79.96310731507394,
-        "color": [7, 45, 82]
+        "color": [
+            7,
+            45,
+            82
+        ],
+        "cs_rank": 260,
+        "bio_rank": 290
     },
     {
         "fullName": "McMaster University",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "McMaster",
         "latitude": 43.263939699999995,
         "longitude": -79.917825231868,
-        "color": [52, 34, 41]
+        "color": [
+            52,
+            34,
+            41
+        ],
+        "cs_rank": 261,
+        "bio_rank": 291
     },
     {
         "fullName": "Mississippi State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Mississippi State",
         "latitude": 33.4386876,
         "longitude": -88.79432320417112,
-        "color": [214, 214, 214]
+        "color": [
+            214,
+            214,
+            214
+        ],
+        "cs_rank": 262,
+        "bio_rank": 292
     },
     {
         "fullName": "Oklahoma State University",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Oklahoma State",
         "latitude": 36.128476750000004,
         "longitude": -97.08398055028107,
-        "color": [33, 20, 11]
+        "color": [
+            33,
+            20,
+            11
+        ],
+        "cs_rank": 263,
+        "bio_rank": 293
     },
     {
         "fullName": "University of Missouri",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "Mizzou",
         "latitude": 38.93641465,
         "longitude": -92.32970301784542,
-        "color": [184, 184, 184]
+        "color": [
+            184,
+            184,
+            184
+        ],
+        "cs_rank": 264,
+        "bio_rank": 294
     },
     {
         "fullName": "University of New Orleans",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UNO",
         "latitude": 30.02835255,
         "longitude": -90.06684280430662,
-        "color": [28, 66, 116]
+        "color": [
+            28,
+            66,
+            116
+        ],
+        "cs_rank": 265,
+        "bio_rank": 295
     },
     {
         "fullName": "University of Oklahoma",
-        "region": ["US"],
+        "region": [
+            "US"
+        ],
         "abbr": "UOklahoma",
         "latitude": 35.1959878,
         "longitude": -97.44570827599858,
-        "color": [236, 29, 37]
+        "color": [
+            236,
+            29,
+            37
+        ],
+        "cs_rank": 266,
+        "bio_rank": 296
     },
     {
         "fullName": "Western University",
-        "region": ["CA"],
+        "region": [
+            "CA"
+        ],
         "abbr": "Western Ontario",
         "latitude": 43.0054234,
         "longitude": -81.27480104616814,
-        "color": [75, 34, 130]
+        "color": [
+            75,
+            34,
+            130
+        ],
+        "cs_rank": 267,
+        "bio_rank": 297
+    },
+    {
+        "fullName": "University of California - San Francisco",
+        "region": [
+            "US"
+        ],
+        "abbr": "UCSF",
+        "latitude": 37.77715966765566,
+        "longitude": -122.44863320682605,
+        "color": [
+            17,
+            101,
+            153
+        ],
+        "cs_rank": 268,
+        "bio_rank": 6
+    },
+    {
+        "fullName": "The Scripps Research Institute",
+        "region": [
+            "US"
+        ],
+        "abbr": "TSRI",
+        "latitude": 33.04323013645361,
+        "longitude": -116.89090893287181,
+        "color": [
+            125,
+            63,
+            255
+        ],
+        "cs_rank": 269,
+        "bio_rank": 8
+    },
+    {
+        "fullName": "Cold Spring Harbor Laboratory",
+        "region": [
+            "US"
+        ],
+        "abbr": "CSHL",
+        "latitude": 40.8623522,
+        "longitude": -73.4699926,
+        "color": [
+            78,
+            98,
+            245
+        ],
+        "cs_rank": 270,
+        "bio_rank": 9
+    },
+    {
+        "fullName": "Rockefeller University",
+        "region": [
+            "US"
+        ],
+        "abbr": "RU",
+        "latitude": 40.7624395,
+        "longitude": -73.9557565,
+        "color": [
+            3,
+            26,
+            149
+        ],
+        "cs_rank": 271,
+        "bio_rank": 12
+    },
+    {
+        "fullName": "University of Texas Southwestern Medical Center Dallas",
+        "region": [
+            "US"
+        ],
+        "abbr": "UTSW",
+        "latitude": 32.812043,
+        "longitude": -96.8417201,
+        "color": [
+            244,
+            152,
+            64
+        ],
+        "cs_rank": 272,
+        "bio_rank": 20
+    },
+    {
+        "fullName": "Albert Einstein College of Medicine",
+        "region": [
+            "US"
+        ],
+        "abbr": "AECOM",
+        "latitude": 40.8542806,
+        "longitude": -73.8456159,
+        "color": [
+            125,
+            224,
+            66
+        ],
+        "cs_rank": 273,
+        "bio_rank": 31
+    },
+    {
+        "fullName": "MD Anderson Cancer Center",
+        "region": [
+            "US"
+        ],
+        "abbr": "MD Anderson",
+        "latitude": 29.7076703,
+        "longitude": -95.3978436,
+        "color": [
+            42,
+            203,
+            42
+        ],
+        "cs_rank": 274,
+        "bio_rank": 37
+    },
+    {
+        "fullName": "Mayo Clinic Graduate School of Biomedical Sciences",
+        "region": [
+            "US"
+        ],
+        "abbr": "MCGSBS",
+        "latitude": 44.02252545148456,
+        "longitude": -92.46592583837834,
+        "color": [
+            71,
+            118,
+            227
+        ],
+        "cs_rank": 275,
+        "bio_rank": 38
+    },
+    {
+        "fullName": "University of Alabama at Birmingham",
+        "region": [
+            "US"
+        ],
+        "abbr": "UAB",
+        "latitude": 33.5016153,
+        "longitude": -86.8060476,
+        "color": [
+            150,
+            64,
+            180
+        ],
+        "cs_rank": 276,
+        "bio_rank": 42
+    },
+    {
+        "fullName": "Howard University",
+        "region": [
+            "US"
+        ],
+        "abbr": "HU",
+        "latitude": 38.92284945854407,
+        "longitude": -77.01940776924093,
+        "color": [
+            10,
+            224,
+            160
+        ],
+        "cs_rank": 277,
+        "bio_rank": 48
+    },
+    {
+        "fullName": "Icahn School of Medicine at Mount Sinai",
+        "region": [
+            "US"
+        ],
+        "abbr": "ISMMS",
+        "latitude": 40.789793,
+        "longitude": -73.9532536,
+        "color": [
+            17,
+            121,
+            229
+        ],
+        "cs_rank": 278,
+        "bio_rank": 52
+    },
+    {
+        "fullName": "Oregon Health & Science University",
+        "region": [
+            "US"
+        ],
+        "abbr": "OHSU",
+        "latitude": 45.4981929,
+        "longitude": -122.6864957,
+        "color": [
+            125,
+            44,
+            41
+        ],
+        "cs_rank": 279,
+        "bio_rank": 54
+    },
+    {
+        "fullName": "Leiden University",
+        "region": [
+            "EU"
+        ],
+        "abbr": "LeidenU",
+        "latitude": 52.1686355,
+        "longitude": 4.4597028,
+        "color": [
+            162,
+            31,
+            237
+        ],
+        "cs_rank": 280,
+        "bio_rank": 59
+    },
+    {
+        "fullName": "University of Geneva",
+        "region": [
+            "EU"
+        ],
+        "abbr": "UNIGE",
+        "latitude": 46.1985541,
+        "longitude": 6.1509888,
+        "color": [
+            230,
+            183,
+            217
+        ],
+        "cs_rank": 281,
+        "bio_rank": 65
+    },
+    {
+        "fullName": "Baylor College of Medicine",
+        "region": [
+            "US"
+        ],
+        "abbr": "BCM",
+        "latitude": 29.7105439,
+        "longitude": -95.3958079,
+        "color": [
+            46,
+            95,
+            0
+        ],
+        "cs_rank": 282,
+        "bio_rank": 66
+    },
+    {
+        "fullName": "Karolinska Institutet",
+        "region": [
+            "EU"
+        ],
+        "abbr": "KI",
+        "latitude": 59.3515453,
+        "longitude": 18.0310658,
+        "color": [
+            170,
+            64,
+            184
+        ],
+        "cs_rank": 283,
+        "bio_rank": 73
+    },
+    {
+        "fullName": "King Abdulaziz University",
+        "region": [
+            "Others"
+        ],
+        "abbr": "KAU",
+        "latitude": 21.4934146,
+        "longitude": 39.2485449,
+        "color": [
+            204,
+            225,
+            11
+        ],
+        "cs_rank": 284,
+        "bio_rank": 74
+    },
+    {
+        "fullName": "University of Padua",
+        "region": [
+            "US"
+        ],
+        "abbr": "UNIPD",
+        "latitude": 40.7272282,
+        "longitude": -74.0013226,
+        "color": [
+            108,
+            22,
+            175
+        ],
+        "cs_rank": 285,
+        "bio_rank": 79
+    },
+    {
+        "fullName": "Tohoku University",
+        "region": [
+            "Others"
+        ],
+        "abbr": "TU",
+        "latitude": 38.2541921,
+        "longitude": 140.8407024,
+        "color": [
+            33,
+            190,
+            168
+        ],
+        "cs_rank": 286,
+        "bio_rank": 81
+    },
+    {
+        "fullName": "University of Oslo",
+        "region": [
+            "EU"
+        ],
+        "abbr": "UiO",
+        "latitude": 59.9414173,
+        "longitude": 10.7227683,
+        "color": [
+            152,
+            10,
+            11
+        ],
+        "cs_rank": 287,
+        "bio_rank": 89
+    },
+    {
+        "fullName": "Stockholm University",
+        "region": [
+            "EU"
+        ],
+        "abbr": "SU",
+        "latitude": 59.366141,
+        "longitude": 18.059593,
+        "color": [
+            244,
+            199,
+            86
+        ],
+        "cs_rank": 288,
+        "bio_rank": 91
+    },
+    {
+        "fullName": "Free University of Berlin",
+        "region": [
+            "EU"
+        ],
+        "abbr": "FUB",
+        "latitude": 52.454357162459374,
+        "longitude": 13.293605543489846,
+        "color": [
+            166,
+            254,
+            112
+        ],
+        "cs_rank": 289,
+        "bio_rank": 97
+    },
+    {
+        "fullName": "The University of Osaka",
+        "region": [
+            "Others"
+        ],
+        "abbr": "OsakaU",
+        "latitude": 34.82105261982101,
+        "longitude": 135.52293516968004,
+        "color": [
+            17,
+            249,
+            115
+        ],
+        "cs_rank": 290,
+        "bio_rank": 101
+    },
+    {
+        "fullName": "University of Vienna",
+        "region": [
+            "EU"
+        ],
+        "abbr": "UniVie",
+        "latitude": 48.2131469,
+        "longitude": 16.35997,
+        "color": [
+            136,
+            97,
+            254
+        ],
+        "cs_rank": 291,
+        "bio_rank": 102
+    },
+    {
+        "fullName": "Sorbonne Universite",
+        "region": [
+            "EU"
+        ],
+        "abbr": "SorbonneU",
+        "latitude": 48.8379885,
+        "longitude": 2.3611216,
+        "color": [
+            248,
+            237,
+            170
+        ],
+        "cs_rank": 292,
+        "bio_rank": 104
+    },
+    {
+        "fullName": "Korea University",
+        "region": [
+            "Others"
+        ],
+        "abbr": "KU",
+        "latitude": 36.6108894,
+        "longitude": 127.2934174,
+        "color": [
+            115,
+            50,
+            118
+        ],
+        "cs_rank": 293,
+        "bio_rank": 122
+    },
+    {
+        "fullName": "Tel Aviv University",
+        "region": [
+            "Others"
+        ],
+        "abbr": "TAU",
+        "latitude": 32.1123822,
+        "longitude": 34.805018,
+        "color": [
+            209,
+            104,
+            114
+        ],
+        "cs_rank": 294,
+        "bio_rank": 125
+    },
+    {
+        "fullName": "Indiana University Bloomington",
+        "region": [
+            "US"
+        ],
+        "abbr": "IUB",
+        "latitude": 39.1802358,
+        "longitude": -86.5093526,
+        "color": [
+            138,
+            120,
+            28
+        ],
+        "cs_rank": 295,
+        "bio_rank": 130
+    },
+    {
+        "fullName": "Nagoya University",
+        "region": [
+            "Others"
+        ],
+        "abbr": "NagoyaU",
+        "latitude": 35.1533086,
+        "longitude": 136.9677806,
+        "color": [
+            247,
+            167,
+            222
+        ],
+        "cs_rank": 296,
+        "bio_rank": 136
+    },
+    {
+        "fullName": "University of Texas Health Science Center at San Antonio",
+        "region": [
+            "US"
+        ],
+        "abbr": "UTHSCSA",
+        "latitude": 29.507670793725357,
+        "longitude": -98.57454744078834,
+        "color": [
+            105,
+            196,
+            28
+        ],
+        "cs_rank": 297,
+        "bio_rank": 138
     }
 ]

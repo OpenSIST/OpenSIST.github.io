@@ -13,7 +13,7 @@ const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
 * All functions starred with other words -> Online operation to corresponding backend APIs
 */
 
-export async function getPrograms(isRefresh = false, query = {}) {
+export async function getPrograms(isRefresh = false, query = {}, ranking = "cs_rank") {
     /*
     * Get the list of programs (without description) from the server or local storage
     * @param isRefresh [Boolean]: whether to refresh the data
@@ -43,9 +43,19 @@ export async function getPrograms(isRefresh = false, query = {}) {
     }
 
     programs = programs['data'];
-    const univAbbrOrder = univListOrder.map((univ) => univ.abbr);
+    // const univAbbrOrder = univListOrder.map((univ) => univ.abbr);
+    // programs = Object.entries(programs).sort(([univ1, _], [univ2, __]) => {
+    //     return univAbbrOrder.indexOf(univ1) - univAbbrOrder.indexOf(univ2);
+    // }).reduce((acc, [univ, programs]) => {
+    //     acc[univ] = programs;
+    //     return acc;
+    // }, {});
+    const univAbbrOrder = univListOrder.reduce((acc, univ) => {
+        acc[univ.abbr] = univ[ranking || 'cs_rank'];
+        return acc;
+    }, {});
     programs = Object.entries(programs).sort(([univ1, _], [univ2, __]) => {
-        return univAbbrOrder.indexOf(univ1) - univAbbrOrder.indexOf(univ2);
+        return univAbbrOrder[univ1] - univAbbrOrder[univ2];
     }).reduce((acc, [univ, programs]) => {
         acc[univ] = programs;
         return acc;
