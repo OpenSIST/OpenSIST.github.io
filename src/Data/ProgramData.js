@@ -52,7 +52,8 @@ export async function getPrograms(isRefresh = false, query = {}) {
     }, {});
 
     let search_programs = Object.keys(programs).reduce((search_programs, univName) => {
-        const fullNameResults = univAbbrFullNameMapping[univName].toLowerCase().includes(query.u?.toLowerCase() ?? '');
+        const fullNameResults = univAbbrFullNameMapping[univName]?.toLowerCase().includes(query.u?.toLowerCase() ?? '');
+        console.log(univName, univAbbrFullNameMapping[univName]);
         const abbrResults = univName.toLowerCase().includes(query.u?.toLowerCase() ?? '');
         const programResults = programs[univName].filter((programInfo) => {
             return programInfo.Program.toLowerCase().includes(query.u?.toLowerCase() ?? '');
