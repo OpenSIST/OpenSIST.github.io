@@ -42,7 +42,7 @@
     "react-router-dom": "6.21.1",
     "react-scripts": "5.0.1",
     "react-select": "5.8.0",
-    "remark-gfm": "4.0.0",
+    "remark-gfm": "2.0.0",
     "sort-by": "0.0.2",
     "web-vitals": "2.1.4",
     "zod": "3.22.4"
