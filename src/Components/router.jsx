@@ -204,7 +204,15 @@ const router = createBrowserRouter([
                                         path: '/posts/:postId',
                                         element: <PostContent/>,
                                         loader: PostContentLoader,
-                                        action: PostContentAction
+                                        action: PostContentAction,
+                                        children: [
+                                            {
+                                                path: '/posts/:postId/applicant/:applicantId',
+                                                element: <ApplicantProfileInDataPoints/>,
+                                                loader: ProfileDataPointsLoader,
+                                                action: ProfileDataPointsAction,
+                                            },
+                                        ]
                                     }, {
                                         path: '/posts/:postId/edit',
                                         element: <AddModifyPost key="edit" type="edit"/>,
