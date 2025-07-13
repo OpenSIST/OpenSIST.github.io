@@ -264,7 +264,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 // status和final这两项是精确匹配
                 if (filter.status && record.Status !== filter.status)
                     return false;
-                if (filter.final && record.Final !== filter.final)
+                if (filter.final != null && record.Final !== filter.final)
                     return false;
                 // applicant, program, season 这三项是"字符串包含"匹配
                 if (filter.applicant && !record.ApplicantID.toLowerCase().includes(filter.applicant.toLowerCase()))
