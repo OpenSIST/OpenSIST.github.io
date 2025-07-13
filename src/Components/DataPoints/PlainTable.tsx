@@ -303,11 +303,8 @@ const timelineBodyTemplate = (rowData: RecordData, timelineKey: string) => (
 
 const applicantBodyTemplate = (rowData: RecordData, navigate: NavigateFunction, location: Location) => {
     const handleClick = () => {
-        if (location.pathname.startsWith("/datapoints")) {
-            navigate(`/datapoints/applicant/${rowData.ApplicantID}`);
-        } else if (location.pathname.startsWith("/programs")) {
-            navigate(`/programs/${encodeURIComponent(rowData.ProgramID)}/applicant/${rowData.ApplicantID}`);
-        }
+        const pathname = location.pathname.split("?")[0];
+        navigate(`${pathname}/applicant/${rowData.ApplicantID}`);
     };
     return (
         <div

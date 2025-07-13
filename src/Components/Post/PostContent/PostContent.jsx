@@ -1,5 +1,5 @@
 import {getPostObject, removePost} from "../../../Data/PostData";
-import {Form, Link, redirect, useLoaderData} from "react-router-dom";
+import {Form, Link, Outlet, redirect, useLoaderData} from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import {
     Box,
@@ -68,15 +68,16 @@ export default function PostContent() {
     const handleOpen = () => {
         setOpen(true);
     };
+    const authorUrl = `/posts/${urlPostId}/applicant/${postObj.author}${latestYear ? '@' + latestYear : ''}`
     return (
         <>
             <Box className="PostContentHeader" sx={{pb: "0.5rem"}}>
                 <Box sx={{pb: "0.5rem", display: 'flex', gap: '1rem'}}>
                     <Avatar src={avatar} sx={{height: (smallPage ? "5rem" : "4rem"), width: (smallPage ? "5rem" : "4rem"), cursor: 'pointer'}} component={Link}
-                            to={`/datapoints/applicant/${postObj.author}${latestYear ? '@' + latestYear : ''}`}/>
+                            to={authorUrl}/>
                     <Grid2 container>
                         <Grid2 xs={12}>
-                            <BoldTypography variant="h6" component={Link} to={`/datapoints/applicant/${postObj.author}${latestYear ? '@' + latestYear : ''}`}
+                            <BoldTypography variant="h6" component={Link} to={authorUrl}
                                             sx={{
                                                 cursor: 'pointer',
                                                 textDecoration: "none",
@@ -141,6 +142,7 @@ export default function PostContent() {
                     {postObj.content}
                 </ReactMarkdown>
             </Paper>
+            <Outlet/>
         </>
     )
 }
