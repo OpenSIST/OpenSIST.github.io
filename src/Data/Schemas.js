@@ -66,9 +66,15 @@ export const currentDegreeMapping = {
 }
 export const currentDegreeOptions = dict2Options(currentDegreeMapping);
 
-export const applicationYearOptions = Array.from({length: 12}, (_, i) => {
+// export const applicationYearOptions = Array.from({length: 12}, (_, i) => {
+//     const year = 2016 + i;
+//     return {value: year, label: `${year}`};
+// }).reverse();
+
+const currentYear = new Date().getFullYear();
+export const applicationYearOptions = Array.from({length: (currentYear + 2) - 2016 + 1}, (_, i) => {
     const year = 2016 + i;
-    return {value: year, label: `${year}`};
+    return { value: year, label: `${year}` };
 }).reverse();
 
 export const rankPercentOptions = [
