@@ -4661,5 +4661,21 @@
         ],
         "cs_rank": 297,
         "bio_rank": 138
+    },
+    {
+        "fullName": "Baylor College of Medicine",
+        "region": [
+            "US"
+        ],
+        "abbr": "BCM",
+        "latitude": 29.710525775971984,
+        "longitude": -95.39623940151989,
+        "color": [
+            0,
+            48,
+            135
+        ],
+        "cs_rank": 298,
+        "bio_rank": 40.5
     }
 ]
