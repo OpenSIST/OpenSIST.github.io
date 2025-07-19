@@ -19,9 +19,11 @@ import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
 import {regionFlagMapping} from "../../../Data/Schemas";
 import Grid2 from "@mui/material/Unstable_Grid2";
+import StarButton from "../ProgramContent/StarButton";
 
 export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
+    const metaData = loaderData.metaData;
     return (
         <>
             <CollapseSideBar
@@ -67,13 +69,13 @@ export default function SideBar({loaderData}) {
                         </Form>
                     </Grid2>
                 </Grid2>
-                <UnivProgramList univProgramList={univProgramList}/>
+                <UnivProgramList univProgramList={univProgramList} metaData={metaData}/>
             </CollapseSideBar>
         </>
     )
 }
 
-export function UnivProgramList({univProgramList, ButtonComponent = ProgramButton}) {
+export function UnivProgramList({univProgramList, metaData, ButtonComponent = ProgramButton}) {
     const [selectProgram, setSelectProgram] = React.useState(null);
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
@@ -98,6 +100,7 @@ export function UnivProgramList({univProgramList, ButtonComponent = ProgramButto
                             selectProgram={selectProgram}
                             setSelectProgram={setSelectProgram}
                             ButtonComponent={ButtonComponent}
+                            metaData={metaData}
                         />
                     </React.Fragment>
                 ))}
@@ -106,7 +109,7 @@ export function UnivProgramList({univProgramList, ButtonComponent = ProgramButto
     )
 }
 
-export function ProgramList({univProgram, selectProgram, setSelectProgram, ButtonComponent}) {
+export function ProgramList({univProgram, selectProgram, setSelectProgram, ButtonComponent, metaData}) {
     const [isFolded, setIsFolded] = React.useState(false);
     const univName = univProgram[0];
     const programList = univProgram[1];
@@ -142,6 +145,7 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
                                 selectProgram={selectProgram}
                                 setSelectProgram={setSelectProgram}
                                 key={program.ProgramID}
+                                metaData={metaData}
                             />
                         ))
                     }
@@ -151,7 +155,7 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
     )
 }
 
-export function ProgramButton({program, selectProgram, setSelectProgram}) {
+export function ProgramButton({program, selectProgram, setSelectProgram, metaData}) {
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
     return (
@@ -176,6 +180,7 @@ export function ProgramButton({program, selectProgram, setSelectProgram}) {
         >
             <ListItemText primary={program.Program}
                           secondary={program.TargetApplicantMajor.join('/')}/>
+            <StarButton programID={program.ProgramID} metaData={metaData}/>
         </ListItemButton>
     )
 }
