@@ -21,11 +21,12 @@ import {regionFlagMapping} from "../../../Data/Schemas";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import StarButton from "../ProgramContent/StarButton";
 
+const MetaDataContext = React.createContext();
+
 export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
-    const metaData = loaderData.metaData;
     return (
-        <>
+        <MetaDataContext.Provider value={loaderData.metaData}>
             <CollapseSideBar
                 sx={{
                     '& .MuiDrawer-paper': {
@@ -69,13 +70,13 @@ export default function SideBar({loaderData}) {
                         </Form>
                     </Grid2>
                 </Grid2>
-                <UnivProgramList univProgramList={univProgramList} metaData={metaData}/>
-            </CollapseSideBar>
-        </>
+                <UnivProgramList univProgramList={univProgramList}/>
+            </CollapseSideBar>)
+        </MetaDataContext.Provider>
     )
 }
 
-export function UnivProgramList({univProgramList, metaData, ButtonComponent = ProgramButton}) {
+export function UnivProgramList({univProgramList, ButtonComponent = ProgramButton}) {
     const [selectProgram, setSelectProgram] = React.useState(null);
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
@@ -100,7 +101,6 @@ export function UnivProgramList({univProgramList, metaData, ButtonComponent = Pr
                             selectProgram={selectProgram}
                             setSelectProgram={setSelectProgram}
                             ButtonComponent={ButtonComponent}
-                            metaData={metaData}
                         />
                     </React.Fragment>
                 ))}
@@ -109,7 +109,7 @@ export function UnivProgramList({univProgramList, metaData, ButtonComponent = Pr
     )
 }
 
-export function ProgramList({univProgram, selectProgram, setSelectProgram, ButtonComponent, metaData}) {
+export function ProgramList({univProgram, selectProgram, setSelectProgram, ButtonComponent}) {
     const [isFolded, setIsFolded] = React.useState(false);
     const univName = univProgram[0];
     const programList = univProgram[1];
@@ -145,7 +145,6 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
                                 selectProgram={selectProgram}
                                 setSelectProgram={setSelectProgram}
                                 key={program.ProgramID}
-                                metaData={metaData}
                             />
                         ))
                     }
@@ -155,9 +154,10 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
     )
 }
 
-export function ProgramButton({program, selectProgram, setSelectProgram, metaData}) {
+export function ProgramButton({program, selectProgram, setSelectProgram}) {
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
+    const metaData = React.useContext(MetaDataContext);
     return (
         <ListItemButton
             className='ProgramItem'
