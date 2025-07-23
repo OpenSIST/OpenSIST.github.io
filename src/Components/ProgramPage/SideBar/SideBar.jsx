@@ -71,7 +71,7 @@ export default function SideBar({loaderData}) {
                     </Grid2>
                 </Grid2>
                 <UnivProgramList univProgramList={univProgramList}/>
-            </CollapseSideBar>)
+            </CollapseSideBar>
         </MetaDataContext.Provider>
     )
 }
