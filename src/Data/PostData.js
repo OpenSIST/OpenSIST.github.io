@@ -1,33 +1,30 @@
-import localforage from "localforage";
-import {GET_CONTENT_API, LIST_POSTS_API, CREATE_POST_API, MODIFY_CONTENT_API, DELETE_CONTENT_API} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
+import {
+    CREATE_POST_API,
+    CREATE_COMMENT_API,
+    MODIFY_CONTENT_API,
+    TOGGLE_LIKE_API,
+    LIST_POSTS_API,
+    GET_CONTENT_API,
+    DELETE_CONTENT_API
+} from "../APIs/APIs"
 
-// const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
-
-export async function getPosts(isRefresh = false, query = {}) {
+export async function getPosts(query = {}) {
     const response = await fetch(LIST_POSTS_API, {
         method: 'POST',
         credentials: 'include',
         headers: await headerGenerator(true),
     });
-    
     await handleErrors(response);
-    const posts = await response.json();
 
-    posts['posts'] = posts['posts'].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-
-    return posts['posts'];
+    const postsResult = await response.json();
+    postsResult['posts'] = postsResult['posts'].sort(
+        (a, b) => new Date(b.updated_at ?? b.created_at) - new Date(a.updated_at ?? b.created_at)
+    );
+    return postsResult['posts'];
 }
 
-export async function getPost(postId, isRefresh = false) {
-    const posts = await getPosts(isRefresh);
-    if (!posts) {
-        throw new Error('Post not found');
-    }
-    return posts.find((post) => post.id.toString() === postId);
-}
-
-export async function getPostContent(postId, isRefresh = false) {
+export async function getPost(postId) {
     const response = await fetch(GET_CONTENT_API, {
         method: 'POST',
         credentials: 'include',
@@ -38,23 +35,22 @@ export async function getPostContent(postId, isRefresh = false) {
         await handleErrors(response);
     } catch (e) {
         if (e.status === 404) {
-            await getPosts(true);
+            throw new Error('Post not found');
         }
         throw e;
     }
-    const postContent = await response.json();
-
-    return postContent['post']['content'];
+    const postResult = await response.json();
+    return postResult["post"];
 }
 
-export async function getPostObject(postId, isRefresh = false) {
-    const post = await getPost(postId, isRefresh);
-    const content = await getPostContent(postId, isRefresh);
-    
+export async function getPostObject(postId) {
+    const post = await getPost(postId);
+    const content = post['content'];
+
     if (!post || !content) {
         throw new Error("Post or content not found");
     }
-    
+
     return {
         ...post,
         content: content,
@@ -62,15 +58,14 @@ export async function getPostObject(postId, isRefresh = false) {
 }
 
 /**
- * Removes a post
+ * Toggle like on a post or a comment.
  */
-export async function removePost(postId, author) {
-    const API = DELETE_CONTENT_API;
+export async function toggleLikeContent(contentId) {
     const requestBody = {
-        contentId: postId.toString()
+        contentId: contentId.toString()
     };
 
-    const response = await fetch(API, {
+    const response = await fetch(TOGGLE_LIKE_API, {
         method: 'POST',
         credentials: 'include',
         headers: await headerGenerator(true),
@@ -82,25 +77,44 @@ export async function removePost(postId, author) {
     try {
         const result = await response.json();
         if (!result.success) {
-            throw new Error(result.error || `API request failed for delete post.`);
+            throw new Error(result.error || `API request failed for toggling content like.`);
         }
     } catch (e) {
         if (!response.ok) {
-            throw new Error(`API request failed for delete post with status ${response.status}`);
+            throw new Error(`API request failed for toggling content like with status ${response.status}`);
         }
     }
-
-    await getPosts(true);
-    await localforage.removeItem(`${postId}-Content`);
-}
-
-export async function deletePostContent(postId) {
-    await localforage.removeItem(`${postId}-Content`);
 }
 
 /**
- * Adds a new post or modifies an existing one
+ * Remove a post or a comment.
  */
+export async function removeContent(contentId) {
+    const requestBody = {
+        contentId: contentId.toString()
+    };
+
+    const response = await fetch(DELETE_CONTENT_API, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
+        body: JSON.stringify(requestBody),
+    });
+
+    await handleErrors(response);
+
+    try {
+        const result = await response.json();
+        if (!result.success) {
+            throw new Error(result.error || `API request failed for content deletion.`);
+        }
+    } catch (e) {
+        if (!response.ok) {
+            throw new Error(`API request failed for content deletion with status ${response.status}`);
+        }
+    }
+}
+
 export async function addModifyPost(requestData, type) {
     let API;
     let requestBody;
@@ -144,6 +158,31 @@ export async function addModifyPost(requestData, type) {
             throw new Error(`API request failed for ${type} post with status ${response.status}`);
         }
     }
+}
 
-    await getPosts(true);
+export async function addComment(parentId, commentContent) {
+    let requestBody = {
+        parentId: parentId,
+        content: commentContent,
+    };
+
+    const response = await fetch(CREATE_COMMENT_API, {
+        method: 'POST',
+        credentials: 'include',
+        headers: await headerGenerator(true),
+        body: JSON.stringify(requestBody),
+    });
+
+    await handleErrors(response);
+
+    try {
+        const result = await response.json();
+        if (!result.success) {
+            throw new Error(result.error || `API request failed for creating comment.`);
+        }
+    } catch (e) {
+        if (!response.ok) {
+            throw new Error(`API request failed for creating comment with status ${response.status}`);
+        }
+    }
 }

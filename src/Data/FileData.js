@@ -1,6 +1,5 @@
 import {ADD_FILE, FILE_LIST, GET_FILE_CONTENT, MODIFY_FILE, REMOVE_FILE} from "../APIs/APIs";
 import {handleErrors, headerGenerator} from "./Common";
-import {getPosts} from "./PostData";
 import {getApplicant, setApplicant} from "./ApplicantData";
 
 export async function getFiles(isRefresh = false, query = {}) {
@@ -40,14 +39,8 @@ export async function getFileContent(fileId, isRefresh = false) {
         headers: await headerGenerator(true),
         body: JSON.stringify({PostID: fileId}),
     });
-    try {
-        await handleErrors(response);
-    } catch (e) {
-        if (e.status === 404) {
-            await getPosts(true);
-        }
-        throw e;
-    }
+    await handleErrors(response);
+
     const fileContent = await response.json();
     console.log(fileContent);
 
