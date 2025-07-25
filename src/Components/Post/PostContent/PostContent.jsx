@@ -20,6 +20,7 @@ import {isAuthApplicant} from "../../../Data/ApplicantData";
 import "./PostContent.css"
 import {getMetaData, getAvatar} from "../../../Data/UserData";
 import Grid2 from "@mui/material/Unstable_Grid2";
+import { utcToLocal } from "../../../Data/Common";
 
 export async function loader({params}) {
     const postId = params.postId;
@@ -84,10 +85,10 @@ export default function PostContent() {
                             </BoldTypography>
                         </Grid2>
                         <Grid2 component={Typography} xs={12} md={5}>
-                            创建于: {new Date(postObj.created_at).toISOString().split('T')[0]}
+                            创建于: {utcToLocal(postObj.created_at, true)}
                         </Grid2>
                         <Grid2 component={Typography} xs={12} md={7}>
-                            最后修改于: {new Date(postObj.updated_at ?? postObj.created_at).toISOString().split('T')[0]}
+                            最后修改于: {utcToLocal(postObj.updated_at ?? postObj.created_at, true)}
                         </Grid2>
                     </Grid2>
                 </Box>
