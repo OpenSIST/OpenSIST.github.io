@@ -87,7 +87,7 @@ export default function PostContent() {
                             创建于: {new Date(postObj.created_at).toISOString().split('T')[0]}
                         </Grid2>
                         <Grid2 component={Typography} xs={12} md={7}>
-                            最后修改于: {new Date(postObj.updated_at).toISOString().split('T')[0]}
+                            最后修改于: {new Date(postObj.updated_at ?? postObj.created_at).toISOString().split('T')[0]}
                         </Grid2>
                     </Grid2>
                 </Box>
