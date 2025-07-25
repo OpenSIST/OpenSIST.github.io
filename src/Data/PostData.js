@@ -21,6 +21,15 @@ export async function getPosts(query = {}) {
     postsResult['posts'] = postsResult['posts'].sort(
         (a, b) => new Date(b.updated_at ?? b.created_at) - new Date(a.updated_at ?? b.created_at)
     );
+    postsResult['posts'] = postsResult['posts'].filter(
+        (post) =>
+            post.title.toLowerCase().includes(
+                query.searchStr?.toLowerCase() ?? ""
+            ) ||
+            post.author.toLowerCase().includes(
+                query.searchStr?.toLowerCase() ?? ""
+            )
+    );
     return postsResult['posts'];
 }
 
