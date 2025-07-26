@@ -414,7 +414,7 @@ export const PlainTable: FC<{
       <GroupedVirtuoso
         style={{ flex: 1, minHeight: 0 }}
         groupCounts={groupCounts}
-        overscan={100}
+        overscan={{ main: 500, reverse: 500 }}
         groupContent={(groupIndex) => <StickyRow record={groups[groupIndex][0]} width={groupHeaderWidth} />}
         itemContent={(index, _) => <Row record={records[index]} hideProgramColumn={insideProgramPage} />}
       />
