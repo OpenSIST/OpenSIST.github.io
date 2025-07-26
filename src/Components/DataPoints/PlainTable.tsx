@@ -410,6 +410,7 @@ export const PlainTable: FC<{
           return <StickyRow record={groupFirstRecord[groupIndex]} width={groupHeaderWidth} />
         }}
         itemContent={(index, _) => <Row record={records[index]} hideProgramColumn={insideProgramPage} />}
+        style={{scrollbarWidth: 'none'}}
       />
     </div>
   );
