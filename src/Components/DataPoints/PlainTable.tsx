@@ -126,7 +126,7 @@ const StickyRow: FC<{
         // top: "0px",
         // zIndex: 10,
         // paddingTop: "10px",
-        height: "40px",  // moved into DataPoints.css
+        // height: "40px",  // moved into DataPoints.css
         ...style,
       }}
     >
@@ -401,17 +401,15 @@ export const PlainTable: FC<{
   }
 
   return (
-    <div style={{ flex: 'auto', width: containerWidth }}>
-      <GroupedVirtuoso
-        groupCounts={groupCounts}
-        overscan={{ main: 500, reverse: 500 }}
-        groupContent={(groupIndex) => {
-          if (insideProgramPage) return <></>
-          return <StickyRow record={groupFirstRecord[groupIndex]} width={groupHeaderWidth} />
-        }}
-        itemContent={(index, _) => <Row record={records[index]} hideProgramColumn={insideProgramPage} />}
-        style={{scrollbarWidth: 'none'}}
-      />
-    </div>
+    <GroupedVirtuoso
+      groupCounts={groupCounts}
+      overscan={{ main: 500, reverse: 500 }}
+      groupContent={(groupIndex) => {
+        if (insideProgramPage) return <></>
+        return <StickyRow record={groupFirstRecord[groupIndex]} width={groupHeaderWidth} />
+      }}
+      itemContent={(index, _) => <Row record={records[index]} hideProgramColumn={insideProgramPage} />}
+      style={{ scrollbarWidth: 'none', flex: 'auto', width: containerWidth }}
+    />
   );
 };
