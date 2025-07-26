@@ -42,6 +42,8 @@
     "react-router-dom": "6.21.1",
     "react-scripts": "5.0.1",
     "react-select": "5.8.0",
+    "react-virtuoso": "^4.13.0",
+    "react-window": "^1.8.11",
     "remark-gfm": "2.0.0",
     "sort-by": "0.0.2",
     "web-vitals": "2.1.4",
@@ -73,6 +75,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "7.21.0",
+    "@types/react-window": "^1.8.8",
     "cross-env": "^7.0.3",
     "dotenv-cli": "^8.0.0",
     "webpack": "5.94.0"

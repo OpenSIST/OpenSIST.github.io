@@ -1,4 +1,4 @@
-import React, { useState, FC, CSSProperties, ReactNode } from "react";
+import React, { useState, FC, CSSProperties, ReactNode, useMemo } from "react";
 import {useLocation, NavigateFunction, useNavigate, Location } from "react-router-dom";
 import { Button, Tooltip, Typography, TypographyProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -7,6 +7,7 @@ import { Check, ExpandMore } from "@mui/icons-material";
 import { BoldTypography } from "../common";
 import type { RecordData } from "../../Data/RecordDataType";
 import "./DataPoints.css";
+import { GroupedVirtuoso } from 'react-virtuoso';
 
 export const topStickyRowWidth = "90rem";
 export const topStickyRowWidthWithoutProgram = "80rem"
@@ -121,11 +122,11 @@ const StickyRow: FC<{
         textAlign: "start",
         minWidth: width,
         verticalAlign: "middle",
-        position: "sticky",
-        top: "0px",
-        zIndex: 10,
+        // position: "sticky",
+        // top: "0px",
+        // zIndex: 10,
         // paddingTop: "10px",
-        // height: "40px",  // moved into DataPoints.css
+        height: "40px",  // moved into DataPoints.css
         ...style,
       }}
     >
@@ -379,50 +380,44 @@ export const PlainTable: FC<{
   records: RecordData[];
   insideProgramPage: boolean;
 }> = ({ records, insideProgramPage }) => {
-  if (records.length === 0) {
-    return <div style={{ textAlign: "center" }}>未找到任何匹配结果</div>;
-  }
+  // Compute container and header widths
+  const containerWidth = insideProgramPage ? topStickyRowWidthWithoutProgram : topStickyRowWidth;
+  const groupHeaderWidth = insideProgramPage ? stickyHeaderWidthWithoutProgram : stickyHeaderWidth;
 
-  const resultJsx: ReactNode[] = [];
-  let currentProgramID = "";
-
-  records.forEach((r) => {
-    // If a different program name is detected, create a new group header
-    if (!insideProgramPage && currentProgramID !== r.ProgramID) {
-      currentProgramID = r.ProgramID;
-      resultJsx.push(
-        <StickyRow
-          // key={`header-${r.ProgramID}-${Date.now()}`}
-          record={r}
-          width={insideProgramPage ? stickyHeaderWidthWithoutProgram : stickyHeaderWidth}
-          key={r.ProgramID}
-        />
-      );
+  let currentProgramID = '';
+  let groups: RecordData[][] = [];
+  let groupCounts: number[] = [];
+  records.forEach((record: RecordData) => {
+    if (currentProgramID !== record.ProgramID) {
+      currentProgramID = record.ProgramID;
+      groups.push([]);
     }
-    // A row for this record
-    resultJsx.push(<Row 
-      // key={r.RecordID+Date.now()} 
-      record={r}
-      hideProgramColumn={insideProgramPage}
-      key={r.RecordID}
-      />);
-  });
+    groups[groups.length - 1].push(record)
+  })
+  groups.forEach((groupOfRecords: RecordData[]) => {
+    groupCounts.push(groupOfRecords.length)
+  })
+  // Empty state
+  if (records.length === 0) {
+    return <div style={{ textAlign: 'center' }}>未找到任何匹配结果</div>;
+  }
 
   return (
     <div
       style={{
-        height: "100%",
-        width: insideProgramPage ? topStickyRowWidthWithoutProgram : topStickyRowWidth,
-        overflowY: "scroll",
-        overflowX: "hidden",
-        scrollbarWidth: "none",
+        width: containerWidth,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      {resultJsx}
-      <div style={{
-        height: insideProgramPage ? '50px' : '110px',
-        // backgroundColor: "rgba(128, 128, 128, 0.1)",  // git blame: @caoster (bushi
-      }}></div>
+      <GroupedVirtuoso
+        style={{ flex: 1, minHeight: 0 }}
+        groupCounts={groupCounts}
+        overscan={100}
+        groupContent={(groupIndex) => <StickyRow record={groups[groupIndex][0]} width={groupHeaderWidth} />}
+        itemContent={(index, _) => <Row record={records[index]} hideProgramColumn={insideProgramPage} />}
+      />
     </div>
   );
 };
