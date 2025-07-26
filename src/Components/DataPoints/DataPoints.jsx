@@ -344,29 +344,24 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                 <Paper
                     elevation={0}
                     sx={{
-                        overflow: 'hidden',
-                        maxWidth: '100%',
-                    }}
-                >
-                    <div style={{
-                        height: insideProgramPage ? '100%' : 'calc(100vh - 120px)',
                         overflowX: 'scroll',
                         overflowY: 'hidden',
-                    }}>
-                        <TopStickyRow
-                            filterElem={insideProgramPage || <SearchFilter onFilterChange={handleSearch}/>}
+                        maxWidth: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}
+                >
+                    <TopStickyRow
+                        filterElem={insideProgramPage || <SearchFilter onFilterChange={handleSearch}/>}
+                        insideProgramPage={insideProgramPage}
+                    />
+                    {isSearching ? <></> : (
+                        <PlainTable
+                            records={sortedFilteredRecords}
                             insideProgramPage={insideProgramPage}
                         />
-                        {isSearching ? (
-                            <></>
-                        ) : (
-                            <PlainTable
-                                records={sortedFilteredRecords}
-                                insideProgramPage={insideProgramPage}
-                            />
-                        )}
-                    </div>
-
+                    )}
                 </Paper>
                 <div className="search-results-indicator" style={{textAlign: 'center'}} >
                     {filteredRecords.length === records.length ? (

@@ -1,4 +1,4 @@
-import React, { useState, FC, CSSProperties, ReactNode, useMemo } from "react";
+import { useState, FC, CSSProperties, ReactNode } from "react";
 import {useLocation, NavigateFunction, useNavigate, Location } from "react-router-dom";
 import { Button, Tooltip, Typography, TypographyProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -385,37 +385,30 @@ export const PlainTable: FC<{
   const groupHeaderWidth = insideProgramPage ? stickyHeaderWidthWithoutProgram : stickyHeaderWidth;
 
   let currentProgramID = '';
-  let groups: RecordData[][] = [];
   let groupCounts: number[] = [];
+  let groupFirstRecord: RecordData[] = [];
   records.forEach((record: RecordData) => {
     if (currentProgramID !== record.ProgramID) {
       currentProgramID = record.ProgramID;
-      groups.push([]);
+      groupCounts.push(0);
+      groupFirstRecord.push(record)
     }
-    groups[groups.length - 1].push(record)
-  })
-  groups.forEach((groupOfRecords: RecordData[]) => {
-    groupCounts.push(groupOfRecords.length)
+    groupCounts[groupCounts.length - 1]++;
   })
   // Empty state
   if (records.length === 0) {
-    return <div style={{ textAlign: 'center' }}>未找到任何匹配结果</div>;
+    return <div style={{ textAlign: 'center' }}>{insideProgramPage ? '该项目暂无申请记录' : '未找到任何匹配结果'}</div>;
   }
 
   return (
-    <div
-      style={{
-        width: containerWidth,
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <div style={{ flex: 'auto', width: containerWidth }}>
       <GroupedVirtuoso
-        style={{ flex: 1, minHeight: 0 }}
         groupCounts={groupCounts}
         overscan={{ main: 500, reverse: 500 }}
-        groupContent={(groupIndex) => <StickyRow record={groups[groupIndex][0]} width={groupHeaderWidth} />}
+        groupContent={(groupIndex) => {
+          if (insideProgramPage) return <></>
+          return <StickyRow record={groupFirstRecord[groupIndex]} width={groupHeaderWidth} />
+        }}
         itemContent={(index, _) => <Row record={records[index]} hideProgramColumn={insideProgramPage} />}
       />
     </div>
