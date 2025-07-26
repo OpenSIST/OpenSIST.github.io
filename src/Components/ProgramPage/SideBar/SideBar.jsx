@@ -19,11 +19,14 @@ import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
 import {regionFlagMapping} from "../../../Data/Schemas";
 import Grid2 from "@mui/material/Unstable_Grid2";
+import StarButton from "../ProgramContent/StarButton";
+
+const MetaDataContext = React.createContext();
 
 export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
     return (
-        <>
+        <MetaDataContext.Provider value={loaderData.metaData}>
             <CollapseSideBar
                 sx={{
                     '& .MuiDrawer-paper': {
@@ -69,7 +72,7 @@ export default function SideBar({loaderData}) {
                 </Grid2>
                 <UnivProgramList univProgramList={univProgramList}/>
             </CollapseSideBar>
-        </>
+        </MetaDataContext.Provider>
     )
 }
 
@@ -154,6 +157,7 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
 export function ProgramButton({program, selectProgram, setSelectProgram}) {
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
+    const metaData = React.useContext(MetaDataContext);
     return (
         <ListItemButton
             className='ProgramItem'
@@ -176,6 +180,7 @@ export function ProgramButton({program, selectProgram, setSelectProgram}) {
         >
             <ListItemText primary={program.Program}
                           secondary={program.TargetApplicantMajor.join('/')}/>
+            <StarButton programID={program.ProgramID} metaData={metaData}/>
         </ListItemButton>
     )
 }

@@ -1,5 +1,5 @@
 import SideBar from "./SideBar/SideBar";
-import {Outlet, useLoaderData} from "react-router-dom";
+import {Outlet, redirect, useLoaderData} from "react-router-dom";
 import {getPrograms} from "../../Data/ProgramData";
 import './ProgramPage.css';
 import {Paper, useTheme} from "@mui/material";
@@ -9,6 +9,7 @@ import MDPath from "../../Data/MarkDown/ProgramIndex.md";
 import {useEffect, useState} from "react";
 import "./ProgramPage.css";
 import {loadMarkDown} from "../../Data/Common";
+import {collectProgram, getMetaData, uncollectProgram} from "../../Data/UserData";
 
 export async function loader({request}) {
     const url = new URL(request.url);
@@ -17,10 +18,22 @@ export async function loader({request}) {
     const m = url.searchParams.get('m');
     const r = url.searchParams.get('r');
     const programs = await getPrograms(false, {u: u, d: d, m: m, r: r});
-    return {programs, u, d, m, r};
+    const metaData = await getMetaData()
+    return {programs, u, d, m, r, metaData};
 }
 
-export async function action() {
+export async function action({request}) {
+    const formData = await request.formData();
+    const ActionType = formData.get("ActionType");
+    const ProgramId = formData.get("ProgramID");
+    if (ActionType === "Star") {
+        await collectProgram(ProgramId);
+        return redirect(window.location.href);
+    }
+    if (ActionType === "UnStar") {
+        await uncollectProgram(ProgramId);
+        return redirect(window.location.href);
+    }
     return await getPrograms(true);
 }
 

@@ -21,14 +21,13 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 export async function loader({request}) {
     const url = new URL(request.url);
     const searchStr = url.searchParams.get("searchStr");
-    let posts = await getPosts(false, {searchStr});
-    // console.log(posts);
+    let posts = await getPosts({searchStr});
     return {posts, searchStr};
 }
 
 // TODO: Now post don't have cache system, so actually we can remove this... (also the refresh button)
 export async function action() {
-    return await getPosts(true);
+    return await getPosts();
 }
 
 export default function PostPage() {

@@ -43,7 +43,6 @@ export const MODIFY_FILE = ROOT + "api/mutating/modify_file";
 export const COLLECT_PROGRAM = ROOT + "api/user/collect_program";
 export const UNCOLLECT_PROGRAM = ROOT + "api/user/un_collect_program";
 
-// --- New Post/Comment API Endpoints --- 
 export const CREATE_POST_API = ROOT + "api/post/create_post";
 export const CREATE_COMMENT_API = ROOT + "api/post/create_comment";
 export const MODIFY_CONTENT_API = ROOT + "api/post/modify_content";

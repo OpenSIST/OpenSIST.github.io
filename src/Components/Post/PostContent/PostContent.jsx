@@ -1,4 +1,4 @@
-import {getPostObject, removePost} from "../../../Data/PostData";
+import {getPostObject, removeContent} from "../../../Data/PostData";
 import {Form, Link, Outlet, redirect, useLoaderData} from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import {
@@ -20,6 +20,7 @@ import {isAuthApplicant} from "../../../Data/ApplicantData";
 import "./PostContent.css"
 import {getMetaData, getAvatar} from "../../../Data/UserData";
 import Grid2 from "@mui/material/Unstable_Grid2";
+import { utcToLocal } from "../../../Data/Common";
 
 export async function loader({params}) {
     const postId = params.postId;
@@ -44,11 +45,8 @@ export async function action({request, params}) {
     const formData = await request.formData();
     const author = formData.get('Author');
     const ActionType = formData.get('ActionType');
-    if (ActionType === 'Refresh') {
-        await getPostObject(postId, true);
-        return {urlPostId: postId};
-    } else if (ActionType === 'Delete') {
-        await removePost(postId, author);
+    if (ActionType === 'Delete') {
+        await removeContent(postId);
         return redirect("/posts");
     }
     return {urlPostId: postId};
@@ -87,10 +85,10 @@ export default function PostContent() {
                             </BoldTypography>
                         </Grid2>
                         <Grid2 component={Typography} xs={12} md={5}>
-                            创建于: {postObj.created_at}
+                            创建于: {utcToLocal(postObj.created_at, true)}
                         </Grid2>
                         <Grid2 component={Typography} xs={12} md={7}>
-                            最后修改于: {postObj.updated_at}
+                            最后修改于: {utcToLocal(postObj.updated_at ?? postObj.created_at, true)}
                         </Grid2>
                     </Grid2>
                 </Box>
