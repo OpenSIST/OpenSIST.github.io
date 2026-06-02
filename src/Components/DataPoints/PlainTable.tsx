@@ -7,7 +7,7 @@ import {Check, ExpandMore} from "@mui/icons-material";
 import {BoldTypography} from "../common";
 import type {RecordData} from "../../Data/RecordDataType";
 import "./DataPoints.css";
-import {GroupedVirtuoso} from 'react-virtuoso';
+import {GroupedVirtuoso, Virtuoso} from 'react-virtuoso';
 
 export const topStickyRowWidth = "90rem";
 export const topStickyRowWidthWithoutProgram = "80rem"
@@ -405,16 +405,26 @@ export const PlainTable: FC<{
         return <div style={{textAlign: 'center'}}>{insideProgramPage ? '该项目暂无申请记录' : '未找到任何匹配结果'}</div>;
     }
 
+    if (insideProgramPage) {
+        return (
+            <Virtuoso
+                totalCount={records.length}
+                overscan={{main: 500, reverse: 500}}
+                itemContent={(index) => <Row record={records[index]} hideProgramColumn={insideProgramPage}/>}
+                style={{scrollbarWidth: 'none', flex: 'auto', minHeight: 0, width: containerWidth}}
+            />
+        );
+    }
+
     return (
         <GroupedVirtuoso
             groupCounts={groupCounts}
             overscan={{main: 500, reverse: 500}}
             groupContent={(groupIndex) => {
-                if (insideProgramPage) return <></>
                 return <StickyRow record={groupFirstRecord[groupIndex]} width={groupHeaderWidth}/>
             }}
             itemContent={(index, _) => <Row record={records[index]} hideProgramColumn={insideProgramPage}/>}
-            style={{scrollbarWidth: 'none', flex: 'auto', width: containerWidth}}
+            style={{scrollbarWidth: 'none', flex: 'auto', minHeight: 0, width: containerWidth}}
         />
     );
 };

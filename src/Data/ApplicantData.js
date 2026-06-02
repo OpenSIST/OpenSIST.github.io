@@ -1,22 +1,27 @@
-import localforage from "localforage";
 import {ADD_MODIFY_APPLICANT, APPLICANT_LIST, REMOVE_APPLICANT} from "../APIs/APIs";
-import {apiJson, apiRequest, shouldRefreshCache} from "./Common";
+import {apiJson, apiRequest} from "./Common";
+import {BACKGROUND_PRIORITY, loadCachedValue, writeCacheValue} from "./CacheStore";
 import {getDisplayName, getMetadata, setMetadata} from "./UserData";
 import {deleteRecord, getRecordByApplicant, getRecordByRecordIDs, setRecord} from "./RecordData";
 
-export async function getApplicants(isRefresh = false) {
+export async function getApplicants(isRefresh = false, {priority = "foreground"} = {}) {
     /*
     * Get the list of applicants from the server or local storage
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: list of applicants
     */
-    let applicants = await localforage.getItem('applicants');
-
-    if (shouldRefreshCache(applicants, isRefresh)) {
-        applicants = await apiJson(APPLICANT_LIST);
-        await setApplicants(applicants['data']);
-    }
-    return applicants['data'];
+    return loadCachedValue({
+        key: "applicants",
+        legacyFields: ["data"],
+        forceRefresh: isRefresh,
+        priority,
+        load: async () => {
+            const applicants = await apiJson(APPLICANT_LIST, {
+                fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+            });
+            return applicants.data;
+        },
+    });
 }
 
 export async function getApplicantIDByDisplayName(isRefresh = false) {
@@ -51,14 +56,14 @@ export async function deleteApplicantIDByDisplayName(applicantId) {
     await setApplicantIDByDisplayName(applicants.filter(p => p !== applicantId));
 }
 
-export async function getApplicant(applicantId, isRefresh = false) {
+export async function getApplicant(applicantId, isRefresh = false, options = {}) {
     /*
     * Get the applicant from the server or local storage by applicantId
     * @param applicantId [String]: applicantId
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: applicant
     */
-    const applicants = await getApplicants(isRefresh);
+    const applicants = await getApplicants(isRefresh, options);
     const applicant = applicants.find(p => p.ApplicantID === applicantId);
     if (!applicant) {
         await getMetadata(applicantId.split('@')[0], true);
@@ -75,7 +80,7 @@ export async function setApplicants(applicants) {
     if (!applicants) {
         return;
     }
-    await localforage.setItem('applicants', {'data': applicants, 'Date': Date.now()});
+    await writeCacheValue("applicants", applicants);
 }
 
 export async function setApplicant(applicant) {

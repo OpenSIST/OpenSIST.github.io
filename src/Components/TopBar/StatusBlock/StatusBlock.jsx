@@ -9,6 +9,7 @@ import {ThemeContext} from "../../../index";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import {emptyCache} from "../../../Data/Common";
+import {startCoreCacheSync} from "../../../Data/CoreCacheSync";
 
 export async function loader() {
     const displayName = await getDisplayName();
@@ -45,6 +46,13 @@ export function StatusBlock() {
             });
         }
     }, [user, navigate]);
+
+    useEffect(() => {
+        if (!user) {
+            return undefined;
+        }
+        return startCoreCacheSync();
+    }, [user]);
 
     return (<Box sx={{display: 'flex'}}>
         <Tooltip title={`${theme.palette.mode === 'dark' ? '关闭' : '打开'}夜间模式`} arrow>

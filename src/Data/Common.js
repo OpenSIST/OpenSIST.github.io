@@ -1,17 +1,13 @@
 import univList from "./UnivList.json";
-import localforage from "localforage";
+import {CACHE_EXPIRATION, clearDataCache} from "./CacheStore";
 
-export const CACHE_EXPIRATION = 10 * 60 * 1000;
-
-export function shouldRefreshCache(entry, forceRefresh = false) {
-    return forceRefresh || !entry || (Date.now() - entry.Date) > CACHE_EXPIRATION;
-}
+export {CACHE_EXPIRATION};
 
 function createHeaders(contentType = 'application/json') {
     return {'Content-Type': contentType};
 }
 
-export async function apiRequest(path, {allowUnauthorized = false, body, contentType, headers, ...options} = {}) {
+export async function apiRequest(path, {allowUnauthorized = false, body, contentType, fetchPriority, headers, ...options} = {}) {
     const response = await fetch(path, {
         method: 'POST',
         credentials: 'include',
@@ -20,6 +16,7 @@ export async function apiRequest(path, {allowUnauthorized = false, body, content
             ...headers,
         },
         ...options,
+        ...(fetchPriority ? {priority: fetchPriority} : {}),
         ...(body === undefined
             ? {}
             : {body: typeof body === 'string' ? body : JSON.stringify(body)}),
@@ -37,14 +34,7 @@ export async function apiText(path, options) {
 }
 
 export async function emptyCache() {
-    /*
-    * Empty the cache
-     */
-    const theme = await localforage.getItem('theme');
-    await localforage.clear();
-    if (theme) {
-        await localforage.setItem('theme', theme);
-    }
+    await clearDataCache();
 }
 
 export async function handleErrors(response, {allowUnauthorized = false} = {}) {

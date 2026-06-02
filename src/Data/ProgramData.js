@@ -1,6 +1,6 @@
-import localforage from "localforage";
 import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST} from "../APIs/APIs";
-import {apiJson, apiRequest, shouldRefreshCache, univAbbrFullNameMapping} from "./Common";
+import {apiJson, apiRequest, univAbbrFullNameMapping} from "./Common";
+import {BACKGROUND_PRIORITY, loadCachedValue, writeCacheValue} from "./CacheStore";
 import univListOrder from "./UnivList.json";
 
 /*
@@ -10,7 +10,7 @@ import univListOrder from "./UnivList.json";
 * All functions starred with other words -> Online operation to corresponding backend APIs
 */
 
-export async function getPrograms(isRefresh = false, query = {}, ranking = "cs_rank") {
+export async function getPrograms(isRefresh = false, query = {}, ranking = "cs_rank", {priority = "foreground"} = {}) {
     /*
     * Get the list of programs (without description) from the server or local storage
     * @param isRefresh [Boolean]: whether to refresh the data
@@ -29,14 +29,21 @@ export async function getPrograms(isRefresh = false, query = {}, ranking = "cs_r
         d: normalizeQueryValues(query.d),
         m: normalizeQueryValues(query.m),
     };
-    let programs = await localforage.getItem('programs');
-
-    if (shouldRefreshCache(programs, isRefresh)) {
-        programs = await apiJson(PROGRAM_LIST);
-        await setPrograms(programs['data'])
+    let programs = await loadCachedValue({
+        key: "programs",
+        legacyFields: ["data"],
+        forceRefresh: isRefresh,
+        priority,
+        load: async () => {
+            const response = await apiJson(PROGRAM_LIST, {
+                fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+            });
+            return response.data;
+        },
+    });
+    if (!programs) {
+        return {};
     }
-
-    programs = programs['data'];
     const univAbbrOrder = univListOrder.reduce((acc, univ) => {
         acc[univ.abbr] = univ[ranking || 'cs_rank'];
         return acc;
@@ -78,14 +85,14 @@ export async function getPrograms(isRefresh = false, query = {}, ranking = "cs_r
     }, {});
 }
 
-export async function getProgram(programId, isRefresh = false) {
+export async function getProgram(programId, isRefresh = false, options = {}) {
     /*
     * Get the program (without description) from the server or local storage by programId
     * @param programId [String]: programId
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: program (without description)
     */
-    const programs = await getPrograms(isRefresh);
+    const programs = await getPrograms(isRefresh, {}, "cs_rank", options);
     const univName = programId.split('@')[1]
     if (!programs[univName]) {
         throw new Response("", {
@@ -104,28 +111,33 @@ export async function getProgram(programId, isRefresh = false) {
     return program;
 }
 
-export async function getProgramDesc(programId, isRefresh = false) {
+export async function getProgramDesc(programId, isRefresh = false, {priority = "foreground"} = {}) {
     /*
     * Get the description of the program from the server or local storage by programId
     * @param programId [String]: programId
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: description of the program
     */
-    let programDesc = await localforage.getItem(`${programId}-Desc`);
-    if (shouldRefreshCache(programDesc, isRefresh)) {
-        let response;
-        try {
-            response = await apiJson(PROGRAM_DESC, {body: {'ProgramID': programId}});
-        } catch (e) {
-            if (e.status === 404) {
-                await getPrograms(true);
+    return loadCachedValue({
+        key: `${programId}-Desc`,
+        legacyFields: ["description"],
+        forceRefresh: isRefresh,
+        priority,
+        load: async () => {
+            try {
+                const response = await apiJson(PROGRAM_DESC, {
+                    body: {'ProgramID': programId},
+                    fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+                });
+                return response.description;
+            } catch (error) {
+                if (error.status === 404) {
+                    await getPrograms(true, {}, "cs_rank", {priority});
+                }
+                throw error;
             }
-            throw e;
-        }
-        programDesc = response;
-        await setProgramDesc(programId, programDesc['description'])
-    }
-    return programDesc['description'];
+        },
+    });
 }
 
 export async function getProgramContent(programId, isRefresh = false) {
@@ -148,7 +160,7 @@ export async function setPrograms(programs) {
     if (!programs) {
         return;
     }
-    await localforage.setItem('programs', {'data': programs, 'Date': Date.now()});
+    await writeCacheValue("programs", programs);
 }
 
 export async function setProgram(program) {
@@ -177,7 +189,7 @@ export async function setProgramDesc(programId, programDesc) {
     if (programDesc === null || programDesc === undefined) {
         return;
     }
-    await localforage.setItem(`${programId}-Desc`, {'description': programDesc, 'Date': Date.now()});
+    await writeCacheValue(`${programId}-Desc`, programDesc);
 }
 
 export async function setProgramContent(program) {

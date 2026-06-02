@@ -38,7 +38,6 @@ async function loadApplicantProfile(applicantId) {
 }
 
 async function refreshApplicantProfile(applicantId, displayName) {
-    await getApplicant(applicantId, true);
     await getRecordByApplicant(applicantId, true);
     const metadata = await getMetadata(displayName, true);
     await getAvatar(metadata?.Avatar, displayName, true);

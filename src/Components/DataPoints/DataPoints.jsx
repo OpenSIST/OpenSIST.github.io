@@ -16,7 +16,7 @@ import {ConfigProvider, Input, Select, theme} from 'antd';
 const {Option} = Select;
 
 async function getAllRecords(isRefresh = false) {
-    let programs = await getPrograms();
+    let programs = await getPrograms(isRefresh);
     programs = Object.values(programs).flat().filter(program => program.Applicants?.length > 0);
     const recordIDs = programs.flatMap(program => (
         program.Applicants.map(applicant => applicant + "|" + program.ProgramID)

@@ -23,7 +23,7 @@ export async function loader({params}) {
 export async function action({params, request}) {
     const formData = await request.formData();
     const actionType = formData.get("ActionType");
-    const programId = params.programId;
+    const programId = decodeURIComponent(params.programId);
     if (actionType === "Refresh") {
         await getProgramDesc(programId, true);
         return getRecordByProgram(programId, true);

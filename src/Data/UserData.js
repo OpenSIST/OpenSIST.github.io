@@ -1,13 +1,21 @@
 import localforage from "localforage";
 import {redirect} from "react-router-dom";
 import {COLLECT_PROGRAM, GET_AVATAR, GET_DISPLAY_NAME, GET_METADATA, LOGIN, LOGOUT, REGISTER, RESET_PASSWORD, TOGGLE_NICKNAME, UNCOLLECT_PROGRAM, UPDATE_CONTACT, UPLOAD_AVATAR,} from "../APIs/APIs";
-import {apiJson, apiRequest, apiText, blobToBase64, emptyCache, shouldRefreshCache} from "./Common";
+import {apiJson, apiRequest, apiText, blobToBase64, emptyCache} from "./Common";
+import {BACKGROUND_PRIORITY, CACHE_CLEARED_EVENT, loadCachedValue, removeCacheValue, writeCacheValue} from "./CacheStore";
 import {useEffect, useState} from "react";
 import {getApplicants, setApplicants} from "./ApplicantData";
 import {getRecordByApplicant, setRecord} from "./RecordData";
 
-const avatarCacheKey = (displayName) => `${displayName}-avatar`;
+const avatarCacheKey = (displayName, avatarId) => `${displayName}-avatar-${avatarId}`;
 const metadataCacheKey = (displayName) => `${displayName}-metadata`;
+const USER_CHANGED_EVENT = "opensist-user-changed";
+
+function notifyUserChanged() {
+    if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event(USER_CHANGED_EVENT));
+    }
+}
 
 async function authRequest(path, body) {
     return fetch(path, {
@@ -53,6 +61,7 @@ export async function setUserInfo(userInfo) {
     await Promise.all(Object.entries(userInfo)
         .filter(([, value]) => value)
         .map(([key, value]) => localforage.setItem(key, value)));
+    notifyUserChanged();
 }
 
 export async function logout() {
@@ -62,6 +71,7 @@ export async function logout() {
         alert(`${content.error}, Error code: ${response.status}`);
     }
     await emptyCache();
+    notifyUserChanged();
     return redirect("/login");
 }
 
@@ -69,13 +79,18 @@ export function useUser() {
     const [user, setUser] = useState('');
     useEffect(() => {
         let mounted = true;
-        localforage.getItem('user').then((value) => {
+        const refreshUser = () => localforage.getItem('user').then((value) => {
             if (mounted) {
                 setUser(value);
             }
         });
+        void refreshUser();
+        window.addEventListener(USER_CHANGED_EVENT, refreshUser);
+        window.addEventListener(CACHE_CLEARED_EVENT, refreshUser);
         return () => {
             mounted = false;
+            window.removeEventListener(USER_CHANGED_EVENT, refreshUser);
+            window.removeEventListener(CACHE_CLEARED_EVENT, refreshUser);
         };
     }, []);
     return user;
@@ -86,7 +101,7 @@ export async function uploadAvatar(avatar) {
     const response = await apiRequest(UPLOAD_AVATAR, {body: avatar});
     const avatarId = await response.json();
     await setAvatarID(avatarId['avatar_id']);
-    await setAvatar(avatar);
+    await setAvatar(avatar, null, avatarId['avatar_id']);
 }
 
 export async function setAvatarID(avatarId) {
@@ -99,37 +114,42 @@ export async function setAvatarID(avatarId) {
 
 }
 
-export async function getAvatar(avatarId, displayName = null, isRefresh = false) {
+export async function getAvatar(avatarId, displayName = null, isRefresh = false, {priority = "foreground"} = {}) {
     if (!avatarId || avatarId === '') {
         return null;
     }
     if (!displayName) {
-        displayName = await getDisplayName(isRefresh);
+        displayName = await getDisplayName(isRefresh, {priority});
     }
     if (!displayName) {
         return null;
     }
-    let avatar = await localforage.getItem(avatarCacheKey(displayName));
-    if (shouldRefreshCache(avatar, isRefresh)) {
-        avatar = await apiText(GET_AVATAR, {body: {avatar_id: avatarId}});
-        await setAvatar(avatar, displayName);
-        avatar = {avatar}
-    }
-    return avatar["avatar"];
+    return loadCachedValue({
+        key: avatarCacheKey(displayName, avatarId),
+        legacyFields: ["avatar"],
+        forceRefresh: isRefresh,
+        priority,
+        load: () => apiText(GET_AVATAR, {
+            body: {avatar_id: avatarId},
+            fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+        }),
+    });
 }
 
-export async function setAvatar(avatar, displayName = null) {
+export async function setAvatar(avatar, displayName = null, avatarId = null) {
     if (!avatar) {
         return
     }
     if (!displayName) {
         displayName = await getDisplayName();
     }
-    if (!displayName) {
+    if (!avatarId) {
+        avatarId = (await getMetadata(displayName))?.Avatar;
+    }
+    if (!displayName || !avatarId) {
         return;
     }
-    avatar = {avatar, Date: Date.now()}
-    await localforage.setItem(avatarCacheKey(displayName), avatar);
+    await writeCacheValue(avatarCacheKey(displayName, avatarId), avatar);
 }
 
 /**
@@ -138,25 +158,31 @@ export async function setAvatar(avatar, displayName = null) {
  * @param {boolean} isRefresh - Whether to refresh cache
  * @returns {Promise<object>} - A promise resolving to metadata with Avatar and latestYear
  */
-export async function getMetadata(displayName = null, isRefresh = false) {
+export async function getMetadata(displayName = null, isRefresh = false, {priority = "foreground"} = {}) {
     /*
     * Get the user metadata from the server or local storage
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: metadata
     */
     if (!displayName) {
-        displayName = await getDisplayName(isRefresh);
+        displayName = await getDisplayName(isRefresh, {priority});
     }
     if (!displayName) {
         return null;
     }
-    let metadata = await localforage.getItem(metadataCacheKey(displayName));
-    if (shouldRefreshCache(metadata, isRefresh)) {
-        metadata = await apiJson(GET_METADATA, {body: {display_name: displayName}});
-        await setMetadata(metadata['result'], displayName);
-    }
-
-    const result = metadata?.result ?? {};
+    const result = await loadCachedValue({
+        key: metadataCacheKey(displayName),
+        legacyFields: ["result"],
+        forceRefresh: isRefresh,
+        priority,
+        load: async () => {
+            const metadata = await apiJson(GET_METADATA, {
+                body: {display_name: displayName},
+                fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+            });
+            return metadata.result;
+        },
+    }) ?? {};
     return {
         ...result,
         latestYear: findLatestYearForApplicant(result.ApplicantIDs),
@@ -192,24 +218,30 @@ export async function setMetadata(metadata, displayName = null) {
 
     const persistedMetadata = {...metadata};
     delete persistedMetadata.latestYear;
-    await localforage.setItem(metadataCacheKey(displayName), {'result': persistedMetadata, 'Date': Date.now()});
+    await writeCacheValue(metadataCacheKey(displayName), persistedMetadata);
 }
 
-export async function getDisplayName(isRefresh = false) {
-    let displayName = await localforage.getItem('displayName');
-    if (shouldRefreshCache(displayName, isRefresh)) {
-        displayName = await apiJson(GET_DISPLAY_NAME, {allowUnauthorized: true});
-        await setDisplayName(displayName['name']);
-    }
-    return displayName?.name ?? null;
+export async function getDisplayName(isRefresh = false, {priority = "foreground"} = {}) {
+    return loadCachedValue({
+        key: "displayName",
+        legacyFields: ["name"],
+        forceRefresh: isRefresh,
+        priority,
+        load: async () => {
+            const displayName = await apiJson(GET_DISPLAY_NAME, {
+                allowUnauthorized: true,
+                fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+            });
+            return displayName.name;
+        },
+    });
 }
 
 export async function setDisplayName(displayName) {
     if (!displayName) {
         return;
     }
-    displayName = {name: displayName, Date: Date.now()}
-    await localforage.setItem('displayName', displayName);
+    await writeCacheValue("displayName", displayName);
 }
 
 export async function toggleAnonymous() {
@@ -223,8 +255,8 @@ export async function toggleAnonymous() {
     const displayName = (await apiJson(TOGGLE_NICKNAME))['name'];
     await setDisplayName(displayName);
 
-    await localforage.removeItem(metadataCacheKey(originalDisplayName));
-    const updatedApplicantIds = originalMetadata.ApplicantIDs.map((applicant) => {
+    await removeCacheValue(metadataCacheKey(originalDisplayName));
+    const updatedApplicantIds = originalApplicantIds.map((applicant) => {
         return `${displayName}@${applicant.split('@')[1]}`;
     });
     const updatedMetadata = {
@@ -232,9 +264,9 @@ export async function toggleAnonymous() {
         ApplicantIDs: updatedApplicantIds,
     };
     await setMetadata(updatedMetadata, displayName);
-    await localforage.removeItem(avatarCacheKey(originalDisplayName));
+    await removeCacheValue(avatarCacheKey(originalDisplayName, originalMetadata.Avatar));
 
-    await setAvatar(originalAvatar, displayName);
+    await setAvatar(originalAvatar, displayName, originalMetadata.Avatar);
 
     const originalApplicantIdSet = new Set(originalApplicantIds);
     const updatedApplicantIdSet = new Set(updatedApplicantIds);
@@ -253,11 +285,11 @@ export async function toggleAnonymous() {
         })
     await Promise.all([
         setApplicants(updatedApplicants),
-        localforage.removeItem('programs'),
+        removeCacheValue('programs'),
     ]);
     await Promise.all(applicantRecords.map(async (records) => {
         await Promise.all(Object.entries(records).map(async ([recordId, content]) => {
-            await localforage.removeItem(`record-${recordId}`);
+            await removeCacheValue(`record-${recordId}`);
             const ApplicantID = `${displayName}@${content.ApplicantID.split('@')[1]}`;
             await setRecord({
                 ...content,
