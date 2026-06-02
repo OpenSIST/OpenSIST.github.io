@@ -1,10 +1,7 @@
 import localforage from "localforage";
 import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST} from "../APIs/APIs";
-import {handleErrors, headerGenerator, univAbbrFullNameMapping} from "./Common";
+import {apiJson, apiRequest, shouldRefreshCache, univAbbrFullNameMapping} from "./Common";
 import univListOrder from "./UnivList.json";
-
-const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
-// const CACHE_EXPIRATION = 1; // 10 min
 
 /*
 * All functions started with 'set' -> Offline operation to set items to local cache
@@ -26,58 +23,49 @@ export async function getPrograms(isRefresh = false, query = {}, ranking = "cs_r
     * }
     * @return: list of programs (without description)
     */
-    query.r = query.r?.split(',') || query.r;
-    query.d = query.d?.split(',') || query.d;
-    query.m = query.m?.split(',') || query.m;
+    const filters = {
+        ...query,
+        r: normalizeQueryValues(query.r),
+        d: normalizeQueryValues(query.d),
+        m: normalizeQueryValues(query.m),
+    };
     let programs = await localforage.getItem('programs');
 
-    if (isRefresh || programs === null || (Date.now() - programs.Date) > CACHE_EXPIRATION) {
-        const response = await fetch(PROGRAM_LIST, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-        });
-        await handleErrors(response);
-        programs = await response.json();
+    if (shouldRefreshCache(programs, isRefresh)) {
+        programs = await apiJson(PROGRAM_LIST);
         await setPrograms(programs['data'])
     }
 
     programs = programs['data'];
-    // const univAbbrOrder = univListOrder.map((univ) => univ.abbr);
-    // programs = Object.entries(programs).sort(([univ1, _], [univ2, __]) => {
-    //     return univAbbrOrder.indexOf(univ1) - univAbbrOrder.indexOf(univ2);
-    // }).reduce((acc, [univ, programs]) => {
-    //     acc[univ] = programs;
-    //     return acc;
-    // }, {});
     const univAbbrOrder = univListOrder.reduce((acc, univ) => {
         acc[univ.abbr] = univ[ranking || 'cs_rank'];
         return acc;
     }, {});
-    programs = Object.entries(programs).sort(([univ1, _], [univ2, __]) => {
+    programs = Object.entries(programs).sort(([univ1], [univ2]) => {
         return univAbbrOrder[univ1] - univAbbrOrder[univ2];
     }).reduce((acc, [univ, programs]) => {
         acc[univ] = programs;
         return acc;
     }, {});
 
-    let search_programs = Object.keys(programs).reduce((search_programs, univName) => {
-        const fullNameResults = univAbbrFullNameMapping[univName].toLowerCase().includes(query.u?.toLowerCase() ?? '');
-        const abbrResults = univName.toLowerCase().includes(query.u?.toLowerCase() ?? '');
+    const searchTerm = filters.u?.toLowerCase() ?? '';
+    const searchPrograms = Object.keys(programs).reduce((matchingPrograms, univName) => {
+        const fullNameResults = (univAbbrFullNameMapping[univName] ?? '').toLowerCase().includes(searchTerm);
+        const abbrResults = univName.toLowerCase().includes(searchTerm);
         const programResults = programs[univName].filter((programInfo) => {
-            return programInfo.Program.toLowerCase().includes(query.u?.toLowerCase() ?? '');
+            return programInfo.Program.toLowerCase().includes(searchTerm);
         })
         if (fullNameResults || abbrResults || programResults.length > 0) {
-            search_programs[univName] = programResults.length > 0 ? programResults : programs[univName];
+            matchingPrograms[univName] = programResults.length > 0 ? programResults : programs[univName];
         }
-        return search_programs;
+        return matchingPrograms;
     }, {})
 
-    const filteredEntries = Object.entries(search_programs).map(([university, programs]) => {
+    const filteredEntries = Object.entries(searchPrograms).map(([university, programs]) => {
         const filteredPrograms = programs.filter(program =>
-            (!query.d || query.d.some(degree => program.Degree === degree)) &&
-            (!query.m || query.m.some(major => program.TargetApplicantMajor.includes(major))) &&
-            (!query.r || query.r.some(region => program.Region.includes(region)))
+            (!filters.d || filters.d.some(degree => program.Degree === degree)) &&
+            (!filters.m || filters.m.some(major => program.TargetApplicantMajor.includes(major))) &&
+            (!filters.r || filters.r.some(region => program.Region.includes(region)))
         );
         return [university, filteredPrograms];
     });
@@ -99,7 +87,6 @@ export async function getProgram(programId, isRefresh = false) {
     */
     const programs = await getPrograms(isRefresh);
     const univName = programId.split('@')[1]
-    // To prevent user's meaningless query
     if (!programs[univName]) {
         throw new Response("", {
                 status: 404,
@@ -107,7 +94,14 @@ export async function getProgram(programId, isRefresh = false) {
             }
         );
     }
-    return programs[univName].find(program => program.ProgramID === programId);
+    const program = programs[univName].find(currentProgram => currentProgram.ProgramID === programId);
+    if (!program) {
+        throw new Response("", {
+            status: 404,
+            statusText: "Program not found",
+        });
+    }
+    return program;
 }
 
 export async function getProgramDesc(programId, isRefresh = false) {
@@ -118,22 +112,17 @@ export async function getProgramDesc(programId, isRefresh = false) {
     * @return: description of the program
     */
     let programDesc = await localforage.getItem(`${programId}-Desc`);
-    if (isRefresh || programDesc === null || (Date.now() - programDesc.Date) > CACHE_EXPIRATION) {
-        const response = await fetch(PROGRAM_DESC, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-            body: JSON.stringify({'ProgramID': programId}),
-        });
+    if (shouldRefreshCache(programDesc, isRefresh)) {
+        let response;
         try {
-            await handleErrors(response);
+            response = await apiJson(PROGRAM_DESC, {body: {'ProgramID': programId}});
         } catch (e) {
             if (e.status === 404) {
                 await getPrograms(true);
             }
             throw e;
         }
-        programDesc = await response.json();
+        programDesc = response;
         await setProgramDesc(programId, programDesc['description'])
     }
     return programDesc['description'];
@@ -159,8 +148,7 @@ export async function setPrograms(programs) {
     if (!programs) {
         return;
     }
-    programs = {'data': programs, 'Date': Date.now()};
-    await localforage.setItem('programs', programs);
+    await localforage.setItem('programs', {'data': programs, 'Date': Date.now()});
 }
 
 export async function setProgram(program) {
@@ -173,15 +161,11 @@ export async function setProgram(program) {
     }
     const programs = await getPrograms();
     const univName = program.University;
-    if (programs[univName] === undefined) {
-        programs[univName] = []
-    }
-    if (programs[univName].find(p => p.ProgramID === program.ProgramID)) {
-        programs[univName][programs[univName].findIndex((p) => p.ProgramID === program.ProgramID)] = program;
-    } else {
-        programs[univName].push(program);
-    }
-    await setPrograms(programs);
+    const universityPrograms = programs[univName] ?? [];
+    const updatedUniversityPrograms = universityPrograms.some(p => p.ProgramID === program.ProgramID)
+        ? universityPrograms.map(currentProgram => currentProgram.ProgramID === program.ProgramID ? program : currentProgram)
+        : [...universityPrograms, program];
+    await setPrograms({...programs, [univName]: updatedUniversityPrograms});
 }
 
 export async function setProgramDesc(programId, programDesc) {
@@ -190,11 +174,10 @@ export async function setProgramDesc(programId, programDesc) {
     * @param programId [String]: programId
     * @param programDesc [String]: description of the program
     */
-    if (!programDesc) {
+    if (programDesc === null || programDesc === undefined) {
         return;
     }
-    programDesc = {'description': programDesc, 'Date': Date.now()};
-    await localforage.setItem(`${programId}-Desc`, programDesc);
+    await localforage.setItem(`${programId}-Desc`, {'description': programDesc, 'Date': Date.now()});
 }
 
 export async function setProgramContent(program) {
@@ -205,9 +188,9 @@ export async function setProgramContent(program) {
     if (!program) {
         return;
     }
-    await setProgramDesc(program.ProgramID, program.Description);
-    delete program.Description;
-    await setProgram(program);
+    const {Description, ...summary} = program;
+    await setProgramDesc(program.ProgramID, Description);
+    await setProgram(summary);
 }
 
 export async function addModifyProgram(requestBody) {
@@ -215,19 +198,20 @@ export async function addModifyProgram(requestBody) {
     * Set the program (with description) to the local storage (i.e. localforage.getItem('programs') and localforage.getItem(`${programId}-Desc`), and post to the server.
     * @param program [Object]: program (with description)
     */
+    let content = requestBody.content;
     if (!requestBody.newProgram) {
-        const ori_program = await getProgram(requestBody.content.ProgramID);
-        requestBody.content.Applicants = ori_program.Applicants;
+        const originalProgram = await getProgram(content.ProgramID);
+        content = {...content, Applicants: originalProgram.Applicants};
     }
-    const response = await fetch(ADD_MODIFY_PROGRAM, {
-        method: 'POST',
-        credentials: 'include',
-        headers: await headerGenerator(true),
-        body: JSON.stringify({
+    await apiRequest(ADD_MODIFY_PROGRAM, {
+        body: {
             newProgram: requestBody.newProgram,
-            content: {...(requestBody.content)},
-        }),
+            content,
+        },
     });
-    await handleErrors(response);
-    await setProgramContent(requestBody.content);
+    await setProgramContent(content);
+}
+
+function normalizeQueryValues(value) {
+    return typeof value === 'string' ? value.split(',') : value;
 }

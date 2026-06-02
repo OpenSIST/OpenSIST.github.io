@@ -1,48 +1,38 @@
-import {
-    ADD_MODIFY_RECORD,
-    GET_RECORD_BY_RECORD_IDs,
-    REMOVE_RECORD
-} from "../APIs/APIs";
-import {handleErrors, headerGenerator} from "./Common";
+import {ADD_MODIFY_RECORD, GET_RECORDS_BY_ID, REMOVE_RECORD} from "../APIs/APIs";
+import {apiJson, apiRequest, shouldRefreshCache} from "./Common";
 import localforage from "localforage";
 import {getApplicant, setApplicant} from "./ApplicantData";
 import {getProgram, setProgram} from "./ProgramData";
 
-const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
-// const CACHE_EXPIRATION = 1; // 10 min
-
 export async function addModifyRecord(requestBody) {
-    const response = await fetch(ADD_MODIFY_RECORD, {
-        method: 'POST',
-        credentials: 'include',
-        headers: await headerGenerator(true),
-        body: JSON.stringify({
+    await apiRequest(ADD_MODIFY_RECORD, {
+        body: {
             newRecord: requestBody.newRecord,
             content: requestBody.content,
-        }),
+        },
     });
-    await handleErrors(response);
     await setRecord(requestBody.content);
 
     const applicantID = requestBody.content.ApplicantID;
     const programID = requestBody.content.ProgramID;
 
-    let applicant = await getApplicant(applicantID);
-    applicant.Programs[programID] = requestBody.content.Status;
-    await setApplicant(applicant);
+    const applicant = await getApplicant(applicantID);
+    await setApplicant({
+        ...applicant,
+        Programs: {...applicant.Programs, [programID]: requestBody.content.Status},
+    });
 
-    let program = await getProgram(programID);
+    const program = await getProgram(programID);
     if (!program.Applicants.includes(applicantID)) {
-        program.Applicants.push(applicantID);
+        await setProgram({...program, Applicants: [...program.Applicants, applicantID]});
     }
-    await setProgram(program);
 }
 
 export async function getRecordByApplicant(applicantId, isRefresh = false) {
     const applicant = await getApplicant(applicantId, isRefresh);
     const recordIDs = Object.keys(applicant.Programs).map(programID => {
         return applicantId + '|' + programID;
-    }).flat();
+    });
     return getRecordByRecordIDs(recordIDs, isRefresh);
 }
 
@@ -50,53 +40,44 @@ export async function getRecordByProgram(programId, isRefresh = false) {
     const program = await getProgram(programId, isRefresh);
     const recordIDs = program.Applicants.map(applicantID => {
         return applicantID + '|' + programId;
-    }).flat();
+    });
     return getRecordByRecordIDs(recordIDs, isRefresh);
 }
 
 export async function getRecordByRecordIDs(recordIDs, isRefresh = false) {
-    const cacheRecords = await Promise.all(recordIDs.map(async (recordId) => {
-        return await localforage.getItem(`record-${recordId}`);
+    const cacheRecords = await Promise.all(recordIDs.map(recordId => {
+        return localforage.getItem(`record-${recordId}`);
     }));
+    const cacheRecordsById = Object.fromEntries(
+        recordIDs.map((recordId, index) => [recordId, cacheRecords[index]])
+    );
     const expiredIDs = recordIDs.filter((recordId, index) => {
-        return isRefresh || cacheRecords[index] === null || (Date.now() - cacheRecords[index].Date) > CACHE_EXPIRATION;
+        return shouldRefreshCache(cacheRecords[index], isRefresh);
     });
-    const unexpiredIDs = recordIDs.filter((recordId) => {
-        return !expiredIDs.includes(recordId);
-    });
+    const expiredIDSet = new Set(expiredIDs);
+    const unexpiredIDs = recordIDs.filter(recordId => !expiredIDSet.has(recordId));
 
     const unexpiredRecords = {};
     unexpiredIDs.forEach((recordId) => {
-        unexpiredRecords[recordId] = cacheRecords[recordIDs.indexOf(recordId)]['data'];
+        unexpiredRecords[recordId] = cacheRecordsById[recordId]['data'];
     })
-    let expiredRecords = {data: {}};
+    let expiredRecords = {};
     if (expiredIDs.length > 0) {
-        let responses = []
-        const batch_size = 30;
-        for (let i = 0; i < expiredIDs.length; i += batch_size) {
-            responses.push(fetch(GET_RECORD_BY_RECORD_IDs, {
-                method: 'POST',
-                credentials: 'include',
-                headers: await headerGenerator(true),
-                body: JSON.stringify({IDs: expiredIDs.slice(i, i + batch_size)}),
+        const requests = [];
+        const batchSize = 30;
+        for (let i = 0; i < expiredIDs.length; i += batchSize) {
+            requests.push(apiJson(GET_RECORDS_BY_ID, {
+                body: {IDs: expiredIDs.slice(i, i + batchSize)},
             }));
         }
-        responses = await Promise.all(responses);
-        await Promise.all(responses.map(async (response) => {
-            await handleErrors(response);
-        }));
-        expiredRecords = await Promise.all(responses.map(async (response) => {
-            return await response.json();
-        }));
-        expiredRecords.data = expiredRecords.reduce((obj, response) => {
+        const responses = await Promise.all(requests);
+        expiredRecords = responses.reduce((obj, response) => {
             return {...obj, ...response.data};
         }, {});
-        await Promise.all(expiredIDs.map(async (recordId) => {
-            await setRecord(expiredRecords['data'][recordId])
-        }));
+        await Promise.all(expiredIDs.map(recordId => setRecord(expiredRecords[recordId])));
     }
     return {
-        ...expiredRecords['data'],
+        ...expiredRecords,
         ...unexpiredRecords
     };
 }
@@ -106,46 +87,38 @@ export async function setRecord(record) {
         return;
     }
     const recordID = record.RecordID;
-    record = {data: record, Date: Date.now()};
-    await localforage.setItem(`record-${recordID}`, record)
+    await localforage.setItem(`record-${recordID}`, {data: record, Date: Date.now()});
 }
 
 export async function removeRecord(recordId) {
-    /* Remove recode from server and localforage
-     */
-    const response = await fetch(REMOVE_RECORD, {
-        method: 'POST',
-        credentials: 'include',
-        headers: await headerGenerator(true),
-        body: JSON.stringify({
+    /* Remove record from server and localforage. */
+    await apiRequest(REMOVE_RECORD, {
+        body: {
             RecordID: recordId,
-        }),
+        },
     });
-    await handleErrors(response);
     await deleteRecord(recordId);
 }
 
 export async function deleteRecord(recordId) {
-    /* Remove recode from localforage
-     */
+    /* Remove record from localforage. */
     await localforage.removeItem(`record-${recordId}`);
 
-    const applicantID = recordId.split('|')[0];
-    const programID = recordId.split('|')[1];
+    const [applicantID, programID] = recordId.split('|');
 
-    let applicant = await getApplicant(applicantID);
-    applicant.Programs = Object.entries(applicant.Programs).reduce((obj, [key, value]) => {
-        if (key !== programID) {
-            obj[key] = value;
-        }
-        return obj;
-    }, {});
-    if (applicant.Final === programID) {
-        applicant.Final = "";
-    }
-    await setApplicant(applicant);
+    const applicant = await getApplicant(applicantID);
+    const Programs = Object.fromEntries(
+        Object.entries(applicant.Programs).filter(([key]) => key !== programID)
+    );
+    await setApplicant({
+        ...applicant,
+        Programs,
+        Final: applicant.Final === programID ? "" : applicant.Final,
+    });
 
-    let program = await getProgram(programID);
-    program.Applicants = program.Applicants.filter(applicant => applicant !== applicantID);
-    await setProgram(program);
+    const program = await getProgram(programID);
+    await setProgram({
+        ...program,
+        Applicants: program.Applicants.filter(applicant => applicant !== applicantID),
+    });
 }

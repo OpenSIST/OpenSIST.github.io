@@ -5,10 +5,10 @@ import NavBar from "./NavBar/NavBar";
 import {useNavigate} from "react-router-dom";
 import {AppBar, SvgIcon, Toolbar, useTheme} from "@mui/material";
 import {grey} from "@mui/material/colors";
-import {ReactComponent as LightIcon} from '../icons/header.svg';
-import {ReactComponent as DarkIcon} from '../icons/header-dark.svg';
-import {ReactComponent as LightShortIcon} from '../icons/light.svg';
-import {ReactComponent as DarkShortIcon} from '../icons/dark.svg';
+import LightIcon from '../icons/header.svg?react';
+import DarkIcon from '../icons/header-dark.svg?react';
+import LightShortIcon from '../icons/light.svg?react';
+import DarkShortIcon from '../icons/dark.svg?react';
 import {useUser} from "../../Data/UserData";
 import {useSmallPage} from "../common";
 

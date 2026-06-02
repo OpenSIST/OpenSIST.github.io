@@ -1,21 +1,12 @@
-import React, {useEffect, useState} from "react";
-import {useLocation, Form, Link} from "react-router-dom";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {Form, Link, useLocation} from "react-router-dom";
 import {z} from 'zod';
 import "./RegisterAndReset.css"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
+import {faCheck, faXmark} from "@fortawesome/free-solid-svg-icons";
 import {SEND_RESET_VERIFY_TOKEN, SEND_VERIFY_TOKEN} from "../../../APIs/APIs";
-import {headerGenerator} from "../../../Data/Common";
-import {
-    Box,
-    Button,
-    Checkbox,
-    FormControlLabel,
-    Input,
-    MenuItem,
-    TextField,
-    Typography
-} from "@mui/material";
+import {apiRequest} from "../../../Data/Common";
+import {Box, Button, Checkbox, FormControlLabel, Input, MenuItem, TextField, Typography} from "@mui/material";
 import {registerReset} from "../../../Data/UserData";
 import Select from "@mui/material/Select";
 
@@ -27,7 +18,7 @@ export async function action({request}) {
     const password = formData.get('password');
     const token = formData.get('token');
     const status = formData.get('status');
-    return await registerReset(email, password, token, status);
+    return registerReset(email, password, token, status);
 }
 
 const passwordSchema = z.string().min(8).max(24).refine(password => (
@@ -35,8 +26,20 @@ const passwordSchema = z.string().min(8).max(24).refine(password => (
     ),
 );
 
-const checkMark = <FontAwesomeIcon icon={solid("check")} style={{color: "#439d2a",}}/>
-const crossMark = <FontAwesomeIcon icon={solid("xmark")} style={{color: "#c24b24",}}/>
+const checkMark = <FontAwesomeIcon icon={faCheck} style={{color: "#439d2a",}}/>
+const crossMark = <FontAwesomeIcon icon={faXmark} style={{color: "#c24b24",}}/>
+const VERIFY_COOLDOWN_SECONDS = 60;
+
+function readVerifyCooldown() {
+    const savedStartTime = Number.parseInt(localStorage.getItem('timerStart') || '0', 10);
+    const timePassed = Math.floor((Date.now() - savedStartTime) / 1000);
+    const timeLeft = VERIFY_COOLDOWN_SECONDS - timePassed;
+    if (!savedStartTime || timeLeft <= 0) {
+        localStorage.removeItem('timerStart');
+        return {timeLeft: VERIFY_COOLDOWN_SECONDS, sendButtonDisabled: false};
+    }
+    return {timeLeft, sendButtonDisabled: true};
+}
 
 export function isValidPassword(password) {
     const result = passwordSchema.safeParse(password);
@@ -51,84 +54,49 @@ export default function RegisterAndReset() {
     const [tokenSent, setTokenSent] = useState(false);
     const [suffix, setSuffix] = useState("@shanghaitech.edu.cn");
 
-    // check the state for password requirements
-    const [isLengthValid, setIsLengthValid] = useState(false);
-    const [hasNumber, setHasNumber] = useState(false);
-    const [hasLowercase, setHasLowercase] = useState(false);
-    const [hasUppercase, setHasUppercase] = useState(false);
-
-    // check if the agreements are already checked
+    const isLengthValid = password.length >= 8 && password.length <= 24;
+    const hasNumber = /[0-9]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasUppercase = /[A-Z]/.test(password);
     const [boxChecked, setChecked] = useState(false);
 
     const location = useLocation();
 
     const status = location.pathname.split('/')[1];
 
-    const updatePasswordRequirements = (password) => {
-        setIsLengthValid(password.length >= 8 && password.length <= 24);
-        setHasNumber(/[0-9]/.test(password));
-        setHasLowercase(/[a-z]/.test(password));
-        setHasUppercase(/[A-Z]/.test(password));
-    };
-
-    const [timeLeft, setTimeLeft] = useState(60);
-    const [sendButtonDisabled, setSendButtonDisabled] = useState(false);
-    const sendAndStartTimer = (startTime = Date.now()) => {
-        localStorage.setItem('timerStart', startTime.toString());
-        setSendButtonDisabled(true);
-
-        const intervalId = setInterval(() => {
-            const startTime = parseInt(localStorage.getItem('timerStart') || '0');
-            const timePassed = Math.floor((Date.now() - startTime) / 1000);
-            const timeLeft = 60 - timePassed;
-
-            if (timeLeft <= 0) {
-                clearInterval(intervalId);
-                setTimeLeft(60);
-                setSendButtonDisabled(false);
-                localStorage.removeItem('timerStart');
-            } else {
-                setTimeLeft(timeLeft);
-            }
-        }, 1000);
-    };
-
-    useEffect(() => {
-        const savedStartTime = localStorage.getItem('timerStart');
-        if (savedStartTime) {
-            const timePassed = Math.floor((Date.now() - parseInt(savedStartTime)) / 1000);
-            const remainingTime = 60 - timePassed;
-            if (remainingTime > 0) {
-                setTimeLeft(remainingTime);
-                setSendButtonDisabled(true);
-                sendAndStartTimer(parseInt(savedStartTime));
-            } else {
-                localStorage.removeItem('timerStart');
-            }
+    const [{timeLeft, sendButtonDisabled}, setCooldown] = useState(readVerifyCooldown);
+    const intervalRef = useRef(null);
+    const updateCooldown = useCallback(() => {
+        const cooldown = readVerifyCooldown();
+        setCooldown(cooldown);
+        if (!cooldown.sendButtonDisabled) {
+            clearInterval(intervalRef.current);
         }
     }, []);
+    const sendAndStartTimer = useCallback((startTime = Date.now()) => {
+        localStorage.setItem('timerStart', startTime.toString());
+        setCooldown({timeLeft: VERIFY_COOLDOWN_SECONDS, sendButtonDisabled: true});
+        clearInterval(intervalRef.current);
+        intervalRef.current = setInterval(updateCooldown, 1000);
+    }, [updateCooldown]);
+
+    useEffect(() => {
+        if (readVerifyCooldown().sendButtonDisabled) {
+            intervalRef.current = setInterval(updateCooldown, 1000);
+        }
+        return () => clearInterval(intervalRef.current);
+    }, [updateCooldown]);
 
     const handleVerify = async (e) => {
         e.preventDefault();
         const api = status === 'reset' ? SEND_RESET_VERIFY_TOKEN : SEND_VERIFY_TOKEN;
         try {
-            const response = await fetch(api, {
-                method: "POST",
-                credentials: "include",
-                headers: await headerGenerator(),
-                body: JSON.stringify({email: user + suffix}),
-            });
-
-            if (response.status === 200) {
-                sendAndStartTimer();
-                setTokenSent(true);
-                alert("验证码已发送到您的上科大邮箱。若未收到，请查看postmaster垃圾邮件系统。");
-            } else {
-                const content = await response.json();
-                alert(`${content.error}, Error code: ${response.status}`);
-            }
+            await apiRequest(api, {body: {email: user + suffix}});
+            sendAndStartTimer();
+            setTokenSent(true);
+            alert("验证码已发送到您的上科大邮箱。若未收到，请查看postmaster垃圾邮件系统。");
         } catch (e) {
-            alert(e)
+            alert(e.statusText ? `${e.statusText}, Error code: ${e.status}` : e);
         }
     };
 
@@ -171,11 +139,7 @@ export default function RegisterAndReset() {
                 id='password'
                 name='password'
                 value={password}
-                onChange={(e) => {
-                    const newPassword = e.target.value;
-                    setPassword(newPassword);
-                    updatePasswordRequirements(newPassword);
-                }}
+                onChange={(e) => setPassword(e.target.value)}
                 size='small'
                 required
             />
@@ -202,7 +166,6 @@ export default function RegisterAndReset() {
                     label="验证码"
                     variant='standard'
                     value={token}
-                    // helperText="验证邮件可能被postmaster拦截"
                     onChange={(e) => setToken(e.target.value)}
                     size='small'
                     required

@@ -3,30 +3,20 @@ import {Form, Link} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
 import {univAbbrFullNameMapping} from "../../../Data/Common";
-import {
-    Box,
-    Button,
-    Collapse,
-    Divider,
-    List,
-    ListItemButton,
-    ListItemText,
-    Paper, Tooltip, Typography,
-    useTheme
-} from "@mui/material";
+import {Box, Button, Collapse, Divider, List, ListItemButton, ListItemText, Paper, Tooltip, Typography, useTheme} from "@mui/material";
 import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
 import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
 import {regionFlagMapping} from "../../../Data/Schemas";
-import Grid2 from "@mui/material/Unstable_Grid2";
+import Grid2 from "@mui/material/Grid";
 import StarButton from "../ProgramContent/StarButton";
 
-const MetaDataContext = React.createContext();
+const MetadataContext = React.createContext();
 
 export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
     return (
-        <MetaDataContext.Provider value={loaderData.metaData}>
+        <MetadataContext.Provider value={loaderData.metadata}>
             <CollapseSideBar
                 sx={{
                     '& .MuiDrawer-paper': {
@@ -41,7 +31,7 @@ export default function SideBar({loaderData}) {
             >
                 <SearchBar query={getQuery(loaderData)} pageName='program'/>
                 <Grid2 columnSpacing={1} container sx={{width: '100%'}}>
-                    <Grid2 xs={9}>
+                    <Grid2 size={9}>
                         <Form action='/programs/new' style={{width: "100%"}}>
                             <Tooltip title='添加新项目' arrow>
                                 <Button fullWidth type='submit' variant="outlined"
@@ -55,7 +45,7 @@ export default function SideBar({loaderData}) {
                             </Tooltip>
                         </Form>
                     </Grid2>
-                    <Grid2 xs={3}>
+                    <Grid2 size={3}>
                         <Form method='post' style={{width: "100%"}}>
                             <Tooltip title='刷新项目列表' arrow>
                                 <Button fullWidth type='submit' variant="outlined"
@@ -72,8 +62,8 @@ export default function SideBar({loaderData}) {
                 </Grid2>
                 <UnivProgramList univProgramList={univProgramList}/>
             </CollapseSideBar>
-        </MetaDataContext.Provider>
-    )
+        </MetadataContext.Provider>
+    );
 }
 
 export function UnivProgramList({univProgramList, ButtonComponent = ProgramButton}) {
@@ -123,7 +113,7 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
                 {isFolded ? <ExpandMore fontSize="0.9em"/> : <NavigateNext fontSize="0.9em"/>}
                 <ListItemText
                     primary={
-                        <Box sx={{display:'flex', justifyContent: 'space-between'}}>
+                        <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
                             <Typography>{univName}</Typography>
                             <Typography>{flags}</Typography>
                         </Box>
@@ -157,7 +147,7 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
 export function ProgramButton({program, selectProgram, setSelectProgram}) {
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
-    const metaData = React.useContext(MetaDataContext);
+    const metadata = React.useContext(MetadataContext);
     return (
         <ListItemButton
             className='ProgramItem'
@@ -180,7 +170,7 @@ export function ProgramButton({program, selectProgram, setSelectProgram}) {
         >
             <ListItemText primary={program.Program}
                           secondary={program.TargetApplicantMajor.join('/')}/>
-            <StarButton programID={program.ProgramID} metaData={metaData}/>
+            <StarButton programID={program.ProgramID} metadata={metadata}/>
         </ListItemButton>
     )
 }

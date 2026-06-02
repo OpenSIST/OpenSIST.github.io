@@ -1,13 +1,13 @@
-import { ThemeProvider, createTheme, useTheme } from "@mui/material";
+import {useTheme} from "@mui/material";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Unstable_Grid2";
-import { grey } from "@mui/material/colors";
-import { useNavigate } from "react-router-dom";
-import { regionFlagMapping } from "../../Data/Schemas";
-import { univAbbrFullNameMapping, univColorMapping } from "../../Data/Common";
+import Grid from "@mui/material/Grid";
+import {grey} from "@mui/material/colors";
+import {useNavigate} from "react-router-dom";
+import {regionFlagMapping} from "../../Data/Schemas";
+import {univAbbrFullNameMapping, univColorMapping} from "../../Data/Common";
 
-const ProgramCard = ({ program }) => {
+const ProgramCard = ({program}) => {
     const darkMode = useTheme().palette.mode === "dark";
 
     const navigate = useNavigate();
@@ -19,30 +19,18 @@ const ProgramCard = ({ program }) => {
 
     const color = univColorMapping[program.University] ?? [85, 221, 128]; // [85, 221, 128] is a magic number
 
-    const breakpointsTheme = (theme) => createTheme({
-        ...theme,
-        breakpoints: {
-            values: {
-                xs: 0,
-                sm: 580,
-                md: 900,
-                lg: 1100,
-                xl: 1436,
-            },
-        },
-    });
-
-    return (<ThemeProvider theme={breakpointsTheme}>
+    return (
         <Grid
             display="flex"
             alignItems="center"
             justifyContent="center"
-            xs={60}
-            sm={30}
-            md={20}
-            lg={15}
-            xl={12}
-        >
+            size={{
+                xs: 60,
+                sm: 30,
+                md: 20,
+                lg: 15,
+                xl: 12
+            }}>
             <Card
                 sx={{
                     position: "relative",
@@ -82,7 +70,7 @@ const ProgramCard = ({ program }) => {
                     {program.University}
                 </Typography>
                 <Typography className="programcardtext fulluni" component="div" sx={
-                    { color: darkMode ? grey[400] : grey[700], }
+                    {color: darkMode ? grey[400] : grey[700],}
                 }>
                     {univAbbrFullNameMapping[program.University]}
                 </Typography>
@@ -91,7 +79,7 @@ const ProgramCard = ({ program }) => {
                 </Typography>
             </Card>
         </Grid>
-    </ThemeProvider>);
+    );
 };
 
 export default ProgramCard;

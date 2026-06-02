@@ -1,17 +1,39 @@
 import univList from "./UnivList.json";
 import localforage from "localforage";
 
-export async function headerGenerator(auth = false, contentType = 'application/json') {
-    /*
-    * Generate the header for fetch
-    * @param auth [boolean]: whether the request is authenticated
-    * @return: header
-     */
-    return {
-        'Content-Type': contentType,
-        'Connection': 'close',
-        'X-Content-Type-Options': 'nosniff'
-    };
+export const CACHE_EXPIRATION = 10 * 60 * 1000;
+
+export function shouldRefreshCache(entry, forceRefresh = false) {
+    return forceRefresh || !entry || (Date.now() - entry.Date) > CACHE_EXPIRATION;
+}
+
+function createHeaders(contentType = 'application/json') {
+    return {'Content-Type': contentType};
+}
+
+export async function apiRequest(path, {allowUnauthorized = false, body, contentType, headers, ...options} = {}) {
+    const response = await fetch(path, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            ...createHeaders(contentType),
+            ...headers,
+        },
+        ...options,
+        ...(body === undefined
+            ? {}
+            : {body: typeof body === 'string' ? body : JSON.stringify(body)}),
+    });
+    await handleErrors(response, {allowUnauthorized});
+    return response;
+}
+
+export async function apiJson(path, options) {
+    return (await apiRequest(path, options)).json();
+}
+
+export async function apiText(path, options) {
+    return (await apiRequest(path, options)).text();
 }
 
 export async function emptyCache() {
@@ -25,28 +47,31 @@ export async function emptyCache() {
     }
 }
 
-export async function handleErrors(response) {
+export async function handleErrors(response, {allowUnauthorized = false} = {}) {
     /*
     * Handle the error of the response
     * @param response [Response]: response from fetch
     * @return: response
      */
     if (response.status === 401) {
-        if (window.location.pathname === "/agreement") {
-            return;
-        }
-        if (!["/login", "/register", "/reset"].includes(window.location.pathname)) {
-            window.location.href = "/login";
-        }
         await emptyCache();
-        return;
-    }
-    if (response.status !== 200) {
-        const content = await response.json();
+        if (allowUnauthorized) {
+            return response;
+        }
+        if (!["/agreement", "/login", "/register", "/reset"].includes(window.location.pathname)) {
+            window.location.assign("/login");
+        }
         throw new Response('', {
             status: response.status,
-            statusText: content.error,
-        })
+            statusText: response.statusText,
+        });
+    }
+    if (!response.ok) {
+        const content = await response.json().catch(() => ({}));
+        throw new Response('', {
+            status: response.status,
+            statusText: content.error ?? response.statusText,
+        });
     }
     return response;
 }
@@ -71,11 +96,6 @@ export const univColorMapping = univList.reduce((acc, univ) => {
     acc[univ.abbr] = univ.color;
     return acc;
 }, {});
-
-export async function loadMarkDown(path) {
-    const response = await fetch(path);
-    return await response.text();
-}
 
 /**
  * Converts a UTC date string to local time.

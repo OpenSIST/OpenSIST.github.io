@@ -1,32 +1,19 @@
 import localforage from "localforage";
 import {ADD_MODIFY_APPLICANT, APPLICANT_LIST, REMOVE_APPLICANT} from "../APIs/APIs";
-import {handleErrors, headerGenerator} from "./Common";
-import {getDisplayName, getMetaData, setMetaData} from "./UserData";
+import {apiJson, apiRequest, shouldRefreshCache} from "./Common";
+import {getDisplayName, getMetadata, setMetadata} from "./UserData";
 import {deleteRecord, getRecordByApplicant, getRecordByRecordIDs, setRecord} from "./RecordData";
 
-const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
-// const CACHE_EXPIRATION = 1; // 10 min
-
-
-export async function getApplicants(isRefresh = false, query = {}) {
+export async function getApplicants(isRefresh = false) {
     /*
     * Get the list of applicants from the server or local storage
     * @param isRefresh [Boolean]: whether to refresh the data
-    * @param query [Object]: {
-    *
-    * }
     * @return: list of applicants
     */
     let applicants = await localforage.getItem('applicants');
 
-    if (isRefresh || applicants === null || (Date.now() - applicants.Date) > CACHE_EXPIRATION) {
-        const response = await fetch(APPLICANT_LIST, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-        });
-        await handleErrors(response)
-        applicants = await response.json();
+    if (shouldRefreshCache(applicants, isRefresh)) {
+        applicants = await apiJson(APPLICANT_LIST);
         await setApplicants(applicants['data']);
     }
     return applicants['data'];
@@ -38,8 +25,8 @@ export async function getApplicantIDByDisplayName(isRefresh = false) {
     * @return: list of applicants
     */
     const displayName = await getDisplayName(isRefresh);
-    const metaData = await getMetaData(displayName, isRefresh);
-    return metaData.ApplicantIDs;
+    const metadata = await getMetadata(displayName, isRefresh);
+    return metadata.ApplicantIDs;
 }
 
 export async function setApplicantIDByDisplayName(applicants) {
@@ -51,9 +38,8 @@ export async function setApplicantIDByDisplayName(applicants) {
         return;
     }
     const displayName = await getDisplayName();
-    let metaData = await getMetaData(displayName, true);
-    metaData.ApplicantIDs = applicants;
-    await setMetaData(metaData, displayName);
+    const metadata = await getMetadata(displayName, true);
+    await setMetadata({...metadata, ApplicantIDs: applicants}, displayName);
 }
 
 export async function deleteApplicantIDByDisplayName(applicantId) {
@@ -75,7 +61,7 @@ export async function getApplicant(applicantId, isRefresh = false) {
     const applicants = await getApplicants(isRefresh);
     const applicant = applicants.find(p => p.ApplicantID === applicantId);
     if (!applicant) {
-        await getMetaData(applicantId.split('@')[0], true);
+        await getMetadata(applicantId.split('@')[0], true);
         throw new Error('Applicant not found');
     }
     return applicant;
@@ -89,8 +75,7 @@ export async function setApplicants(applicants) {
     if (!applicants) {
         return;
     }
-    applicants = {'data': applicants, 'Date': Date.now()}
-    await localforage.setItem('applicants', applicants);
+    await localforage.setItem('applicants', {'data': applicants, 'Date': Date.now()});
 }
 
 export async function setApplicant(applicant) {
@@ -102,31 +87,33 @@ export async function setApplicant(applicant) {
         return;
     }
     const applicants = await getApplicants();
-    const ori_applicant = applicants.filter(p => p.ApplicantID === applicant.ApplicantID)[0];
-    const ori_final_record_id = ori_applicant?.ApplicantID + "|" + ori_applicant?.Final;
-    const final_record_id = applicant?.ApplicantID + "|" + applicant?.Final;
-    const records = await getRecordByRecordIDs([ori_final_record_id, final_record_id]);
-    const ori_final_record = records[ori_final_record_id];
-    const final_record = records[final_record_id];
-    if (ori_final_record) {
-        ori_final_record.Final = false;
-        await setRecord(ori_final_record);
+    const originalApplicant = applicants.find(p => p.ApplicantID === applicant.ApplicantID);
+    const originalFinalRecordId = originalApplicant?.Final
+        ? `${originalApplicant.ApplicantID}|${originalApplicant.Final}`
+        : null;
+    const finalRecordId = applicant.Final
+        ? `${applicant.ApplicantID}|${applicant.Final}`
+        : null;
+    const finalRecordIds = [originalFinalRecordId, finalRecordId].filter(Boolean);
+    const records = await getRecordByRecordIDs(finalRecordIds);
+    const originalFinalRecord = records[originalFinalRecordId];
+    const finalRecord = records[finalRecordId];
+    if (originalFinalRecord) {
+        await setRecord({...originalFinalRecord, Final: false});
     }
-    if (final_record) {
-        final_record.Final = true;
-        await setRecord(final_record);
+    if (finalRecord) {
+        await setRecord({...finalRecord, Final: true});
     }
-    if (ori_applicant) {
-        applicants[applicants.indexOf(ori_applicant)] = applicant;
-    } else {
-        applicants.push(applicant);
-    }
-    await setApplicants(applicants);
+    const updatedApplicants = originalApplicant
+        ? applicants.map(currentApplicant => (
+            currentApplicant.ApplicantID === applicant.ApplicantID ? applicant : currentApplicant
+        ))
+        : [...applicants, applicant];
+    await setApplicants(updatedApplicants);
     if (await isAuthApplicant(applicant.ApplicantID)) {
-        const applicants = await getApplicantIDByDisplayName();
-        if (applicants.indexOf(applicant.ApplicantID) === -1) {
-            applicants.push(applicant.ApplicantID);
-            await setApplicantIDByDisplayName(applicants);
+        const applicantIds = await getApplicantIDByDisplayName();
+        if (!applicantIds.includes(applicant.ApplicantID)) {
+            await setApplicantIDByDisplayName([...applicantIds, applicant.ApplicantID]);
         }
     }
 }
@@ -137,16 +124,12 @@ export async function addModifyApplicant(requestBody) {
     * @param applicant [Object]: applicant information
     */
 
-    const response = await fetch(ADD_MODIFY_APPLICANT, {
-        method: 'POST',
-        credentials: 'include',
-        headers: await headerGenerator(true),
-        body: JSON.stringify({
+    await apiRequest(ADD_MODIFY_APPLICANT, {
+        body: {
             newApplicant: requestBody.newApplicant,
             content: requestBody.content,
-        }),
+        },
     });
-    await handleErrors(response);
     await setApplicant(requestBody.content);
 }
 
@@ -155,23 +138,19 @@ export async function removeApplicant(applicantId) {
     * Remove the applicant from the local storage and the server.
     * @param applicantId [String]: applicantId
     */
-    const response = await fetch(REMOVE_APPLICANT, {
-        method: 'POST',
-        credentials: 'include',
-        headers: await headerGenerator(true),
-        body: JSON.stringify({
+    await apiRequest(REMOVE_APPLICANT, {
+        body: {
             ApplicantID: applicantId,
-        }),
+        },
     });
 
-    await handleErrors(response);
     const records = await getRecordByApplicant(applicantId);
     const applicants = await getApplicants();
     await setApplicants(applicants.filter(p => p.ApplicantID !== applicantId));
     await deleteApplicantIDByDisplayName(applicantId);
-    // Since the backend prohibits the deletion of an applicant with records, the following code is not necessary actually...
-    for (const recordID of Object.keys(records)) {
-        await deleteRecord(recordID);
+    // The backend currently blocks deletion with records, but clear stale local records defensively.
+    for (const recordId of Object.keys(records)) {
+        await deleteRecord(recordId);
     }
 }
 
@@ -183,12 +162,9 @@ export async function isAuthApplicant(applicantId) {
     * @return: [Boolean]: whether the user is authorized to access the applicant
     */
     if (!applicantId) {
-        // console.log("[isAuthApplicant] Received null or empty applicantId.");
         return false;
     }
     const displayName = await getDisplayName();
     const applicantUsername = applicantId.split('@')[0];
-    const isMatch = applicantUsername === displayName;
-    // console.log(`[isAuthApplicant] Checking: applicantId='${applicantId}', applicantUsername='${applicantUsername}', currentDisplayName='${displayName}', isMatch=${isMatch}`);
-    return isMatch;
+    return applicantUsername === displayName;
 }

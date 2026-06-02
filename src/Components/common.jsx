@@ -1,24 +1,14 @@
 import {useNavigation} from "react-router-dom";
 import React, {useRef, useState} from "react";
-import {
-    Backdrop,
-    Box,
-    Button,
-    CircularProgress, Fab,
-    styled,
-    SwipeableDrawer, Tooltip,
-    Typography,
-    useMediaQuery
-} from "@mui/material";
+import {Backdrop, Box, Button, CircularProgress, Fab, styled, SwipeableDrawer, Tooltip, Typography, useMediaQuery} from "@mui/material";
 import {ChevronRight} from "@mui/icons-material";
 import Draggable from "react-draggable";
 
 export function LoadingBackdrop() {
     const navigation = useNavigation()
     const loading = navigation.state !== 'idle';
-    // const loading = navigation.state === 'loading';
     return (
-        <Backdrop open={loading} sx={{zIndex: 99999}} transitionDuration={1000} style={{pointerEvents: "none"}} >
+        <Backdrop open={loading} sx={{zIndex: 99999}} transitionDuration={1000} style={{pointerEvents: "none"}}>
             <CircularProgress color="inherit"/>
         </Backdrop>
     )
@@ -91,11 +81,11 @@ export function CollapseSideBar({children, sx}) {
 
 export function DraggableFAB({Icon, DragThreshold, ActionType, ButtonClassName, color, onClick, style, tooltipTitle}) {
     const nodeRef = useRef(null);
-
+    const buttonRef = useRef(null);
     const dragStartPositionXYRef = useRef({x: 0, y: 0});
     return (
         <>
-            <Box method='post' style={{...style}}>
+            <Box style={{...style}}>
                 <Draggable
                     nodeRef={nodeRef}
                     onStart={(event, data) => {
@@ -107,7 +97,7 @@ export function DraggableFAB({Icon, DragThreshold, ActionType, ButtonClassName, 
                         const wasDragged = Math.abs(data.x - x) > THRESHOLD || Math.abs(data.y - y) > THRESHOLD;
                         if (!wasDragged) {
                             event.preventDefault();
-                            document.querySelector(`.${ButtonClassName}`).click()
+                            buttonRef.current?.click();
                         }
                     }}
                 >
@@ -119,6 +109,7 @@ export function DraggableFAB({Icon, DragThreshold, ActionType, ButtonClassName, 
                 </Draggable>
             </Box>
             <button
+                ref={buttonRef}
                 onClick={onClick}
                 type="submit" style={{display: "none"}}
                 className={ButtonClassName} name="ActionType"

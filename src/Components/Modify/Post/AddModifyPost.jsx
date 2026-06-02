@@ -10,13 +10,11 @@ import {list2Options} from "../../../Data/Schemas";
 export async function loader({params}) {
     const postId = params?.postId;
     const postObj = postId ? await getPostObject(postId) : null;
-    // console.log("postObj", postObj)
     const isAuth = await isAuthApplicant(postObj?.author);
     if (!isAuth && postObj) {
         await getApplicants(true);
         const doubleCheck = await isAuthApplicant(postObj?.author);
         if (!doubleCheck) {
-            // We can guarantee that the user is not authorized to view the profile page.
             throw new Error(`Sorry, you are not authorized to edit this post.`);
         }
     }
@@ -29,27 +27,22 @@ export async function action({request, params}) {
     const formData = await request.formData();
     const title = formData.get("Title");
     const content = formData.get("Content");
-    const ActionType = formData.get("ActionType");
-    let requestBody = {
+    const actionType = formData.get("ActionType");
+    const requestBody = {
         content: {
             Title: title,
             Content: content
         }
     }
-    if (ActionType === 'new') {
+    if (actionType === 'new') {
         requestBody.ApplicantID = formData.get('Author');
         requestBody.content.type = 'Post';
-    } else if (ActionType === 'edit') {
+    } else if (actionType === 'edit') {
         requestBody.PostID = params.postId;
     }
-    
-    try {
-        await addModifyPost(requestBody, ActionType);
-        return redirect("/posts");
-    } catch (error) {
-        console.error("Error in post action:", error);
-        throw error;
-    }
+
+    await addModifyPost(requestBody, actionType);
+    return redirect("/posts");
 }
 
 export default function AddModifyPost({type}) {
@@ -102,9 +95,9 @@ export default function AddModifyPost({type}) {
                     ))}
                 </Autocomplete>
             </FormControl>
-            <MarkDownEditor 
-                Description={content} 
-                setDescription={setContent} 
+            <MarkDownEditor
+                Description={content}
+                setDescription={setContent}
                 darkMode={darkMode}
             />
             <textarea name="Content" hidden={true} value={content} readOnly/>

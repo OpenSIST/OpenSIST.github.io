@@ -1,7 +1,7 @@
 import React from "react";
 import "./NavBar.css";
-import {useLocation, Link} from "react-router-dom";
-import {Tabs, Tab} from "@mui/material";
+import {Link, useLocation} from "react-router-dom";
+import {Tab, Tabs} from "@mui/material";
 import {useUser} from "../../../Data/UserData";
 
 function useRouteMatch(patterns) {
@@ -59,14 +59,13 @@ export default function NavBar() {
             allowScrollButtonsMobile
             role="navigation"
         >
-            {navItems.map((item, index): React.ReactNode => (
+            {navItems.map((item, index) => (
                 <Tab
                     key={index}
                     label={item.name}
                     value={item.path}
                     to={item.path}
                     component={Link}
-                    // sx={{fontSize: "1.2rem"}}
                 />
             ))}
         </Tabs>

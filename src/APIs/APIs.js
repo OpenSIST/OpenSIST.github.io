@@ -1,8 +1,5 @@
 const defaultRoot = "https://opensist.tech/";
-const ROOT = process.env.REACT_APP_BACKEND_SPECIFIC_API?.trim() || defaultRoot;
-if (ROOT !== defaultRoot) {
-    console.log("Using Alpha API: " + ROOT);
-}
+const ROOT = import.meta.env.VITE_BACKEND_SPECIFIC_API?.trim() || defaultRoot;
 
 export const PROGRAM_LIST = ROOT + "api/list/programs";
 export const PROGRAM_DESC = ROOT + "api/query/program_description";
@@ -24,7 +21,7 @@ export const REMOVE_FROM_TRASH = ROOT + "api/admin/email/remove_from_trash";
 export const ADD_MODIFY_APPLICANT = ROOT + "api/mutating/new_modify_applicant";
 export const REMOVE_APPLICANT = ROOT + "api/mutating/remove_applicant";
 export const APPLICANT_LIST = ROOT + "api/list/applicants";
-export const GET_RECORD_BY_RECORD_IDs = ROOT + "api/query/by_records";
+export const GET_RECORDS_BY_ID = ROOT + "api/query/by_records";
 export const ADD_MODIFY_RECORD = ROOT + "api/mutating/new_modify_record";
 export const REMOVE_RECORD = ROOT + "api/mutating/remove_record";
 export const UPLOAD_AVATAR = ROOT + "api/user/upload_avatar";

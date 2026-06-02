@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import {Dialog, DialogActions, DialogContent, IconButton, Paper, useTheme} from "@mui/material";
-import {Close, Refresh } from "@mui/icons-material";
+import {Close, Refresh} from "@mui/icons-material";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByRecordIDs} from "../../Data/RecordData";
 import './DataPoints.css';
@@ -11,27 +11,28 @@ import {recordStatusList} from "../../Data/Schemas";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import {BoldTypography, DraggableFAB} from "../common";
 import {columnWidthMap, PlainTable, TopStickyRow} from './PlainTable'
-import { Input, Select } from 'antd';
-import { ConfigProvider, theme } from 'antd';
-const { Option } = Select;
+import {ConfigProvider, Input, Select, theme} from 'antd';
+
+const {Option} = Select;
+
+async function getAllRecords(isRefresh = false) {
+    let programs = await getPrograms();
+    programs = Object.values(programs).flat().filter(program => program.Applicants?.length > 0);
+    const recordIDs = programs.flatMap(program => (
+        program.Applicants.map(applicant => applicant + "|" + program.ProgramID)
+    ));
+    const programOrder = new Map(programs.map((program, index) => [program.ProgramID, index]));
+    return Object.values(await getRecordByRecordIDs(recordIDs, isRefresh)).sort((a, b) => {
+        return programOrder.get(a.ProgramID) - programOrder.get(b.ProgramID);
+    });
+}
 
 export async function loader() {
-    let programs = await getPrograms();
-    programs = Object.values(programs).flat().filter(program => program.Applicants.length > 0);
-    const recordIDs = programs.map(program => program.Applicants.map(applicant => applicant + "|" + program.ProgramID)).flat();
-    let records = Object.values(await getRecordByRecordIDs(recordIDs));
-    const programIDs = programs.map(program => program.ProgramID);
-    records = records.sort((a, b) => {
-        return programIDs.indexOf(a.ProgramID) - programIDs.indexOf(b.ProgramID);
-    });
-    return {records};
+    return {records: await getAllRecords()};
 }
 
 export async function action() {
-    let programs = await getPrograms(true);
-    programs = Object.values(programs).flat().filter(program => program.Applicants.length > 0);
-    const recordIDs = programs.map(program => program.Applicants.map(applicant => applicant + "|" + program.ProgramID)).flat();
-    await getRecordByRecordIDs(recordIDs, true);
+    await getAllRecords(true);
     return redirect('/datapoints');
 }
 
@@ -80,8 +81,7 @@ export function ProgramContentInDataPoints() {
     )
 }
 
-// 高效的搜索过滤器，替代原有PrimeReact过滤器
-function SearchFilter({ onFilterChange }) {
+function SearchFilter({onFilterChange}) {
     const [filters, setFilters] = useState({
         applicant: '',
         program: '',
@@ -89,35 +89,21 @@ function SearchFilter({ onFilterChange }) {
         final: null,
         season: ''
     });
-    const searchDebounceRef = useRef(null);
+    useEffect(() => {
+        const timeoutId = setTimeout(() => onFilterChange(filters), 200);
+        return () => clearTimeout(timeoutId);
+    }, [filters, onFilterChange]);
 
-    // 添加防抖函数提高搜索性能
     const handleFilterChange = useCallback((name, value) => {
-        setFilters(prev => {
-            const newFilters = {...prev, [name]: value};
+        setFilters(currentFilters => ({...currentFilters, [name]: value}));
+    }, []);
 
-            if (searchDebounceRef.current) {
-                clearTimeout(searchDebounceRef.current);
-            }
-
-            searchDebounceRef.current = setTimeout(() => {
-                // 直接将过滤条件传递给父组件的索引搜索函数
-                onFilterChange(newFilters);
-            }, 200); // 从300ms减少到200ms提高响应速度
-
-            return newFilters;
-        });
-    }, [onFilterChange]);
-
-    const theme1 = useTheme();
-    const isDark = theme1.palette.mode === 'dark';
+    const muiTheme = useTheme();
+    const isDark = muiTheme.palette.mode === 'dark';
 
     return (
         <div className="filter-container">
-            {/* Using antd's Input and Select elements */}
-            {/* "ConfigProvider" is used for antd's light/dark mode */}
-            <ConfigProvider theme={{algorithm: isDark ? theme.darkAlgorithm : theme.compactAlgorithm}} >
-                {/* 搜索申请人 */}
+            <ConfigProvider theme={{algorithm: isDark ? theme.darkAlgorithm : theme.compactAlgorithm}}>
                 <Input
                     id="applicant"
                     size="small"
@@ -130,7 +116,6 @@ function SearchFilter({ onFilterChange }) {
                     }}
                 />
 
-                {/* 搜索申请项目 */}
                 <Input
                     id="program"
                     size="small"
@@ -143,7 +128,6 @@ function SearchFilter({ onFilterChange }) {
                     }}
                 />
 
-                {/* 申请结果 */}
                 <Select
                     id="status"
                     size="small"
@@ -164,7 +148,6 @@ function SearchFilter({ onFilterChange }) {
                     ))}
                 </Select>
 
-                {/* 最终去向 */}
                 <Select
                     id="final"
                     size="small"
@@ -184,7 +167,6 @@ function SearchFilter({ onFilterChange }) {
                     <Option value="false">否</Option>
                 </Select>
 
-                {/* 搜索申请季 */}
                 <Input
                     id="season"
                     size="small"
@@ -238,13 +220,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
         dark: "/TableDark.css"
     };
 
-    // 使用useState和useMemo优化搜索性能
-    const [filteredRecords, setFilteredRecords] = useState(records);
-    const [isSearching, setIsSearching] = useState(false);
-
-    // 按照申请季排序之后的records
-    // 排序方式: 申请学期年份越大越靠前, 相同年份Fall比Spring靠前
-    const [sortedFilteredRecords, setSortedFilteredRecords] = useState(records);
+    const [filters, setFilters] = useState(null);
 
     /**
      * @typedef {Object} Filter
@@ -256,90 +232,30 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
      */
 
     /** @param {Filter} filter */
-    const handleSearch = (filter) => {
-        setIsSearching(true)
-
-        setTimeout(() => {
-            const filteredRecords = records.filter((record) => {
-                // status和final这两项是精确匹配
-                if (filter.status && record.Status !== filter.status)
-                    return false;
-                if (filter.final != null && record.Final !== filter.final)
-                    return false;
-                // applicant, program, season 这三项是"字符串包含"匹配
-                if (filter.applicant && !record.ApplicantID.toLowerCase().includes(filter.applicant.toLowerCase()))
-                    return false;
-                if (filter.program && !record.ProgramID.toLowerCase().includes(filter.program.toLowerCase()))
-                    return false;
-                if (filter.season &&
-                    // 这么写是为了让 "2023Fall" 和 "2023 Fall" (注意空格)等多种输入格式都能得到匹配
-                    !(`${record.Season} ${record.ProgramYear}${record.Semester}`).toLowerCase().includes(filter.season.toLowerCase())) {
-                    return false;
-                }
-                return true;
-            })
-            setFilteredRecords(filteredRecords)
-            setIsSearching(false)
-        }, 0)
-    }
-
-    /**
-     * 将records按照申请季排序. 年份越大越靠前, 相同年份Fall比Spring靠前
-     *
-     * @param {RecordData[]} records The input RecordData list
-     * @return {RecordData[]} RecordData list sorted by Semester
-     */
-    function sortRecords(records) {
-        // Sort records by program (already sorted) and then by semester (newer semesters appears first)
-
-        /** @var {RecordData[]} newRecords */
-        let newRecords = []
-        /** @var {RecordData[]} currentProgramRecords */
-        let currentProgramRecords = []
-        let currentProgramID = '';
-
-        const semesterNum = (semester) => {
-            switch (semester) {
-                case "Fall": { return 2 }
-                case "Spring": { return 1 }
-                default: { return 0 }
-            }
+    const filteredRecords = useMemo(() => records.filter((record) => {
+        if (!filters) {
+            return true;
         }
+        if (filters.status && record.Status !== filters.status) {
+            return false;
+        }
+        if (filters.final !== null && record.Final !== filters.final) {
+            return false;
+        }
+        if (filters.applicant && !record.ApplicantID.toLowerCase().includes(filters.applicant.toLowerCase())) {
+            return false;
+        }
+        if (filters.program && !record.ProgramID.toLowerCase().includes(filters.program.toLowerCase())) {
+            return false;
+        }
+        return !filters.season ||
+            `${record.Season} ${record.ProgramYear}${record.Semester}`.toLowerCase().includes(filters.season.toLowerCase());
+    }), [filters, records]);
 
-        records.forEach((r) => {
-            if (currentProgramID !== r.ProgramID) {
-                currentProgramRecords.sort((a, b) => (
-                    a.ProgramYear === b.ProgramYear ?
-                        semesterNum(b.Semester) - semesterNum(a.Semester) :
-                        b.ProgramYear - a.ProgramYear
-                ));
-                currentProgramRecords.forEach((r) => newRecords.push(r))
-                currentProgramRecords = []
-                currentProgramID = r.ProgramID
-            }
-            currentProgramRecords.push(r)
-        })
-        currentProgramRecords.sort((a, b) => (
-            a.ProgramYear === b.ProgramYear ?
-                semesterNum(b.Semester) - semesterNum(a.Semester) :
-                b.ProgramYear - a.ProgramYear
-        ));
-        currentProgramRecords.forEach((r) => newRecords.push(r))
-
-        return newRecords;
-    }
-
-    useEffect(() => {
-        setSortedFilteredRecords(sortRecords(filteredRecords));
-    }, [filteredRecords])
-
-    useEffect(() => {
-        if (insideProgramPage)
-            setFilteredRecords(records);
-    }, [insideProgramPage, records]);
+    const sortedFilteredRecords = useMemo(() => sortRecords(filteredRecords), [filteredRecords]);
 
     return (
-        <div className="data-grid-container">
+        <div className="data-grid-container" style={style}>
             <ThemeSwitcherProvider defaultTheme={theme.palette.mode} themeMap={themeMap} style={{width: '70%'}}>
                 <Paper
                     elevation={0}
@@ -353,17 +269,15 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
                     }}
                 >
                     <TopStickyRow
-                        filterElem={insideProgramPage || <SearchFilter onFilterChange={handleSearch}/>}
+                        filterElem={insideProgramPage || <SearchFilter onFilterChange={setFilters}/>}
                         insideProgramPage={insideProgramPage}
                     />
-                    {isSearching ? <></> : (
-                        <PlainTable
-                            records={sortedFilteredRecords}
-                            insideProgramPage={insideProgramPage}
-                        />
-                    )}
+                    <PlainTable
+                        records={sortedFilteredRecords}
+                        insideProgramPage={insideProgramPage}
+                    />
                 </Paper>
-                <div className="search-results-indicator" style={{textAlign: 'center'}} >
+                <div className="search-results-indicator" style={{textAlign: 'center'}}>
                     {filteredRecords.length === records.length ? (
                         <BoldTypography variant="body2">
                             总计 <b>{records.length}</b> 条记录
@@ -379,9 +293,42 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
     )
 }
 
+/**
+ * Sort records by their existing program order, then by the newest application semester.
+ *
+ * @param {RecordData[]} records
+ * @return {RecordData[]}
+ */
+function sortRecords(records) {
+    const semesterWeight = (semester) => {
+        switch (semester) {
+            case "Fall": {
+                return 2;
+            }
+            case "Spring": {
+                return 1;
+            }
+            default: {
+                return 0;
+            }
+        }
+    };
+    const programOrder = new Map();
+    records.forEach((record) => {
+        if (!programOrder.has(record.ProgramID)) {
+            programOrder.set(record.ProgramID, programOrder.size);
+        }
+    });
+    return [...records].sort((a, b) => (
+        programOrder.get(a.ProgramID) - programOrder.get(b.ProgramID) ||
+        b.ProgramYear - a.ProgramYear ||
+        semesterWeight(b.Semester) - semesterWeight(a.Semester)
+    ));
+}
+
 const FloatingControls = () => (
     /* Refresh FAB */
-    <Form method="post" className="refresh-button">
+    (<Form method="post" className="refresh-button">
         <DraggableFAB
             Icon={<Refresh/>}
             ActionType="Refresh"
@@ -389,15 +336,15 @@ const FloatingControls = () => (
             color="primary"
             tooltipTitle="刷新表格"
         />
-    </Form>
+    </Form>)
 )
 
 export default function DataPoints() {
     const loaderRecords = useLoaderData();
-    const records = loaderRecords.records.map(record => {
-        record['Season'] = record.ProgramYear + " " + record.Semester;
-        return record;
-    });
+    const records = useMemo(() => loaderRecords.records.map(record => ({
+        ...record,
+        Season: record.ProgramYear + " " + record.Semester,
+    })), [loaderRecords.records]);
 
     return (
         <div style={{overflowY: 'hidden'}}>

@@ -1,18 +1,29 @@
-import { Container, Typography } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
-import { Outlet, useLoaderData } from "react-router-dom";
-import { getMetaData } from "../../Data/UserData";
-import { loader as ProgramPageLoader } from "../ProgramPage/ProgramPage";
+import {Container, createTheme, ThemeProvider, Typography} from "@mui/material";
+import Grid from "@mui/material/Grid";
+import {Outlet, useLoaderData} from "react-router-dom";
+import {getMetadata} from "../../Data/UserData";
+import {loader as ProgramPageLoader} from "../ProgramPage/ProgramPage";
 import SearchBar from "../ProgramPage/SideBar/SearchBar/SearchBar";
-import { getQuery } from "../ProgramPage/SideBar/SideBar";
+import {getQuery} from "../ProgramPage/SideBar/SideBar";
 import ProgramCard from "./ProgramCard";
 import "./Favorites.css";
 import capoobeat from "../../Assets/images/Favorites/capoobeat.gif";
-import capooknife from "../../Assets/images/Favorites/capooknife.gif";
-import capoosigh from "../../Assets/images/Favorites/capoosigh.gif";
+
+const favoritesTheme = (theme) => createTheme({
+    ...theme,
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 580,
+            md: 900,
+            lg: 1100,
+            xl: 1436,
+        },
+    },
+});
 
 function filterProgramsById(programs, programIDs) {
-    let filtered = {};
+    const filtered = {};
     for (const university in programs) {
         const filteredPrograms = programs[university].filter((program) =>
             programIDs.includes(program.ProgramID),
@@ -25,35 +36,32 @@ function filterProgramsById(programs, programIDs) {
 }
 
 function flattenPrograms(programs) {
-    let flattened = [];
+    const flattened = [];
     for (const university in programs) {
         flattened.push(...programs[university]);
     }
     return flattened;
 }
 
-export async function loader({ request }) {
-    const metaData = await getMetaData();
-    const programPageData = await ProgramPageLoader({ request });
+export async function loader({request}) {
+    const metadata = await getMetadata();
+    const programPageData = await ProgramPageLoader({request});
     programPageData.programs = filterProgramsById(
         programPageData.programs,
-        metaData.ProgramCollection ?? [],
+        metadata.ProgramCollection ?? [],
     );
-    return { programPageData };
+    return {programPageData};
 }
 
 export default function Favorites() {
-    let { programPageData } = useLoaderData();
+    const {programPageData} = useLoaderData();
 
     const noPrograms = Object.keys(programPageData.programs).length === 0;
 
-    const noProgramImgs = [capoobeat, capoosigh, capooknife]
-    const noProgramImg = noProgramImgs[Math.floor(Math.random() * noProgramImgs.length)]
-
     return (
         <Container maxWidth={"xl"}>
-            <Container maxWidth={"lg"} sx={{ mt: 1.5 }}>
-                <SearchBar query={getQuery(programPageData)} pageName="favorites" />
+            <Container maxWidth={"lg"} sx={{mt: 1.5}}>
+                <SearchBar query={getQuery(programPageData)} pageName="favorites"/>
             </Container>
             {noPrograms ? (
                 <Container
@@ -71,20 +79,22 @@ export default function Favorites() {
                     <Typography variant="h4" component="div" textAlign="center">
                         No programs to display.
                     </Typography>
-                    <img src={noProgramImg} height="150px" alt="capoo" />
+                    <img src={capoobeat} height="150px" alt="No programs saved"/>
                 </Container>
             ) : (
-                <Grid
-                    container
-                    spacing={2}
-                    columns={60}
-                    maxHeight={"calc(100vh - 150px)"}
-                    sx={{ my: 2, overflowY: "auto" }}
-                >
-                    {flattenPrograms(programPageData.programs).map((program) => (
-                        <ProgramCard key={program.ProgramID} program={program} />
-                    ))}
-                </Grid>
+                <ThemeProvider theme={favoritesTheme}>
+                    <Grid
+                        container
+                        spacing={2}
+                        columns={60}
+                        maxHeight={"calc(100vh - 150px)"}
+                        sx={{my: 2, overflowY: "auto"}}
+                    >
+                        {flattenPrograms(programPageData.programs).map((program) => (
+                            <ProgramCard key={program.ProgramID} program={program}/>
+                        ))}
+                    </Grid>
+                </ThemeProvider>
             )}
             <Outlet></Outlet>
         </Container>

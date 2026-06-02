@@ -23,27 +23,25 @@ import "./ProfileSideBar.css";
 import {Form, Link} from "react-router-dom";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import {ConnectWithoutContact, Edit, Refresh, HomeRounded, LinkedIn, Link as LinkIcon, Mail} from "@mui/icons-material";
+import {ConnectWithoutContact, Edit, HomeRounded, Link as LinkIcon, LinkedIn, Mail, Refresh} from "@mui/icons-material";
 import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
-import React, {useEffect, useState} from "react";
-import Grid2 from "@mui/material/Unstable_Grid2";
+import React, {useRef, useState} from "react";
+import Grid2 from "@mui/material/Grid";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
 
 export function ProfileSideBar({loaderData}) {
-    const applicants = loaderData.metaData.ApplicantIDs;
+    const applicants = loaderData.metadata.ApplicantIDs;
     const avatar = loaderData.avatarUrl;
     const displayName = loaderData.displayName;
     const user = loaderData.user;
-    const userContact = loaderData.metaData.Contact;
-    const [anonymous, setAnonymous] = useState(displayName !== user);
+    const userContact = loaderData.metadata.Contact ?? {};
+    const avatarFormRef = useRef(null);
+    const anonymous = displayName !== user;
     const [anonymousOpen, setAnonymousOpen] = useState(false);
     const [editContactOpen, setEditContactOpen] = useState(false);
     const [contact, setContact] = useState(userContact);
-    useEffect(() => {
-        setAnonymous(displayName !== user);
-    }, [displayName, user])
     return (
         <CollapseSideBar
             sx={{
@@ -64,13 +62,13 @@ export function ProfileSideBar({loaderData}) {
                         }
                     }}
                     badgeContent={
-                        <Form method="post" encType="multipart/form-data">
+                        <Form ref={avatarFormRef} method="post" encType="multipart/form-data">
                             <IconButton
                                 component='label'
                                 sx={{
-                                    bgcolor: (theme) => theme.mode === 'dark' ? blue[200] : blue[600],
+                                    bgcolor: (theme) => theme.palette.mode === 'dark' ? blue[200] : blue[600],
                                     "&:hover": {
-                                        bgcolor: (theme) => theme.mode === 'dark' ? blue[300] : blue[500],
+                                        bgcolor: (theme) => theme.palette.mode === 'dark' ? blue[300] : blue[500],
                                     }
                                 }}
                             >
@@ -91,7 +89,7 @@ export function ProfileSideBar({loaderData}) {
                                                 alert("图片文件名不能包含中文!");
                                                 return;
                                             }
-                                            document.querySelector("button[type='submit']").click();
+                                            avatarFormRef.current?.requestSubmit();
                                         }
                                     }}
                                 />
@@ -118,20 +116,18 @@ export function ProfileSideBar({loaderData}) {
                 <Box sx={{display: 'flex', alignItems: 'center'}}>
                     <InputLabel>匿名:</InputLabel>
                     <Switch checked={anonymous} onClick={() => {
-                        setAnonymous(!anonymous);
                         setAnonymousOpen(true);
                     }}/>
                     <Dialog open={anonymousOpen} onClose={() => {
-                        setAnonymous(!anonymous);
                         setAnonymousOpen(false)
                     }}>
-                        <DialogTitle>是否要更改申请人为{anonymous ? "匿名" : "实名"}状态？</DialogTitle>
+                        <DialogTitle>是否要更改申请人为{anonymous ? "实名" : "匿名"}状态？</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
                                 {anonymous ?
-                                    "更改申请人为匿名状态后，其他用户将只能看到通过系统生成的伪名。"
-                                    :
                                     "更改申请人为实名状态后，其他用户将能够看到您的真实姓名。"
+                                    :
+                                    "更改申请人为匿名状态后，其他用户将只能看到通过系统生成的伪名。"
                                 }
                             </DialogContentText>
                             <DialogContentText>
@@ -140,7 +136,6 @@ export function ProfileSideBar({loaderData}) {
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={() => {
-                                setAnonymous(!anonymous);
                                 setAnonymousOpen(false);
                             }}>
                                 取消
@@ -171,7 +166,10 @@ export function ProfileSideBar({loaderData}) {
                         </ListItemButton>
                     </ListItem>
                     <ListItem>
-                        <ListItemButton onClick={() => setEditContactOpen(true)} sx={{justifyContent: 'center'}}>
+                        <ListItemButton onClick={() => {
+                            setContact(userContact);
+                            setEditContactOpen(true);
+                        }} sx={{justifyContent: 'center'}}>
                             <ConnectWithoutContact/> 编辑个人联系方式
                         </ListItemButton>
                     </ListItem>
@@ -185,7 +183,7 @@ export function ProfileSideBar({loaderData}) {
                             可填写下方任何联系方式：
                         </DialogContentText>
                         <Grid2 container spacing={2}>
-                            <Grid2 container xs={12}>
+                            <Grid2 container size={12}>
                                 <ContactField field='HomePage' label='个人主页' icon={<HomeRounded/>} contact={contact}
                                               setContact={setContact}/>
                                 <ContactField field='Email' label='邮箱' icon={<Mail/>} contact={contact}
@@ -221,16 +219,16 @@ export function ProfileSideBar({loaderData}) {
                 </Dialog>
             </Box>
         </CollapseSideBar>
-    )
+    );
 }
 
 function ContactField({field, label, icon, contact, setContact}) {
     return (
         <>
-            <Grid2 xs={1} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <Grid2 sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}} size={1}>
                 {icon}
             </Grid2>
-            <Grid2 xs={11}>
+            <Grid2 size={11}>
                 <TextField
                     margin="dense"
                     label={label}
@@ -238,14 +236,13 @@ function ContactField({field, label, icon, contact, setContact}) {
                     fullWidth
                     value={contact[field] ?? ""}
                     onChange={(e) => {
-                        setContact(() => {
+                        setContact((currentContact) => {
                             if (e.target.value.length > 0) {
-                                return {...contact, [field]: e.target.value};
-                            } else {
-                                const newContact = {...contact};
-                                delete newContact[field];
-                                return newContact;
+                                return {...currentContact, [field]: e.target.value};
                             }
+                            const newContact = {...currentContact};
+                            delete newContact[field];
+                            return newContact;
                         });
                     }}
                 />
