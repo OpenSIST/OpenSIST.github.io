@@ -1,25 +1,25 @@
 import {Form, Link, useLoaderData, useNavigate} from "react-router-dom";
 import "./StatusBlock.css";
 import React, {useContext, useEffect} from "react";
-import localforage from "localforage";
-import {getAvatar, getDisplayName, getMetaData, logout, useUser} from "../../../Data/UserData";
+import {getAvatar, getDisplayName, getMetadata, logout, useUser} from "../../../Data/UserData";
 import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography, useTheme} from "@mui/material";
-import {AccountBoxRounded, StarRounded, LockResetRounded, ExitToAppRounded} from "@mui/icons-material";
+import {AccountBoxRounded, ExitToAppRounded, LockResetRounded, StarRounded} from "@mui/icons-material";
 import {blue} from "@mui/material/colors";
 import {ThemeContext} from "../../../index";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import {emptyCache} from "../../../Data/Common";
+import {startCoreCacheSync} from "../../../Data/CoreCacheSync";
 
 export async function loader() {
     const displayName = await getDisplayName();
-    const metaData = await getMetaData(displayName);
-    const avatarUrl = await getAvatar(metaData?.Avatar, displayName);
+    const metadata = await getMetadata(displayName);
+    const avatarUrl = await getAvatar(metadata?.Avatar, displayName);
     return {displayName, avatarUrl};
 }
 
 export async function action() {
-    return await logout();
+    return logout();
 }
 
 export function StatusBlock() {
@@ -47,7 +47,12 @@ export function StatusBlock() {
         }
     }, [user, navigate]);
 
-    localforage.setItem('theme', theme.palette.mode).then()
+    useEffect(() => {
+        if (!user) {
+            return undefined;
+        }
+        return startCoreCacheSync();
+    }, [user]);
 
     return (<Box sx={{display: 'flex'}}>
         <Tooltip title={`${theme.palette.mode === 'dark' ? '关闭' : '打开'}夜间模式`} arrow>

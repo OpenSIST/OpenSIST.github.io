@@ -1,112 +1,130 @@
 import localforage from "localforage";
 import {redirect} from "react-router-dom";
 import {
+    COLLECT_PROGRAM,
     GET_AVATAR,
     GET_DISPLAY_NAME,
-    GET_METADATA,
+    GET_METADATA_BATCH,
     LOGIN,
     LOGOUT,
     REGISTER,
-    RESET_PASSWORD, TOGGLE_NICKNAME, UPDATE_CONTACT,
-    UPLOAD_AVATAR,
-    COLLECT_PROGRAM,
+    RESET_PASSWORD,
+    TOGGLE_NICKNAME,
     UNCOLLECT_PROGRAM,
+    UPDATE_CONTACT,
+    UPLOAD_AVATAR,
 } from "../APIs/APIs";
-import {blobToBase64, emptyCache, handleErrors, headerGenerator} from "./Common";
-import {useState} from "react";
+import {apiJson, apiRequest, apiText, blobToBase64, emptyCache} from "./Common";
+import {
+    BACKGROUND_PRIORITY,
+    beginCacheRequests,
+    CACHE_CLEARED_EVENT,
+    getCacheEpoch,
+    isCacheEntryExpired,
+    loadCachedValue,
+    readCacheEntry,
+    removeCacheValue,
+    writeCacheValue
+} from "./CacheStore";
+import {useEffect, useState} from "react";
 import {getApplicants, setApplicants} from "./ApplicantData";
 import {getRecordByApplicant, setRecord} from "./RecordData";
-import {getPosts} from "./PostData";
 
-const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
-// const CACHE_EXPIRATION = 1; // 10 min
+const avatarCacheKey = (displayName, avatarId) => `${displayName}-avatar-${avatarId}`;
+const metadataCacheKey = (displayName) => `${displayName}-metadata`;
+const USER_CHANGED_EVENT = "opensist-user-changed";
+
+function notifyUserChanged() {
+    if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event(USER_CHANGED_EVENT));
+    }
+}
+
+async function authRequest(path, body) {
+    return fetch(path, {
+        method: "POST",
+        credentials: "include",
+        headers: {'Content-Type': 'application/json'},
+        ...(body && {body: JSON.stringify(body)}),
+    });
+}
 
 export async function login(email, password) {
     const username = email.split('@')[0];
-    const response = await fetch(LOGIN, {
-        method: "POST",
-        credentials: "include",
-        headers: await headerGenerator(),
-        body: JSON.stringify({email, password}),
-    })
+    const response = await authRequest(LOGIN, {email, password});
     if (response.status !== 200) {
         const content = await response.json();
         alert(`${content.error}, Error code: ${response.status}`)
         return redirect("/login");
-    } else {
-        const user_info = {
-            user: username
-        }
-        await setUserInfo(user_info);
-        return redirect("/");
     }
+    const userInfo = {
+        user: username
+    }
+    await setUserInfo(userInfo);
+    return redirect("/");
 }
 
 export async function registerReset(email, password, token, status) {
     const api = status === 'reset' ? RESET_PASSWORD : REGISTER;
-    const response = await fetch(api, {
-        method: "POST",
-        credentials: "include",
-        headers: await headerGenerator(),
-        body: JSON.stringify({email, password, token}),
-    });
+    const response = await authRequest(api, {email, password, token});
 
     if (response.status === 200) {
         return redirect("/login");
-    } else {
-        const content = await response.json();
-        const path = status === 'reset' ? '/reset' : '/register';
-        alert(`${content.error}, Error code: ${response.status}`);
-        return redirect(path);
     }
+    const content = await response.json();
+    const path = status === 'reset' ? '/reset' : '/register';
+    alert(`${content.error}, Error code: ${response.status}`);
+    return redirect(path);
 }
 
-export async function setUserInfo(user_info) {
-    if (!user_info) {
+export async function setUserInfo(userInfo) {
+    if (!userInfo) {
         return;
     }
-    await Promise.all(Object.entries(user_info).map(async ([key, value]) => {
-        if (value) {
-            await localforage.setItem(key, value)
-        }
-    }))
+    await Promise.all(Object.entries(userInfo)
+        .filter(([, value]) => value)
+        .map(([key, value]) => localforage.setItem(key, value)));
+    notifyUserChanged();
 }
 
 export async function logout() {
-    const response = await fetch(LOGOUT, {
-        method: 'POST',
-        credentials: 'include',
-        headers: await headerGenerator(true),
-    })
+    const response = await authRequest(LOGOUT);
     if (response.status !== 200 && response.status !== 401) {
         const content = await response.json();
         alert(`${content.error}, Error code: ${response.status}`);
     }
-    // await localforage.clear();  // clear all the cache data
-    await emptyCache(); // clear all the cache data
+    await emptyCache();
+    notifyUserChanged();
     return redirect("/login");
 }
 
 export function useUser() {
-    const [user, setUser] = useState('')
-    localforage.getItem('user').then((value) => {
-        setUser(value)
-    })
-    return user
+    const [user, setUser] = useState('');
+    useEffect(() => {
+        let mounted = true;
+        const refreshUser = () => localforage.getItem('user').then((value) => {
+            if (mounted) {
+                setUser(value);
+            }
+        });
+        void refreshUser();
+        window.addEventListener(USER_CHANGED_EVENT, refreshUser);
+        window.addEventListener(CACHE_CLEARED_EVENT, refreshUser);
+        return () => {
+            mounted = false;
+            window.removeEventListener(USER_CHANGED_EVENT, refreshUser);
+            window.removeEventListener(CACHE_CLEARED_EVENT, refreshUser);
+        };
+    }, []);
+    return user;
 }
 
 export async function uploadAvatar(avatar) {
     avatar = await blobToBase64(avatar);
-    const response = await fetch(UPLOAD_AVATAR, {
-        method: 'POST',
-        credentials: "include",
-        headers: await headerGenerator(true),
-        body: avatar
-    })
-    await handleErrors(response);
+    const response = await apiRequest(UPLOAD_AVATAR, {body: avatar});
     const avatarId = await response.json();
     await setAvatarID(avatarId['avatar_id']);
-    await setAvatar(avatar);
+    await setAvatar(avatar, null, avatarId['avatar_id']);
 }
 
 export async function setAvatarID(avatarId) {
@@ -114,50 +132,47 @@ export async function setAvatarID(avatarId) {
         return;
     }
     const displayName = await getDisplayName();
-    let metadata = await getMetaData(displayName);
-    metadata["Avatar"] = avatarId;
-    await setMetaData(metadata, displayName);
+    const metadata = await getMetadata(displayName);
+    await setMetadata({...metadata, Avatar: avatarId}, displayName);
 
 }
 
-export async function getAvatar(avatarId, displayName = null, isRefresh = false) {
+export async function getAvatar(avatarId, displayName = null, isRefresh = false, {priority = "foreground"} = {}) {
     if (!avatarId || avatarId === '') {
         return null;
     }
     if (!displayName) {
-        displayName = await getDisplayName(isRefresh);
+        displayName = await getDisplayName(isRefresh, {priority});
     }
     if (!displayName) {
         return null;
     }
-    let avatar = await localforage.getItem(`${displayName}-avatar`);
-    if (isRefresh || !avatar || (Date.now() - avatar['Date']) > CACHE_EXPIRATION) {
-        const response = await fetch(GET_AVATAR, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-            body: JSON.stringify({avatar_id: avatarId})
-        })
-        await handleErrors(response);
-        avatar = await response.text();
-        await setAvatar(avatar, displayName);
-        avatar = {avatar: avatar}
-    }
-    return avatar["avatar"];
+    return loadCachedValue({
+        key: avatarCacheKey(displayName, avatarId),
+        legacyFields: ["avatar"],
+        forceRefresh: isRefresh,
+        priority,
+        load: () => apiText(GET_AVATAR, {
+            body: {avatar_id: avatarId},
+            fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+        }),
+    });
 }
 
-export async function setAvatar(avatar, displayName = null) {
+export async function setAvatar(avatar, displayName = null, avatarId = null) {
     if (!avatar) {
         return
     }
     if (!displayName) {
         displayName = await getDisplayName();
     }
-    if (!displayName) {
+    if (!avatarId) {
+        avatarId = (await getMetadata(displayName))?.Avatar;
+    }
+    if (!displayName || !avatarId) {
         return;
     }
-    avatar = {avatar: avatar, Date: Date.now()}
-    await localforage.setItem(`${displayName}-avatar`, avatar);
+    await writeCacheValue(avatarCacheKey(displayName, avatarId), avatar);
 }
 
 /**
@@ -166,91 +181,105 @@ export async function setAvatar(avatar, displayName = null) {
  * @param {boolean} isRefresh - Whether to refresh cache
  * @returns {Promise<object>} - A promise resolving to metadata with Avatar and latestYear
  */
-export async function getMetaData(displayName = null, isRefresh = false) {
+export async function getMetadata(displayName = null, isRefresh = false, {priority = "foreground"} = {}) {
     /*
     * Get the user metadata from the server or local storage
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: metadata
     */
     if (!displayName) {
-        displayName = await getDisplayName(isRefresh);
+        displayName = await getDisplayName(isRefresh, {priority});
     }
     if (!displayName) {
         return null;
     }
-    let metadata = await localforage.getItem(`${displayName}-metadata`);
-    if (isRefresh || metadata === null || (Date.now() - metadata.Date) > CACHE_EXPIRATION) {
-        const response = await fetch(GET_METADATA, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-            body: JSON.stringify({display_name: displayName})
-        });
-        await handleErrors(response)
-        metadata = await response.json();
-        await setMetaData(metadata['result'], displayName);
+    const metadata = await getMetadataBatch([displayName], isRefresh, {priority});
+    return metadata[displayName] ?? metadataWithLatestYear({});
+}
+
+export async function getMetadataBatch(displayNames, isRefresh = false, {priority = "foreground"} = {}) {
+    const uniqueDisplayNames = [...new Set(displayNames)].filter(Boolean);
+    const requestEpoch = getCacheEpoch();
+    const entries = await Promise.all(uniqueDisplayNames.map((displayName) => (
+        readCacheEntry(metadataCacheKey(displayName), {legacyFields: ["result"], requestEpoch})
+    )));
+    if (requestEpoch !== getCacheEpoch()) {
+        return {};
     }
-    
-    // Add latestYear to metadata before returning
+
+    const cachedMetadata = Object.fromEntries(uniqueDisplayNames.flatMap((displayName, index) => (
+        entries[index] ? [[displayName, metadataWithLatestYear(entries[index].value)]] : []
+    )));
+    const expiredDisplayNames = uniqueDisplayNames.filter((displayName, index) => (
+        isCacheEntryExpired(entries[index], isRefresh)
+    ));
+    const request = beginCacheRequests(expiredDisplayNames.map(metadataCacheKey), priority, requestEpoch);
+    const requestDisplayNames = request.keys.map(displayNameFromMetadataCacheKey);
+
+    if (requestDisplayNames.length === 0) {
+        return cachedMetadata;
+    }
+
     try {
-        const latestYear = await findLatestYearForApplicant(displayName);
-        metadata['result'] = {
-            ...metadata['result'],
-            latestYear
+        const response = await apiJson(GET_METADATA_BATCH, {
+            body: {display_names: requestDisplayNames},
+            fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+        });
+        const refreshedRawMetadata = requestDisplayNames.reduce((metadataByName, displayName) => ({
+            ...metadataByName,
+            [displayName]: response.data?.[displayName] ?? null,
+        }), {});
+        const cacheWrites = requestDisplayNames.map((displayName) => {
+            const key = metadataCacheKey(displayName);
+            return writeCacheValue(key, refreshedRawMetadata[displayName], {
+                requestEpoch: request.epoch,
+                requestVersion: request.versionFor(key),
+            });
+        });
+        if (priority === BACKGROUND_PRIORITY) {
+            await Promise.all(cacheWrites);
+        } else {
+            cacheWrites.forEach((cacheWrite) => void cacheWrite.catch(() => {}));
+        }
+        const refreshedMetadata = Object.fromEntries(
+            Object.entries(refreshedRawMetadata).map(([displayName, metadata]) => (
+                [displayName, metadataWithLatestYear(metadata)]
+            ))
+        );
+        return {
+            ...cachedMetadata,
+            ...refreshedMetadata,
         };
-    } catch (error) {
-        console.error("Error finding latest year:", error);
-        // Continue even if finding latest year fails
+    } finally {
+        request.release();
     }
-    
-    return metadata['result'];
 }
 
 /**
  * Find the latest year with data for a given applicant
- * @param {string} displayName - The display name of the applicant
+ * @param {string[]} applicantIDs - Applicant IDs in the form "displayName@year"
  * @returns {Promise<number|null>} - Latest year or null if no data found
  */
-async function findLatestYearForApplicant(displayName) {
-    try {
-        // Get the user's metadata which should contain ApplicantIDs
-        const metadata = await localforage.getItem(`${displayName}-metadata`);
-        
-        if (!metadata || !metadata.result || !metadata.result.ApplicantIDs) {
-            return [];
-        }
-        
-        const applicantIDs = metadata.result.ApplicantIDs.filter(Boolean);
-        
-        if (applicantIDs.length === 0) {
-            return [];
-        }
-        
-        // Extract years from ApplicantIDs which should be in format displayName@year
-        const validYears = applicantIDs
-            .map(id => {
-                // Extract the part after @ which should be the year
-                const parts = id.split('@');
-                if (parts.length > 1) {
-                    return parseInt(parts[1], 10);
-                }
-                return null;
-            })
-            .filter(Boolean); // Filter out any null results from invalid formats
-        
-        if (validYears.length === 0) {
-            return [];
-        }
-        
-        // Return the most recent year
-        return Math.max(...validYears);
-    } catch (error) {
-        console.error("Error finding latest year for applicant:", error);
-        return null;
-    }
+function findLatestYearForApplicant(applicantIDs = []) {
+    const validYears = applicantIDs
+        .map(id => Number.parseInt(id.split('@')[1], 10))
+        .filter(Number.isFinite);
+    return validYears.length > 0 ? Math.max(...validYears) : null;
 }
 
-export async function setMetaData(metadata, displayName = null) {
+function metadataWithLatestYear(metadata) {
+    const result = metadata ?? {};
+    return {
+        ...result,
+        latestYear: findLatestYearForApplicant(result.ApplicantIDs),
+    };
+}
+
+function displayNameFromMetadataCacheKey(key) {
+    return key.slice(0, -"-metadata".length);
+}
+
+export async function setMetadata(metadata, displayName = null) {
     /*
     * Set the user metadata to the local storage
     * @param metadata [Object]: metadata
@@ -265,121 +294,115 @@ export async function setMetaData(metadata, displayName = null) {
         return;
     }
 
-    metadata = {'result': metadata, 'Date': Date.now()}
-    await localforage.setItem(`${displayName}-metadata`, metadata);
+    const persistedMetadata = {...metadata};
+    delete persistedMetadata.latestYear;
+    await writeCacheValue(metadataCacheKey(displayName), persistedMetadata);
 }
 
-export async function getDisplayName(isRefresh = false) {
-    let displayName = await localforage.getItem('displayName');
-    if (isRefresh || !displayName || (Date.now() - displayName['Date']) > CACHE_EXPIRATION) {
-        const response = await fetch(GET_DISPLAY_NAME, {
-            method: 'POST',
-            credentials: 'include',
-            headers: await headerGenerator(true),
-        })
-        await handleErrors(response);
-        displayName = await response.json();
-        await setDisplayName(displayName['name']);
-    }
-    return displayName['name'];
+export async function getDisplayName(isRefresh = false, {priority = "foreground"} = {}) {
+    return loadCachedValue({
+        key: "displayName",
+        legacyFields: ["name"],
+        forceRefresh: isRefresh,
+        priority,
+        load: async () => {
+            const displayName = await apiJson(GET_DISPLAY_NAME, {
+                allowUnauthorized: true,
+                fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+            });
+            return displayName.name;
+        },
+    });
 }
 
 export async function setDisplayName(displayName) {
     if (!displayName) {
         return;
     }
-    displayName = {name: displayName, Date: Date.now()}
-    await localforage.setItem('displayName', displayName);
+    await writeCacheValue("displayName", displayName);
 }
 
 export async function toggleAnonymous() {
-    let ori_displayName = await getDisplayName();
-    let ori_metaData = await getMetaData(ori_displayName);
-    let ori_avatar = await getAvatar(ori_metaData.Avatar, ori_displayName, false);
-    let ori_applicants = ori_metaData.ApplicantIDs;
-    let ori_all_applicants = await getApplicants();
-    let ori_applicant_records = await Promise.all(ori_applicants.map(async (applicant) => {
-        return await getRecordByApplicant(applicant);
-    }))
+    const originalDisplayName = await getDisplayName();
+    const originalMetadata = await getMetadata(originalDisplayName);
+    const originalAvatar = await getAvatar(originalMetadata.Avatar, originalDisplayName, false);
+    const originalApplicantIds = originalMetadata.ApplicantIDs ?? [];
+    const allApplicants = await getApplicants();
+    const applicantRecords = await Promise.all(originalApplicantIds.map((applicantId) => getRecordByApplicant(applicantId)));
 
-    const response = await fetch(TOGGLE_NICKNAME, {
-        method: 'POST',
-        credentials: 'include',
-        headers: await headerGenerator(true),
-    });
-    await handleErrors(response);
-    let displayName = (await response.json())['name'];
+    const displayName = (await apiJson(TOGGLE_NICKNAME))['name'];
     await setDisplayName(displayName);
 
-    await localforage.removeItem(`${ori_displayName}-metaData`);
-    ori_metaData.ApplicantIDs = ori_metaData.ApplicantIDs.map((applicant) => {
+    await removeCacheValue(metadataCacheKey(originalDisplayName));
+    const updatedApplicantIds = originalApplicantIds.map((applicant) => {
         return `${displayName}@${applicant.split('@')[1]}`;
-    })
+    });
+    const updatedMetadata = {
+        ...originalMetadata,
+        ApplicantIDs: updatedApplicantIds,
+    };
+    await setMetadata(updatedMetadata, displayName);
+    await removeCacheValue(avatarCacheKey(originalDisplayName, originalMetadata.Avatar));
 
-    await setMetaData(ori_metaData, displayName);
-    await localforage.removeItem(`${ori_displayName}-avatar`);
+    await setAvatar(originalAvatar, displayName, originalMetadata.Avatar);
 
-    await setAvatar(ori_avatar, displayName);
-
-    ori_all_applicants = ori_all_applicants.map((applicant) => {
-        if (ori_applicants.includes(applicant.ApplicantID)) {
-            applicant.ApplicantID = `${displayName}@${applicant.ApplicantID.split('@')[1]}`;
-        }
-        return applicant;
-    })
-    // TODO: the new display name may equal to some deprecated display name in cache
-    await setApplicants(ori_all_applicants);
-    await Promise.all(ori_applicant_records.map(async (records) => {
+    const originalApplicantIdSet = new Set(originalApplicantIds);
+    const updatedApplicantIdSet = new Set(updatedApplicantIds);
+    const updatedApplicants = allApplicants
+        .filter((applicant) => {
+            return originalApplicantIdSet.has(applicant.ApplicantID) || !updatedApplicantIdSet.has(applicant.ApplicantID);
+        })
+        .map((applicant) => {
+            if (originalApplicantIdSet.has(applicant.ApplicantID)) {
+                return {
+                    ...applicant,
+                    ApplicantID: `${displayName}@${applicant.ApplicantID.split('@')[1]}`,
+                };
+            }
+            return applicant;
+        })
+    await Promise.all([
+        setApplicants(updatedApplicants),
+        removeCacheValue('programs'),
+    ]);
+    await Promise.all(applicantRecords.map(async (records) => {
         await Promise.all(Object.entries(records).map(async ([recordId, content]) => {
-            await localforage.removeItem(`record-${recordId}`);
-            content.ApplicantID = `${displayName}@${content.ApplicantID.split('@')[1]}`;
-            content.RecordID = `${content.ApplicantID}|${content.ProgramID}`;
-            await setRecord(content);
+            await removeCacheValue(`record-${recordId}`);
+            const ApplicantID = `${displayName}@${content.ApplicantID.split('@')[1]}`;
+            await setRecord({
+                ...content,
+                ApplicantID,
+                RecordID: `${ApplicantID}|${content.ProgramID}`,
+            });
         }))
     }))
 
 }
 
 export async function updateContact(contact) {
-    contact = JSON.parse(contact);
-    const response = await fetch(UPDATE_CONTACT, {
-        method: 'POST',
-        credentials: "include",
-        headers: await headerGenerator(true),
-        body: JSON.stringify({newContact: contact})
-    });
-    await handleErrors(response);
+    const normalizedContact = typeof contact === 'string' ? JSON.parse(contact) : contact;
+    await apiRequest(UPDATE_CONTACT, {body: {newContact: normalizedContact}});
 
-    let metadata = await getMetaData();
-    metadata['Contact'] = contact;
-    await setMetaData(metadata);
+    const metadata = await getMetadata();
+    await setMetadata({...metadata, Contact: normalizedContact});
 }
 
 export async function collectProgram(programID) {
-    const response = await fetch(COLLECT_PROGRAM, {
-        method: 'POST',
-        credentials: "include",
-        headers: await headerGenerator(true),
-        body: JSON.stringify({ProgramID: programID})
-    })
-    await handleErrors(response);
+    await apiRequest(COLLECT_PROGRAM, {body: {ProgramID: programID}});
 
-    let metaData = await getMetaData()
-    metaData.ProgramCollection = metaData.ProgramCollection ?? [];
-    metaData.ProgramCollection.push(programID);
-    await setMetaData(metaData)
+    const metadata = await getMetadata();
+    await setMetadata({
+        ...metadata,
+        ProgramCollection: [...new Set([...(metadata.ProgramCollection ?? []), programID])],
+    });
 }
 
 export async function uncollectProgram(programID) {
-    const response = await fetch(UNCOLLECT_PROGRAM, {
-        method: 'POST',
-        credentials: "include",
-        headers: await headerGenerator(true),
-        body: JSON.stringify({ProgramID: programID})
-    })
-    await handleErrors(response);
+    await apiRequest(UNCOLLECT_PROGRAM, {body: {ProgramID: programID}});
 
-    let metaData = await getMetaData()
-    metaData.ProgramCollection.splice(metaData.ProgramCollection.indexOf(programID), 1)
-    await setMetaData(metaData)
+    const metadata = await getMetadata();
+    await setMetadata({
+        ...metadata,
+        ProgramCollection: (metadata.ProgramCollection ?? []).filter(id => id !== programID),
+    });
 }

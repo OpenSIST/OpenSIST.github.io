@@ -2,14 +2,7 @@ import React, {useState} from "react";
 import {Form, Link} from 'react-router-dom';
 import "./Login.css"
 import {login} from "../../../Data/UserData";
-import {
-    Button,
-    TextField,
-    Typography,
-    Box,
-    Input,
-    MenuItem
-} from "@mui/material";
+import {Box, Button, Input, MenuItem, TextField, Typography} from "@mui/material";
 import Select from "@mui/material/Select";
 
 
@@ -19,7 +12,7 @@ export async function action({request}) {
     const suffix = formData.get('suffix');
     const email = username + suffix;
     const password = formData.get('password');
-    return await login(email, password);
+    return login(email, password);
 }
 
 function Login() {

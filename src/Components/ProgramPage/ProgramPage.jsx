@@ -1,14 +1,10 @@
 import SideBar from "./SideBar/SideBar";
-import {Outlet, useLoaderData} from "react-router-dom";
+import {Outlet, redirect, useLoaderData} from "react-router-dom";
 import {getPrograms} from "../../Data/ProgramData";
 import './ProgramPage.css';
 import {Paper, useTheme} from "@mui/material";
 import {grey} from "@mui/material/colors";
-import ReactMarkdown from "react-markdown";
-import MDPath from "../../Data/MarkDown/ProgramIndex.md";
-import {useEffect, useState} from "react";
-import "./ProgramPage.css";
-import {loadMarkDown} from "../../Data/Common";
+import {collectProgram, getMetadata, uncollectProgram} from "../../Data/UserData";
 
 export async function loader({request}) {
     const url = new URL(request.url);
@@ -16,12 +12,24 @@ export async function loader({request}) {
     const d = url.searchParams.get('d');
     const m = url.searchParams.get('m');
     const r = url.searchParams.get('r');
-    const programs = await getPrograms(false, {u: u, d: d, m: m, r: r});
-    return {programs, u, d, m, r};
+    const programs = await getPrograms(false, {u, d, m, r});
+    const metadata = await getMetadata()
+    return {programs, u, d, m, r, metadata};
 }
 
-export async function action() {
-    return await getPrograms(true);
+export async function action({request}) {
+    const formData = await request.formData();
+    const actionType = formData.get("ActionType");
+    const programId = formData.get("ProgramID");
+    if (actionType === "Star") {
+        await collectProgram(programId);
+        return redirect(request.url);
+    }
+    if (actionType === "UnStar") {
+        await uncollectProgram(programId);
+        return redirect(request.url);
+    }
+    return getPrograms(true);
 }
 
 export default function ProgramPage() {
@@ -39,24 +47,5 @@ export default function ProgramPage() {
                 <Outlet/>
             </Paper>
         </>
-    )
-}
-
-export async function ProgramIndexLoader() {
-    const content = await loadMarkDown(MDPath);
-    return {content};
-}
-
-export function ProgramIndex() {
-    const [content, setContent] = useState("");
-    useEffect(() => {
-        fetch(MDPath)
-            .then((response) => response.text())
-            .then((text) => setContent(text));
-    }, []);
-    return (
-        <ReactMarkdown className="ProgramIndex">
-            {content}
-        </ReactMarkdown>
     )
 }

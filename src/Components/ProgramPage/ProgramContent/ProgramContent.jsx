@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import './ProgramContent.css'
-import {Form, Link, useLoaderData, useNavigate, redirect, Outlet} from "react-router-dom";
+import {Form, Link, Outlet, redirect, useLoaderData, useNavigate} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
-import {getMetaData, collectProgram, uncollectProgram} from '../../../Data/UserData';
+import {collectProgram, getMetadata, uncollectProgram} from '../../../Data/UserData';
 import {Box, IconButton, Paper, Tooltip, Typography} from "@mui/material";
-import {AddRounded, EditRounded, RefreshRounded, CloseRounded} from "@mui/icons-material";
+import {AddRounded, CloseRounded, EditRounded, RefreshRounded} from "@mui/icons-material";
 import remarkGfm from 'remark-gfm'
 import {getRecordByProgram} from "../../../Data/RecordData";
 import {DataGrid} from "../../DataPoints/DataPoints";
@@ -14,42 +14,37 @@ import StarButton from "./StarButton"
 
 export async function loader({params}) {
     const programId = decodeURIComponent(params.programId);
-    let records = await getRecordByProgram(programId);
-    records = Object.values(records);
-    try {
-        const programContent = await getProgramContent(programId);
-        const metaData = await getMetaData()
-        return {programContent, records, metaData};
-    } catch (e) {
-        throw e;
-    }
+    const records = Object.values(await getRecordByProgram(programId));
+    const programContent = await getProgramContent(programId);
+    const metadata = await getMetadata()
+    return {programContent, records, metadata};
 }
 
 export async function action({params, request}) {
     const formData = await request.formData();
-    const ActionType = formData.get("ActionType");
-    const programId = params.programId;
-    if (ActionType === "Refresh") {
+    const actionType = formData.get("ActionType");
+    const programId = decodeURIComponent(params.programId);
+    if (actionType === "Refresh") {
         await getProgramDesc(programId, true);
-        return await getRecordByProgram(programId, true);
+        return getRecordByProgram(programId, true);
     }
-    if (ActionType === "Star") {
+    if (actionType === "Star") {
         await collectProgram(programId);
-        return redirect(window.location.href);
+        return redirect(request.url);
     }
-    if (ActionType === "UnStar") {
+    if (actionType === "UnStar") {
         await uncollectProgram(programId);
-        return redirect(window.location.href);
+        return redirect(request.url);
     }
 }
 
-function ProgramContent({editable = true, inDialog=false}) {
-    let {programContent, records, metaData} = useLoaderData();
+function ProgramContent({editable = true, inDialog = false}) {
+    const {programContent, records, metadata} = useLoaderData();
     const navigate = useNavigate();
-    records = records.map(record => {
-        record['Season'] = record.ProgramYear + " " + record.Semester;
-        return record;
-    });
+    const recordsWithSeason = records.map(record => ({
+        ...record,
+        Season: record.ProgramYear + " " + record.Semester,
+    }));
     return (
         <>
             <Box className="ProgramHeader" sx={{pb: "0.5rem"}}>
@@ -58,11 +53,11 @@ function ProgramContent({editable = true, inDialog=false}) {
                 </Typography>
                 <div className='ReviseRefreshButtonGroup'>
                     {editable && <Tooltip title="编辑项目简介" arrow>
-                            <IconButton component={Link} to={`edit${window.location.search}`}>
-                                <EditRounded/>
-                            </IconButton>
+                        <IconButton component={Link} to={`edit${window.location.search}`}>
+                            <EditRounded/>
+                        </IconButton>
                     </Tooltip>}
-                    <StarButton programID={programContent.ProgramID} metaData={metaData}/>
+                    <StarButton programID={programContent.ProgramID} metadata={metadata}/>
                     <Form method='post' style={{display: 'flex'}}>
                         <Tooltip title="刷新项目内容" arrow>
                             <IconButton type='submit' name="ActionType" value="Refresh">
@@ -75,16 +70,16 @@ function ProgramContent({editable = true, inDialog=false}) {
                     </IconButton>}
                 </div>
             </Box>
-            
-            <Box sx={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
+
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
                 height: '100%',
-                overflow: 'hidden' 
+                overflow: 'hidden'
             }}>
                 <Paper sx={{
-                    p: '1.5rem', 
-                    height: '48%', 
+                    p: '1.5rem',
+                    height: '48%',
                     overflowY: 'auto',
                     marginBottom: '1rem'
                 }}>
@@ -95,16 +90,16 @@ function ProgramContent({editable = true, inDialog=false}) {
                         {programContent.description}
                     </ReactMarkdown>
                 </Paper>
-                
-                {editable && 
-                    <Box sx={{ 
-                        height: '48%', 
+
+                {editable &&
+                    <Box sx={{
+                        height: '48%',
                         position: 'relative',
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
-                        <DataGrid 
-                            records={records} 
+                        <DataGrid
+                            records={recordsWithSeason}
                             style={{
                                 padding: '0',
                                 flex: 1,

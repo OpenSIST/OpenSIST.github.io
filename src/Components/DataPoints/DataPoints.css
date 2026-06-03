@@ -56,7 +56,7 @@
     .filter-container {
         gap: 12px;
     }
-    
+
     .filter-container > .MuiTextField-root,
     .filter-container > .MuiFormControl-root {
         min-width: 140px;
@@ -68,41 +68,41 @@
         margin: 5px;
         height: calc(100% - 10px);
     }
-    
+
     .filter-container {
         flex-direction: column;
         align-items: stretch;
         gap: 10px;
     }
-    
+
     .filter-container > * {
         width: 100% !important;
         min-width: unset !important;
     }
-    
+
     .advanced-search-filter.expanded {
         max-height: 400px !important;
         overflow-y: auto;
     }
-    
+
     /* Mobile styles for the usage guidance component */
     .MuiPaper-root ol {
         padding-left: 16px;
         font-size: 14px;
         margin-bottom: 0;
     }
-    
+
     .MuiPaper-root li {
         margin-bottom: 8px;
     }
-    
+
     /* Smaller margins for mobile usage guidance panel */
     .MuiBox-root .MuiPaper-root {
         margin: 0 !important;
         max-width: 100%;
         overflow-y: auto;
     }
-    
+
     /* Ensure floating action buttons don't overlap important content */
     form .MuiFab-root {
         z-index: 1060 !important; /* Match the z-index with the close button */
@@ -260,7 +260,9 @@
 }
 
 @media (max-width: 768px) {
-    bottom: 20px;
-    right: 16px;
-    transform: scale(0.9);
+    .refresh-button {
+        bottom: 20px;
+        right: 16px;
+        transform: scale(0.9);
+    }
 }

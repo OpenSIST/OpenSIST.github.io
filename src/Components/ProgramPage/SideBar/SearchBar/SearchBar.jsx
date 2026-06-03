@@ -1,56 +1,40 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./SearchBar.css"
 import {useSearchParams} from "react-router-dom";
 import Select from "@mui/material/Select";
-import {
-    Box,
-    Checkbox,
-    Divider, FormControl,
-    InputBase,
-    InputLabel,
-    ListItemText,
-    MenuItem,
-    OutlinedInput, Paper, useTheme
-} from "@mui/material";
+import {Box, Checkbox, Divider, FormControl, InputBase, InputLabel, ListItemText, MenuItem, OutlinedInput, Paper, useTheme} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import {majorList, degreeList, regionList, regionFlagMapping} from "../../../../Data/Schemas";
+import {degreeList, majorList, regionFlagMapping, regionList} from "../../../../Data/Schemas";
 import {grey} from "@mui/material/colors";
 
 export default function SearchBar({query, pageName}) {
+    return <SearchBarForm key={JSON.stringify(createFilters(query))} query={query} pageName={pageName}/>;
+}
+
+function SearchBarForm({query, pageName}) {
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
     const [searchParams, setSearchParams] = useSearchParams();
-    const [timeoutId, setTimeoutId] = useState(null);
-    useEffect(() => {
-        if (pageName === 'program' || pageName === 'favories') {
-            document.getElementById('u').value = query.u;
-            document.getElementById('d').value = query.d?.split(',');
-            document.getElementById('m').value = query.m?.split(',');
-            document.getElementById('r').value = query.r?.split(',');
-        } else if (pageName === 'post') {
-            document.getElementById('searchStr').value = query.searchStr;
-        }
-    }, [pageName, query, searchParams, setSearchParams]);
+    const timeoutRef = useRef(null);
+    const [filters, setFilters] = useState(() => createFilters(query));
+
+    useEffect(() => () => clearTimeout(timeoutRef.current), []);
 
     const handleFilterChange = (e) => {
         const newSearchParams = new URLSearchParams(searchParams);
+        const name = e.target.name;
         const value = e.target.value;
+        setFilters((currentFilters) => ({...currentFilters, [name]: value}));
         if (value === '' || value.length === 0) {
-            newSearchParams.delete(e.target.name);
+            newSearchParams.delete(name);
         } else {
-            newSearchParams.set(e.target.name, value);
+            newSearchParams.set(name, value);
         }
-        if (timeoutId) clearTimeout(timeoutId);
-        const id = setTimeout(() => {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => {
             setSearchParams(newSearchParams, {replace: true});
         }, 500);
-        // setSearchParams(newSearchParams, {replace: true});
-        setTimeoutId(id);
     };
-
-    const defaultDegree = degreeList.filter(x => query.d?.split(',').includes(x));
-    const defaultMajor = majorList.filter(x => query.m?.split(',').includes(x));
-    const defaultRegion = regionList.filter(x => query.r?.split(',').includes(x));
 
     return (
         <Box
@@ -73,7 +57,7 @@ export default function SearchBar({query, pageName}) {
                     type="search"
                     className='SearchBar'
                     onChange={handleFilterChange}
-                    defaultValue={query.u}
+                    value={filters.u}
                     fullWidth
                     size="small"
                 /> : <InputBase
@@ -83,7 +67,7 @@ export default function SearchBar({query, pageName}) {
                     type="search"
                     className='SearchBar'
                     onChange={handleFilterChange}
-                    defaultValue={query.searchStr}
+                    value={filters.searchStr}
                     fullWidth
                     size="small"
                 />}
@@ -93,7 +77,7 @@ export default function SearchBar({query, pageName}) {
                     label='Select Degree'
                     id='d'
                     name='d'
-                    value={defaultDegree}
+                    value={filters.d}
                     handleFilterChange={handleFilterChange}
                     options={degreeList}
                     OptionItem={CheckBoxOptionItem}
@@ -102,7 +86,7 @@ export default function SearchBar({query, pageName}) {
                     label='Select Major'
                     id='m'
                     name='m'
-                    value={defaultMajor}
+                    value={filters.m}
                     handleFilterChange={handleFilterChange}
                     options={majorList}
                     OptionItem={CheckBoxOptionItem}
@@ -111,7 +95,7 @@ export default function SearchBar({query, pageName}) {
                     label='Select Region'
                     id='r'
                     name='r'
-                    value={defaultRegion}
+                    value={filters.r}
                     handleFilterChange={handleFilterChange}
                     options={regionList}
                     OptionItem={FlagOptionContent}
@@ -119,6 +103,20 @@ export default function SearchBar({query, pageName}) {
             </> : null}
         </Box>
     )
+}
+
+function createFilters(query) {
+    return {
+        u: query.u ?? '',
+        d: splitFilter(query.d),
+        m: splitFilter(query.m),
+        r: splitFilter(query.r),
+        searchStr: query.searchStr ?? '',
+    };
+}
+
+function splitFilter(value) {
+    return typeof value === 'string' ? value.split(',').filter(Boolean) : value ?? [];
 }
 
 function Filter({label, id, name, value, handleFilterChange, options, OptionItem: OptionContent}) {
@@ -143,7 +141,7 @@ function Filter({label, id, name, value, handleFilterChange, options, OptionItem
             >
                 {options.map((opt) => (
                         <MenuItem key={opt} value={opt}>
-                            <Checkbox checked={value.indexOf(opt) > -1} size='small'/>
+                            <Checkbox checked={value.includes(opt)} size='small'/>
                             <OptionContent optionValue={opt}/>
                         </MenuItem>
                     )

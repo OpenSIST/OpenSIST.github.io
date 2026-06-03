@@ -1,4 +1,4 @@
-import React, {createContext, useEffect, useState} from 'react';
+import React, {createContext, useCallback, useEffect, useMemo, useState} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import {RouterProvider} from "react-router-dom";
@@ -10,6 +10,7 @@ import OpenSansItalic from "./Assets/fonts/open-sans-v17-latin-ext_latin-italic.
 import OpenSansBoldItalic from "./Assets/fonts/open-sans-v17-latin-ext_latin-700italic.woff2";
 import localforage from "localforage";
 import router from "./Components/router";
+import {LoadingBackdrop} from "./Components/common";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -19,47 +20,56 @@ export const ThemeContext = createContext({
 function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
     const [mode, setMode] = useState(null);
+    const activeMode = mode ?? (prefersDarkMode ? 'dark' : 'light');
     useEffect(() => {
+        let mounted = true;
         localforage.getItem('theme').then((theme) => {
-            setMode(theme);
+            if (mounted && theme) {
+                setMode(theme);
+            }
         });
+        return () => {
+            mounted = false;
+        };
     }, []);
 
     useEffect(() => {
         const root = document.documentElement;
-        if (mode === 'dark') {
+        if (activeMode === 'dark') {
             root.style.setProperty('--scrollbar-color', 'rgba(155, 155, 155, 0.7)');
             root.style.setProperty('--bg-color', '#1A1E24');
         } else {
             root.style.setProperty('--scrollbar-color', 'rgba(0, 0, 0, 0.5)');
             root.style.setProperty('--bg-color', '#FAFAFA');
         }
-    }, [mode]);
+    }, [activeMode]);
 
-    const toggleTheme = () => {
-        setMode((prevMode) => (prevMode === 'dark' ? 'light' : 'dark'));
-    };
-    const theme = createTheme({
+    const toggleTheme = useCallback(() => {
+        const nextMode = activeMode === 'dark' ? 'light' : 'dark';
+        setMode(nextMode);
+        localforage.setItem('theme', nextMode);
+    }, [activeMode]);
+    const theme = useMemo(() => createTheme({
         palette: {
-            mode: mode ?? (prefersDarkMode ? 'dark' : 'light'),
+            mode: activeMode,
             contrastThreshold: 3,
             reject: {
-                main: mode === 'dark' ? '#FF375F' : '#FF2D55',
+                main: activeMode === 'dark' ? '#FF375F' : '#FF2D55',
                 contrastText: '#ffffffde',
             }, admit: {
-                main: mode === 'dark' ? '#30D158' : '#34C759',
+                main: activeMode === 'dark' ? '#30D158' : '#34C759',
                 contrastText: '#ffffffde',
             }, defer: {
-                main: mode === 'dark' ? '#FF9F0A' : '#FF9500',
+                main: activeMode === 'dark' ? '#FF9F0A' : '#FF9500',
                 contrastText: '#ffffffde',
             }, spring: {
-                main: mode === 'dark' ? '#12CCA4' : '#00C59B',
+                main: activeMode === 'dark' ? '#12CCA4' : '#00C59B',
                 contrastText: '#ffffffde',
             }, fall: {
-                main: mode === 'dark' ? '#FE892E' : '#FE801E',
+                main: activeMode === 'dark' ? '#FE892E' : '#FE801E',
                 contrastText: '#ffffffde',
             }, default: {
-                main: mode === 'dark' ? '#ffffffde' : '#000000de',
+                main: activeMode === 'dark' ? '#ffffffde' : '#000000de',
                 contrastText: '#ffffffde',
             }
         },
@@ -128,13 +138,14 @@ function App() {
                 'sans-serif',
             ].join(','),
         },
-    });
+    }), [activeMode]);
+    const themeContextValue = useMemo(() => ({toggleTheme}), [toggleTheme]);
 
     return (
         <React.StrictMode>
             <ThemeProvider theme={theme}>
-                <ThemeContext.Provider value={{toggleTheme}}>
-                    <RouterProvider router={router}/>
+                <ThemeContext.Provider value={themeContextValue}>
+                    <RouterProvider router={router} fallbackElement={<LoadingBackdrop forceOpen/>}/>
                 </ThemeContext.Provider>
             </ThemeProvider>
         </React.StrictMode>

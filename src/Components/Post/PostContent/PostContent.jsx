@@ -1,54 +1,35 @@
-import {getPostObject, removePost} from "../../../Data/PostData";
+import {getPostObject, removeContent} from "../../../Data/PostData";
 import {Form, Link, Outlet, redirect, useLoaderData} from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import {
-    Box,
-    Avatar,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogTitle,
-    IconButton,
-    Input,
-    Tooltip,
-    Typography, Paper
-} from "@mui/material";
+import {Avatar, Box, Button, Dialog, DialogActions, DialogTitle, IconButton, Input, Paper, Tooltip, Typography} from "@mui/material";
 import {Delete, Edit, Refresh} from "@mui/icons-material";
 import React, {useState} from "react";
 import {BoldTypography, useSmallPage} from "../../common";
 import {isAuthApplicant} from "../../../Data/ApplicantData";
 import "./PostContent.css"
-import {getMetaData, getAvatar} from "../../../Data/UserData";
-import Grid2 from "@mui/material/Unstable_Grid2";
+import {getAvatar, getMetadata} from "../../../Data/UserData";
+import Grid2 from "@mui/material/Grid";
+import {utcToLocal} from "../../../Data/Common";
 
 export async function loader({params}) {
     const postId = params.postId;
-    try {
-        const postObj = await getPostObject(postId);
+    const postObj = await getPostObject(postId);
 
-        const authorId = postObj?.author;
-        const editable = authorId ? await isAuthApplicant(authorId) : false;
+    const authorId = postObj?.author;
+    const editable = authorId ? await isAuthApplicant(authorId) : false;
 
-        const metaData = authorId ? await getMetaData(authorId.split("@")[0]) : {};
-        const avatar = await getAvatar(metaData?.Avatar, authorId);
-        const latestYear = metaData?.latestYear;
-        return {postObj, editable, avatar, latestYear, urlPostId: postId};
-    } catch (e) {
-        console.error("[PostContent Loader] Error:", e);
-        throw e;
-    }
+    const metadata = authorId ? await getMetadata(authorId.split("@")[0]) : {};
+    const avatar = await getAvatar(metadata?.Avatar, authorId);
+    const latestYear = metadata?.latestYear;
+    return {postObj, editable, avatar, latestYear, urlPostId: postId};
 }
 
 export async function action({request, params}) {
     const postId = params.postId;
     const formData = await request.formData();
-    const author = formData.get('Author');
     const ActionType = formData.get('ActionType');
-    if (ActionType === 'Refresh') {
-        await getPostObject(postId, true);
-        return {urlPostId: postId};
-    } else if (ActionType === 'Delete') {
-        await removePost(postId, author);
+    if (ActionType === 'Delete') {
+        await removeContent(postId);
         return redirect("/posts");
     }
     return {urlPostId: postId};
@@ -76,7 +57,7 @@ export default function PostContent() {
                     <Avatar src={avatar} sx={{height: (smallPage ? "5rem" : "4rem"), width: (smallPage ? "5rem" : "4rem"), cursor: 'pointer'}} component={Link}
                             to={authorUrl}/>
                     <Grid2 container>
-                        <Grid2 xs={12}>
+                        <Grid2 size={12}>
                             <BoldTypography variant="h6" component={Link} to={authorUrl}
                                             sx={{
                                                 cursor: 'pointer',
@@ -86,11 +67,21 @@ export default function PostContent() {
                                 {postObj.author}
                             </BoldTypography>
                         </Grid2>
-                        <Grid2 component={Typography} xs={12} md={5}>
-                            创建于: {postObj.created_at}
+                        <Grid2
+                            component={Typography}
+                            size={{
+                                xs: 12,
+                                md: 5
+                            }}>
+                            创建于: {utcToLocal(postObj.created_at, true)}
                         </Grid2>
-                        <Grid2 component={Typography} xs={12} md={7}>
-                            最后修改于: {postObj.updated_at}
+                        <Grid2
+                            component={Typography}
+                            size={{
+                                xs: 12,
+                                md: 7
+                            }}>
+                            最后修改于: {utcToLocal(postObj.updated_at ?? postObj.created_at, true)}
                         </Grid2>
                     </Grid2>
                 </Box>
@@ -144,5 +135,5 @@ export default function PostContent() {
             </Paper>
             <Outlet/>
         </>
-    )
+    );
 }

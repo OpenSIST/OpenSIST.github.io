@@ -1,66 +1,62 @@
 import React, {useState} from 'react';
 import "./AddModifyProgram.css";
-import {
-    DescriptionTemplate,
-    degreeOptions,
-    majorOptions,
-    univOptions
-} from "../../../Data/Schemas";
+import {degreeOptions, DescriptionTemplate, majorOptions, univOptions} from "../../../Data/Schemas";
 import MarkDownEditor from "./MarkDownEditor/MarkDownEditor";
-import {useLoaderData, useNavigate, redirect, Form} from "react-router-dom";
+import {Form, redirect, useLoaderData, useNavigate} from "react-router-dom";
 import {addModifyProgram} from "../../../Data/ProgramData";
-import {
-    Button,
-    ButtonGroup, Checkbox,
-    FormControl, Input, ListItemText,
-    MenuItem,
-    Link as MuiLink,
-    TextField,
-    Typography, Tooltip
-} from "@mui/material";
+import {Button, ButtonGroup, Checkbox, FormControl, Input, Link as MuiLink, ListItemText, MenuItem, TextField, Tooltip, Typography} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMarkdown} from "@fortawesome/free-brands-svg-icons";
 import {HelpOutline} from "@mui/icons-material";
 
+const invalidProgramCharacters = ['@', '|', '/', '$', '\\', '?', '!'];
+
+function isProgramNameInvalid(programName) {
+    return typeof programName !== 'string' || invalidProgramCharacters.some(character => programName.includes(character));
+}
+
 export async function action({request}) {
     const formData = await request.formData();
-    const ActionType = formData.get('ActionType');
-    const University = formData.get('University');
-    const Program = formData.get('Program');
-    const ProgramID = `${Program}@${University}`;
+    const actionType = formData.get('ActionType');
+    const university = formData.get('University');
+    const program = formData.get('Program');
+    if (isProgramNameInvalid(program)) {
+        throw new Error("Program names cannot contain @, |, /, \\, ?, !, or $.");
+    }
+    const programId = `${program}@${university}`;
     const targetApplicantMajor = formData.get('TargetApplicantMajor')?.split(',');
-    const Region = formData.get('Region')?.split(',');
-    const Degree = formData.get('Degree');
-    const Description = formData.get('Description');
+    const region = formData.get('Region')?.split(',');
+    const degree = formData.get('Degree');
+    const description = formData.get('Description');
     const requestBody = {
-        'newProgram': ActionType === 'new',
+        'newProgram': actionType === 'new',
         'content': {
-            'ProgramID': ProgramID,
-            'University': University,
-            'Program': Program,
-            'Region': Region,
-            'Degree': Degree,
+            ProgramID: programId,
+            University: university,
+            Program: program,
+            Region: region,
+            Degree: degree,
             'TargetApplicantMajor': targetApplicantMajor,
-            'Description': Description,
+            Description: description,
             'Applicants': []
         }
     };
     await addModifyProgram(requestBody);
-    return redirect(`/programs/${encodeURIComponent(ProgramID)}`)
+    return redirect(`/programs/${encodeURIComponent(programId)}`)
 }
 
 export default function AddModifyProgram({type}) {
     const navigate = useNavigate();
     const loaderData = useLoaderData();
     const programContent = loaderData?.programContent;
-    const AddMode = !programContent;
-    const mode = AddMode ? '添加' : '修改';
-    const [Description, setDescription] = useState(AddMode ? DescriptionTemplate : programContent.description);
+    const addMode = !programContent;
+    const mode = addMode ? '添加' : '修改';
+    const [Description, setDescription] = useState(addMode ? DescriptionTemplate : programContent.description);
     const [univ, setUniv] = useState(univOptions.find((univ) => univ.value === programContent?.University) ?? null);
-    const [major, setMajor] = useState(majorOptions.filter((m) => programContent?.TargetApplicantMajor.includes(m.value)) ?? []);
+    const [major, setMajor] = useState(majorOptions.filter((m) => programContent?.TargetApplicantMajor?.includes(m.value)) ?? []);
     const [programName, setProgramName] = useState(programContent?.Program ?? '');
-    // const programNameInvalid = ['@', '|', '/', '$', '\\', '?', '!'].some(char => programName.includes(char));
+    const programNameInvalid = isProgramNameInvalid(programName);
     return (
         <Form method="post"
               style={{display: 'flex', flexDirection: 'column', height: "100%"}}
@@ -74,13 +70,13 @@ export default function AddModifyProgram({type}) {
                     options={univOptions}
                     value={univ}
                     onChange={(event, value) => setUniv(value)}
-                    readOnly={!AddMode}
-                    sx={AddMode ? {} : {color: 'gray', cursor: 'not-allowed', pointerEvents: 'none'}}
+                    readOnly={!addMode}
+                    sx={addMode ? {} : {color: 'gray', cursor: 'not-allowed', pointerEvents: 'none'}}
                     renderInput={(params) =>
                         <>
                             <TextField
                                 {...params}
-                                label={"学校名称" + (AddMode ? "" : " (不可修改)")}
+                                label={"学校名称" + (addMode ? "" : " (不可修改)")}
                                 variant="standard"
                                 required
                                 helperText={<MuiLink
@@ -99,16 +95,16 @@ export default function AddModifyProgram({type}) {
                     ))}
                 </Autocomplete>
                 <TextField
-                    InputProps={{readOnly: !AddMode}}
+                    InputProps={{readOnly: !addMode}}
                     variant="standard"
                     name="Program"
-                    label={"项目名称" + (AddMode ? "" : " (不可修改)")}
+                    label={"项目名称" + (addMode ? "" : " (不可修改)")}
                     value={programName}
                     onChange={(event) => setProgramName(event.target.value)}
-                    // error={programNameInvalid}
-                    // helperText={programNameInvalid ? "项目名称中不可包含@, |, /, \\, ?, !, $，如果必须要使用'/'字符，请用'&'代替" : ""}
+                    error={programNameInvalid}
+                    helperText={programNameInvalid ? "项目名称中不可包含@, |, /, \\, ?, !, $，如果必须要使用'/'字符，请用'&'代替" : ""}
                     placeholder="硕士写简称 (e.g. MSCS)，博士要加院系 (e.g. EECS PhD)"
-                    sx={AddMode ? {} : {color: 'gray', cursor: 'not-allowed', pointerEvents: 'none'}}
+                    sx={addMode ? {} : {color: 'gray', cursor: 'not-allowed', pointerEvents: 'none'}}
                     fullWidth
                     required
                 />
@@ -164,7 +160,7 @@ export default function AddModifyProgram({type}) {
                     renderOption={(props, option) => {
                         return (
                             <MenuItem {...props} key={option.label} value={option.value}>
-                                <Checkbox checked={major.indexOf(option) > -1}/>
+                                <Checkbox checked={major.includes(option)}/>
                                 <ListItemText primary={option.label}/>
                             </MenuItem>
                         )
@@ -185,7 +181,7 @@ export default function AddModifyProgram({type}) {
                     fullWidth
                     required
                 />
-                <TextField sx={{display: 'none'}} name="Region" value={univ?.region.join(',') ?? []}/>
+                <TextField sx={{display: 'none'}} name="Region" value={univ?.region.join(',') ?? ''}/>
             </FormControl>
             <Typography variant="h5" sx={{mb: "10px"}}>
                 {"项目描述 "}
@@ -194,11 +190,9 @@ export default function AddModifyProgram({type}) {
             <MarkDownEditor Description={Description} setDescription={setDescription}/>
             <textarea id='Description' name='Description' hidden={true} value={Description} readOnly/>
             <ButtonGroup sx={{mt: '1vh'}}>
-                {/*<Button type="submit" disabled={programNameInvalid}> 提交 </Button>*/}
-                <Button type="submit"> 提交 </Button>
+                <Button type="submit" disabled={programNameInvalid}> 提交 </Button>
                 <Button onClick={() => navigate("..")}> 取消 </Button>
             </ButtonGroup>
         </Form>
     )
 }
-

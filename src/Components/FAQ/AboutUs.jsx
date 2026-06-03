@@ -1,15 +1,10 @@
 import {Link} from "react-router-dom";
-import {
-    Avatar, Box,
-    Card,
-    CardActionArea,
-    CardHeader, Typography,
-} from "@mui/material";
-import Grid2 from "@mui/material/Unstable_Grid2";
+import {Avatar, Box, Card, CardActionArea, CardHeader, Typography,} from "@mui/material";
+import Grid2 from "@mui/material/Grid";
 import {OpenSIST} from "../common";
 import {AgreementContent} from "../Agreement/Agreement";
 
-export function AboutUs() {
+export function AboutUs({sx = {}}) {
     const developers = [
         {
             id: 'cze',
@@ -44,7 +39,7 @@ export function AboutUs() {
     ].sort((a, b) => a.id.localeCompare(b.id))
 
     return (
-        <Box sx={{width: '70%', p: '1rem'}}>
+        <Box sx={{width: '70%', p: '1rem', ...sx}}>
             <Typography variant="h4" sx={{textAlign: 'center'}}>关于我们</Typography>
             <Typography variant='h5'>我们是谁？（按姓氏排序）</Typography>
             <Grid2
@@ -52,7 +47,13 @@ export function AboutUs() {
                 spacing={2}
             >
                 {developers.map(developer =>
-                    <Grid2 key={developer.id} xs={12} sm={6} lg={3}>
+                    <Grid2
+                        key={developer.id}
+                        size={{
+                            xs: 12,
+                            sm: 6,
+                            lg: 3
+                        }}>
                         <Card>
                             <CardActionArea
                                 component={Link}
@@ -84,5 +85,5 @@ export function AboutUs() {
             <br/>
             <AgreementContent/>
         </Box>
-    )
+    );
 }

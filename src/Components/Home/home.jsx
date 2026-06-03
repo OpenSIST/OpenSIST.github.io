@@ -1,14 +1,14 @@
 import TopBar from "../TopBar/TopBar";
-import {Outlet, Link} from "react-router-dom";
+import {Link, Outlet} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 import {BoldTypography, LoadingBackdrop, OpenSIST, useSmallPage} from "../common";
 import {Box, Button, Divider, IconButton, Paper, SvgIcon, Typography, useTheme} from "@mui/material";
-import {clickHandler, init_map} from "../WorldMap/display";
-import Grid2 from "@mui/material/Unstable_Grid2";
+import {clickHandler, initMap} from "../WorldMap/display";
+import Grid2 from "@mui/material/Grid";
 import './home.css';
 import ReactMarkdown from "react-markdown";
-import {ReactComponent as VectorArrowDark} from "../icons/VectorArrowDark.svg";
-import {ReactComponent as VectorArrowLight} from "../icons/VectorArrowLight.svg";
+import VectorArrowDark from "../icons/VectorArrowDark.svg?react";
+import VectorArrowLight from "../icons/VectorArrowLight.svg?react";
 import {isSafari} from 'react-device-detect';
 
 function Home() {
@@ -30,21 +30,16 @@ function Home() {
 export function HomeIndex() {
     const [width, setWidth] = useState(window.innerWidth);
     const [height, setHeight] = useState(window.innerHeight);
-    const nodeRef = useRef(null);
     useEffect(() => {
         const handleResize = () => {
             setWidth(window.innerWidth);
             setHeight(window.innerHeight);
         };
-        nodeRef.current.addEventListener("click", clickHandler);
         window.addEventListener("resize", handleResize);
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
     return (
         <Box
-            ref={nodeRef}
             sx={{
                 bgcolor: (theme) => theme.palette.mode === 'dark' ? "#1A1E24" : "#FAFAFA",
                 height: "100%",
@@ -166,19 +161,27 @@ function HomeIndexContent() {
                         />
                     </IconButton>
                     <Grid2 container rowSpacing={smallPage ? 5 : 10} sx={{mt: '3rem'}}>
-                        <Grid2 xs={12} md={6}>
+                        <Grid2
+                            size={{
+                                xs: 12,
+                                md: 6
+                            }}>
                             <HomeIndexContentBlock title="友情链接"/>
                         </Grid2>
-                        {!smallPage ? <Grid2 xs={6}/> : null}
-                        {!smallPage ? <Grid2 xs={6}/> : null}
-                        <Grid2 xs={12} md={6}>
+                        {!smallPage ? <Grid2 size={6}/> : null}
+                        {!smallPage ? <Grid2 size={6}/> : null}
+                        <Grid2
+                            size={{
+                                xs: 12,
+                                md: 6
+                            }}>
                             <HomeIndexContentBlock title="特别鸣谢"/>
                         </Grid2>
                     </Grid2>
                 </Box>
             </Box>
         </Box>
-    )
+    );
 }
 
 function WelcomeBlock() {
@@ -191,7 +194,6 @@ function WelcomeBlock() {
                 width: {xs: '100%', sm: '70%', md: '60%', lg: '50%'},
                 position: 'relative',
                 backdropFilter: 'blur(2px)',
-                // mt: smallPage ? '10vh' : '23vh'
             }}>
             <Typography variant='h4' sx={{fontFamily: 'Merriweather', mb: '1rem'}}>
                 Welcome to
@@ -297,13 +299,13 @@ function WorldMap({width, height}) {
         } else {
             map_height = map_width / desired_scale;
         }
-        init_map(staticCanvasRef.current, dynamicCanvasRef.current, map_width, map_height, mode);
+        return initMap(staticCanvasRef.current, dynamicCanvasRef.current, map_width, map_height, mode);
     }, [width, height, mode]);
     return (
         <>
             <canvas ref={staticCanvasRef} width={width} height={height}
                     style={{overflow: "auto", position: "relative"}}/>
-            <canvas ref={dynamicCanvasRef} width={width} height={height} id={"dynamicCanvas"}
+            <canvas ref={dynamicCanvasRef} width={width} height={height} onClick={clickHandler}
                     style={{overflow: "auto", position: "absolute"}}/>
         </>
     )

@@ -1,111 +1,64 @@
-import localforage from "localforage";
-import {GET_CONTENT_API, LIST_POSTS_API, CREATE_POST_API, MODIFY_CONTENT_API, DELETE_CONTENT_API} from "../APIs/APIs";
-import {handleErrors, headerGenerator} from "./Common";
+import {apiJson, apiRequest} from "./Common";
+import {CREATE_COMMENT_API, CREATE_POST_API, DELETE_CONTENT_API, GET_CONTENT_API, LIST_POSTS_API, MODIFY_CONTENT_API, TOGGLE_LIKE_API} from "../APIs/APIs"
 
-// const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 min
-
-export async function getPosts(isRefresh = false, query = {}) {
-    const response = await fetch(LIST_POSTS_API, {
-        method: 'POST',
-        credentials: 'include',
-        headers: await headerGenerator(true),
-    });
-    
-    await handleErrors(response);
-    const posts = await response.json();
-
-    posts['posts'] = posts['posts'].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-
-    return posts['posts'];
+export async function getPosts(query = {}) {
+    const postsResult = await apiJson(LIST_POSTS_API);
+    const searchTerm = query.searchStr?.toLowerCase() ?? "";
+    return [...postsResult['posts']].sort(
+        (a, b) => new Date(b.updated_at ?? b.created_at) - new Date(a.updated_at ?? b.created_at)
+    ).filter(
+        (post) =>
+            post.title.toLowerCase().includes(searchTerm) ||
+            post.author.toLowerCase().includes(searchTerm)
+    );
 }
 
-export async function getPost(postId, isRefresh = false) {
-    const posts = await getPosts(isRefresh);
-    if (!posts) {
-        throw new Error('Post not found');
-    }
-    return posts.find((post) => post.id.toString() === postId);
-}
-
-export async function getPostContent(postId, isRefresh = false) {
-    const response = await fetch(GET_CONTENT_API, {
-        method: 'POST',
-        credentials: 'include',
-        headers: await headerGenerator(true),
-        body: JSON.stringify({postId}),
-    });
+export async function getPost(postId) {
     try {
-        await handleErrors(response);
+        const postResult = await apiJson(GET_CONTENT_API, {body: {postId}});
+        return postResult["post"];
     } catch (e) {
         if (e.status === 404) {
-            await getPosts(true);
+            throw new Error('Post not found');
         }
         throw e;
     }
-    const postContent = await response.json();
-
-    return postContent['post']['content'];
 }
 
-export async function getPostObject(postId, isRefresh = false) {
-    const post = await getPost(postId, isRefresh);
-    const content = await getPostContent(postId, isRefresh);
-    
-    if (!post || !content) {
-        throw new Error("Post or content not found");
+export async function getPostObject(postId) {
+    const post = await getPost(postId);
+    if (!post) {
+        throw new Error("Post not found");
     }
-    
-    return {
-        ...post,
-        content: content,
-    };
+
+    return post;
 }
 
 /**
- * Removes a post
+ * Toggle like on a post or a comment.
  */
-export async function removePost(postId, author) {
-    const API = DELETE_CONTENT_API;
+export async function toggleLikeContent(contentId) {
     const requestBody = {
-        contentId: postId.toString()
+        contentId: contentId.toString()
     };
 
-    const response = await fetch(API, {
-        method: 'POST',
-        credentials: 'include',
-        headers: await headerGenerator(true),
-        body: JSON.stringify(requestBody),
-    });
-
-    await handleErrors(response);
-
-    try {
-        const result = await response.json();
-        if (!result.success) {
-            throw new Error(result.error || `API request failed for delete post.`);
-        }
-    } catch (e) {
-        if (!response.ok) {
-            throw new Error(`API request failed for delete post with status ${response.status}`);
-        }
-    }
-
-    await getPosts(true);
-    await localforage.removeItem(`${postId}-Content`);
-}
-
-export async function deletePostContent(postId) {
-    await localforage.removeItem(`${postId}-Content`);
+    await requestSuccessfulMutation(TOGGLE_LIKE_API, requestBody, 'toggling content like');
 }
 
 /**
- * Adds a new post or modifies an existing one
+ * Remove a post or a comment.
  */
+export async function removeContent(contentId) {
+    const requestBody = {
+        contentId: contentId.toString()
+    };
+
+    await requestSuccessfulMutation(DELETE_CONTENT_API, requestBody, 'content deletion');
+}
+
 export async function addModifyPost(requestData, type) {
     let API;
     let requestBody;
-    const headers = await headerGenerator(true);
-
     if (type === 'new') {
         API = CREATE_POST_API;
         requestBody = {
@@ -125,25 +78,29 @@ export async function addModifyPost(requestData, type) {
         throw new Error(`Invalid type specified for addModifyPost: ${type}`);
     }
 
-    const response = await fetch(API, {
-        method: 'POST',
-        credentials: 'include',
-        headers: headers,
-        body: JSON.stringify(requestBody),
-    });
+    await requestSuccessfulMutation(API, requestBody, `${type} post`);
+}
 
-    await handleErrors(response);
+export async function addComment(parentId, commentContent) {
+    const requestBody = {
+        parentId,
+        content: commentContent,
+    };
 
+    await requestSuccessfulMutation(CREATE_COMMENT_API, requestBody, 'creating comment');
+}
+
+async function requestSuccessfulMutation(API, requestBody, action) {
+    const response = await apiRequest(API, {body: requestBody});
     try {
         const result = await response.json();
         if (!result.success) {
-            throw new Error(result.error || `API request failed for ${type} post.`);
+            throw new Error(result.error || `API request failed for ${action}.`);
         }
-    } catch (e) {
-        if (!response.ok) {
-            throw new Error(`API request failed for ${type} post with status ${response.status}`);
+    } catch (error) {
+        if (error instanceof SyntaxError && response.ok) {
+            return;
         }
+        throw error;
     }
-
-    await getPosts(true);
 }

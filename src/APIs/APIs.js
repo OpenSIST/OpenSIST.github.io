@@ -1,11 +1,8 @@
 const defaultRoot = "https://opensist.tech/";
-const ROOT = process.env.REACT_APP_BACKEND_SPECIFIC_API?.trim() || defaultRoot;
-if (ROOT !== defaultRoot) {
-    console.log("Using Alpha API: " + ROOT);
-}
+const ROOT = import.meta.env.VITE_BACKEND_SPECIFIC_API?.trim() || defaultRoot;
 
 export const PROGRAM_LIST = ROOT + "api/list/programs";
-export const PROGRAM_DESC = ROOT + "api/query/program_description";
+export const PROGRAM_DESC_BATCH = ROOT + "api/query/program_description_batch";
 export const ADD_MODIFY_PROGRAM = ROOT + "api/mutating/new_modify_program";
 export const SEND_RESET_VERIFY_TOKEN = ROOT + "api/auth/forget";
 export const RESET_PASSWORD = ROOT + "api/auth/forget_verify_reset";
@@ -24,12 +21,12 @@ export const REMOVE_FROM_TRASH = ROOT + "api/admin/email/remove_from_trash";
 export const ADD_MODIFY_APPLICANT = ROOT + "api/mutating/new_modify_applicant";
 export const REMOVE_APPLICANT = ROOT + "api/mutating/remove_applicant";
 export const APPLICANT_LIST = ROOT + "api/list/applicants";
-export const GET_RECORD_BY_RECORD_IDs = ROOT + "api/query/by_records";
+export const GET_RECORDS_BY_ID = ROOT + "api/query/by_records";
 export const ADD_MODIFY_RECORD = ROOT + "api/mutating/new_modify_record";
 export const REMOVE_RECORD = ROOT + "api/mutating/remove_record";
 export const UPLOAD_AVATAR = ROOT + "api/user/upload_avatar";
 export const GET_DISPLAY_NAME = ROOT + "api/my/get_display_name";
-export const GET_METADATA = ROOT + "api/user/get_metadata";
+export const GET_METADATA_BATCH = ROOT + "api/user/get_metadata_batch";
 export const GET_AVATAR = ROOT + "api/user/get_avatar";
 export const TOGGLE_NICKNAME = ROOT + "api/my/toggle_nickname";
 export const UPDATE_CONTACT = ROOT + "api/user/update_contact";
@@ -43,7 +40,6 @@ export const MODIFY_FILE = ROOT + "api/mutating/modify_file";
 export const COLLECT_PROGRAM = ROOT + "api/user/collect_program";
 export const UNCOLLECT_PROGRAM = ROOT + "api/user/un_collect_program";
 
-// --- New Post/Comment API Endpoints --- 
 export const CREATE_POST_API = ROOT + "api/post/create_post";
 export const CREATE_COMMENT_API = ROOT + "api/post/create_comment";
 export const MODIFY_CONTENT_API = ROOT + "api/post/modify_content";
