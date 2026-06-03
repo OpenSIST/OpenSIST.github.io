@@ -10,9 +10,10 @@ import "./PostContent.css"
 import {getAvatar, getMetadata} from "../../../Data/UserData";
 import Grid2 from "@mui/material/Grid";
 import {utcToLocal} from "../../../Data/Common";
+import {decodePathParam, postsApplicantPath, postsPostPath} from "../../RouteUtils";
 
 export async function loader({params}) {
-    const postId = params.postId;
+    const postId = decodePathParam(params.postId);
     const postObj = await getPostObject(postId);
 
     const authorId = postObj?.author;
@@ -25,7 +26,7 @@ export async function loader({params}) {
 }
 
 export async function action({request, params}) {
-    const postId = params.postId;
+    const postId = decodePathParam(params.postId);
     const formData = await request.formData();
     const ActionType = formData.get('ActionType');
     if (ActionType === 'Delete') {
@@ -49,7 +50,7 @@ export default function PostContent() {
     const handleOpen = () => {
         setOpen(true);
     };
-    const authorUrl = `/posts/${urlPostId}/applicant/${postObj.author}${latestYear ? '@' + latestYear : ''}`
+    const authorUrl = postsApplicantPath(urlPostId, `${postObj.author}${latestYear ? '@' + latestYear : ''}`);
     return (
         <>
             <Box className="PostContentHeader" sx={{pb: "0.5rem"}}>
@@ -89,7 +90,7 @@ export default function PostContent() {
                     {editable ?
                         <>
                             <Tooltip title="编辑内容" arrow>
-                                <IconButton component={Link} to={`/posts/${urlPostId}/edit${window.location.search}`}>
+                                <IconButton component={Link} to={`${postsPostPath(urlPostId)}/edit${window.location.search}`}>
                                     <Edit/>
                                 </IconButton>
                             </Tooltip>

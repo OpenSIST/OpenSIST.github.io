@@ -9,6 +9,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMarkdown} from "@fortawesome/free-brands-svg-icons";
 import {HelpOutline} from "@mui/icons-material";
+import {programsProgramPath} from "../../RouteUtils";
 
 const invalidProgramCharacters = ['@', '|', '/', '$', '\\', '?', '!'];
 
@@ -43,7 +44,7 @@ export async function action({request}) {
         }
     };
     await addModifyProgram(requestBody);
-    return redirect(`/programs/${encodeURIComponent(programId)}`)
+    return redirect(programsProgramPath(programId))
 }
 
 export default function AddModifyProgram({type}) {

@@ -11,9 +11,10 @@ import {getRecordByProgram} from "../../../Data/RecordData";
 import {DataGrid} from "../../DataPoints/DataPoints";
 import {DraggableFAB} from "../../common";
 import StarButton from "./StarButton"
+import {decodePathParam} from "../../RouteUtils";
 
 export async function loader({params}) {
-    const programId = decodeURIComponent(params.programId);
+    const programId = decodePathParam(params.programId);
     const records = Object.values(await getRecordByProgram(programId));
     const programContent = await getProgramContent(programId);
     const metadata = await getMetadata()
@@ -23,7 +24,7 @@ export async function loader({params}) {
 export async function action({params, request}) {
     const formData = await request.formData();
     const actionType = formData.get("ActionType");
-    const programId = decodeURIComponent(params.programId);
+    const programId = decodePathParam(params.programId);
     if (actionType === "Refresh") {
         await getProgramDesc(programId, true);
         return getRecordByProgram(programId, true);

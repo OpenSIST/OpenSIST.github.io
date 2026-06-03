@@ -9,6 +9,7 @@ import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
 import {regionFlagMapping} from "../../../Data/Schemas";
 import StarButton from "../ProgramContent/StarButton";
+import {programsProgramPath} from "../../RouteUtils";
 
 const MetadataContext = React.createContext();
 
@@ -161,7 +162,7 @@ export function ProgramButton({program, selectProgram, setSelectProgram}) {
             selected={program.ProgramID === selectProgram}
             component={Link}
             onClick={() => setSelectProgram(program.ProgramID)}
-            to={`/programs/${encodeURIComponent(program.ProgramID)}${window.location.search}`}
+            to={`${programsProgramPath(program.ProgramID)}${window.location.search}`}
             sx={{
                 pl: "3rem",
                 "&::before": {

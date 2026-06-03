@@ -5,6 +5,7 @@ import {styled} from "@mui/material/styles";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import {Check, ExpandMore} from "@mui/icons-material";
 import {BoldTypography} from "../common";
+import {applicantDialogPath, dataPointsProgramPath} from "../RouteUtils";
 import type {RecordData} from "../../Data/RecordDataType";
 import "./DataPoints.css";
 import {GroupedVirtuoso, Virtuoso} from 'react-virtuoso';
@@ -309,8 +310,7 @@ const timelineBodyTemplate = (rowData: RecordData, timelineKey: keyof RecordData
 
 const applicantBodyTemplate = (rowData: RecordData, navigate: NavigateFunction, location: Location) => {
     const handleClick = () => {
-        const pathname = location.pathname.split("?")[0];
-        navigate(`${pathname}/applicant/${rowData.ApplicantID}`);
+        navigate(applicantDialogPath(location.pathname, rowData.ApplicantID));
     };
     return (
         <div
@@ -356,7 +356,7 @@ const programBodyTemplate = (rowData: RecordData, navigate: NavigateFunction) =>
         }}
         onClick={() =>
             navigate(
-                `/datapoints/program/${encodeURIComponent(rowData.ProgramID)}`
+                dataPointsProgramPath(rowData.ProgramID)
             )
         }
     >

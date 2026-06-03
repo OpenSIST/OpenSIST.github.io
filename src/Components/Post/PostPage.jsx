@@ -8,6 +8,7 @@ import "./PostPage.css"
 import React, {Fragment} from "react";
 import SearchBar from "../ProgramPage/SideBar/SearchBar/SearchBar";
 import Grid2 from "@mui/material/Grid";
+import {postsPostPath} from "../RouteUtils";
 
 export async function loader({request}) {
     const url = new URL(request.url);
@@ -61,7 +62,7 @@ export default function PostPage() {
                     >
                         {loaderData.posts.map((post) => (
                             <Fragment key={post.id}>
-                                <ListItemButton component={Link} to={`/posts/${post.id}`}>
+                                <ListItemButton component={Link} to={postsPostPath(post.id)}>
                                     <ListItemText primary={post.title} secondary={post.author}/>
                                 </ListItemButton>
                                 <Divider component="li" light/>

@@ -6,9 +6,10 @@ import {addModifyPost, getPostObject} from "../../../Data/PostData";
 import {getApplicantIDByDisplayName, getApplicants, isAuthApplicant} from "../../../Data/ApplicantData";
 import Autocomplete from "@mui/material/Autocomplete";
 import {list2Options} from "../../../Data/Schemas";
+import {decodePathParam} from "../../RouteUtils";
 
 export async function loader({params}) {
-    const postId = params?.postId;
+    const postId = decodePathParam(params?.postId);
     const postObj = postId ? await getPostObject(postId) : null;
     const isAuth = await isAuthApplicant(postObj?.author);
     if (!isAuth && postObj) {
@@ -38,7 +39,7 @@ export async function action({request, params}) {
         requestBody.ApplicantID = formData.get('Author');
         requestBody.content.type = 'Post';
     } else if (actionType === 'edit') {
-        requestBody.PostID = params.postId;
+        requestBody.PostID = decodePathParam(params.postId);
     }
 
     await addModifyPost(requestBody, actionType);
