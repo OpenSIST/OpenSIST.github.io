@@ -4,9 +4,9 @@ import {Backdrop, Box, Button, CircularProgress, Fab, styled, SwipeableDrawer, T
 import {ChevronRight} from "@mui/icons-material";
 import Draggable from "react-draggable";
 
-export function LoadingBackdrop() {
+export function LoadingBackdrop({forceOpen = false} = {}) {
     const navigation = useNavigation()
-    const loading = navigation.state !== 'idle';
+    const loading = forceOpen || navigation.state !== 'idle';
     return (
         <Backdrop open={loading} sx={{zIndex: 99999}} transitionDuration={1000} style={{pointerEvents: "none"}}>
             <CircularProgress color="inherit"/>

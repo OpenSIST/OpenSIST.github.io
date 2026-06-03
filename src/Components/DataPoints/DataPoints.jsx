@@ -9,7 +9,7 @@ import './DataPoints.css';
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import {recordStatusList} from "../../Data/Schemas";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
-import {BoldTypography, DraggableFAB} from "../common";
+import {BoldTypography, DraggableFAB, LoadingBackdrop} from "../common";
 import {columnWidthMap, PlainTable, TopStickyRow} from './PlainTable'
 import {ConfigProvider, Input, Select, theme} from 'antd';
 
@@ -22,9 +22,17 @@ async function getAllRecords(isRefresh = false) {
         program.Applicants.map(applicant => applicant + "|" + program.ProgramID)
     ));
     const programOrder = new Map(programs.map((program, index) => [program.ProgramID, index]));
-    return Object.values(await getRecordByRecordIDs(recordIDs, isRefresh)).sort((a, b) => {
-        return programOrder.get(a.ProgramID) - programOrder.get(b.ProgramID);
-    });
+    const recordsById = await getRecordByRecordIDs(recordIDs, isRefresh);
+    const missingRecordIDs = recordIDs.filter((recordId) => !isLoadedRecord(recordsById[recordId]));
+    const refreshedMissingRecords = missingRecordIDs.length > 0 && !isRefresh
+        ? await getRecordByRecordIDs(missingRecordIDs, true)
+        : {};
+    return Object.values({...recordsById, ...refreshedMissingRecords})
+        .filter(isLoadedRecord)
+        .sort((a, b) => {
+            return (programOrder.get(a.ProgramID) ?? Number.MAX_SAFE_INTEGER) -
+                (programOrder.get(b.ProgramID) ?? Number.MAX_SAFE_INTEGER);
+        });
 }
 
 export async function loader() {
@@ -232,7 +240,7 @@ export function DataGrid({records, insideProgramPage, style = {}}) {
      */
 
     /** @param {Filter} filter */
-    const filteredRecords = useMemo(() => records.filter((record) => {
+    const filteredRecords = useMemo(() => records.filter(isLoadedRecord).filter((record) => {
         if (!filters) {
             return true;
         }
@@ -314,12 +322,13 @@ function sortRecords(records) {
         }
     };
     const programOrder = new Map();
-    records.forEach((record) => {
+    const loadedRecords = records.filter(isLoadedRecord);
+    loadedRecords.forEach((record) => {
         if (!programOrder.has(record.ProgramID)) {
             programOrder.set(record.ProgramID, programOrder.size);
         }
     });
-    return [...records].sort((a, b) => (
+    return [...loadedRecords].sort((a, b) => (
         programOrder.get(a.ProgramID) - programOrder.get(b.ProgramID) ||
         b.ProgramYear - a.ProgramYear ||
         semesterWeight(b.Semester) - semesterWeight(a.Semester)
@@ -341,10 +350,17 @@ const FloatingControls = () => (
 
 export default function DataPoints() {
     const loaderRecords = useLoaderData();
-    const records = useMemo(() => loaderRecords.records.map(record => ({
-        ...record,
-        Season: record.ProgramYear + " " + record.Semester,
-    })), [loaderRecords.records]);
+    const hasLoadedRecords = Array.isArray(loaderRecords?.records);
+    const records = useMemo(() => {
+        const sourceRecords = Array.isArray(loaderRecords?.records) ? loaderRecords.records : [];
+        return sourceRecords.filter(isLoadedRecord).map(record => ({
+            ...record,
+            Season: record.ProgramYear + " " + record.Semester,
+        }));
+    }, [loaderRecords]);
+    if (!hasLoadedRecords) {
+        return <LoadingBackdrop forceOpen/>;
+    }
 
     return (
         <div style={{overflowY: 'hidden'}}>
@@ -362,4 +378,8 @@ export default function DataPoints() {
             </Paper>
         </div>
     )
+}
+
+function isLoadedRecord(record) {
+    return Boolean(record?.RecordID && record?.ApplicantID && record?.ProgramID);
 }

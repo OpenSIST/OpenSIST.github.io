@@ -66,10 +66,10 @@ export async function getRecordByRecordIDs(recordIDs, isRefresh = false, {priori
         return {};
     }
     const cachedRecords = Object.fromEntries(uniqueRecordIDs.flatMap((recordId, index) => (
-        entries[index]?.value ? [[recordId, entries[index].value]] : []
+        isRecordData(entries[index]?.value) ? [[recordId, entries[index].value]] : []
     )));
     const expiredIDs = uniqueRecordIDs.filter((recordId, index) => (
-        isCacheEntryExpired(entries[index], isRefresh)
+        isCacheEntryExpired(entries[index], isRefresh) || !isRecordData(entries[index]?.value)
     ));
     const request = beginCacheRequests(expiredIDs.map(recordCacheKey), priority, requestEpoch);
     const requestRecordIDs = request.keys.map((key) => key.slice("record-".length));
@@ -82,14 +82,17 @@ export async function getRecordByRecordIDs(recordIDs, isRefresh = false, {priori
         const responses = priority === BACKGROUND_PRIORITY
             ? await requestRecordBatchesSequentially(requestRecordIDs, priority)
             : await requestRecordBatchesConcurrently(requestRecordIDs, priority);
-        const refreshedRecords = responses.reduce((records, response) => {
+        const refreshedRecordResponses = responses.reduce((records, response) => {
             return {...records, ...response.data};
         }, {});
+        const refreshedRecords = Object.fromEntries(
+            Object.entries(refreshedRecordResponses).filter(([, record]) => isRecordData(record))
+        );
         const cacheWrites = requestRecordIDs.map((recordId) => {
             const key = recordCacheKey(recordId);
             const requestEpoch = request.epoch;
             const requestVersion = request.versionFor(key);
-            return refreshedRecords[recordId]
+            return isRecordData(refreshedRecordResponses[recordId])
                 ? writeCacheValue(key, refreshedRecords[recordId], {requestEpoch, requestVersion})
                 : removeCacheValue(key, {requestEpoch, requestVersion});
         });
@@ -136,6 +139,10 @@ function fetchRecordBatch(recordIDs, priority) {
         body: {IDs: recordIDs},
         fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
     });
+}
+
+function isRecordData(record) {
+    return Boolean(record?.RecordID && record?.ApplicantID && record?.ProgramID);
 }
 
 export async function setRecord(record) {
