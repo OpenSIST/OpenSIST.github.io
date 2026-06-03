@@ -1,11 +1,6 @@
 import {Link} from "react-router-dom";
-import {
-    Avatar, Box,
-    Card,
-    CardActionArea,
-    CardHeader, Typography,
-} from "@mui/material";
-import Grid2 from "@mui/material/Unstable_Grid2";
+import {Avatar, Box, Card, CardActionArea, CardHeader, Typography,} from "@mui/material";
+import Grid2 from "@mui/material/Grid";
 import {OpenSIST} from "../common";
 import {AgreementContent} from "../Agreement/Agreement";
 
@@ -52,7 +47,13 @@ export function AboutUs() {
                 spacing={2}
             >
                 {developers.map(developer =>
-                    <Grid2 key={developer.id} xs={12} sm={6} lg={3}>
+                    <Grid2
+                        key={developer.id}
+                        size={{
+                            xs: 12,
+                            sm: 6,
+                            lg: 3
+                        }}>
                         <Card>
                             <CardActionArea
                                 component={Link}
@@ -84,5 +85,5 @@ export function AboutUs() {
             <br/>
             <AgreementContent/>
         </Box>
-    )
+    );
 }

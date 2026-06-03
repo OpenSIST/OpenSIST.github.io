@@ -17,10 +17,11 @@ let proportion = null;
 
 let flights = [];
 let lastTimestamp = Date.now();
-let img = new Image();
+const img = new Image();
 img.src = String(plane_svg);
 let nextGenTime = Date.now();
 let force = false;
+let forceTimeoutId = null;
 
 
 // Settings
@@ -44,8 +45,6 @@ function drawMap(static_container, mode) {
 
     projection = d3.geoNaturalEarth1()
         .fitSize([width, height], cachedData)
-    // .fitExtent([[-width / 20, 0], [width, height]], cachedData)
-    // .center([0, -5])
 
     shanghai_projected = projection(shanghai);
 
@@ -75,20 +74,20 @@ function cubicBezierLength(p0, cp1, cp2, p, t = 1) {
         return 0;
     }
     const base3 = (t, p1, p2, p3, p4) => {
-        let t1 = -3 * p1 + 9 * p2 - 9 * p3 + 3 * p4,
+        const t1 = -3 * p1 + 9 * p2 - 9 * p3 + 3 * p4,
             t2 = t * t1 + 6 * p1 - 12 * p2 + 6 * p3;
         return t * t2 - 3 * p1 + 3 * p2;
     };
     t = t > 1 ? 1 : t < 0 ? 0 : t;
-    let t2 = t / 2;
-    let Tvalues = [-.1252, .1252, -.3678, .3678, -.5873, .5873, -.7699, .7699, -.9041, .9041, -.9816, .9816];
-    let Cvalues = [0.2491, 0.2491, 0.2335, 0.2335, 0.2032, 0.2032, 0.1601, 0.1601, 0.1069, 0.1069, 0.0472, 0.0472];
+    const t2 = t / 2;
+    const Tvalues = [-.1252, .1252, -.3678, .3678, -.5873, .5873, -.7699, .7699, -.9041, .9041, -.9816, .9816];
+    const Cvalues = [0.2491, 0.2491, 0.2335, 0.2335, 0.2032, 0.2032, 0.1601, 0.1601, 0.1069, 0.1069, 0.0472, 0.0472];
 
 
-    let n = Tvalues.length;
+    const n = Tvalues.length;
     let sum = 0;
     for (let i = 0; i < n; i++) {
-        let ct = t2 * Tvalues[i] + t2,
+        const ct = t2 * Tvalues[i] + t2,
             xbase = base3(ct, p0[0], cp1[0], cp2[0], p[0]),
             ybase = base3(ct, p0[1], cp1[1], cp2[1], p[1]),
             comb = xbase * xbase + ybase * ybase;
@@ -192,7 +191,7 @@ function genNewFlight() {
         return;
     }
     nextGenTime = lastTimestamp + 2000 + Math.random() * 4000;
-    let flight = {};
+    const flight = {};
     flight.progress = 0;
     const new_flight = UnivList[Math.floor(Math.random() * UnivList.length)];
     flight.latitude = new_flight.latitude;
@@ -242,7 +241,7 @@ function darkModeRedraw() {
         ctx.beginPath();
         ctx.arc(x, y, univ.size, 0, 2 * Math.PI);
 
-        let gradient = ctx.createRadialGradient(x, y, 0, x, y, univ.size);
+        const gradient = ctx.createRadialGradient(x, y, 0, x, y, univ.size);
         gradient.addColorStop(1.0, 'rgba(255, 171, 46, 0.00155)');
         gradient.addColorStop(0.8, 'rgba(255, 171, 46, 0.12185)');
         gradient.addColorStop(0.6, 'rgba(255, 171, 46, 0.35375)');
@@ -269,8 +268,8 @@ function redraw(mode) {
     animationId = requestAnimationFrame(redraw.bind(null, mode));
 }
 
-function init_canvas(container) {
-    let devicePixelRatio = window.devicePixelRatio || 1;
+function initCanvas(container) {
+    const devicePixelRatio = window.devicePixelRatio || 1;
     container.width = width * devicePixelRatio;
     container.height = height * devicePixelRatio;
     container.style.width = `${width}px`;
@@ -278,39 +277,43 @@ function init_canvas(container) {
     container.getContext("2d").scale(devicePixelRatio, devicePixelRatio);
 }
 
-export function init_map(static_container, dynamic_container, with_width, with_height, mode) {
+export function initMap(staticContainer, dynamicContainer, mapWidth, mapHeight, mode) {
     if (animationId !== null) {
         cancelAnimationFrame(animationId);
     }
-    canvas = dynamic_container;
-    const resizeObserver = new ResizeObserver(async entries => {
-        const containerEntry = entries.find(entry => entry.target === canvas);
-        if (containerEntry) {
-            drawMap(static_container, mode);
-            redraw(mode);
-        }
-    });
-    resizeObserver.observe(canvas);
-
-    width = with_width;
-    height = with_height;
+    canvas = dynamicContainer;
+    width = mapWidth;
+    height = mapHeight;
     proportion = width / 1700;
-    init_canvas(static_container);
-    init_canvas(dynamic_container);
+    initCanvas(staticContainer);
+    initCanvas(dynamicContainer);
     ctx = canvas.getContext("2d");
-    drawMap(static_container, mode);
+    drawMap(staticContainer, mode);
     redraw(mode);
+
+    return () => {
+        if (canvas === dynamicContainer) {
+            cancelAnimationFrame(animationId);
+            clearTimeout(forceTimeoutId);
+            animationId = null;
+            forceTimeoutId = null;
+            force = false;
+            canvas = null;
+            ctx = null;
+        }
+    };
 }
 
 export function clickHandler(e) {
-    const {x, y} = document.getElementById("dynamicCanvas").getBoundingClientRect();
-    const clickX = e.x - x;
-    const clickY = e.y - y;
+    const {left, top} = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - left;
+    const clickY = e.clientY - top;
 
     if ((shanghai_projected[0] - clickX) ** 2 + (shanghai_projected[1] - clickY) ** 2 < (10 * proportion) ** 2) {
         force = true;
     }
-    setTimeout(() => {
+    clearTimeout(forceTimeoutId);
+    forceTimeoutId = setTimeout(() => {
         force = false
     }, 2000);
 }
