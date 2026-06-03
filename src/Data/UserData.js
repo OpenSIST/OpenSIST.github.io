@@ -1,8 +1,31 @@
 import localforage from "localforage";
 import {redirect} from "react-router-dom";
-import {COLLECT_PROGRAM, GET_AVATAR, GET_DISPLAY_NAME, GET_METADATA, LOGIN, LOGOUT, REGISTER, RESET_PASSWORD, TOGGLE_NICKNAME, UNCOLLECT_PROGRAM, UPDATE_CONTACT, UPLOAD_AVATAR,} from "../APIs/APIs";
+import {
+    COLLECT_PROGRAM,
+    GET_AVATAR,
+    GET_DISPLAY_NAME,
+    GET_METADATA_BATCH,
+    LOGIN,
+    LOGOUT,
+    REGISTER,
+    RESET_PASSWORD,
+    TOGGLE_NICKNAME,
+    UNCOLLECT_PROGRAM,
+    UPDATE_CONTACT,
+    UPLOAD_AVATAR,
+} from "../APIs/APIs";
 import {apiJson, apiRequest, apiText, blobToBase64, emptyCache} from "./Common";
-import {BACKGROUND_PRIORITY, CACHE_CLEARED_EVENT, loadCachedValue, removeCacheValue, writeCacheValue} from "./CacheStore";
+import {
+    BACKGROUND_PRIORITY,
+    beginCacheRequests,
+    CACHE_CLEARED_EVENT,
+    getCacheEpoch,
+    isCacheEntryExpired,
+    loadCachedValue,
+    readCacheEntry,
+    removeCacheValue,
+    writeCacheValue
+} from "./CacheStore";
 import {useEffect, useState} from "react";
 import {getApplicants, setApplicants} from "./ApplicantData";
 import {getRecordByApplicant, setRecord} from "./RecordData";
@@ -170,23 +193,66 @@ export async function getMetadata(displayName = null, isRefresh = false, {priori
     if (!displayName) {
         return null;
     }
-    const result = await loadCachedValue({
-        key: metadataCacheKey(displayName),
-        legacyFields: ["result"],
-        forceRefresh: isRefresh,
-        priority,
-        load: async () => {
-            const metadata = await apiJson(GET_METADATA, {
-                body: {display_name: displayName},
-                fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+    const metadata = await getMetadataBatch([displayName], isRefresh, {priority});
+    return metadata[displayName] ?? metadataWithLatestYear({});
+}
+
+export async function getMetadataBatch(displayNames, isRefresh = false, {priority = "foreground"} = {}) {
+    const uniqueDisplayNames = [...new Set(displayNames)].filter(Boolean);
+    const requestEpoch = getCacheEpoch();
+    const entries = await Promise.all(uniqueDisplayNames.map((displayName) => (
+        readCacheEntry(metadataCacheKey(displayName), {legacyFields: ["result"], requestEpoch})
+    )));
+    if (requestEpoch !== getCacheEpoch()) {
+        return {};
+    }
+
+    const cachedMetadata = Object.fromEntries(uniqueDisplayNames.flatMap((displayName, index) => (
+        entries[index] ? [[displayName, metadataWithLatestYear(entries[index].value)]] : []
+    )));
+    const expiredDisplayNames = uniqueDisplayNames.filter((displayName, index) => (
+        isCacheEntryExpired(entries[index], isRefresh)
+    ));
+    const request = beginCacheRequests(expiredDisplayNames.map(metadataCacheKey), priority, requestEpoch);
+    const requestDisplayNames = request.keys.map(displayNameFromMetadataCacheKey);
+
+    if (requestDisplayNames.length === 0) {
+        return cachedMetadata;
+    }
+
+    try {
+        const response = await apiJson(GET_METADATA_BATCH, {
+            body: {display_names: requestDisplayNames},
+            fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+        });
+        const refreshedRawMetadata = requestDisplayNames.reduce((metadataByName, displayName) => ({
+            ...metadataByName,
+            [displayName]: response.data?.[displayName] ?? null,
+        }), {});
+        const cacheWrites = requestDisplayNames.map((displayName) => {
+            const key = metadataCacheKey(displayName);
+            return writeCacheValue(key, refreshedRawMetadata[displayName], {
+                requestEpoch: request.epoch,
+                requestVersion: request.versionFor(key),
             });
-            return metadata.result;
-        },
-    }) ?? {};
-    return {
-        ...result,
-        latestYear: findLatestYearForApplicant(result.ApplicantIDs),
-    };
+        });
+        if (priority === BACKGROUND_PRIORITY) {
+            await Promise.all(cacheWrites);
+        } else {
+            cacheWrites.forEach((cacheWrite) => void cacheWrite.catch(() => {}));
+        }
+        const refreshedMetadata = Object.fromEntries(
+            Object.entries(refreshedRawMetadata).map(([displayName, metadata]) => (
+                [displayName, metadataWithLatestYear(metadata)]
+            ))
+        );
+        return {
+            ...cachedMetadata,
+            ...refreshedMetadata,
+        };
+    } finally {
+        request.release();
+    }
 }
 
 /**
@@ -199,6 +265,18 @@ function findLatestYearForApplicant(applicantIDs = []) {
         .map(id => Number.parseInt(id.split('@')[1], 10))
         .filter(Number.isFinite);
     return validYears.length > 0 ? Math.max(...validYears) : null;
+}
+
+function metadataWithLatestYear(metadata) {
+    const result = metadata ?? {};
+    return {
+        ...result,
+        latestYear: findLatestYearForApplicant(result.ApplicantIDs),
+    };
+}
+
+function displayNameFromMetadataCacheKey(key) {
+    return key.slice(0, -"-metadata".length);
 }
 
 export async function setMetadata(metadata, displayName = null) {

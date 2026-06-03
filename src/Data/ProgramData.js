@@ -1,6 +1,14 @@
-import {ADD_MODIFY_PROGRAM, PROGRAM_DESC, PROGRAM_LIST} from "../APIs/APIs";
+import {ADD_MODIFY_PROGRAM, PROGRAM_DESC_BATCH, PROGRAM_LIST} from "../APIs/APIs";
 import {apiJson, apiRequest, univAbbrFullNameMapping} from "./Common";
-import {BACKGROUND_PRIORITY, loadCachedValue, writeCacheValue} from "./CacheStore";
+import {
+    BACKGROUND_PRIORITY,
+    beginCacheRequests,
+    getCacheEpoch,
+    isCacheEntryExpired,
+    loadCachedValue,
+    readCacheEntry,
+    writeCacheValue
+} from "./CacheStore";
 import univListOrder from "./UnivList.json";
 
 /*
@@ -118,26 +126,61 @@ export async function getProgramDesc(programId, isRefresh = false, {priority = "
     * @param isRefresh [Boolean]: whether to refresh the data
     * @return: description of the program
     */
-    return loadCachedValue({
-        key: `${programId}-Desc`,
-        legacyFields: ["description"],
-        forceRefresh: isRefresh,
-        priority,
-        load: async () => {
-            try {
-                const response = await apiJson(PROGRAM_DESC, {
-                    body: {'ProgramID': programId},
-                    fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
-                });
-                return response.description;
-            } catch (error) {
-                if (error.status === 404) {
-                    await getPrograms(true, {}, "cs_rank", {priority});
-                }
-                throw error;
-            }
-        },
-    });
+    const descriptions = await getProgramDescs([programId], isRefresh, {priority});
+    return descriptions[programId];
+}
+
+export async function getProgramDescs(programIds, isRefresh = false, {priority = "foreground"} = {}) {
+    const uniqueProgramIds = [...new Set(programIds)].filter(Boolean);
+    const requestEpoch = getCacheEpoch();
+    const entries = await Promise.all(uniqueProgramIds.map((programId) => (
+        readCacheEntry(programDescCacheKey(programId), {legacyFields: ["description"], requestEpoch})
+    )));
+    if (requestEpoch !== getCacheEpoch()) {
+        return {};
+    }
+
+    const cachedDescriptions = Object.fromEntries(uniqueProgramIds.flatMap((programId, index) => (
+        entries[index] ? [[programId, entries[index].value]] : []
+    )));
+    const expiredProgramIds = uniqueProgramIds.filter((programId, index) => (
+        isCacheEntryExpired(entries[index], isRefresh)
+    ));
+    const request = beginCacheRequests(expiredProgramIds.map(programDescCacheKey), priority, requestEpoch);
+    const requestProgramIds = request.keys.map(programIdFromDescCacheKey);
+
+    if (requestProgramIds.length === 0) {
+        return cachedDescriptions;
+    }
+
+    try {
+        const response = await apiJson(PROGRAM_DESC_BATCH, {
+            body: {ProgramIDs: requestProgramIds},
+            fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+        });
+        const refreshedDescriptions = requestProgramIds.reduce((descriptions, programId) => ({
+            ...descriptions,
+            [programId]: response.data?.[programId] ?? null,
+        }), {});
+        const cacheWrites = requestProgramIds.map((programId) => {
+            const key = programDescCacheKey(programId);
+            return writeCacheValue(key, refreshedDescriptions[programId], {
+                requestEpoch: request.epoch,
+                requestVersion: request.versionFor(key),
+            });
+        });
+        if (priority === BACKGROUND_PRIORITY) {
+            await Promise.all(cacheWrites);
+        } else {
+            cacheWrites.forEach((cacheWrite) => void cacheWrite.catch(() => {}));
+        }
+        return {
+            ...cachedDescriptions,
+            ...refreshedDescriptions,
+        };
+    } finally {
+        request.release();
+    }
 }
 
 export async function getProgramContent(programId, isRefresh = false) {
@@ -189,7 +232,7 @@ export async function setProgramDesc(programId, programDesc) {
     if (programDesc === null || programDesc === undefined) {
         return;
     }
-    await writeCacheValue(`${programId}-Desc`, programDesc);
+    await writeCacheValue(programDescCacheKey(programId), programDesc);
 }
 
 export async function setProgramContent(program) {
@@ -226,4 +269,12 @@ export async function addModifyProgram(requestBody) {
 
 function normalizeQueryValues(value) {
     return typeof value === 'string' ? value.split(',') : value;
+}
+
+function programDescCacheKey(programId) {
+    return `${programId}-Desc`;
+}
+
+function programIdFromDescCacheKey(key) {
+    return key.slice(0, -"-Desc".length);
 }

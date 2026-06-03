@@ -1,16 +1,16 @@
 import {getApplicants} from "./ApplicantData";
 import {BACKGROUND_PRIORITY, CACHE_CLEARED_EVENT, CACHE_EXPIRATION, getCacheEpoch} from "./CacheStore";
-import {getProgramDesc, getPrograms} from "./ProgramData";
+import {getProgramDescs, getPrograms} from "./ProgramData";
 import {getRecordByRecordIDs} from "./RecordData";
-import {getAvatar, getDisplayName, getMetadata} from "./UserData";
+import {getAvatar, getDisplayName, getMetadataBatch} from "./UserData";
 
 let active = false;
 let idleHandle = null;
 let syncTimer = null;
 let syncRunning = false;
 
-const DESCRIPTION_BATCH_SIZE = 8;
-const PROFILE_BATCH_SIZE = 8;
+const DESCRIPTION_BATCH_SIZE = 32;
+const PROFILE_BATCH_SIZE = 32;
 
 function collectRecordIds(programs, applicants) {
     const recordIds = new Set();
@@ -76,23 +76,25 @@ async function loadSafely(load) {
     }
 }
 
-async function prefetchInBatches(items, batchSize, syncEpoch, load) {
+async function prefetchInBatches(items, batchSize, syncEpoch, loadBatch) {
     for (let index = 0; index < items.length && shouldContinue(syncEpoch); index += batchSize) {
         await waitForIdle(syncEpoch);
-        await Promise.all(items.slice(index, index + batchSize).map((item) => loadSafely(() => load(item))));
+        await loadSafely(() => loadBatch(items.slice(index, index + batchSize)));
     }
 }
 
 async function prefetchProgramDescriptions(programIds, syncEpoch) {
-    await prefetchInBatches(programIds, DESCRIPTION_BATCH_SIZE, syncEpoch, (programId) => (
-        getProgramDesc(programId, false, {priority: BACKGROUND_PRIORITY})
+    await prefetchInBatches(programIds, DESCRIPTION_BATCH_SIZE, syncEpoch, (batch) => (
+        getProgramDescs(batch, false, {priority: BACKGROUND_PRIORITY})
     ));
 }
 
 async function prefetchProfiles(displayNames, syncEpoch) {
-    await prefetchInBatches(displayNames, PROFILE_BATCH_SIZE, syncEpoch, async (displayName) => {
-        const metadata = await getMetadata(displayName, false, {priority: BACKGROUND_PRIORITY});
-        await getAvatar(metadata?.Avatar, displayName, false, {priority: BACKGROUND_PRIORITY});
+    await prefetchInBatches(displayNames, PROFILE_BATCH_SIZE, syncEpoch, async (batch) => {
+        const metadataByName = await getMetadataBatch(batch, false, {priority: BACKGROUND_PRIORITY});
+        await Promise.all(batch.map((displayName) => loadSafely(() => (
+            getAvatar(metadataByName[displayName]?.Avatar, displayName, false, {priority: BACKGROUND_PRIORITY})
+        ))));
     });
 }
 
@@ -111,9 +113,10 @@ async function syncCoreCache() {
         if (!shouldContinue(syncEpoch)) {
             return;
         }
-        const metadata = displayName
-            ? await loadSafely(() => getMetadata(displayName, false, {priority: BACKGROUND_PRIORITY}))
+        const metadataByName = displayName
+            ? await loadSafely(() => getMetadataBatch([displayName], false, {priority: BACKGROUND_PRIORITY}))
             : null;
+        const metadata = metadataByName?.[displayName];
         if (!shouldContinue(syncEpoch)) {
             return;
         }

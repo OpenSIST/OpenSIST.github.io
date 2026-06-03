@@ -2,7 +2,7 @@ const defaultRoot = "https://opensist.tech/";
 const ROOT = import.meta.env.VITE_BACKEND_SPECIFIC_API?.trim() || defaultRoot;
 
 export const PROGRAM_LIST = ROOT + "api/list/programs";
-export const PROGRAM_DESC = ROOT + "api/query/program_description";
+export const PROGRAM_DESC_BATCH = ROOT + "api/query/program_description_batch";
 export const ADD_MODIFY_PROGRAM = ROOT + "api/mutating/new_modify_program";
 export const SEND_RESET_VERIFY_TOKEN = ROOT + "api/auth/forget";
 export const RESET_PASSWORD = ROOT + "api/auth/forget_verify_reset";
@@ -26,7 +26,7 @@ export const ADD_MODIFY_RECORD = ROOT + "api/mutating/new_modify_record";
 export const REMOVE_RECORD = ROOT + "api/mutating/remove_record";
 export const UPLOAD_AVATAR = ROOT + "api/user/upload_avatar";
 export const GET_DISPLAY_NAME = ROOT + "api/my/get_display_name";
-export const GET_METADATA = ROOT + "api/user/get_metadata";
+export const GET_METADATA_BATCH = ROOT + "api/user/get_metadata_batch";
 export const GET_AVATAR = ROOT + "api/user/get_avatar";
 export const TOGGLE_NICKNAME = ROOT + "api/my/toggle_nickname";
 export const UPDATE_CONTACT = ROOT + "api/user/update_contact";

@@ -12,7 +12,7 @@ import {
 import {getApplicant, setApplicant} from "./ApplicantData";
 import {getProgram, setProgram} from "./ProgramData";
 
-const RECORD_BATCH_SIZE = 30;
+const RECORD_BATCH_SIZE = 90;
 
 const recordCacheKey = (recordId) => `record-${recordId}`;
 
