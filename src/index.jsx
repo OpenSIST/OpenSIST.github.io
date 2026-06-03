@@ -10,6 +10,7 @@ import OpenSansItalic from "./Assets/fonts/open-sans-v17-latin-ext_latin-italic.
 import OpenSansBoldItalic from "./Assets/fonts/open-sans-v17-latin-ext_latin-700italic.woff2";
 import localforage from "localforage";
 import router from "./Components/router";
+import {LoadingBackdrop} from "./Components/common";
 
 export const ThemeContext = createContext({
     toggleTheme: () => {
@@ -144,7 +145,7 @@ function App() {
         <React.StrictMode>
             <ThemeProvider theme={theme}>
                 <ThemeContext.Provider value={themeContextValue}>
-                    <RouterProvider router={router}/>
+                    <RouterProvider router={router} fallbackElement={<LoadingBackdrop forceOpen/>}/>
                 </ThemeContext.Provider>
             </ThemeProvider>
         </React.StrictMode>

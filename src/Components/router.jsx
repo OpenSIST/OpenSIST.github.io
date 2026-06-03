@@ -23,9 +23,8 @@ import MarkDownPage from "./MarkDownPage/MarkDownPage";
 import Login, {action as loginAction} from "./Auth/Login/Login";
 import RegisterAndReset, {action as registerAndResetAction} from "./Auth/RegisterAndReset/RegisterAndReset";
 import Agreement from "./Agreement/Agreement";
-import {AboutUs} from "./AboutUs/AboutUs";
+import FAQ from "./FAQ/FAQ";
 import React from "react";
-import FAQContent from "../Data/MarkDown/FAQ.md?raw";
 import ProgramIndexContent from "../Data/MarkDown/ProgramIndex.md?raw"
 import ProfileIndexContent from "../Data/MarkDown/ProfileIndex.md?raw"
 import PostIndexContent from "../Data/MarkDown/PostIndex.md?raw"
@@ -209,8 +208,7 @@ const router = createBrowserRouter([
                         ]
                     }, {
                         path: '/FAQ',
-                        element: <MarkDownPage key="FAQ" sx={{width: "80%", bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA"}}/>,
-                        loader: markdownLoader(FAQContent),
+                        element: <FAQ/>,
                     }, {
                         path: '/login',
                         element: <Login/>,
@@ -226,9 +224,6 @@ const router = createBrowserRouter([
                     }, {
                         path: '/agreement',
                         element: <Agreement/>,
-                    }, {
-                        path: '/about-us',
-                        element: <AboutUs/>,
                     },
                 ]
             }

@@ -40,9 +40,6 @@ export default function NavBar() {
         }, {
             name: "常见问题",
             path: "/FAQ",
-        }, {
-            name: "关于我们",
-            path: "/about-us",
         }
     ]
     const routeMatch = useRouteMatch(navItems.map((item) => item.path));

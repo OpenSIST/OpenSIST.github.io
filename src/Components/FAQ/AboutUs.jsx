@@ -4,7 +4,7 @@ import Grid2 from "@mui/material/Grid";
 import {OpenSIST} from "../common";
 import {AgreementContent} from "../Agreement/Agreement";
 
-export function AboutUs() {
+export function AboutUs({sx = {}}) {
     const developers = [
         {
             id: 'cze',
@@ -39,7 +39,7 @@ export function AboutUs() {
     ].sort((a, b) => a.id.localeCompare(b.id))
 
     return (
-        <Box sx={{width: '70%', p: '1rem'}}>
+        <Box sx={{width: '70%', p: '1rem', ...sx}}>
             <Typography variant="h4" sx={{textAlign: 'center'}}>关于我们</Typography>
             <Typography variant='h5'>我们是谁？（按姓氏排序）</Typography>
             <Grid2
