@@ -4,7 +4,7 @@ import {getApplicant, setApplicant} from "./ApplicantData";
 
 export async function getFiles() {
     const files = await apiJson(FILE_LIST);
-    return [...files['data']].sort((a, b) => new Date(b.modified) - new Date(a.modified));
+    return files.data ?? [];
 }
 
 export async function getFile(fileId) {
@@ -26,10 +26,11 @@ export async function getFileObject(fileId) {
 }
 
 export async function getFileContent(fileId) {
-    const fileContent = await apiJson(GET_FILE_CONTENT, {body: {PostID: fileId}});
-    return fileContent['content'];
+    const response = await apiRequest(GET_FILE_CONTENT, {body: {PostID: fileId}});
+    const blob = await response.blob();
+    const pdfBlob = blob.type === "application/pdf" ? blob : new Blob([blob], {type: "application/pdf"});
+    return URL.createObjectURL(pdfBlob);
 }
-
 
 export async function addModifyFile(requestBody, type) {
     const endpoint = {new: ADD_FILE, edit: MODIFY_FILE}[type];

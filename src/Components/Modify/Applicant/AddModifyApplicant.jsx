@@ -21,8 +21,8 @@ export async function loader({params}) {
         if (applicant.Posts && applicant.Posts.length > 0) {
             const applicantPostIds = new Set(applicant.Posts.map(String));
             const files = (await getFiles()).filter(file => applicantPostIds.has(file.PostID.toString()));
-            cvPost = files.find(file => file.PostID.startsWith("CV"));
-            sopPost = files.find(file => file.PostID.startsWith("SoP"));
+            cvPost = files.find(file => file.type === "CV" || file.PostID.startsWith("CV"));
+            sopPost = files.find(file => file.type === "SoP" || file.PostID.startsWith("SoP"));
         }
     }
     return {programs, applicant, cvPost, sopPost};
