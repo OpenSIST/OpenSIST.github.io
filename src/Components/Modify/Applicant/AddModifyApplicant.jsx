@@ -8,6 +8,7 @@ import {getDisplayName} from "../../../Data/UserData";
 import {getPrograms} from "../../../Data/ProgramData";
 import {getFiles} from "../../../Data/FileData";
 import {createApplicantRequestBody, createInitialApplicantFormValues, syncApplicantFile,} from "./applicantFormData";
+import {decodePathParam, profileApplicantPath} from "../../RouteUtils";
 
 export async function loader({params}) {
     let programs = await getPrograms();
@@ -16,12 +17,12 @@ export async function loader({params}) {
     let cvPost = null;
     let sopPost = null;
     if (params.applicantId) {
-        applicant = await getApplicant(params.applicantId);
+        applicant = await getApplicant(decodePathParam(params.applicantId));
         if (applicant.Posts && applicant.Posts.length > 0) {
             const applicantPostIds = new Set(applicant.Posts.map(String));
             const files = (await getFiles()).filter(file => applicantPostIds.has(file.PostID.toString()));
-            cvPost = files.find(file => file.PostID.startsWith("CV"));
-            sopPost = files.find(file => file.PostID.startsWith("SoP"));
+            cvPost = files.find(file => file.type === "CV" || file.PostID.startsWith("CV"));
+            sopPost = files.find(file => file.type === "SoP" || file.PostID.startsWith("SoP"));
         }
     }
     return {programs, applicant, cvPost, sopPost};
@@ -41,7 +42,7 @@ export async function action({request}) {
     await syncApplicantFile({applicantId, fileType: 'CV', formData, formValues, posts});
     await syncApplicantFile({applicantId, fileType: 'SoP', formData, formValues, posts});
 
-    return redirect(`/profile/${applicantId}`);
+    return redirect(profileApplicantPath(applicantId));
 }
 
 const FormContent = (activeStep, formValues, handleBack, handleNext, handleChange, type, loaderData) => {

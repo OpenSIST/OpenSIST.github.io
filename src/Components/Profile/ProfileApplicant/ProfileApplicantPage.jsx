@@ -9,9 +9,10 @@ import {BasicInfoBlock} from "./ProfileApplicantHeader";
 import {RecordBlock} from "./ProfileApplicantRecords";
 import {CompetitionBlock, ExchangeBlock, InternshipBlock, PublicationBlock, RecommendationBlock, ResearchBlock} from "./ProfileApplicantSections";
 import "./ProfileApplicantPage.css";
+import {dataPointsApplicantPath, decodePathParam, profileApplicantPath} from "../../RouteUtils";
 
 export async function loader({params}) {
-    const applicantId = params.applicantId;
+    const applicantId = decodePathParam(params.applicantId);
     const isAuth = await isAuthApplicant(applicantId);
     if (!isAuth) {
         await getApplicants(true);
@@ -24,7 +25,7 @@ export async function loader({params}) {
 }
 
 export async function DataPointsLoader({params}) {
-    return loadApplicantProfile(params.applicantId);
+    return loadApplicantProfile(decodePathParam(params.applicantId));
 }
 
 async function loadApplicantProfile(applicantId) {
@@ -46,7 +47,7 @@ async function refreshApplicantProfile(applicantId, displayName) {
 export async function action({params, request}) {
     const formData = await request.formData();
     const actionType = formData.get('ActionType');
-    const applicantId = params.applicantId;
+    const applicantId = decodePathParam(params.applicantId);
     if (actionType === 'DeleteApplicant') {
         await removeApplicant(applicantId);
         return redirect('/profile');
@@ -54,22 +55,22 @@ export async function action({params, request}) {
     if (actionType === 'DeleteRecord') {
         const recordId = formData.get('RecordID');
         await removeRecord(recordId);
-        return redirect(`/profile/${applicantId}`);
+        return redirect(profileApplicantPath(applicantId));
     }
     if (actionType === 'Refresh') {
         const displayName = await getDisplayName(true);
         await refreshApplicantProfile(applicantId, displayName);
-        return redirect(`/profile/${applicantId}`);
+        return redirect(profileApplicantPath(applicantId));
     }
 }
 
 export async function DataPointsAction({params, request}) {
     const formData = await request.formData();
     const actionType = formData.get('ActionType');
-    const applicantId = params.applicantId;
+    const applicantId = decodePathParam(params.applicantId);
     if (actionType === 'Refresh') {
         await refreshApplicantProfile(applicantId, applicantId.split("@")[0]);
-        return redirect(`/datapoints/applicant/${applicantId}`);
+        return redirect(dataPointsApplicantPath(applicantId));
     }
 }
 

@@ -9,8 +9,14 @@ import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
 import {regionFlagMapping} from "../../../Data/Schemas";
 import StarButton from "../ProgramContent/StarButton";
+import {programsProgramPath} from "../../RouteUtils";
+import univList from "../../../Data/UnivList.json";
 
 const MetadataContext = React.createContext();
+const univRegionMapping = univList.reduce((acc, univ) => {
+    acc[univ.abbr] = univ.region;
+    return acc;
+}, {});
 
 export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
@@ -92,7 +98,7 @@ export function UnivProgramList({univProgramList, ButtonComponent = ProgramButto
                 className="UnivProgramList"
             >
                 {Object.entries(univProgramList).map((univProgram) => (
-                    <React.Fragment key={univProgram[0]}>
+                    <React.Fragment key={`${univProgram[0]}-${univProgram[1].length === 0 ? 'empty' : 'programs'}`}>
                         <ProgramList
                             univProgram={univProgram}
                             selectProgram={selectProgram}
@@ -107,10 +113,12 @@ export function UnivProgramList({univProgramList, ButtonComponent = ProgramButto
 }
 
 export function ProgramList({univProgram, selectProgram, setSelectProgram, ButtonComponent}) {
-    const [isFolded, setIsFolded] = React.useState(false);
     const univName = univProgram[0];
     const programList = univProgram[1];
-    const flags = programList[0].Region.map((r) => regionFlagMapping[r]).reduce((prev, curr) => prev + ' ' + curr, '');
+    const hasPrograms = programList.length > 0;
+    const [isFolded, setIsFolded] = React.useState(!hasPrograms);
+    const region = programList[0]?.Region ?? univRegionMapping[univName] ?? [];
+    const flags = region.map((r) => regionFlagMapping[r]).filter(Boolean).join(' ');
     const darkMode = useTheme().palette.mode === 'dark';
     return (
         <>
@@ -136,19 +144,34 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
             <Collapse in={isFolded} timeout='auto' unmountOnExit>
                 <List component="div" disablePadding>
                     {
-                        programList.map((program) => (
+                        hasPrograms ? programList.map((program) => (
                             <ButtonComponent
                                 program={program}
                                 selectProgram={selectProgram}
                                 setSelectProgram={setSelectProgram}
                                 key={program.ProgramID}
                             />
-                        ))
+                        )) : <EmptyProgramButton univName={univName}/>
                     }
                 </List>
             </Collapse>
         </>
     )
+}
+
+function EmptyProgramButton({univName}) {
+    return (
+        <ListItemButton
+            component={Link}
+            to="/programs/new"
+            state={{university: univName}}
+            sx={{pl: "2rem", gap: 1}}
+        >
+            <Add fontSize="small"/>
+            <ListItemText primary="暂无项目记录"
+                          secondary="点击添加"/>
+        </ListItemButton>
+    );
 }
 
 export function ProgramButton({program, selectProgram, setSelectProgram}) {
@@ -161,7 +184,7 @@ export function ProgramButton({program, selectProgram, setSelectProgram}) {
             selected={program.ProgramID === selectProgram}
             component={Link}
             onClick={() => setSelectProgram(program.ProgramID)}
-            to={`/programs/${encodeURIComponent(program.ProgramID)}${window.location.search}`}
+            to={`${programsProgramPath(program.ProgramID)}${window.location.search}`}
             sx={{
                 pl: "3rem",
                 "&::before": {

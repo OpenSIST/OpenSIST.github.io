@@ -12,6 +12,7 @@ import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
 import {BoldTypography, DraggableFAB, LoadingBackdrop} from "../common";
 import {columnWidthMap, PlainTable, TopStickyRow} from './PlainTable'
 import {ConfigProvider, Input, Select, theme} from 'antd';
+import {decodePathParam} from "../RouteUtils";
 
 const {Option} = Select;
 
@@ -47,7 +48,7 @@ export async function action() {
 export function ApplicantProfileInDataPoints() {
     const navigate = useNavigate();
     const params = useParams();
-    const applicantID = params.applicantId;
+    const applicantID = decodePathParam(params.applicantId);
     const {applicant} = useLoaderData();
     return (
         <Dialog
@@ -72,7 +73,7 @@ export function ApplicantProfileInDataPoints() {
 export function ProgramContentInDataPoints() {
     const navigate = useNavigate();
     const params = useParams();
-    const programID = params.programId;
+    const programID = decodePathParam(params.programId);
     const {programContent} = useLoaderData();
     return (
         <Dialog

@@ -42,6 +42,7 @@ import {
     SliderValueRankStringMapping
 } from "../../../Data/Schemas";
 import {BoldTypography} from "../../common";
+import {profileApplicantEditPath} from "../../RouteUtils";
 import {BaseItemBlock, ContentCenteredGrid} from "./ProfileApplicantShared";
 
 const contactIcons = {
@@ -82,7 +83,7 @@ function ControlButtonGroup({applicantId, records = {}, postLength = 0, editable
             </Form>
             {editable ? <>
                 <Tooltip title='更改申请人信息' arrow>
-                    <IconButton component={Link} to={`/profile/${applicantId}/edit`}>
+                    <IconButton component={Link} to={profileApplicantEditPath(applicantId)}>
                         <Edit/>
                     </IconButton>
                 </Tooltip>
