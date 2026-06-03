@@ -8,7 +8,6 @@ import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
 import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
 import {regionFlagMapping} from "../../../Data/Schemas";
-import Grid2 from "@mui/material/Grid";
 import StarButton from "../ProgramContent/StarButton";
 
 const MetadataContext = React.createContext();
@@ -30,8 +29,16 @@ export default function SideBar({loaderData}) {
                 }}
             >
                 <SearchBar query={getQuery(loaderData)} pageName='program'/>
-                <Grid2 columnSpacing={1} container sx={{width: '100%'}}>
-                    <Grid2 size={9}>
+                <Box
+                    sx={{
+                        boxSizing: 'border-box',
+                        columnGap: 1,
+                        display: 'grid',
+                        gridTemplateColumns: 'minmax(0, 8fr) minmax(0, 3fr)',
+                        width: '100%',
+                    }}
+                >
+                    <Box sx={{minWidth: 0}}>
                         <Form action='/programs/new' style={{width: "100%"}}>
                             <Tooltip title='添加新项目' arrow>
                                 <Button fullWidth type='submit' variant="outlined"
@@ -44,8 +51,8 @@ export default function SideBar({loaderData}) {
                                 </Button>
                             </Tooltip>
                         </Form>
-                    </Grid2>
-                    <Grid2 size={3}>
+                    </Box>
+                    <Box sx={{minWidth: 0}}>
                         <Form method='post' style={{width: "100%"}}>
                             <Tooltip title='刷新项目列表' arrow>
                                 <Button fullWidth type='submit' variant="outlined"
@@ -58,8 +65,8 @@ export default function SideBar({loaderData}) {
                                 </Button>
                             </Tooltip>
                         </Form>
-                    </Grid2>
-                </Grid2>
+                    </Box>
+                </Box>
                 <UnivProgramList univProgramList={univProgramList}/>
             </CollapseSideBar>
         </MetadataContext.Provider>
