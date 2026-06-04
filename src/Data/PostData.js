@@ -1,6 +1,25 @@
 import {apiJson, apiRequest} from "./Common";
 import {CREATE_COMMENT_API, CREATE_POST_API, DELETE_CONTENT_API, GET_CONTENT_API, LIST_POSTS_API, MODIFY_CONTENT_API, TOGGLE_LIKE_API} from "../APIs/APIs"
 
+export const POST_CONTENT_MAX_BYTES = 20 * 1000 * 1000;
+
+const textEncoder = new TextEncoder();
+
+export function getUtf8ByteLength(value = "") {
+    return textEncoder.encode(value ?? "").length;
+}
+
+export function formatPostContentSize(bytes) {
+    return `${(bytes / 1000 / 1000).toFixed(2)} MB`;
+}
+
+function assertPostContentWithinLimit(content) {
+    const size = getUtf8ByteLength(content);
+    if (size > POST_CONTENT_MAX_BYTES) {
+        throw new Error(`Post content cannot exceed ${formatPostContentSize(POST_CONTENT_MAX_BYTES)}.`);
+    }
+}
+
 function normalizeTags(tags) {
     if (Array.isArray(tags)) {
         return tags;
@@ -97,6 +116,7 @@ export async function removeContent(contentId) {
 export async function addModifyPost(requestData, type) {
     let API;
     let requestBody;
+    assertPostContentWithinLimit(requestData.content.Content);
     if (type === 'new') {
         API = CREATE_POST_API;
         requestBody = {
@@ -120,6 +140,7 @@ export async function addModifyPost(requestData, type) {
 }
 
 export async function addComment(parentId, commentContent) {
+    assertPostContentWithinLimit(commentContent);
     const requestBody = {
         parentId: parentId.toString(),
         content: commentContent,

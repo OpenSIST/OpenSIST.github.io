@@ -245,7 +245,7 @@ export function BasicInfoBlock({avatarUrl, contact = {}, applicant, records, edi
                 </ContentCenteredGrid>
                 <ContentCenteredGrid size={12} sx={{gap: '1rem'}}>
                     <BoldTypography variant="subtitle1"> 最终去向: </BoldTypography>
-                    <Chip label={applicant.Final === "" ? "暂无/未知" : applicant.Final}/>
+                    <Chip color="neutral" label={applicant.Final === "" ? "暂无/未知" : applicant.Final}/>
                 </ContentCenteredGrid>
             </Grid2>
             <Grid2

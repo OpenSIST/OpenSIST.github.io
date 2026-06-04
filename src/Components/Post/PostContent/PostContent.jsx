@@ -1,6 +1,5 @@
 import {addComment, getPostThread, removeContent, toggleLikeContent} from "../../../Data/PostData";
 import {Form, Link, Outlet, redirect, useLoaderData} from "react-router-dom";
-import ReactMarkdown from "react-markdown";
 import {Avatar, Box, Button, Dialog, DialogActions, DialogTitle, IconButton, Paper, TextField, Tooltip, Typography} from "@mui/material";
 import {Delete, Edit, Favorite, FavoriteBorder, Refresh, Send} from "@mui/icons-material";
 import React, {useState} from "react";
@@ -10,6 +9,58 @@ import {getAvatar, getDisplayName, getMetadata} from "../../../Data/UserData";
 import Grid2 from "@mui/material/Grid";
 import {utcToLocal} from "../../../Data/Common";
 import {decodePathParam, postsApplicantPath, postsPostPath} from "../../RouteUtils";
+import ReactMarkdown, {defaultUrlTransform} from "react-markdown";
+
+const IMAGE_DATA_URL_PATTERN = /^data:image\/(png|jpeg|jpg|gif|webp|bmp|avif);base64,/i;
+
+function postUrlTransform(value, key, node) {
+    if (value.startsWith("data:")) {
+        if (key === "src" && node.tagName === "img" && IMAGE_DATA_URL_PATTERN.test(value)) {
+            return value;
+        }
+        return "";
+    }
+    return defaultUrlTransform(value);
+}
+
+const markdownComponents = {
+    a({node, href = "", children, ...props}) {
+        return (
+            <a href={href} {...props}>
+                {children}
+            </a>
+        );
+    },
+    img({node, ...props}) {
+        return (
+            <Box
+                component="img"
+                loading="lazy"
+                sx={{
+                    borderRadius: "4px",
+                    display: "block",
+                    height: "auto",
+                    maxHeight: {
+                        xs: "18rem",
+                        sm: "24rem",
+                        md: "32rem",
+                    },
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                }}
+                {...props}
+            />
+        );
+    },
+};
+
+function PostMarkdown({children}) {
+    return (
+        <ReactMarkdown urlTransform={postUrlTransform} components={markdownComponents}>
+            {children}
+        </ReactMarkdown>
+    );
+}
 
 function sortNewestFirst(comments) {
     return [...comments].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
@@ -168,9 +219,9 @@ export default function PostContent() {
                 <Typography variant={'h4'} sx={{display: 'flex', position: 'relative', mb: '1rem'}}>
                     {postObj.title}
                 </Typography>
-                <ReactMarkdown>
+                <PostMarkdown>
                     {postObj.content}
-                </ReactMarkdown>
+                </PostMarkdown>
                 <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
                     <LikeButton content={postObj}/>
                 </Box>
@@ -298,9 +349,9 @@ function CommentItem({comment, currentDisplayName, commentsByParentId}) {
                     评论已删除
                 </Typography>
             ) : (
-                <ReactMarkdown>
+                <PostMarkdown>
                     {comment.content}
-                </ReactMarkdown>
+                </PostMarkdown>
             )}
             {replyOpen ? (
                 <CommentForm
