@@ -62,16 +62,23 @@ function PostMarkdown({children}) {
     );
 }
 
-function sortNewestFirst(comments) {
-    return [...comments].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+function getCommentUpdateTime(comment) {
+    return new Date(comment.updated_at ?? comment.created_at ?? 0).getTime();
+}
+
+function sortCommentsByUpdateTime(comments, latestFirst) {
+    return [...comments].sort((a, b) => {
+        const timeDiff = getCommentUpdateTime(a) - getCommentUpdateTime(b);
+        return latestFirst ? -timeDiff : timeDiff;
+    });
 }
 
 function hasVisibleCommentThread(comment, commentsByParentId) {
-    return !comment.is_deleted || getVisibleComments(comment.id, commentsByParentId).length > 0;
+    return !comment.is_deleted || getVisibleComments(comment.id, commentsByParentId, false).length > 0;
 }
 
-function getVisibleComments(parentId, commentsByParentId) {
-    return sortNewestFirst(commentsByParentId[parentId] ?? [])
+function getVisibleComments(parentId, commentsByParentId, latestFirst) {
+    return sortCommentsByUpdateTime(commentsByParentId[parentId] ?? [], latestFirst)
         .filter((comment) => hasVisibleCommentThread(comment, commentsByParentId));
 }
 
@@ -134,7 +141,7 @@ export default function PostContent() {
         acc[parentId] = [...(acc[parentId] ?? []), comment];
         return acc;
     }, {});
-    const topLevelComments = getVisibleComments(postObj.id, commentsByParentId);
+    const topLevelComments = getVisibleComments(postObj.id, commentsByParentId, true);
     return (
         <>
             <Box className="PostContentHeader" sx={{pb: "0.5rem"}}>
@@ -324,7 +331,7 @@ function CommentItem({comment, currentDisplayName, commentsByParentId}) {
     const [replyOpen, setReplyOpen] = useState(false);
     const canManage = Boolean(currentDisplayName && comment.author === currentDisplayName && !comment.is_deleted);
     const canReply = comment.type === "comment" && !comment.is_deleted;
-    const visibleReplies = getVisibleComments(comment.id, commentsByParentId);
+    const visibleReplies = getVisibleComments(comment.id, commentsByParentId, false);
     return (
         <Box sx={{borderLeft: '2px solid', borderColor: 'divider', pl: 2}}>
             <Box sx={{display: 'flex', justifyContent: 'space-between', gap: 1}}>
