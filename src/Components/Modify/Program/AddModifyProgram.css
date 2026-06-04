@@ -3,6 +3,15 @@
     border-radius: 5px;
     background-color: #f0f0f3;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.MarkDownEditorFocusLayer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
 }
 
 .MarkDownToolBar {
@@ -14,4 +23,30 @@
 
 .MarkDownEditorContent {
     font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Twemoji', 'Segoe UI Emoji', sans-serif;
+    cursor: text;
+    flex: 1;
+    min-height: 18rem;
+}
+
+.MarkDownEditor .mdxeditor-root-contenteditable,
+.MarkDownEditor .mdxeditor-root-contenteditable > div {
+    cursor: text;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.MarkDownEditor [class*="_imageWrapper"] {
+    max-width: 100%;
+}
+
+.MarkDownEditor [class*="_imageWrapper"] img,
+.MarkDownEditorContent img {
+    border-radius: 4px;
+    display: block;
+    height: auto;
+    max-height: 20rem;
+    max-width: 100%;
+    object-fit: contain;
 }
