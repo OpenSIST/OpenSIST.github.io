@@ -7,9 +7,21 @@ export const ContentCenteredGrid = styled(Grid2)(() => ({
     alignItems: 'center',
 }));
 
+function getGridProps(checkpointProps = {}) {
+    const {xs, sm, md, lg, xl, size, ...rest} = checkpointProps;
+    const legacySize = Object.fromEntries(
+        Object.entries({xs, sm, md, lg, xl}).filter(([, value]) => value !== undefined)
+    );
+    const hasLegacySize = Object.keys(legacySize).length > 0;
+    return {
+        ...rest,
+        ...(size || hasLegacySize ? {size: size ?? legacySize} : {}),
+    };
+}
+
 export function BaseItemBlock({children, className, checkpointProps, spacing = 0, elevation = 2}) {
     return (
-        <Grid2 sx={{display: "flex"}} {...checkpointProps}>
+        <Grid2 sx={{display: "flex"}} {...getGridProps(checkpointProps)}>
             <Paper className={className} elevation={elevation}>
                 <Grid2 container spacing={spacing}>
                     {children}
