@@ -1,4 +1,4 @@
-import {ADD_MODIFY_RECORD, GET_RECORDS_BY_ID, REMOVE_RECORD} from "../APIs/APIs";
+import {ADD_MODIFY_RECORD, RECORD_LIST, REMOVE_RECORD} from "../APIs/APIs";
 import {apiJson, apiRequest} from "./Common";
 import {
     BACKGROUND_PRIORITY,
@@ -12,9 +12,8 @@ import {
 import {getApplicant, setApplicant} from "./ApplicantData";
 import {getProgram, setProgram} from "./ProgramData";
 
-const RECORD_BATCH_SIZE = 90;
-
 const recordCacheKey = (recordId) => `record-${recordId}`;
+const recordListLoads = new Map();
 
 export async function addModifyRecord(requestBody) {
     await apiRequest(ADD_MODIFY_RECORD, {
@@ -79,65 +78,67 @@ export async function getRecordByRecordIDs(recordIDs, isRefresh = false, {priori
     }
 
     try {
-        const responses = priority === BACKGROUND_PRIORITY
-            ? await requestRecordBatchesSequentially(requestRecordIDs, priority)
-            : await requestRecordBatchesConcurrently(requestRecordIDs, priority);
-        const refreshedRecordResponses = responses.reduce((records, response) => {
-            return {...records, ...response.data};
-        }, {});
-        const refreshedRecords = Object.fromEntries(
-            Object.entries(refreshedRecordResponses).filter(([, record]) => isRecordData(record))
-        );
-        const cacheWrites = requestRecordIDs.map((recordId) => {
+        const refreshedRecords = await fetchRecordList(priority);
+        const requestedIDSet = new Set(requestRecordIDs);
+        const cacheWrites = Object.entries(refreshedRecords).map(([recordId, record]) => {
             const key = recordCacheKey(recordId);
-            const requestEpoch = request.epoch;
-            const requestVersion = request.versionFor(key);
-            return isRecordData(refreshedRecordResponses[recordId])
-                ? writeCacheValue(key, refreshedRecords[recordId], {requestEpoch, requestVersion})
-                : removeCacheValue(key, {requestEpoch, requestVersion});
+            return writeCacheValue(key, record, {
+                requestEpoch: request.epoch,
+                requestVersion: requestedIDSet.has(recordId) ? request.versionFor(key) : undefined,
+            });
+        });
+        requestRecordIDs.forEach((recordId) => {
+            if (!refreshedRecords[recordId]) {
+                const key = recordCacheKey(recordId);
+                cacheWrites.push(removeCacheValue(key, {
+                    requestEpoch: request.epoch,
+                    requestVersion: request.versionFor(key),
+                }));
+            }
         });
         if (priority === BACKGROUND_PRIORITY) {
             await Promise.all(cacheWrites);
         } else {
             cacheWrites.forEach((cacheWrite) => void cacheWrite.catch(() => {}));
         }
-        const requestedIDSet = new Set(requestRecordIDs);
         const retainedCachedRecords = Object.fromEntries(
             Object.entries(cachedRecords).filter(([recordId]) => !requestedIDSet.has(recordId))
         );
+        const requestedRefreshedRecords = Object.fromEntries(
+            requestRecordIDs.flatMap((recordId) => (
+                refreshedRecords[recordId] ? [[recordId, refreshedRecords[recordId]]] : []
+            ))
+        );
         return {
             ...retainedCachedRecords,
-            ...refreshedRecords,
+            ...requestedRefreshedRecords,
         };
     } finally {
         request.release();
     }
 }
 
-async function requestRecordBatchesConcurrently(recordIDs, priority) {
-    return Promise.all(createRecordBatches(recordIDs).map((batch) => fetchRecordBatch(batch, priority)));
+function normalizeRecordList(records) {
+    return Object.fromEntries(
+        (records ?? [])
+            .filter(isRecordData)
+            .map((record) => [record.RecordID, record])
+    );
 }
 
-async function requestRecordBatchesSequentially(recordIDs, priority) {
-    const responses = [];
-    for (const batch of createRecordBatches(recordIDs)) {
-        responses.push(await fetchRecordBatch(batch, priority));
+function fetchRecordList(priority) {
+    const loadKey = priority === BACKGROUND_PRIORITY ? BACKGROUND_PRIORITY : "foreground";
+    if (recordListLoads.has(loadKey)) {
+        return recordListLoads.get(loadKey);
     }
-    return responses;
-}
-
-function createRecordBatches(recordIDs) {
-    const batches = [];
-    for (let index = 0; index < recordIDs.length; index += RECORD_BATCH_SIZE) {
-        batches.push(recordIDs.slice(index, index + RECORD_BATCH_SIZE));
-    }
-    return batches;
-}
-
-function fetchRecordBatch(recordIDs, priority) {
-    return apiJson(GET_RECORDS_BY_ID, {
-        body: {IDs: recordIDs},
+    const load = apiJson(RECORD_LIST, {
         fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+    }).then((response) => normalizeRecordList(response.data));
+    recordListLoads.set(loadKey, load);
+    return load.finally(() => {
+        if (recordListLoads.get(loadKey) === load) {
+            recordListLoads.delete(loadKey);
+        }
     });
 }
 
