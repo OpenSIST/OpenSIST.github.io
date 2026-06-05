@@ -1,14 +1,14 @@
 import localforage from "localforage";
 
 export const CACHE_EXPIRATION = 60 * 60 * 1000;
-export const BACKGROUND_PRIORITY = "background";
+export const FOREGROUND_PRIORITY = "auto";
+export const BACKGROUND_PRIORITY = "low";
 export const CACHE_CLEARED_EVENT = "opensist-cache-cleared";
 
 const CACHE_SCHEMA_VERSION = 1;
 const memoryCache = new Map();
 const latestRequestVersions = new Map();
 const foregroundRequests = new Map();
-const backgroundRequests = new Map();
 const foregroundLoads = new Map();
 const backgroundLoads = new Map();
 const writeQueues = new Map();
@@ -44,7 +44,8 @@ function normalizeCacheEntry(entry, legacyFields = []) {
 
 function enqueueCacheWrite(key, write) {
     const previousWrite = writeQueues.get(key) ?? Promise.resolve();
-    const pendingWrite = previousWrite.catch(() => {}).then(write);
+    const pendingWrite = previousWrite.catch(() => {
+    }).then(write);
     writeQueues.set(key, pendingWrite);
     return pendingWrite.finally(() => {
         if (writeQueues.get(key) === pendingWrite) {
@@ -119,7 +120,6 @@ export async function clearDataCache() {
     memoryCache.clear();
     latestRequestVersions.clear();
     foregroundRequests.clear();
-    backgroundRequests.clear();
     foregroundLoads.clear();
     backgroundLoads.clear();
     await localforage.clear();
@@ -135,37 +135,39 @@ export function getCacheEpoch() {
     return cacheEpoch;
 }
 
-export function hasForegroundRequest(key) {
-    return foregroundRequests.has(key);
-}
-
-export function beginCacheRequests(keys, priority = "foreground", requestEpoch = cacheEpoch) {
+export function beginCacheRequests(keys, priority = FOREGROUND_PRIORITY, requestEpoch = cacheEpoch) {
     if (requestEpoch !== cacheEpoch) {
         return {
             keys: [],
             epoch: requestEpoch,
             versionFor: () => undefined,
-            release() {},
+            release() {
+            },
         };
     }
-    const requestKeys = priority === BACKGROUND_PRIORITY
-        ? keys.filter((key) => !hasForegroundRequest(key))
+    const isBackground = priority === BACKGROUND_PRIORITY;
+    const requestKeys = isBackground
+        ? keys.filter((key) => !foregroundRequests.has(key))
         : keys;
     const versions = new Map(requestKeys.map((key) => [key, nextRequestVersion(key)]));
-    const requestMap = priority === BACKGROUND_PRIORITY ? backgroundRequests : foregroundRequests;
-    requestKeys.forEach((key) => requestMap.set(key, (requestMap.get(key) ?? 0) + 1));
+    if (!isBackground) {
+        requestKeys.forEach((key) => foregroundRequests.set(key, (foregroundRequests.get(key) ?? 0) + 1));
+    }
 
     return {
         keys: requestKeys,
         epoch: requestEpoch,
         versionFor: (key) => versions.get(key),
         release() {
+            if (isBackground) {
+                return;
+            }
             requestKeys.forEach((key) => {
-                const remaining = (requestMap.get(key) ?? 1) - 1;
+                const remaining = (foregroundRequests.get(key) ?? 1) - 1;
                 if (remaining > 0) {
-                    requestMap.set(key, remaining);
+                    foregroundRequests.set(key, remaining);
                 } else {
-                    requestMap.delete(key);
+                    foregroundRequests.delete(key);
                 }
             });
         },
@@ -173,12 +175,13 @@ export function beginCacheRequests(keys, priority = "foreground", requestEpoch =
 }
 
 export async function loadCachedValue({
-    forceRefresh = false,
-    key,
-    legacyFields = [],
-    load,
-    priority = "foreground",
-}) {
+                                          forceRefresh = false,
+                                          key,
+                                          legacyFields = [],
+                                          load,
+                                          priority = FOREGROUND_PRIORITY,
+                                      }) {
+    const isBackground = priority === BACKGROUND_PRIORITY;
     const requestEpoch = cacheEpoch;
     const entry = await readCacheEntry(key, {legacyFields, requestEpoch});
     if (requestEpoch !== cacheEpoch) {
@@ -187,10 +190,10 @@ export async function loadCachedValue({
     if (!isCacheEntryExpired(entry, forceRefresh)) {
         return entry.value;
     }
-    if (priority === BACKGROUND_PRIORITY && hasForegroundRequest(key)) {
+    if (isBackground && foregroundRequests.has(key)) {
         return entry?.value;
     }
-    const loadMap = priority === BACKGROUND_PRIORITY ? backgroundLoads : foregroundLoads;
+    const loadMap = isBackground ? backgroundLoads : foregroundLoads;
     if (loadMap.has(key)) {
         return loadMap.get(key);
     }
@@ -206,10 +209,11 @@ export async function loadCachedValue({
                 requestEpoch: request.epoch,
                 requestVersion: request.versionFor(key),
             });
-            if (priority === BACKGROUND_PRIORITY) {
+            if (isBackground) {
                 await cacheWrite;
             } else {
-                void cacheWrite.catch(() => {});
+                void cacheWrite.catch(() => {
+                });
             }
             return value;
         } finally {

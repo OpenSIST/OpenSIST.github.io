@@ -1,7 +1,7 @@
 import {getApplicants} from "./ApplicantData";
 import {BACKGROUND_PRIORITY, CACHE_CLEARED_EVENT, CACHE_EXPIRATION, getCacheEpoch} from "./CacheStore";
 import {getProgramDescs, getPrograms} from "./ProgramData";
-import {getRecordByRecordIDs} from "./RecordData";
+import {getRecords} from "./RecordData";
 import {getAvatar, getDisplayName, getMetadataBatch} from "./UserData";
 
 let active = false;
@@ -11,21 +11,6 @@ let syncRunning = false;
 
 const DESCRIPTION_BATCH_SIZE = 32;
 const PROFILE_BATCH_SIZE = 32;
-
-function collectRecordIds(programs, applicants) {
-    const recordIds = new Set();
-    Object.values(programs ?? {}).flat().forEach((program) => {
-        (program.Applicants ?? []).forEach((applicantId) => {
-            recordIds.add(`${applicantId}|${program.ProgramID}`);
-        });
-    });
-    (applicants ?? []).forEach((applicant) => {
-        Object.keys(applicant.Programs ?? {}).forEach((programId) => {
-            recordIds.add(`${applicant.ApplicantID}|${programId}`);
-        });
-    });
-    return [...recordIds];
-}
 
 function collectProgramIds(programs) {
     return Object.values(programs ?? {}).flat()
@@ -89,7 +74,25 @@ async function prefetchProgramDescriptions(programIds, syncEpoch) {
     ));
 }
 
-async function prefetchProfiles(displayNames, syncEpoch) {
+async function prefetchCoreCache() {
+    const [programs, applicants] = await Promise.all([
+        loadSafely(() => getPrograms(false, {}, "cs_rank", {priority: BACKGROUND_PRIORITY})),
+        loadSafely(() => getApplicants(false, {priority: BACKGROUND_PRIORITY})),
+        loadSafely(() => getRecords(false, {priority: BACKGROUND_PRIORITY})),
+    ]);
+    return {programs, applicants};
+}
+
+async function prefetchProfiles(applicants, syncEpoch) {
+    await waitForIdle(syncEpoch);
+    const displayName = await loadSafely(() => getDisplayName(false, {priority: BACKGROUND_PRIORITY}));
+    if (!shouldContinue(syncEpoch)) {
+        return;
+    }
+    const currentMetadata = displayName
+        ? await loadSafely(() => getMetadataBatch([displayName], false, {priority: BACKGROUND_PRIORITY}))
+        : null;
+    const displayNames = collectProfileDisplayNames(displayName, currentMetadata?.[displayName], applicants);
     await prefetchInBatches(displayNames, PROFILE_BATCH_SIZE, syncEpoch, async (batch) => {
         const metadataByName = await getMetadataBatch(batch, false, {priority: BACKGROUND_PRIORITY});
         await Promise.all(batch.map((displayName) => loadSafely(() => (
@@ -105,27 +108,12 @@ async function syncCoreCache() {
     syncRunning = true;
     const syncEpoch = getCacheEpoch();
     try {
-        const [displayName, programs, applicants] = await Promise.all([
-            loadSafely(() => getDisplayName(false, {priority: BACKGROUND_PRIORITY})),
-            loadSafely(() => getPrograms(false, {}, "cs_rank", {priority: BACKGROUND_PRIORITY})),
-            loadSafely(() => getApplicants(false, {priority: BACKGROUND_PRIORITY})),
-        ]);
+        const {programs, applicants} = await prefetchCoreCache();
         if (!shouldContinue(syncEpoch)) {
             return;
         }
-        const metadataByName = displayName
-            ? await loadSafely(() => getMetadataBatch([displayName], false, {priority: BACKGROUND_PRIORITY}))
-            : null;
-        const metadata = metadataByName?.[displayName];
-        if (!shouldContinue(syncEpoch)) {
-            return;
-        }
-        await prefetchProfiles(collectProfileDisplayNames(displayName, metadata, applicants), syncEpoch);
         await prefetchProgramDescriptions(collectProgramIds(programs), syncEpoch);
-        const recordIds = collectRecordIds(programs, applicants);
-        if (shouldContinue(syncEpoch)) {
-            await getRecordByRecordIDs(recordIds, false, {priority: BACKGROUND_PRIORITY});
-        }
+        await prefetchProfiles(applicants, syncEpoch);
     } finally {
         syncRunning = false;
         if (active && syncEpoch !== getCacheEpoch()) {
