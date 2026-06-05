@@ -30,6 +30,7 @@ import React, {useRef, useState} from "react";
 import Grid2 from "@mui/material/Grid";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faQq, faWeixin} from "@fortawesome/free-brands-svg-icons";
+import {profileApplicantPath} from "../../RouteUtils";
 
 export function ProfileSideBar({loaderData}) {
     const applicants = loaderData.metadata.ApplicantIDs;
@@ -155,7 +156,7 @@ export function ProfileSideBar({loaderData}) {
                 <List>
                     {applicants.map((applicant) => (
                         <ListItem key={applicant}>
-                            <ListItemButton component={Link} to={`/profile/${applicant}`} sx={{justifyContent: 'center'}}>
+                            <ListItemButton component={Link} to={profileApplicantPath(applicant)} sx={{justifyContent: 'center'}}>
                                 <PersonOutlineIcon/> {applicant}
                             </ListItemButton>
                         </ListItem>

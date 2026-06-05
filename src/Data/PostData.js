@@ -1,28 +1,85 @@
 import {apiJson, apiRequest} from "./Common";
 import {CREATE_COMMENT_API, CREATE_POST_API, DELETE_CONTENT_API, GET_CONTENT_API, LIST_POSTS_API, MODIFY_CONTENT_API, TOGGLE_LIKE_API} from "../APIs/APIs"
 
+export const POST_CONTENT_MAX_BYTES = 20 * 1000 * 1000;
+
+const textEncoder = new TextEncoder();
+
+export function getUtf8ByteLength(value = "") {
+    return textEncoder.encode(value ?? "").length;
+}
+
+export function formatPostContentSize(bytes) {
+    return `${(bytes / 1000 / 1000).toFixed(2)} MB`;
+}
+
+function assertPostContentWithinLimit(content) {
+    const size = getUtf8ByteLength(content);
+    if (size > POST_CONTENT_MAX_BYTES) {
+        throw new Error(`Post content cannot exceed ${formatPostContentSize(POST_CONTENT_MAX_BYTES)}.`);
+    }
+}
+
+function normalizeTags(tags) {
+    if (Array.isArray(tags)) {
+        return tags;
+    }
+    if (typeof tags !== "string") {
+        return [];
+    }
+    try {
+        const parsedTags = JSON.parse(tags || "[]");
+        return Array.isArray(parsedTags) ? parsedTags : [];
+    } catch {
+        return [];
+    }
+}
+
+function normalizePostContent(content) {
+    if (!content) {
+        return content;
+    }
+    return {
+        ...content,
+        id: content.id?.toString(),
+        parentId: (content.parentId ?? content.parent_id)?.toString(),
+        tags: normalizeTags(content.tags),
+        like_count: content.like_count ?? 0,
+        liked: Boolean(content.liked),
+        is_deleted: Boolean(content.is_deleted),
+    };
+}
+
 export async function getPosts(query = {}) {
     const postsResult = await apiJson(LIST_POSTS_API);
     const searchTerm = query.searchStr?.toLowerCase() ?? "";
-    return [...postsResult['posts']].sort(
-        (a, b) => new Date(b.updated_at ?? b.created_at) - new Date(a.updated_at ?? b.created_at)
+    return [...(postsResult.posts ?? [])].map(normalizePostContent).sort(
+        (a, b) => new Date(b.updated_at ?? b.created_at) - new Date(a.updated_at ?? a.created_at)
     ).filter(
         (post) =>
-            post.title.toLowerCase().includes(searchTerm) ||
-            post.author.toLowerCase().includes(searchTerm)
+            (post.title ?? "").toLowerCase().includes(searchTerm) ||
+            (post.author ?? "").toLowerCase().includes(searchTerm) ||
+            post.tags.some((tag) => tag.toLowerCase().includes(searchTerm))
     );
 }
 
-export async function getPost(postId) {
+export async function getPostThread(postId) {
     try {
         const postResult = await apiJson(GET_CONTENT_API, {body: {postId}});
-        return postResult["post"];
+        return {
+            post: normalizePostContent(postResult.post),
+            comments: (postResult.comments ?? []).map(normalizePostContent),
+        };
     } catch (e) {
         if (e.status === 404) {
             throw new Error('Post not found');
         }
         throw e;
     }
+}
+
+export async function getPost(postId) {
+    return (await getPostThread(postId)).post;
 }
 
 export async function getPostObject(postId) {
@@ -59,6 +116,7 @@ export async function removeContent(contentId) {
 export async function addModifyPost(requestData, type) {
     let API;
     let requestBody;
+    assertPostContentWithinLimit(requestData.content.Content);
     if (type === 'new') {
         API = CREATE_POST_API;
         requestBody = {
@@ -72,7 +130,7 @@ export async function addModifyPost(requestData, type) {
             contentId: requestData.PostID.toString(),
             title: requestData.content.Title,
             content: requestData.content.Content,
-            tags: null
+            tags: []
         };
     } else {
         throw new Error(`Invalid type specified for addModifyPost: ${type}`);
@@ -82,8 +140,9 @@ export async function addModifyPost(requestData, type) {
 }
 
 export async function addComment(parentId, commentContent) {
+    assertPostContentWithinLimit(commentContent);
     const requestBody = {
-        parentId,
+        parentId: parentId.toString(),
         content: commentContent,
     };
 

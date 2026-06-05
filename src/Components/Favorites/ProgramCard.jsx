@@ -6,6 +6,7 @@ import {grey} from "@mui/material/colors";
 import {useNavigate} from "react-router-dom";
 import {regionFlagMapping} from "../../Data/Schemas";
 import {univAbbrFullNameMapping, univColorMapping} from "../../Data/Common";
+import {favoritesProgramPath} from "../RouteUtils";
 
 const ProgramCard = ({program}) => {
     const darkMode = useTheme().palette.mode === "dark";
@@ -50,7 +51,7 @@ const ProgramCard = ({program}) => {
                 }}
                 onClick={() =>
                     navigate(
-                        `/favorites/${encodeURIComponent(program.ProgramID)}${window.location.search}`
+                        `${favoritesProgramPath(program.ProgramID)}${window.location.search}`
                     )
                 }
             >

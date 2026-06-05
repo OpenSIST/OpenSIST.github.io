@@ -2,13 +2,14 @@ import React, {useState} from 'react';
 import "./AddModifyProgram.css";
 import {degreeOptions, DescriptionTemplate, majorOptions, univOptions} from "../../../Data/Schemas";
 import MarkDownEditor from "./MarkDownEditor/MarkDownEditor";
-import {Form, redirect, useLoaderData, useNavigate} from "react-router-dom";
+import {Form, redirect, useLoaderData, useLocation, useNavigate} from "react-router-dom";
 import {addModifyProgram} from "../../../Data/ProgramData";
 import {Button, ButtonGroup, Checkbox, FormControl, Input, Link as MuiLink, ListItemText, MenuItem, TextField, Tooltip, Typography} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMarkdown} from "@fortawesome/free-brands-svg-icons";
 import {HelpOutline} from "@mui/icons-material";
+import {programsProgramPath} from "../../RouteUtils";
 
 const invalidProgramCharacters = ['@', '|', '/', '$', '\\', '?', '!'];
 
@@ -43,17 +44,19 @@ export async function action({request}) {
         }
     };
     await addModifyProgram(requestBody);
-    return redirect(`/programs/${encodeURIComponent(programId)}`)
+    return redirect(programsProgramPath(programId))
 }
 
 export default function AddModifyProgram({type}) {
     const navigate = useNavigate();
+    const location = useLocation();
     const loaderData = useLoaderData();
     const programContent = loaderData?.programContent;
     const addMode = !programContent;
+    const initialUniversity = programContent?.University ?? location.state?.university;
     const mode = addMode ? '添加' : '修改';
     const [Description, setDescription] = useState(addMode ? DescriptionTemplate : programContent.description);
-    const [univ, setUniv] = useState(univOptions.find((univ) => univ.value === programContent?.University) ?? null);
+    const [univ, setUniv] = useState(univOptions.find((univ) => univ.value === initialUniversity) ?? null);
     const [major, setMajor] = useState(majorOptions.filter((m) => programContent?.TargetApplicantMajor?.includes(m.value)) ?? []);
     const [programName, setProgramName] = useState(programContent?.Program ?? '');
     const programNameInvalid = isProgramNameInvalid(programName);

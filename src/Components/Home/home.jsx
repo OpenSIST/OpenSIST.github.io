@@ -30,16 +30,23 @@ function Home() {
 export function HomeIndex() {
     const [width, setWidth] = useState(window.innerWidth);
     const [height, setHeight] = useState(window.innerHeight);
+    const nodeRef = useRef(null);
     useEffect(() => {
         const handleResize = () => {
             setWidth(window.innerWidth);
             setHeight(window.innerHeight);
         };
+        const node = nodeRef.current;
+        node.addEventListener("click", clickHandler);
         window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+        return () => {
+            node.removeEventListener("click", clickHandler);
+            window.removeEventListener("resize", handleResize);
+        };
     }, []);
     return (
         <Box
+            ref={nodeRef}
             sx={{
                 bgcolor: (theme) => theme.palette.mode === 'dark' ? "#1A1E24" : "#FAFAFA",
                 height: "100%",

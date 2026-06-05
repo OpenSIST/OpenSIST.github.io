@@ -63,7 +63,16 @@ export async function getPrograms(isRefresh = false, query = {}, ranking = "cs_r
         return acc;
     }, {});
 
-    const searchTerm = filters.u?.toLowerCase() ?? '';
+    const searchTerm = filters.u?.trim().toLowerCase() ?? '';
+    const matchesUniversity = (univ) => (
+        searchTerm === '' ||
+        univ.abbr.toLowerCase().includes(searchTerm) ||
+        univ.fullName.toLowerCase().includes(searchTerm)
+    );
+    const matchesRegion = (univ) => (
+        !filters.r || filters.r.some(region => univ.region.includes(region))
+    );
+    const emptyUniversityMatches = new Set();
     const searchPrograms = Object.keys(programs).reduce((matchingPrograms, univName) => {
         const fullNameResults = (univAbbrFullNameMapping[univName] ?? '').toLowerCase().includes(searchTerm);
         const abbrResults = univName.toLowerCase().includes(searchTerm);
@@ -75,6 +84,14 @@ export async function getPrograms(isRefresh = false, query = {}, ranking = "cs_r
         }
         return matchingPrograms;
     }, {})
+    if (searchTerm) {
+        univListOrder.forEach((univ) => {
+            if (!programs[univ.abbr] && matchesUniversity(univ) && matchesRegion(univ)) {
+                searchPrograms[univ.abbr] = [];
+                emptyUniversityMatches.add(univ.abbr);
+            }
+        });
+    }
 
     const filteredEntries = Object.entries(searchPrograms).map(([university, programs]) => {
         const filteredPrograms = programs.filter(program =>
@@ -86,7 +103,7 @@ export async function getPrograms(isRefresh = false, query = {}, ranking = "cs_r
     });
 
     return filteredEntries.reduce((acc, [university, programs]) => {
-        if (programs.length > 0) {
+        if (programs.length > 0 || emptyUniversityMatches.has(university)) {
             acc[university] = programs;
         }
         return acc;
@@ -268,7 +285,8 @@ export async function addModifyProgram(requestBody) {
 }
 
 function normalizeQueryValues(value) {
-    return typeof value === 'string' ? value.split(',') : value;
+    const values = typeof value === 'string' ? value.split(',').filter(Boolean) : value;
+    return Array.isArray(values) && values.length === 0 ? null : values;
 }
 
 function programDescCacheKey(programId) {

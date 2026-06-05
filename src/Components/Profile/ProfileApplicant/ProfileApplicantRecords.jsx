@@ -17,6 +17,7 @@ import Grid2 from "@mui/material/Grid";
 import {Form, Link, useNavigate} from "react-router-dom";
 import {RecordStatusPalette} from "../../../Data/Schemas";
 import {BoldTypography} from "../../common";
+import {profileApplicantPath, profileRecordEditPath} from "../../RouteUtils";
 import {BaseItemBlock, BaseListItem, ContentCenteredGrid} from "./ProfileApplicantShared";
 
 export function RecordBlock({records = {}, applicantId, editable}) {
@@ -38,7 +39,7 @@ export function RecordBlock({records = {}, applicantId, editable}) {
                         navigate(`/profile/new-record`, {
                             state: {
                                 applicantID: applicantId,
-                                from: `/profile/${applicantId}`
+                                from: profileApplicantPath(applicantId)
                             }
                         });
                     }}>
@@ -78,7 +79,7 @@ export function RecordBlock({records = {}, applicantId, editable}) {
                                             <ButtonGroup>
                                                 <Tooltip title='编辑此记录' arrow>
                                                     <IconButton component={Link}
-                                                                to={`/profile/${record.ApplicantID}/${encodeURIComponent(record.ProgramID)}/edit`}>
+                                                                to={profileRecordEditPath(record.ApplicantID, record.ProgramID)}>
                                                         <Edit/>
                                                     </IconButton>
                                                 </Tooltip>

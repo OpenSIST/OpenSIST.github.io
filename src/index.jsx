@@ -68,6 +68,9 @@ function App() {
             }, fall: {
                 main: activeMode === 'dark' ? '#FE892E' : '#FE801E',
                 contrastText: '#ffffffde',
+            }, neutral: {
+                main: activeMode === 'dark' ? '#414041' : '#eaeaea',
+                contrastText: activeMode === 'dark' ? '#ffffffde' : '#000000de',
             }, default: {
                 main: activeMode === 'dark' ? '#ffffffde' : '#000000de',
                 contrastText: '#ffffffde',

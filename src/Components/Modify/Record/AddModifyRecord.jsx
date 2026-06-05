@@ -15,16 +15,17 @@ import {addModifyRecord, getRecordByRecordIDs} from "../../../Data/RecordData";
 import {applicationYearOptions, list2Options, recordSemesterOptions, recordStatusOptions} from "../../../Data/Schemas";
 import {getDisplayName, getMetadata} from "../../../Data/UserData";
 import {useSmallPage} from "../../common";
+import {decodePathParam, profileApplicantPath, safeLocalPath} from "../../RouteUtils";
 
 export async function loader({params}) {
     const programs = await getPrograms();
-    const paramsApplicantId = params?.applicantId;
+    const paramsApplicantId = decodePathParam(params?.applicantId);
     if (!paramsApplicantId) {
         const displayName = await getDisplayName();
         const metadata = await getMetadata(displayName);
         return {programs, applicantIds: metadata?.ApplicantIDs ?? []};
     }
-    const programId = params.programId ? decodeURIComponent(params.programId) : null;
+    const programId = decodePathParam(params.programId);
     const recordsDict = programId ? await getRecordByRecordIDs([`${paramsApplicantId}|${programId}`]) : null;
     return {programs, recordsDict, applicantIds: [paramsApplicantId]};
 }
@@ -61,7 +62,7 @@ export async function action({request}) {
     const formData = await request.formData();
     const {applicantId, fromPath, requestBody} = createRecordRequestBody(formData);
     await addModifyRecord(requestBody);
-    return redirect(fromPath || `/profile/${applicantId}`);
+    return redirect(safeLocalPath(fromPath, profileApplicantPath(applicantId)));
 }
 
 function RecordOptionField({
@@ -247,7 +248,7 @@ export default function AddModifyRecord({type}) {
                         </Grid2>
                     </Box>
                     <Box sx={{display: "flex", justifyContent: "flex-end", margin: 3}}>
-                        <Button sx={{mr: 1}} variant='contained' onClick={() => navigate(fromPath || "..")}>
+                        <Button sx={{mr: 1}} variant='contained' onClick={() => navigate(fromPath ? safeLocalPath(fromPath, "..") : "..")}>
                             取消
                         </Button>
                         <Button sx={{mr: 2}} variant='contained' type="submit" color='success' disabled={!canSubmit}>

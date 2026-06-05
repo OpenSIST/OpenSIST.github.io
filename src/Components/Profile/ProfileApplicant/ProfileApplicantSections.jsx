@@ -6,14 +6,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import SchoolIcon from '@mui/icons-material/School';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
 import WorkIcon from '@mui/icons-material/Work';
-import {
-    authorOrderMapping,
-    exchangeDurationMapping,
-    exchangeUnivFullNameMapping,
-    publicationStatusMapping,
-    publicationTypeMapping,
-    recommendationTypeMapping
-} from "../../../Data/Schemas";
+import {authorOrderMapping, exchangeDurationMapping, exchangeUnivFullNameMapping, publicationStatusMapping, publicationTypeMapping, recommendationTypeMapping} from "../../../Data/Schemas";
 import {BoldTypography} from "../../common";
 import {BaseItemBlock, BaseListItem, ContentCenteredGrid} from "./ProfileApplicantShared";
 
@@ -24,7 +17,7 @@ export function ExchangeBlock({exchanges}) {
         "Detail": "暂无"
     }];
     return (
-        <BaseItemBlock className="ExchangeBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
+        <BaseItemBlock className="ExchangeBlock" checkpointProps={{xs: 12, lg: 4}}>
             <ContentCenteredGrid size={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <BoldTypography variant='h6'>交换经历</BoldTypography>
             </ContentCenteredGrid>
@@ -53,7 +46,7 @@ export function ResearchBlock({research}) {
     const domestic = research?.Domestic ?? {};
     const international = research?.International ?? {};
     return (
-        <BaseItemBlock className="ResearchBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
+        <BaseItemBlock className="ResearchBlock" checkpointProps={{xs: 12, lg: 4}}>
             <ContentCenteredGrid size={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <BoldTypography variant='h6'>科研经历</BoldTypography>
                 <Typography variant="subtitle1">{research?.Focus || "暂无"}</Typography>
@@ -79,7 +72,7 @@ export function InternshipBlock({internships}) {
     const domestic = internships?.Domestic ?? {};
     const international = internships?.International ?? {};
     return (
-        <BaseItemBlock className="InternshipBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
+        <BaseItemBlock className="InternshipBlock" checkpointProps={{xs: 12, lg: 4}}>
             <ContentCenteredGrid size={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <BoldTypography variant='h6'>实习经历</BoldTypography>
             </ContentCenteredGrid>
@@ -109,7 +102,7 @@ export function PublicationBlock({publications}) {
         "Detail": "暂无"
     }];
     return (
-        <BaseItemBlock className="PublicationBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
+        <BaseItemBlock className="PublicationBlock" checkpointProps={{xs: 12, lg: 4}}>
             <ContentCenteredGrid size={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <BoldTypography variant='h6'>发表论文</BoldTypography>
             </ContentCenteredGrid>
@@ -142,7 +135,7 @@ export function RecommendationBlock({recommendations}) {
         "Detail": "暂无"
     }];
     return (
-        <BaseItemBlock className="RecommendationBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
+        <BaseItemBlock className="RecommendationBlock" checkpointProps={{xs: 12, lg: 4}}>
             <ContentCenteredGrid size={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <BoldTypography variant='h6'>推荐信</BoldTypography>
             </ContentCenteredGrid>
@@ -168,7 +161,7 @@ export function RecommendationBlock({recommendations}) {
 
 export function CompetitionBlock({competition}) {
     return (
-        <BaseItemBlock className="CompetitionBlock" checkpointProps={{xs: 12, lg: 6, xl: 4}}>
+        <BaseItemBlock className="CompetitionBlock" checkpointProps={{xs: 12, lg: 4}}>
             <ContentCenteredGrid size={12} sx={{flexDirection: 'column', alignItems: 'flex-start'}}>
                 <BoldTypography variant='h6'>竞赛</BoldTypography>
             </ContentCenteredGrid>

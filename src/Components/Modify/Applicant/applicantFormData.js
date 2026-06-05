@@ -109,6 +109,7 @@ export function createInitialApplicantFormValues(applicant, cvPost, sopPost) {
     if (!applicant) {
         return {};
     }
+    const fileTitle = (file, fallback) => file?.PostID ? fallback : undefined;
     return {
         Gender: applicant.Gender,
         CurrentDegree: applicant.CurrentDegree,
@@ -154,11 +155,11 @@ export function createInitialApplicantFormValues(applicant, cvPost, sopPost) {
         Posts: applicant.Posts,
         CV: {
             PostID: cvPost?.PostID,
-            Title: cvPost?.Title,
+            Title: fileTitle(cvPost, "Uploaded CV/Resume"),
         },
         SoP: {
             PostID: sopPost?.PostID,
-            Title: sopPost?.Title,
+            Title: fileTitle(sopPost, "Uploaded PS/SoP"),
         },
     };
 }
@@ -182,13 +183,13 @@ export async function syncApplicantFile({applicantId, fileType, formData, formVa
     if (hasStoredFile) {
         await addModifyFile({
             PostID: postId,
-            content: {Title: title, Content: content},
+            content: {Content: content},
         }, 'edit');
         return;
     }
 
     await addModifyFile({
         ApplicantID: applicantId,
-        content: {type: fileType, Title: title, Content: content},
+        content: {type: fileType, Content: content},
     }, 'new');
 }
