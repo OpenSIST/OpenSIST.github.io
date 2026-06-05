@@ -97,7 +97,7 @@ function ControlButtonGroup({applicantId, records = {}, postLength = 0, editable
                 <DialogTitle>是否要删除{applicantId}？</DialogTitle>
                 <DialogContent>
                     <DialogContentText color='error'>
-                        {hasDependencies ? '在删除之前，请确保您已经删除了所有附属的申请记录以及撰写的分享贴！' : '此操作会将申请人信息全部删除，且无法恢复，请谨慎！'}
+                        {hasDependencies ? '请确保您已经删除了所有申请记录，CV/SOP，以及撰写的分享贴！' : '此操作会将申请人信息全部删除，且无法恢复，请谨慎！'}
                     </DialogContentText>
                     {!hasDependencies ?
                         <>
