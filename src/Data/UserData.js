@@ -19,6 +19,7 @@ import {
     BACKGROUND_PRIORITY,
     beginCacheRequests,
     CACHE_CLEARED_EVENT,
+    FOREGROUND_PRIORITY,
     getCacheEpoch,
     isCacheEntryExpired,
     loadCachedValue,
@@ -28,7 +29,7 @@ import {
 } from "./CacheStore";
 import {useEffect, useState} from "react";
 import {getApplicants, setApplicants} from "./ApplicantData";
-import {getRecordByApplicant, setRecord} from "./RecordData";
+import {getRecordByApplicant, updateCachedRecords} from "./RecordData";
 
 const avatarCacheKey = (displayName, avatarId) => `${displayName}-avatar-${avatarId}`;
 const metadataCacheKey = (displayName) => `${displayName}-metadata`;
@@ -137,7 +138,7 @@ export async function setAvatarID(avatarId) {
 
 }
 
-export async function getAvatar(avatarId, displayName = null, isRefresh = false, {priority = "foreground"} = {}) {
+export async function getAvatar(avatarId, displayName = null, isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
     if (!avatarId || avatarId === '') {
         return null;
     }
@@ -154,7 +155,7 @@ export async function getAvatar(avatarId, displayName = null, isRefresh = false,
         priority,
         load: () => apiText(GET_AVATAR, {
             body: {avatar_id: avatarId},
-            fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+            fetchPriority: priority,
         }),
     });
 }
@@ -181,7 +182,7 @@ export async function setAvatar(avatar, displayName = null, avatarId = null) {
  * @param {boolean} isRefresh - Whether to refresh cache
  * @returns {Promise<object>} - A promise resolving to metadata with Avatar and latestYear
  */
-export async function getMetadata(displayName = null, isRefresh = false, {priority = "foreground"} = {}) {
+export async function getMetadata(displayName = null, isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
     /*
     * Get the user metadata from the server or local storage
     * @param isRefresh [Boolean]: whether to refresh the data
@@ -197,7 +198,7 @@ export async function getMetadata(displayName = null, isRefresh = false, {priori
     return metadata[displayName] ?? metadataWithLatestYear({});
 }
 
-export async function getMetadataBatch(displayNames, isRefresh = false, {priority = "foreground"} = {}) {
+export async function getMetadataBatch(displayNames, isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
     const uniqueDisplayNames = [...new Set(displayNames)].filter(Boolean);
     const requestEpoch = getCacheEpoch();
     const entries = await Promise.all(uniqueDisplayNames.map((displayName) => (
@@ -223,7 +224,7 @@ export async function getMetadataBatch(displayNames, isRefresh = false, {priorit
     try {
         const response = await apiJson(GET_METADATA_BATCH, {
             body: {display_names: requestDisplayNames},
-            fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+            fetchPriority: priority,
         });
         const refreshedRawMetadata = requestDisplayNames.reduce((metadataByName, displayName) => ({
             ...metadataByName,
@@ -239,7 +240,8 @@ export async function getMetadataBatch(displayNames, isRefresh = false, {priorit
         if (priority === BACKGROUND_PRIORITY) {
             await Promise.all(cacheWrites);
         } else {
-            cacheWrites.forEach((cacheWrite) => void cacheWrite.catch(() => {}));
+            cacheWrites.forEach((cacheWrite) => void cacheWrite.catch(() => {
+            }));
         }
         const refreshedMetadata = Object.fromEntries(
             Object.entries(refreshedRawMetadata).map(([displayName, metadata]) => (
@@ -299,7 +301,7 @@ export async function setMetadata(metadata, displayName = null) {
     await writeCacheValue(metadataCacheKey(displayName), persistedMetadata);
 }
 
-export async function getDisplayName(isRefresh = false, {priority = "foreground"} = {}) {
+export async function getDisplayName(isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
     return loadCachedValue({
         key: "displayName",
         legacyFields: ["name"],
@@ -308,7 +310,7 @@ export async function getDisplayName(isRefresh = false, {priority = "foreground"
         load: async () => {
             const displayName = await apiJson(GET_DISPLAY_NAME, {
                 allowUnauthorized: true,
-                fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+                fetchPriority: priority,
             });
             return displayName.name;
         },
@@ -365,17 +367,22 @@ export async function toggleAnonymous() {
         setApplicants(updatedApplicants),
         removeCacheValue('programs'),
     ]);
-    await Promise.all(applicantRecords.map(async (records) => {
-        await Promise.all(Object.entries(records).map(async ([recordId, content]) => {
-            await removeCacheValue(`record-${recordId}`);
-            const ApplicantID = `${displayName}@${content.ApplicantID.split('@')[1]}`;
-            await setRecord({
-                ...content,
-                ApplicantID,
-                RecordID: `${ApplicantID}|${content.ProgramID}`,
+    await updateCachedRecords((records) => {
+        const updatedRecords = {...records};
+        applicantRecords.forEach((recordGroup) => {
+            Object.entries(recordGroup).forEach(([recordId, content]) => {
+                delete updatedRecords[recordId];
+                const ApplicantID = `${displayName}@${content.ApplicantID.split('@')[1]}`;
+                const updatedRecord = {
+                    ...content,
+                    ApplicantID,
+                    RecordID: `${ApplicantID}|${content.ProgramID}`,
+                };
+                updatedRecords[updatedRecord.RecordID] = updatedRecord;
             });
-        }))
-    }))
+        });
+        return updatedRecords;
+    });
 
 }
 

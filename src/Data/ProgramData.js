@@ -1,14 +1,6 @@
 import {ADD_MODIFY_PROGRAM, PROGRAM_DESC_BATCH, PROGRAM_LIST} from "../APIs/APIs";
 import {apiJson, apiRequest, univAbbrFullNameMapping} from "./Common";
-import {
-    BACKGROUND_PRIORITY,
-    beginCacheRequests,
-    getCacheEpoch,
-    isCacheEntryExpired,
-    loadCachedValue,
-    readCacheEntry,
-    writeCacheValue
-} from "./CacheStore";
+import {BACKGROUND_PRIORITY, beginCacheRequests, FOREGROUND_PRIORITY, getCacheEpoch, isCacheEntryExpired, loadCachedValue, readCacheEntry, writeCacheValue} from "./CacheStore";
 import univListOrder from "./UnivList.json";
 
 /*
@@ -18,7 +10,7 @@ import univListOrder from "./UnivList.json";
 * All functions starred with other words -> Online operation to corresponding backend APIs
 */
 
-export async function getPrograms(isRefresh = false, query = {}, ranking = "cs_rank", {priority = "foreground"} = {}) {
+export async function getPrograms(isRefresh = false, query = {}, ranking = "cs_rank", {priority = FOREGROUND_PRIORITY} = {}) {
     /*
     * Get the list of programs (without description) from the server or local storage
     * @param isRefresh [Boolean]: whether to refresh the data
@@ -44,7 +36,7 @@ export async function getPrograms(isRefresh = false, query = {}, ranking = "cs_r
         priority,
         load: async () => {
             const response = await apiJson(PROGRAM_LIST, {
-                fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+                fetchPriority: priority,
             });
             return response.data;
         },
@@ -136,7 +128,7 @@ export async function getProgram(programId, isRefresh = false, options = {}) {
     return program;
 }
 
-export async function getProgramDesc(programId, isRefresh = false, {priority = "foreground"} = {}) {
+export async function getProgramDesc(programId, isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
     /*
     * Get the description of the program from the server or local storage by programId
     * @param programId [String]: programId
@@ -147,7 +139,7 @@ export async function getProgramDesc(programId, isRefresh = false, {priority = "
     return descriptions[programId];
 }
 
-export async function getProgramDescs(programIds, isRefresh = false, {priority = "foreground"} = {}) {
+export async function getProgramDescs(programIds, isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
     const uniqueProgramIds = [...new Set(programIds)].filter(Boolean);
     const requestEpoch = getCacheEpoch();
     const entries = await Promise.all(uniqueProgramIds.map((programId) => (
@@ -173,7 +165,7 @@ export async function getProgramDescs(programIds, isRefresh = false, {priority =
     try {
         const response = await apiJson(PROGRAM_DESC_BATCH, {
             body: {ProgramIDs: requestProgramIds},
-            fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+            fetchPriority: priority,
         });
         const refreshedDescriptions = requestProgramIds.reduce((descriptions, programId) => ({
             ...descriptions,
@@ -189,7 +181,8 @@ export async function getProgramDescs(programIds, isRefresh = false, {priority =
         if (priority === BACKGROUND_PRIORITY) {
             await Promise.all(cacheWrites);
         } else {
-            cacheWrites.forEach((cacheWrite) => void cacheWrite.catch(() => {}));
+            cacheWrites.forEach((cacheWrite) => void cacheWrite.catch(() => {
+            }));
         }
         return {
             ...cachedDescriptions,

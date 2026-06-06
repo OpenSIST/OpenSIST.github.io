@@ -1,20 +1,10 @@
-import {ADD_MODIFY_RECORD, GET_RECORDS_BY_ID, REMOVE_RECORD} from "../APIs/APIs";
+import {ADD_MODIFY_RECORD, RECORD_LIST, REMOVE_RECORD} from "../APIs/APIs";
 import {apiJson, apiRequest} from "./Common";
-import {
-    BACKGROUND_PRIORITY,
-    beginCacheRequests,
-    getCacheEpoch,
-    isCacheEntryExpired,
-    readCacheEntry,
-    removeCacheValue,
-    writeCacheValue
-} from "./CacheStore";
+import {FOREGROUND_PRIORITY, isCacheEntryExpired, loadCachedValue, readCacheEntry, writeCacheValue} from "./CacheStore";
 import {getApplicant, setApplicant} from "./ApplicantData";
 import {getProgram, setProgram} from "./ProgramData";
 
-const RECORD_BATCH_SIZE = 90;
-
-const recordCacheKey = (recordId) => `record-${recordId}`;
+const RECORDS_CACHE_KEY = "records";
 
 export async function addModifyRecord(requestBody) {
     await apiRequest(ADD_MODIFY_RECORD, {
@@ -56,89 +46,59 @@ export async function getRecordByProgram(programId, isRefresh = false, options =
     return getRecordByRecordIDs(recordIDs, isRefresh, options);
 }
 
-export async function getRecordByRecordIDs(recordIDs, isRefresh = false, {priority = "foreground"} = {}) {
-    const uniqueRecordIDs = [...new Set(recordIDs)];
-    const requestEpoch = getCacheEpoch();
-    const entries = await Promise.all(uniqueRecordIDs.map((recordId) => (
-        readCacheEntry(recordCacheKey(recordId), {legacyFields: ["data"], requestEpoch})
-    )));
-    if (requestEpoch !== getCacheEpoch()) {
+export async function getRecordByRecordIDs(recordIDs, isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
+    const uniqueRecordIDs = [...new Set(recordIDs)].filter(Boolean);
+    if (uniqueRecordIDs.length === 0) {
         return {};
     }
-    const cachedRecords = Object.fromEntries(uniqueRecordIDs.flatMap((recordId, index) => (
-        isRecordData(entries[index]?.value) ? [[recordId, entries[index].value]] : []
+    const records = await getRecords(isRefresh, {priority});
+    return Object.fromEntries(uniqueRecordIDs.flatMap((recordId) => (
+        isRecordData(records[recordId]) ? [[recordId, records[recordId]]] : []
     )));
-    const expiredIDs = uniqueRecordIDs.filter((recordId, index) => (
-        isCacheEntryExpired(entries[index], isRefresh) || !isRecordData(entries[index]?.value)
-    ));
-    const request = beginCacheRequests(expiredIDs.map(recordCacheKey), priority, requestEpoch);
-    const requestRecordIDs = request.keys.map((key) => key.slice("record-".length));
-
-    if (requestRecordIDs.length === 0) {
-        return cachedRecords;
-    }
-
-    try {
-        const responses = priority === BACKGROUND_PRIORITY
-            ? await requestRecordBatchesSequentially(requestRecordIDs, priority)
-            : await requestRecordBatchesConcurrently(requestRecordIDs, priority);
-        const refreshedRecordResponses = responses.reduce((records, response) => {
-            return {...records, ...response.data};
-        }, {});
-        const refreshedRecords = Object.fromEntries(
-            Object.entries(refreshedRecordResponses).filter(([, record]) => isRecordData(record))
-        );
-        const cacheWrites = requestRecordIDs.map((recordId) => {
-            const key = recordCacheKey(recordId);
-            const requestEpoch = request.epoch;
-            const requestVersion = request.versionFor(key);
-            return isRecordData(refreshedRecordResponses[recordId])
-                ? writeCacheValue(key, refreshedRecords[recordId], {requestEpoch, requestVersion})
-                : removeCacheValue(key, {requestEpoch, requestVersion});
-        });
-        if (priority === BACKGROUND_PRIORITY) {
-            await Promise.all(cacheWrites);
-        } else {
-            cacheWrites.forEach((cacheWrite) => void cacheWrite.catch(() => {}));
-        }
-        const requestedIDSet = new Set(requestRecordIDs);
-        const retainedCachedRecords = Object.fromEntries(
-            Object.entries(cachedRecords).filter(([recordId]) => !requestedIDSet.has(recordId))
-        );
-        return {
-            ...retainedCachedRecords,
-            ...refreshedRecords,
-        };
-    } finally {
-        request.release();
-    }
 }
 
-async function requestRecordBatchesConcurrently(recordIDs, priority) {
-    return Promise.all(createRecordBatches(recordIDs).map((batch) => fetchRecordBatch(batch, priority)));
+export async function getRecords(isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
+    return await loadCachedValue({
+        key: RECORDS_CACHE_KEY,
+        legacyFields: ["data"],
+        forceRefresh: isRefresh,
+        priority,
+        load: async () => {
+            const response = await apiJson(RECORD_LIST, {
+                fetchPriority: priority,
+            });
+            return normalizeRecordList(response.data);
+        },
+    }) ?? {};
 }
 
-async function requestRecordBatchesSequentially(recordIDs, priority) {
-    const responses = [];
-    for (const batch of createRecordBatches(recordIDs)) {
-        responses.push(await fetchRecordBatch(batch, priority));
+export async function setRecords(records) {
+    if (!records) {
+        return;
     }
-    return responses;
+    await writeCacheValue(RECORDS_CACHE_KEY, normalizeRecordList(records));
 }
 
-function createRecordBatches(recordIDs) {
-    const batches = [];
-    for (let index = 0; index < recordIDs.length; index += RECORD_BATCH_SIZE) {
-        batches.push(recordIDs.slice(index, index + RECORD_BATCH_SIZE));
+export async function updateCachedRecords(update) {
+    const records = await readFreshCachedRecords();
+    if (!records) {
+        return;
     }
-    return batches;
+    await setRecords(update(records));
 }
 
-function fetchRecordBatch(recordIDs, priority) {
-    return apiJson(GET_RECORDS_BY_ID, {
-        body: {IDs: recordIDs},
-        fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
-    });
+async function readFreshCachedRecords() {
+    const entry = await readCacheEntry(RECORDS_CACHE_KEY, {legacyFields: ["data"]});
+    return isCacheEntryExpired(entry) ? null : normalizeRecordList(entry.value);
+}
+
+function normalizeRecordList(records) {
+    const recordList = Array.isArray(records) ? records : Object.values(records ?? {});
+    return Object.fromEntries(
+        recordList
+            .filter(isRecordData)
+            .map((record) => [record.RecordID, record])
+    );
 }
 
 function isRecordData(record) {
@@ -149,7 +109,7 @@ export async function setRecord(record) {
     if (!record) {
         return;
     }
-    await writeCacheValue(recordCacheKey(record.RecordID), record);
+    await updateCachedRecords((records) => ({...records, [record.RecordID]: record}));
 }
 
 export async function removeRecord(recordId) {
@@ -162,7 +122,11 @@ export async function removeRecord(recordId) {
 }
 
 export async function deleteRecord(recordId) {
-    await removeCacheValue(recordCacheKey(recordId));
+    await updateCachedRecords((records) => {
+        const updatedRecords = {...records};
+        delete updatedRecords[recordId];
+        return updatedRecords;
+    });
 
     const [applicantID, programID] = recordId.split('|');
 
