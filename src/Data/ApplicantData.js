@@ -1,10 +1,10 @@
 import {ADD_MODIFY_APPLICANT, APPLICANT_LIST, REMOVE_APPLICANT} from "../APIs/APIs";
 import {apiJson, apiRequest} from "./Common";
-import {BACKGROUND_PRIORITY, loadCachedValue, writeCacheValue} from "./CacheStore";
+import {FOREGROUND_PRIORITY, loadCachedValue, writeCacheValue} from "./CacheStore";
 import {getDisplayName, getMetadata, setMetadata} from "./UserData";
 import {deleteRecord, getRecordByApplicant, getRecordByRecordIDs, setRecord} from "./RecordData";
 
-export async function getApplicants(isRefresh = false, {priority = "foreground"} = {}) {
+export async function getApplicants(isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
     /*
     * Get the list of applicants from the server or local storage
     * @param isRefresh [Boolean]: whether to refresh the data
@@ -17,7 +17,7 @@ export async function getApplicants(isRefresh = false, {priority = "foreground"}
         priority,
         load: async () => {
             const applicants = await apiJson(APPLICANT_LIST, {
-                fetchPriority: priority === BACKGROUND_PRIORITY ? "low" : undefined,
+                fetchPriority: priority,
             });
             return applicants.data;
         },
