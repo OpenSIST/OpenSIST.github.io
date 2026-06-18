@@ -83,7 +83,7 @@ export function ProfileApplicantPage({editable = false}) {
             spacing={2}
             sx={{
                 boxShadow: "none",
-                bgcolor: (theme) => theme.palette.surface,
+                bgcolor: "transparent",
             }}
         >
             <BasicInfoBlock avatarUrl={avatarUrl} contact={contact} applicant={applicant} records={records}

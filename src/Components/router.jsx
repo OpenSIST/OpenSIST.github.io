@@ -26,7 +26,7 @@ import Agreement from "./Agreement/Agreement";
 import FAQ from "./FAQ/FAQ";
 import React from "react";
 import ProgramIndexContent from "../Data/MarkDown/ProgramIndex.md?raw"
-import ProfileIndexContent from "../Data/MarkDown/ProfileIndex.md?raw"
+import ProfileIndex from "./Profile/ProfileIndex";
 import PostIndexContent from "../Data/MarkDown/PostIndex.md?raw"
 import Favorites, {loader as FavoritesLoader} from "./Favorites/Favorites";
 
@@ -119,8 +119,7 @@ const router = createBrowserRouter([
                                 children: [
                                     {
                                         index: true,
-                                        element: <MarkDownPage key="ProfileIndex"/>,
-                                        loader: markdownLoader(ProfileIndexContent)
+                                        element: <ProfileIndex/>,
                                     }, {
                                         path: '/profile/:applicantId',
                                         element: <ProfileApplicantPage editable={true}/>,

@@ -269,7 +269,7 @@ export default function FAQ() {
         >
             <Box sx={{width: "100%", maxWidth: 980, px: {xs: 2, sm: 3}, py: 3}}>
                 <Typography variant="h4" sx={{fontWeight: 600, mb: 0.5}}>帮助中心</Typography>
-                <Typography sx={{color: "text.secondary", mb: 2}}>常见问题、名词缩写与关于我们</Typography>
+                <Typography sx={{color: "text.secondary", mb: 2}}>常见问题、名词缩写、关于我们与用户协议</Typography>
                 <Tabs
                     value={tab}
                     onChange={(_, v) => setTab(v)}

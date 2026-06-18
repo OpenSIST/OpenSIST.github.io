@@ -52,6 +52,7 @@ export function ApplicantProfileInDataPoints() {
             fullWidth
             maxWidth={'xl'}
             sx={{userSelect: 'text'}}
+            PaperProps={{sx: {bgcolor: (theme) => theme.palette.background.default}}}
         >
             <DialogActions>
                 <IconButton onClick={() => navigate("..")}>

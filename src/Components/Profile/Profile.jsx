@@ -1,7 +1,7 @@
-import {Paper} from "@mui/material";
+import {Box} from "@mui/material";
 import React from "react";
 import {Outlet, redirect, useLoaderData} from "react-router-dom";
-import {ProfileSideBar} from "./ProfileSideBar/ProfileSideBar";
+import {ProfileHeader} from "./ProfileSideBar/ProfileSideBar";
 import {getAvatar, getDisplayName, getMetadata, toggleAnonymous, updateContact, uploadAvatar} from "../../Data/UserData";
 import localforage from "localforage";
 import "./Profile.css"
@@ -39,15 +39,25 @@ export async function action({request}) {
 export default function Profile() {
     const loaderData = useLoaderData();
     return (
-        <>
-            <ProfileSideBar loaderData={loaderData}/>
-            <Paper
-                className='ProfileContent'
-                sx={{
-                    bgcolor: (theme) => theme.palette.surface,
-                }}>
+        <Box sx={{
+            width: '100%',
+            height: 'calc(100vh - 60px)',
+            overflowY: 'auto',
+            display: 'flex',
+            justifyContent: 'center',
+        }}>
+            <Box sx={{
+                width: '100%',
+                maxWidth: 1100,
+                px: {xs: 1.5, sm: 3},
+                py: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+            }}>
+                <ProfileHeader loaderData={loaderData}/>
                 <Outlet/>
-            </Paper>
-        </>
+            </Box>
+        </Box>
     )
 }
