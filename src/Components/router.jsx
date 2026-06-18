@@ -27,7 +27,7 @@ import React from "react";
 import ProgramIndex from "./ProgramPage/ProgramIndex";
 import ProfileIndex from "./Profile/ProfileIndex";
 import PostIndex from "./Post/PostIndex";
-import Favorites, {loader as FavoritesLoader} from "./Favorites/Favorites";
+import Favorites, {action as FavoritesAction, loader as FavoritesLoader} from "./Favorites/Favorites";
 
 const router = createBrowserRouter([
     {
@@ -149,6 +149,7 @@ const router = createBrowserRouter([
                         path: '/favorites',
                         element: <Favorites/>,
                         loader: FavoritesLoader,
+                        action: FavoritesAction,
                         children: [
                             {
                                 errorElement: <ErrorPage/>,
