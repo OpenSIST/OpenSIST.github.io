@@ -1,5 +1,4 @@
 import {Paper} from "@mui/material";
-import {grey} from "@mui/material/colors";
 import Grid2 from "@mui/material/Grid";
 import {redirect, useLoaderData} from "react-router-dom";
 import {getApplicant, getApplicants, isAuthApplicant, removeApplicant} from "../../../Data/ApplicantData";
@@ -84,7 +83,7 @@ export function ProfileApplicantPage({editable = false}) {
             spacing={2}
             sx={{
                 boxShadow: "none",
-                bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
+                bgcolor: (theme) => theme.palette.surface,
             }}
         >
             <BasicInfoBlock avatarUrl={avatarUrl} contact={contact} applicant={applicant} records={records}

@@ -1,24 +1,24 @@
 import TopBar from "../TopBar/TopBar";
-import {Link, Outlet} from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 import {BoldTypography, LoadingBackdrop, OpenSIST, useSmallPage} from "../common";
-import {Box, Button, Divider, IconButton, Paper, SvgIcon, Typography, useTheme} from "@mui/material";
+import {Box, Button, Chip, Divider, IconButton, Paper, Stack, SvgIcon, Typography, useTheme} from "@mui/material";
+import {GitHub, StarRounded} from "@mui/icons-material";
 import {clickHandler, initMap} from "../WorldMap/display";
 import Grid2 from "@mui/material/Grid";
 import './home.css';
-import ReactMarkdown from "react-markdown";
 import VectorArrowDark from "../icons/VectorArrowDark.svg?react";
 import VectorArrowLight from "../icons/VectorArrowLight.svg?react";
 import {isSafari} from 'react-device-detect';
 
 function Home() {
     return (
-        <Paper elevation={0} sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA"}}>
+        <Paper elevation={0} sx={{bgcolor: (theme) => theme.palette.background.default}}>
             <TopBar/>
             <Paper
                 className="ContentBlock"
                 elevation={0}
-                sx={{bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA"}}
+                sx={{bgcolor: (theme) => theme.palette.background.default}}
             >
                 <Outlet/>
             </Paper>
@@ -48,7 +48,7 @@ export function HomeIndex() {
         <Box
             ref={nodeRef}
             sx={{
-                bgcolor: (theme) => theme.palette.mode === 'dark' ? "#1A1E24" : "#FAFAFA",
+                bgcolor: (theme) => theme.palette.background.default,
                 height: "100%",
                 width: "100%",
                 display: 'flex',
@@ -68,17 +68,51 @@ function HomeIndexContent() {
     const contentRef = useRef(null);
 
     useEffect(() => {
-        const currentContentRef = contentRef.current;
+        const node = contentRef.current;
+        let lock = false;
+        // One gesture = one page change. The lock absorbs trackpad inertia
+        // (which fires a burst of +/- deltas) so the page can't flip-flop.
+        const go = (dir) => {
+            if (lock) return;
+            const next = dir > 0 ? 1 : 0;
+            setPageIndex((cur) => {
+                if (cur === next) return cur;
+                lock = true;
+                setTimeout(() => {
+                    lock = false;
+                }, 1000);
+                return next;
+            });
+        };
         const onWheel = (e) => {
-            if (e.deltaY > 0 && pageIndex === 0) {
-                setPageIndex(1);
-            } else if (e.deltaY < 0 && pageIndex === 1) {
-                setPageIndex(0);
+            // the landing is a fixed two-screen snap — never let the browser scroll
+            // (kills the rubber-band that drags the sticky top bar)
+            e.preventDefault();
+            if (Math.abs(e.deltaY) < 8) return;
+            go(e.deltaY);
+        };
+        let touchStartY = null;
+        const onTouchStart = (e) => {
+            touchStartY = e.touches[0].clientY;
+        };
+        const onTouchMove = (e) => {
+            e.preventDefault();
+            if (touchStartY === null) return;
+            const dy = touchStartY - e.touches[0].clientY;
+            if (Math.abs(dy) > 40) {
+                go(dy);
+                touchStartY = null;
             }
         };
-        currentContentRef.addEventListener("wheel", onWheel);
-        return () => currentContentRef.removeEventListener("wheel", onWheel)
-    }, [pageIndex]);
+        node.addEventListener("wheel", onWheel, {passive: false});
+        node.addEventListener("touchstart", onTouchStart, {passive: true});
+        node.addEventListener("touchmove", onTouchMove, {passive: false});
+        return () => {
+            node.removeEventListener("wheel", onWheel);
+            node.removeEventListener("touchstart", onTouchStart);
+            node.removeEventListener("touchmove", onTouchMove);
+        };
+    }, []);
 
     return (
         <Box
@@ -118,6 +152,7 @@ function HomeIndexContent() {
                         className='slide-out-blurred-top'
                     >
                         <SvgIcon
+                            className='ScrollHint'
                             component={darkMode ? VectorArrowDark : VectorArrowLight}
                             inheritViewBox
                             sx={{
@@ -192,49 +227,78 @@ function HomeIndexContent() {
 }
 
 function WelcomeBlock() {
-    const theme = useTheme();
-    const linkColor = theme.palette.mode === "dark" ? "#fff" : "#4183C4";
+    const dark = useTheme().palette.mode === 'dark';
+    const [stars, setStars] = useState(null);
+
+    useEffect(() => {
+        let alive = true;
+        fetch('https://api.github.com/repos/opensist/opensist.github.io')
+            .then((r) => (r.ok ? r.json() : null))
+            .then((d) => {
+                if (alive && d && typeof d.stargazers_count === 'number') setStars(d.stargazers_count);
+            })
+            .catch(() => {
+            });
+        return () => {
+            alive = false;
+        };
+    }, []);
 
     return (
-        <Box
-            sx={{
-                width: {xs: '100%', sm: '70%', md: '60%', lg: '50%'},
-                position: 'relative',
-                backdropFilter: 'blur(2px)',
-            }}>
-            <Typography variant='h4' sx={{fontFamily: 'Merriweather', mb: '1rem'}}>
+        <Box className="GlassCard" sx={{
+            width: {xs: '100%', sm: '80%', md: '62%', lg: '52%'},
+            p: {xs: '1.5rem', md: '2rem 2.25rem'},
+            bgcolor: dark ? 'rgba(21,25,32,0.55)' : 'rgba(246,249,253,0.66)',
+            boxShadow: dark ? '0 10px 40px rgba(0,0,0,0.45)' : '0 10px 40px rgba(16,24,40,0.12)',
+        }}>
+            <Typography variant='h5' sx={{fontFamily: 'Merriweather', color: 'text.secondary', mb: '0.25rem'}}>
                 Welcome to
             </Typography>
-            <OpenSIST props={{variant: 'h2'}}/>
-            <Divider sx={{
-                mt: '1rem',
-                mb: '1rem',
-                bgcolor: theme.palette.mode === 'dark' ? "#fff" : "#000",
-                height: '1px'
+            <OpenSIST props={{variant: 'h2'}} sx={{
+                display: 'inline-block',
+                background: dark ? 'linear-gradient(120deg, #93C0F2, #6BA6E8)' : 'linear-gradient(120deg, #1C5BAA, #4F86CE)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                color: 'transparent',
+                WebkitTextFillColor: 'transparent',
             }}/>
-            <Typography sx={{mb: '1rem', mr: '4rem'}}>
-                OpenSIST由上海科技大学2020级信息学院同学自发创建，旨在为上科大学子提供一个更加开放的留学申请信息分享平台，帮助大家更好地规划自己的留学申请。
+            <Typography sx={{mt: '0.5rem', color: 'text.secondary', letterSpacing: '0.02em'}}>
+                上海科技大学留学申请信息分享平台
             </Typography>
-            <BoldTypography>
-                如果你喜欢这个网站，请前往<a href='https://github.com/opensist/opensist.github.io' style={{color: linkColor}}><b>GitHub</b></a>给我们一个Star!
-            </BoldTypography>
-            <ReactMarkdown>
-                [![License: GPL
-                v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-                [![GitHub Repo
-                stars](https://img.shields.io/github/stars/opensist/opensist.github.io?style=social)](https://github.com/opensist/opensist.github.io)
-            </ReactMarkdown>
-            <Button variant='contained' component={Link} to='https://qm.qq.com/q/U1QvSyE6u6'
-                    sx={{textTransform: 'none'}}>
-                OpenSIST QQ群
-            </Button>
+            <Divider sx={{my: '1.25rem', borderColor: 'divider'}}/>
+            <Typography sx={{mb: '1.25rem', lineHeight: 1.8}}>
+                OpenSIST由上海科技大学2020级信息学院同学自发创建，旨在为上科大学子提供一个更加开放的留学申请信息分享平台，帮助大家更好地规划自己的留学申请。如果喜欢，欢迎给我们一个 Star ⭐
+            </Typography>
+            <Stack direction='row' sx={{mb: '1.5rem', flexWrap: 'wrap', gap: 1}}>
+                <Chip
+                    icon={<StarRounded/>}
+                    label={stars !== null ? `${stars} Stars` : 'Star on GitHub'}
+                    variant='outlined'
+                    clickable
+                    component='a'
+                    href='https://github.com/opensist/opensist.github.io'
+                    target='_blank'
+                    rel='noopener'
+                />
+                <Chip label='GPL-3.0' variant='outlined'/>
+            </Stack>
+            <Stack direction='row' sx={{flexWrap: 'wrap', gap: 1.5}}>
+                <Button variant='contained' component='a' href='https://qm.qq.com/q/U1QvSyE6u6'
+                        target='_blank' rel='noopener'>
+                    加入 QQ 群
+                </Button>
+                <Button variant='outlined' startIcon={<GitHub/>} component='a'
+                        href='https://github.com/opensist/opensist.github.io' target='_blank' rel='noopener'>
+                    GitHub
+                </Button>
+            </Stack>
         </Box>
     )
 }
 
 function HomeIndexContentBlock({title}) {
     const theme = useTheme();
-    const linkColor = theme.palette.mode === "dark" ? "#fff" : "#4183C4";
+    const linkColor = theme.palette.primary.main;
     const blockItems = (title) => {
         if (title === "友情链接") {
             return (
@@ -276,17 +340,17 @@ function HomeIndexContentBlock({title}) {
             )
         }
     }
+    const dark = theme.palette.mode === 'dark';
     return (
-        <Box sx={{backdropFilter: 'blur(2px)'}}>
-            <BoldTypography variant='h4'>
+        <Box className="GlassCard" sx={{
+            p: {xs: '1.25rem 1.5rem', md: '1.5rem 1.75rem'},
+            bgcolor: dark ? 'rgba(21,25,32,0.55)' : 'rgba(246,249,253,0.66)',
+            boxShadow: dark ? '0 10px 40px rgba(0,0,0,0.4)' : '0 10px 40px rgba(16,24,40,0.1)',
+        }}>
+            <BoldTypography variant='h5'>
                 {title}
             </BoldTypography>
-            <Divider sx={{
-                mt: '1rem',
-                mb: '1rem',
-                bgcolor: theme.palette.mode === 'dark' ? "#fff" : "#000",
-                height: '1px'
-            }}/>
+            <Divider sx={{my: '1rem', borderColor: 'divider'}}/>
             {blockItems(title)}
         </Box>
     )

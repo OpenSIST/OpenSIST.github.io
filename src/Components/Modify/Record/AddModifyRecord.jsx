@@ -2,7 +2,6 @@ import {useMemo, useState} from "react";
 import {Box, Button, Link as MuiLink, Paper, TextField, Tooltip, Typography} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import Grid2 from "@mui/material/Grid";
-import {grey} from "@mui/material/colors";
 import {HelpOutline} from "@mui/icons-material";
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {DatePicker} from "@mui/x-date-pickers";
@@ -159,7 +158,7 @@ export default function AddModifyRecord({type}) {
                     variant='elevation'
                     sx={{
                         width: smallPage ? '90%' : '70%',
-                        bgcolor: (theme) => theme.palette.mode === "dark" ? grey[900] : grey[50]
+                        bgcolor: (theme) => theme.palette.surface
                     }}
                     elevation={2}
                 >

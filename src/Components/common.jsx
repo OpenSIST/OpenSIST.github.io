@@ -46,12 +46,14 @@ export function CollapseSideBar({children, sx}) {
                     zIndex: (smallPage ? 1201 : 1),
                     ...sx,
                     '& .MuiDrawer-paper': {
-                        borderRadius: (smallPage ? '0 5px 5px 0' : '5px'),
+                        borderRadius: (smallPage ? '0 8px 8px 0' : '8px'),
                         border: 'none',
                         position: (smallPage ? 'absolute' : 'initial'),
                         top: '60px',
                         overflowY: 'auto',
-                        boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);",
+                        // flat on desktop (no 3D card shadow); keep a shadow only for the
+                        // mobile overlay drawer where it needs to lift off the page
+                        boxShadow: (smallPage ? "0px 2px 8px rgba(0,0,0,0.18)" : 'none'),
                         ...(sx['& .MuiDrawer-paper'] ?? {})
                     },
                 }}

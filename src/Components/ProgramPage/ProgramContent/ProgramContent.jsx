@@ -78,11 +78,13 @@ function ProgramContent({editable = true, inDialog = false}) {
                 height: '100%',
                 overflow: 'hidden'
             }}>
-                <Paper sx={{
+                <Paper elevation={0} sx={{
                     p: '1.5rem',
                     height: '48%',
                     overflowY: 'auto',
-                    marginBottom: '1rem'
+                    marginBottom: '1rem',
+                    bgcolor: (theme) => theme.palette.surfaceVariant,
+                    borderRadius: 2,
                 }}>
                     <ReactMarkdown
                         remarkPlugins={[remarkGfm]}

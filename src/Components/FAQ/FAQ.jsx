@@ -148,7 +148,7 @@ export default function FAQ() {
         <Paper
             elevation={0}
             sx={{
-                bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA",
+                bgcolor: (theme) => theme.palette.background.default,
                 overflowY: "auto",
                 p: "1rem",
                 width: "80%",

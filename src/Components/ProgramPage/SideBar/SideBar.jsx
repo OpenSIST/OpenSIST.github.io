@@ -5,7 +5,7 @@ import SearchBar from "./SearchBar/SearchBar";
 import {univAbbrFullNameMapping} from "../../../Data/Common";
 import {Box, Button, Collapse, Divider, List, ListItemButton, ListItemText, Paper, Tooltip, Typography, useTheme} from "@mui/material";
 import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
-import {blue, grey} from "@mui/material/colors";
+import {grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
 import {regionFlagMapping} from "../../../Data/Schemas";
 import StarButton from "../ProgramContent/StarButton";
@@ -25,7 +25,7 @@ export default function SideBar({loaderData}) {
             <CollapseSideBar
                 sx={{
                     '& .MuiDrawer-paper': {
-                        bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
+                        bgcolor: (theme) => theme.palette.surface,
                         width: '250px',
                         height: 'calc(100vh - 120px)',
                         p: '20px',
@@ -50,7 +50,7 @@ export default function SideBar({loaderData}) {
                                 <Button fullWidth type='submit' variant="outlined"
                                         sx={{
                                             transition: 'background-color 0s',
-                                            bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
+                                            bgcolor: (theme) => theme.palette.surfaceVariant,
                                         }}
                                 >
                                     <Add/>
@@ -64,7 +64,7 @@ export default function SideBar({loaderData}) {
                                 <Button fullWidth type='submit' variant="outlined"
                                         sx={{
                                             transition: 'background-color 0s',
-                                            bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
+                                            bgcolor: (theme) => theme.palette.surfaceVariant,
                                         }}
                                 >
                                     <Refresh/>
@@ -81,14 +81,12 @@ export default function SideBar({loaderData}) {
 
 export function UnivProgramList({univProgramList, ButtonComponent = ProgramButton}) {
     const [selectProgram, setSelectProgram] = React.useState(null);
-    const theme = useTheme();
-    const darkMode = theme.palette.mode === 'dark';
     return (
         <Paper
             variant='elevation'
-            elevation={darkMode ? 0 : 1}
+            elevation={0}
             sx={{
-                bgcolor: darkMode ? grey[800] : '#fff',
+                bgcolor: (theme) => theme.palette.surfaceVariant,
                 height: "100%",
                 overflowY: "auto"
             }}
@@ -119,7 +117,6 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
     const [isFolded, setIsFolded] = React.useState(!hasPrograms);
     const region = programList[0]?.Region ?? univRegionMapping[univName] ?? [];
     const flags = region.map((r) => regionFlagMapping[r]).filter(Boolean).join(' ');
-    const darkMode = useTheme().palette.mode === 'dark';
     return (
         <>
             <ListItemButton
@@ -134,7 +131,7 @@ export function ProgramList({univProgram, selectProgram, setSelectProgram, Butto
                         </Box>
                     }
                     secondary={
-                        <Typography variant='subtitle1' sx={{fontSize: 'clamp(11px, 1.5vw, 13px)', color: darkMode ? '#999999' : '#777777'}}>
+                        <Typography variant='subtitle1' sx={{fontSize: 'clamp(11px, 1.5vw, 13px)', color: 'text.secondary'}}>
                             {univAbbrFullNameMapping[univName]}
                         </Typography>
                     }/>
@@ -192,7 +189,7 @@ export function ProgramButton({program, selectProgram, setSelectProgram}) {
                 },
                 "&.Mui-selected": {
                     "&::before": {
-                        background: darkMode ? blue[800] : blue[300],
+                        background: (theme) => theme.palette.primary.main,
                     }
                 }
             }}

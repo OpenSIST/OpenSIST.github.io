@@ -2,7 +2,6 @@ import {Box, Button, Link as MuiLink, Paper, TextField, Tooltip} from "@mui/mate
 import Autocomplete from "@mui/material/Autocomplete";
 import Grid2 from "@mui/material/Grid";
 import {HelpOutline} from "@mui/icons-material";
-import {grey} from "@mui/material/colors";
 import {useNavigate} from "react-router-dom";
 import {applicationYearOptions, currentDegreeOptions, englishOptions, genderOptions, list2Options, majorOptions, rankPercentOptions,} from "../../../../Data/Schemas";
 import {useSmallPage} from "../../../common";
@@ -124,7 +123,7 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
             variant='elevation'
             sx={{
                 width: smallPage ? '90%' : '70%',
-                bgcolor: (theme) => theme.palette.mode === "dark" ? grey[900] : grey[50]
+                bgcolor: (theme) => theme.palette.surface
             }}
             elevation={2}
         >

@@ -1,8 +1,7 @@
-import {Paper, useTheme} from "@mui/material";
+import {Paper} from "@mui/material";
 import React from "react";
 import {Outlet, redirect, useLoaderData} from "react-router-dom";
 import {ProfileSideBar} from "./ProfileSideBar/ProfileSideBar";
-import {grey} from "@mui/material/colors";
 import {getAvatar, getDisplayName, getMetadata, toggleAnonymous, updateContact, uploadAvatar} from "../../Data/UserData";
 import localforage from "localforage";
 import "./Profile.css"
@@ -39,15 +38,13 @@ export async function action({request}) {
 
 export default function Profile() {
     const loaderData = useLoaderData();
-    const theme = useTheme();
-    const darkMode = theme.palette.mode === 'dark';
     return (
         <>
             <ProfileSideBar loaderData={loaderData}/>
             <Paper
                 className='ProfileContent'
                 sx={{
-                    bgcolor: darkMode ? grey[900] : grey[50],
+                    bgcolor: (theme) => theme.palette.surface,
                 }}>
                 <Outlet/>
             </Paper>

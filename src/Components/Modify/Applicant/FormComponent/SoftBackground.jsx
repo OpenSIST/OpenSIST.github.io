@@ -1,6 +1,5 @@
 import {useRef} from "react";
 import {Box, Button, Paper} from "@mui/material";
-import {grey} from "@mui/material/colors";
 import {useNavigate} from "react-router-dom";
 import {useSmallPage} from "../../../common";
 import {ApplicantMaterialsSection, CompetitionSection, createListController, ExchangeSection, ExperienceSection, PublicationSection, RecommendationSection} from "./SoftBackgroundSections";
@@ -69,7 +68,7 @@ function SoftBackground({formValues, handleBack, handleChange}) {
             variant='elevation'
             sx={{
                 width: smallPage ? '90%' : '80%',
-                bgcolor: (theme) => theme.palette.mode === "dark" ? grey[900] : grey[50]
+                bgcolor: (theme) => theme.palette.surface
             }}
             elevation={2}
         >

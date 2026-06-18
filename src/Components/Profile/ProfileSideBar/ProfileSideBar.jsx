@@ -24,7 +24,6 @@ import {Form, Link} from "react-router-dom";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import {ConnectWithoutContact, Edit, HomeRounded, Link as LinkIcon, LinkedIn, Mail, Refresh} from "@mui/icons-material";
-import {blue, grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
 import React, {useRef, useState} from "react";
 import Grid2 from "@mui/material/Grid";
@@ -47,7 +46,7 @@ export function ProfileSideBar({loaderData}) {
         <CollapseSideBar
             sx={{
                 '& .MuiDrawer-paper': {
-                    bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
+                    bgcolor: (theme) => theme.palette.surface,
                     width: '250px',
                     height: 'calc(100vh - 120px)',
                     p: '20px',
@@ -67,9 +66,9 @@ export function ProfileSideBar({loaderData}) {
                             <IconButton
                                 component='label'
                                 sx={{
-                                    bgcolor: (theme) => theme.palette.mode === 'dark' ? blue[200] : blue[600],
+                                    bgcolor: (theme) => theme.palette.primary.main,
                                     "&:hover": {
-                                        bgcolor: (theme) => theme.palette.mode === 'dark' ? blue[300] : blue[500],
+                                        bgcolor: (theme) => theme.palette.primary.dark,
                                     }
                                 }}
                             >

@@ -2,18 +2,15 @@ import React, {useEffect, useRef, useState} from "react";
 import "./SearchBar.css"
 import {useSearchParams} from "react-router-dom";
 import Select from "@mui/material/Select";
-import {Box, Checkbox, Divider, FormControl, InputBase, InputLabel, ListItemText, MenuItem, OutlinedInput, Paper, useTheme} from "@mui/material";
+import {Box, Checkbox, Divider, FormControl, InputBase, InputLabel, ListItemText, MenuItem, OutlinedInput, Paper} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {degreeList, majorList, regionFlagMapping, regionList} from "../../../../Data/Schemas";
-import {grey} from "@mui/material/colors";
 
 export default function SearchBar({query, pageName}) {
     return <SearchBarForm key={JSON.stringify(createFilters(query))} query={query} pageName={pageName}/>;
 }
 
 function SearchBarForm({query, pageName}) {
-    const theme = useTheme();
-    const darkMode = theme.palette.mode === 'dark';
     const [searchParams, setSearchParams] = useSearchParams();
     const timeoutRef = useRef(null);
     const [filters, setFilters] = useState(() => createFilters(query));
@@ -43,9 +40,10 @@ function SearchBarForm({query, pageName}) {
         >
             <Paper
                 role='search'
+                elevation={0}
                 className='searchContainer'
                 sx={{
-                    bgcolor: darkMode ? grey[800] : '#fff',
+                    bgcolor: (theme) => theme.palette.surfaceVariant,
                 }}
             >
                 <SearchIcon sx={{mx: "10px"}}/>
@@ -121,8 +119,8 @@ function splitFilter(value) {
 
 function Filter({label, id, name, value, handleFilterChange, options, OptionItem: OptionContent}) {
     return (
-        <FormControl component={Paper} fullWidth sx={{
-            bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : "#fff",
+        <FormControl component={Paper} elevation={0} fullWidth sx={{
+            bgcolor: (theme) => theme.palette.surfaceVariant,
         }}>
             <InputLabel size='small' sx={{fontSize: '0.8rem', lineHeight: 'inherit'}}>{label}</InputLabel>
             <Select
