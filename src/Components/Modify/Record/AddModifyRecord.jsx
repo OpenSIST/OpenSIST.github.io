@@ -158,11 +158,14 @@ export default function AddModifyRecord({type}) {
                     variant='elevation'
                     sx={{
                         width: smallPage ? '90%' : '70%',
-                        bgcolor: (theme) => theme.palette.surface
+                        bgcolor: (theme) => theme.palette.surface,
+                        borderRadius: 3,
+                        pb: 1,
+                        mt: 3,
                     }}
-                    elevation={2}
+                    elevation={0}
                 >
-                    <Typography variant="h4" sx={{alignSelf: 'center', marginTop: '10px'}}>{`${mode}申请记录`}</Typography>
+                    <Typography variant="h6" sx={{fontWeight: 600, pt: 2.5, pb: 1}}>{`${mode}申请记录`}</Typography>
                     <Box className='AddModifyForm'>
                         <Grid2 container spacing={2} sx={{width: '80%', marginTop: '10px'}}>
                             <Grid2 size={{xs: 12, md: 6}}>

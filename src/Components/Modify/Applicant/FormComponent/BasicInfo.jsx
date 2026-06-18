@@ -4,7 +4,6 @@ import Grid2 from "@mui/material/Grid";
 import {HelpOutline} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
 import {applicationYearOptions, currentDegreeOptions, englishOptions, genderOptions, list2Options, majorOptions, rankPercentOptions,} from "../../../../Data/Schemas";
-import {useSmallPage} from "../../../common";
 import {FormSection, numberInputSx, sectionGridSx} from "./ApplicantFormShared";
 import "../AddModifyApplicant.css";
 
@@ -94,7 +93,6 @@ function NumberField({error, helperText, label, name, onChange, required = false
 
 function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData}) {
     const navigate = useNavigate();
-    const smallPage = useSmallPage();
     const finalOptions = list2Options(loaderData.programs);
     const requiredGreValues = [formValues.GRETotal, formValues.V, formValues.Q, formValues.AW];
     const isGreRequired = requiredGreValues.some(hasValue);
@@ -122,10 +120,12 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
         <Paper
             variant='elevation'
             sx={{
-                width: smallPage ? '90%' : '70%',
-                bgcolor: (theme) => theme.palette.surface
+                width: '100%',
+                bgcolor: (theme) => theme.palette.surface,
+                borderRadius: 3,
+                pb: 1,
             }}
-            elevation={2}
+            elevation={0}
         >
             <FormSection title="申请人基本信息">
                 <Grid2 container spacing={2} sx={sectionGridSx}>
