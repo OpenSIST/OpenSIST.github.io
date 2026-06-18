@@ -1,5 +1,5 @@
 import {Form, redirect, useLoaderData, useNavigate, useSubmit} from "react-router-dom";
-import {Button, ButtonGroup, TextField, Typography, useTheme} from "@mui/material";
+import {Box, Button, TextField, Typography, useTheme} from "@mui/material";
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import MarkDownEditor from "../Program/MarkDownEditor/MarkDownEditor";
 import {addModifyPost, formatPostContentSize, getPostObject, getUtf8ByteLength, POST_CONTENT_MAX_BYTES} from "../../../Data/PostData";
@@ -202,10 +202,11 @@ export default function AddModifyPost({type}) {
             onSubmit={handleSubmit}
             style={{display: 'flex', flexDirection: 'column', height: "100%", gap: "1rem"}}
         >
-            <Typography variant="h4" sx={{alignSelf: 'center'}}>{mode}文章</Typography>
+            <Typography variant="h6" sx={{fontWeight: 600}}>{mode}文章</Typography>
             <TextField
                 label="题目"
-                variant="standard"
+                variant="outlined"
+                size="small"
                 name='Title'
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -229,10 +230,11 @@ export default function AddModifyPost({type}) {
                 {postContentMessage || `内容大小 ${formatPostContentSize(contentBytes)} / ${formatPostContentSize(POST_CONTENT_MAX_BYTES)}`}
             </Typography>
             <textarea name="Content" hidden={true} value={content} readOnly/>
-            <ButtonGroup>
-                <Button type="submit" name="ActionType" value={type} disabled={contentTooLarge || submitting}> 提交 </Button>
-                <Button onClick={() => navigate(-1)}> 取消 </Button>
-            </ButtonGroup>
+            <Box sx={{display: "flex", justifyContent: "flex-end", gap: 1.5}}>
+                <Button variant="text" color="inherit" onClick={() => navigate(-1)}>取消</Button>
+                <Button variant="contained" color="success" type="submit" name="ActionType" value={type}
+                        disabled={contentTooLarge || submitting}>提交</Button>
+            </Box>
         </Form>
     )
 }

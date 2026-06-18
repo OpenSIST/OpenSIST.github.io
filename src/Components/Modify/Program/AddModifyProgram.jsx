@@ -4,7 +4,7 @@ import {degreeOptions, DescriptionTemplate, majorOptions, univOptions} from "../
 import MarkDownEditor from "./MarkDownEditor/MarkDownEditor";
 import {Form, redirect, useLoaderData, useLocation, useNavigate} from "react-router-dom";
 import {addModifyProgram} from "../../../Data/ProgramData";
-import {Button, ButtonGroup, Checkbox, FormControl, Input, Link as MuiLink, ListItemText, MenuItem, TextField, Tooltip, Typography} from "@mui/material";
+import {Box, Button, Checkbox, Divider, FormControl, Input, Link as MuiLink, ListItemText, MenuItem, TextField, Tooltip, Typography} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMarkdown} from "@fortawesome/free-brands-svg-icons";
@@ -47,6 +47,16 @@ export async function action({request}) {
     return redirect(programsProgramPath(programId))
 }
 
+function SectionTitle({children, adornment}) {
+    return (
+        <Box sx={{mt: 1, mb: 1.5, display: 'flex', alignItems: 'center', gap: 1}}>
+            <Typography sx={{fontWeight: 600, fontSize: 15, color: 'text.primary'}}>{children}</Typography>
+            {adornment}
+            <Divider sx={{flex: 1, ml: 0.5}}/>
+        </Box>
+    );
+}
+
 export default function AddModifyProgram({type}) {
     const navigate = useNavigate();
     const location = useLocation();
@@ -65,22 +75,23 @@ export default function AddModifyProgram({type}) {
               style={{display: 'flex', flexDirection: 'column', height: "100%"}}
         >
             <Input type='hidden' sx={{visibility: 'hidden'}} value={type} name='ActionType'/>
-            <Typography variant="h4" sx={{alignSelf: 'center'}}>{`${mode}项目`}</Typography>
-            <Typography variant="h5">项目信息</Typography>
-            <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "15px"}} fullWidth>
+            <Typography variant="h6" sx={{fontWeight: 600}}>{`${mode}项目`}</Typography>
+            <SectionTitle>项目信息</SectionTitle>
+            <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "20px"}} fullWidth>
                 <Autocomplete
                     autoHighlight
                     options={univOptions}
                     value={univ}
                     onChange={(event, value) => setUniv(value)}
                     readOnly={!addMode}
-                    sx={addMode ? {} : {color: 'gray', cursor: 'not-allowed', pointerEvents: 'none'}}
+                    sx={addMode ? {} : {cursor: 'not-allowed', pointerEvents: 'none'}}
                     renderInput={(params) =>
                         <>
                             <TextField
                                 {...params}
                                 label={"学校名称" + (addMode ? "" : " (不可修改)")}
-                                variant="standard"
+                                variant="outlined"
+                                size="small"
                                 required
                                 helperText={<MuiLink
                                     href="https://github.com/orgs/OpenSIST/discussions/23">未找到学校？请到GitHub提交Issue
@@ -99,7 +110,8 @@ export default function AddModifyProgram({type}) {
                 </Autocomplete>
                 <TextField
                     InputProps={{readOnly: !addMode}}
-                    variant="standard"
+                    variant="outlined"
+                    size="small"
                     name="Program"
                     label={"项目名称" + (addMode ? "" : " (不可修改)")}
                     value={programName}
@@ -107,12 +119,12 @@ export default function AddModifyProgram({type}) {
                     error={programNameInvalid}
                     helperText={programNameInvalid ? "项目名称中不可包含@, |, /, \\, ?, !, $，如果必须要使用'/'字符，请用'&'代替" : ""}
                     placeholder="硕士写简称 (e.g. MSCS)，博士要加院系 (e.g. EECS PhD)"
-                    sx={addMode ? {} : {color: 'gray', cursor: 'not-allowed', pointerEvents: 'none'}}
+                    sx={addMode ? {} : {cursor: 'not-allowed', pointerEvents: 'none'}}
                     fullWidth
                     required
                 />
             </FormControl>
-            <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "15px"}} fullWidth>
+            <FormControl sx={{display: 'flex', flexDirection: 'row', gap: "15px", mb: "20px"}} fullWidth>
                 <Autocomplete
                     options={degreeOptions}
                     defaultValue={programContent?.Degree ? degreeOptions.find((degree) => {
@@ -124,7 +136,8 @@ export default function AddModifyProgram({type}) {
                                 {...params}
                                 name="Degree"
                                 label="项目学位"
-                                variant="standard"
+                                variant="outlined"
+                                size="small"
                                 InputProps={{
                                     ...params.InputProps,
                                     endAdornment: (
@@ -156,7 +169,7 @@ export default function AddModifyProgram({type}) {
                     options={majorOptions}
                     value={major}
                     renderTags={(value) =>
-                        <Typography variant="body1">
+                        <Typography variant="body2">
                             {value.map((option) => option.label).join(', ')}
                         </Typography>
                     }
@@ -174,7 +187,8 @@ export default function AddModifyProgram({type}) {
                                 <TextField
                                     {...params}
                                     label="目标申请人专业"
-                                    variant="standard"
+                                    variant="outlined"
+                                    size="small"
                                     required={major.length === 0}
                                 />
                                 <TextField sx={{display: "none"}} name="TargetApplicantMajor"
@@ -186,16 +200,13 @@ export default function AddModifyProgram({type}) {
                 />
                 <TextField sx={{display: 'none'}} name="Region" value={univ?.region.join(',') ?? ''}/>
             </FormControl>
-            <Typography variant="h5" sx={{mb: "10px"}}>
-                {"项目描述 "}
-                <FontAwesomeIcon icon={faMarkdown}/>
-            </Typography>
+            <SectionTitle adornment={<FontAwesomeIcon icon={faMarkdown}/>}>项目描述</SectionTitle>
             <MarkDownEditor Description={Description} setDescription={setDescription}/>
             <textarea id='Description' name='Description' hidden={true} value={Description} readOnly/>
-            <ButtonGroup sx={{mt: '1vh'}}>
-                <Button type="submit" disabled={programNameInvalid}> 提交 </Button>
-                <Button onClick={() => navigate("..")}> 取消 </Button>
-            </ButtonGroup>
+            <Box sx={{display: "flex", justifyContent: "flex-end", gap: 1.5, mt: 2}}>
+                <Button variant="text" color="inherit" onClick={() => navigate("..")}>取消</Button>
+                <Button variant="contained" color="success" type="submit" disabled={programNameInvalid}>提交</Button>
+            </Box>
         </Form>
     )
 }

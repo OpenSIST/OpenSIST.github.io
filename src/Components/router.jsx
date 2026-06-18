@@ -19,18 +19,15 @@ import AddModifyRecord, {action as addModifyRecordAction, loader as addModifyRec
 import PostPage, {loader as PostPageLoader} from "./Post/PostPage";
 import PostContent, {action as PostContentAction, loader as PostContentLoader} from "./Post/PostContent/PostContent";
 import AddModifyPost, {action as AddModifyPostAction, loader as AddModifyPostLoader} from "./Modify/Post/AddModifyPost";
-import MarkDownPage from "./MarkDownPage/MarkDownPage";
 import Login, {action as loginAction} from "./Auth/Login/Login";
 import RegisterAndReset, {action as registerAndResetAction} from "./Auth/RegisterAndReset/RegisterAndReset";
 import Agreement from "./Agreement/Agreement";
 import FAQ from "./FAQ/FAQ";
 import React from "react";
-import ProgramIndexContent from "../Data/MarkDown/ProgramIndex.md?raw"
+import ProgramIndex from "./ProgramPage/ProgramIndex";
 import ProfileIndex from "./Profile/ProfileIndex";
-import PostIndexContent from "../Data/MarkDown/PostIndex.md?raw"
+import PostIndex from "./Post/PostIndex";
 import Favorites, {loader as FavoritesLoader} from "./Favorites/Favorites";
-
-const markdownLoader = (content) => () => ({content});
 
 const router = createBrowserRouter([
     {
@@ -57,8 +54,7 @@ const router = createBrowserRouter([
                                 children: [
                                     {
                                         index: true,
-                                        element: <MarkDownPage key="ProgramIndex"/>,
-                                        loader: markdownLoader(ProgramIndexContent)
+                                        element: <ProgramIndex/>
                                     }, {
                                         path: '/programs/:programId',
                                         element: <ProgramContent/>,
@@ -176,8 +172,7 @@ const router = createBrowserRouter([
                                 children: [
                                     {
                                         index: true,
-                                        element: <MarkDownPage key={"PostIndex"}/>,
-                                        loader: markdownLoader(PostIndexContent)
+                                        element: <PostIndex/>
                                     }, {
                                         path: '/posts/:postId',
                                         element: <PostContent/>,
