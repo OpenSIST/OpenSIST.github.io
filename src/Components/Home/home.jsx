@@ -1,14 +1,15 @@
 import TopBar from "../TopBar/TopBar";
 import {Outlet} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
-import {BoldTypography, LoadingBackdrop, OpenSIST, useSmallPage} from "../common";
-import {Box, Button, Chip, Divider, Paper, Stack, Typography, useTheme} from "@mui/material";
+import {LoadingBackdrop, OpenSIST, useSmallPage} from "../common";
+import {Box, Button, Chip, Divider, Link as MuiLink, Paper, Stack, Typography, useTheme} from "@mui/material";
 import {
     AutoGraphOutlined,
     EditNoteOutlined,
     GitHub,
     KeyboardArrowDown,
     MenuBookOutlined,
+    NorthEastRounded,
     PersonOutlineOutlined,
     SchoolOutlined,
     StarRounded,
@@ -16,7 +17,6 @@ import {
     TravelExploreOutlined,
 } from "@mui/icons-material";
 import {clickHandler, initMap} from "../WorldMap/display";
-import Grid2 from "@mui/material/Grid";
 import './home.css';
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecords} from "../../Data/RecordData";
@@ -166,25 +166,8 @@ function HomeIndexContent() {
                 <Box sx={centeredScreenSx}>
                     <StatsBlock/>
                 </Box>
-                <Box sx={{...screenSx, justifyContent: 'start', ml: smallPage ? 0 : '2rem'}}>
-                    <Grid2 container rowSpacing={smallPage ? 5 : 10} sx={{mt: '3rem'}}>
-                        <Grid2
-                            size={{
-                                xs: 12,
-                                md: 6
-                            }}>
-                            <HomeIndexContentBlock title="友情链接"/>
-                        </Grid2>
-                        {!smallPage ? <Grid2 size={6}/> : null}
-                        {!smallPage ? <Grid2 size={6}/> : null}
-                        <Grid2
-                            size={{
-                                xs: 12,
-                                md: 6
-                            }}>
-                            <HomeIndexContentBlock title="特别鸣谢"/>
-                        </Grid2>
-                    </Grid2>
+                <Box sx={centeredScreenSx}>
+                    <LinksBlock/>
                 </Box>
             </Box>
 
@@ -195,36 +178,64 @@ function HomeIndexContent() {
 }
 
 function PageDots({pageIndex, setPageIndex}) {
+    const dark = useTheme().palette.mode === 'dark';
+    const gradient = dark
+        ? 'linear-gradient(140deg, #93C0F2, #6BA6E8)'
+        : 'linear-gradient(140deg, #1C5BAA, #4F86CE)';
+    const ring = dark ? 'rgba(107,166,232,0.20)' : 'rgba(28,91,170,0.16)';
+    const glow = dark ? 'rgba(107,166,232,0.55)' : 'rgba(28,91,170,0.45)';
+    const railGradient = dark
+        ? 'linear-gradient(180deg, transparent, rgba(147,192,242,0.28), transparent)'
+        : 'linear-gradient(180deg, transparent, rgba(28,91,170,0.20), transparent)';
+    const idle = dark ? 'rgba(231,235,241,0.35)' : 'rgba(16,24,40,0.22)';
+    const idleHover = dark ? 'rgba(231,235,241,0.6)' : 'rgba(16,24,40,0.4)';
+
     return (
         <Box sx={{
             position: 'fixed',
-            right: {xs: 12, md: 24},
+            right: {xs: 14, md: 26},
             top: '50%',
             transform: 'translateY(-50%)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: 1.5,
+            gap: 1.75,
             zIndex: 10,
+            '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 2,
+                bottom: 2,
+                left: '50%',
+                width: 2,
+                transform: 'translateX(-50%)',
+                borderRadius: 2,
+                background: railGradient,
+                zIndex: -1,
+            },
         }}>
-            {Array.from({length: PAGE_COUNT}).map((_, p) => (
-                <Box
-                    key={p}
-                    role="button"
-                    aria-label={`第 ${p + 1} 屏`}
-                    onClick={() => setPageIndex(p)}
-                    sx={{
-                        width: 10,
-                        height: pageIndex === p ? 22 : 10,
-                        borderRadius: 5,
-                        cursor: 'pointer',
-                        bgcolor: pageIndex === p ? 'primary.main' : 'text.disabled',
-                        opacity: pageIndex === p ? 1 : 0.5,
-                        transition: 'all 0.3s cubic-bezier(0.65, 0, 0.35, 1)',
-                        '&:hover': {opacity: 1, bgcolor: 'primary.main'},
-                    }}
-                />
-            ))}
+            {Array.from({length: PAGE_COUNT}).map((_, p) => {
+                const active = pageIndex === p;
+                return (
+                    <Box
+                        key={p}
+                        role="button"
+                        aria-label={`第 ${p + 1} 屏`}
+                        onClick={() => setPageIndex(p)}
+                        sx={{
+                            width: 10,
+                            height: 10,
+                            borderRadius: '50%',
+                            cursor: 'pointer',
+                            background: active ? gradient : idle,
+                            transform: active ? 'scale(1.6)' : 'scale(1)',
+                            boxShadow: active ? `0 0 0 4px ${ring}, 0 3px 12px ${glow}` : 'none',
+                            transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease, box-shadow 0.3s ease',
+                            '&:hover': active ? {} : {transform: 'scale(1.3)', background: idleHover},
+                        }}
+                    />
+                );
+            })}
         </Box>
     );
 }
@@ -327,64 +338,117 @@ function WelcomeBlock() {
     )
 }
 
-function HomeIndexContentBlock({title}) {
-    const theme = useTheme();
-    const linkColor = theme.palette.primary.main;
-    const blockItems = (title) => {
-        if (title === "友情链接") {
-            return (
-                <div>
-                    <Typography variant='h5'>申请网站</Typography>
-                    <ul style={{marginRight: '4rem'}}>
-                        <li>陆本申请北美选校定位平台：<a href="https://opencs.app" style={{color: linkColor}}><b>Open CS
-                            Application</b></a></li>
-                        <li>陆本申请欧洲/港新地区信息共享平台：<a href="https://global-cs-application.github.io"
-                                                                 style={{color: linkColor}}><b>Global CS</b></a></li>
-                        <li>CS PhD文书参考：<a
-                            href="https://cs-sop.notion.site/CS-PhD-Statements-of-Purpose-df39955313834889b7ac5411c37b958d"
-                            style={{color: linkColor}}><b>CS PhD Statements of Purpose</b></a></li>
-                        <li>海外硕博申请信息共享平台（类似一亩三分地）：<a href="https://www.thegradcafe.com/"
-                                                                        style={{color: linkColor}}><b>GradCafe</b></a></li>
-                    </ul>
-                    <Typography variant='h5'>校内链接</Typography>
-                    <ul>
-                        <li>学校ACM社团：<a href='https://acm.shanghaitech.edu.cn/'
-                                           style={{color: linkColor}}><b>ACM@SIST</b></a></li>
-                    </ul>
-                </div>
-            )
-        } else if (title === '特别鸣谢') {
-            return (
-                <ul style={{marginRight: '4rem'}}>
-                    <li>
-                        本项目受到<a href='https://github.com/xichenpan'
-                                     style={{color: linkColor}}><b>flash老师</b></a>的<a
-                        href='https://opencs.app' style={{color: linkColor}}><b>OpenCS</b></a>项目的启发
-                    </li>
-                    <li>
-                        本项目在内测阶段得到了信息学院和生医工学院毕业生们的大力支持，他们的宝贵建议对OpenSIST的进一步完善至关重要
-                    </li>
-                    <li>
-                        信息学院的倪鹤南老师为本项目提供了很多行政上的支持
-                    </li>
-                </ul>
-            )
-        }
-    }
-    const dark = theme.palette.mode === 'dark';
+const FRIEND_LINKS = [
+    {
+        group: '申请网站',
+        items: [
+            {name: 'Open CS Application', label: '陆本申请北美选校定位平台', href: 'https://opencs.app'},
+            {name: 'Global CS', label: '陆本申请欧洲 / 港新地区信息共享', href: 'https://global-cs-application.github.io'},
+            {
+                name: 'CS PhD Statements of Purpose',
+                label: 'CS PhD 文书参考',
+                href: 'https://cs-sop.notion.site/CS-PhD-Statements-of-Purpose-df39955313834889b7ac5411c37b958d',
+            },
+            {name: 'GradCafe', label: '海外硕博申请信息共享平台', href: 'https://www.thegradcafe.com/'},
+        ],
+    },
+    {
+        group: '校内链接',
+        items: [
+            {name: 'ACM@SIST', label: '学校 ACM 社团', href: 'https://acm.shanghaitech.edu.cn/'},
+        ],
+    },
+];
+
+function LinkRow({item, dark}) {
     return (
-        <Box className="GlassCard" sx={{
-            p: {xs: '1.25rem 1.5rem', md: '1.5rem 1.75rem'},
-            bgcolor: dark ? 'rgba(21,25,32,0.55)' : 'rgba(246,249,253,0.66)',
-            boxShadow: dark ? '0 10px 40px rgba(0,0,0,0.4)' : '0 10px 40px rgba(16,24,40,0.1)',
-        }}>
-            <BoldTypography variant='h5'>
-                {title}
-            </BoldTypography>
-            <Divider sx={{my: '1rem', borderColor: 'divider'}}/>
-            {blockItems(title)}
+        <Box
+            component='a'
+            href={item.href}
+            target='_blank'
+            rel='noopener'
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                py: 0.85,
+                px: 1,
+                borderRadius: 2,
+                textDecoration: 'none',
+                color: 'inherit',
+                transition: 'background-color 0.15s ease, transform 0.15s ease',
+                '&:hover': {
+                    bgcolor: dark ? 'rgba(147,192,242,0.10)' : 'rgba(28,91,170,0.07)',
+                    transform: 'translateX(3px)',
+                },
+                '&:hover .linkArrow': {opacity: 1},
+            }}
+        >
+            <Box sx={{flex: 1, minWidth: 0}}>
+                <Typography variant='body2' sx={{fontWeight: 700, color: 'primary.main'}}>{item.name}</Typography>
+                <Typography variant='caption' sx={{color: 'text.secondary'}}>{item.label}</Typography>
+            </Box>
+            <NorthEastRounded className='linkArrow' sx={{fontSize: 16, color: 'primary.main', opacity: 0.45, transition: 'opacity 0.15s ease'}}/>
         </Box>
-    )
+    );
+}
+
+function LinksBlock() {
+    const dark = useTheme().palette.mode === 'dark';
+    const cardTitleSx = {fontWeight: 800, display: 'inline-block', ...gradientTextSx(dark)};
+    const thanks = [
+        <>本项目受到 <MuiLink href='https://github.com/xichenpan' target='_blank' rel='noopener'>flash 老师</MuiLink> 的{' '}
+            <MuiLink href='https://opencs.app' target='_blank' rel='noopener'>OpenCS</MuiLink> 项目的启发。</>,
+        <>内测阶段得到了信息学院与生医工学院毕业生们的大力支持，他们的宝贵建议对 OpenSIST 的完善至关重要。</>,
+        <>信息学院的倪鹤南老师为本项目提供了诸多行政上的支持。</>,
+    ];
+    return (
+        <Box sx={{width: '100%', maxWidth: 980}}>
+            <SectionHeading title='友情链接 & 致谢' subtitle='站在前人的肩膀上，也感谢一路同行的人'/>
+            <Box sx={{display: 'grid', gridTemplateColumns: {xs: '1fr', md: '1fr 1fr'}, gap: {xs: 2, md: 2.5}}}>
+                <Box className='GlassCard' sx={glassSx(dark, {p: {xs: '1.5rem', md: '1.75rem'}})}>
+                    <Typography variant='h6' sx={cardTitleSx}>友情链接</Typography>
+                    <Divider sx={{my: 1.5, borderColor: 'divider'}}/>
+                    {FRIEND_LINKS.map((sec) => (
+                        <Box key={sec.group} sx={{mb: 1.5}}>
+                            <Typography variant='overline' sx={{color: 'text.secondary', fontWeight: 700, letterSpacing: '0.08em'}}>
+                                {sec.group}
+                            </Typography>
+                            <Box sx={{mt: 0.5}}>
+                                {sec.items.map((item) => <LinkRow key={item.name} item={item} dark={dark}/>)}
+                            </Box>
+                        </Box>
+                    ))}
+                </Box>
+                <Box className='GlassCard' sx={glassSx(dark, {p: {xs: '1.5rem', md: '1.75rem'}})}>
+                    <Typography variant='h6' sx={cardTitleSx}>特别鸣谢</Typography>
+                    <Divider sx={{my: 1.5, borderColor: 'divider'}}/>
+                    <Stack spacing={1.5}>
+                        {thanks.map((t, i) => (
+                            <Box key={i} sx={{display: 'flex', gap: 1.25, alignItems: 'flex-start'}}>
+                                <Box sx={{mt: '0.5em', width: 7, height: 7, borderRadius: '50%', flexShrink: 0, background: brandGradient(dark)}}/>
+                                <Typography variant='body2' sx={{color: 'text.secondary', lineHeight: 1.8}}>{t}</Typography>
+                            </Box>
+                        ))}
+                    </Stack>
+                </Box>
+            </Box>
+        </Box>
+    );
+}
+
+function brandGradient(dark) {
+    return dark ? 'linear-gradient(140deg, #93C0F2, #6BA6E8)' : 'linear-gradient(140deg, #1C5BAA, #4F86CE)';
+}
+
+function gradientTextSx(dark) {
+    return {
+        background: brandGradient(dark),
+        backgroundClip: 'text',
+        WebkitBackgroundClip: 'text',
+        color: 'transparent',
+        WebkitTextFillColor: 'transparent',
+    };
 }
 
 function glassSx(dark, extra = {}) {
@@ -406,8 +470,9 @@ function IconBadge({children}) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            bgcolor: dark ? 'rgba(107,166,232,0.16)' : 'rgba(28,91,170,0.10)',
-            color: 'primary.main',
+            background: brandGradient(dark),
+            color: '#fff',
+            boxShadow: dark ? '0 6px 16px rgba(107,166,232,0.32)' : '0 6px 16px rgba(28,91,170,0.26)',
         }}>
             {children}
         </Box>
@@ -415,9 +480,12 @@ function IconBadge({children}) {
 }
 
 function SectionHeading({title, subtitle}) {
+    const dark = useTheme().palette.mode === 'dark';
     return (
         <Box sx={{textAlign: 'center', mb: {xs: 3, md: 5}}}>
-            <Typography variant='h4' sx={{fontWeight: 700}}>{title}</Typography>
+            <Typography variant='h4' sx={{fontWeight: 800, display: 'inline-block', ...gradientTextSx(dark)}}>
+                {title}
+            </Typography>
             {subtitle ? <Typography sx={{color: 'text.secondary', mt: 1}}>{subtitle}</Typography> : null}
         </Box>
     );
@@ -468,7 +536,8 @@ function StepsBlock() {
                             <Box sx={{
                                 width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                bgcolor: 'primary.main', color: '#fff', fontWeight: 700,
+                                background: brandGradient(dark), color: '#fff', fontWeight: 700,
+                                boxShadow: dark ? '0 6px 16px rgba(107,166,232,0.32)' : '0 6px 16px rgba(28,91,170,0.26)',
                             }}>{s.n}</Box>
                             <Box sx={{color: 'primary.main', display: 'flex'}}>{s.icon}</Box>
                         </Box>
@@ -541,7 +610,7 @@ function StatsBlock() {
                     <Box key={t.label} className='GlassCard'
                          sx={glassSx(dark, {p: {xs: '1.25rem', md: '1.75rem 1rem'}, textAlign: 'center'})}>
                         <Box sx={{color: 'primary.main', display: 'flex', justifyContent: 'center', mb: 1}}>{t.icon}</Box>
-                        <Typography sx={{fontWeight: 800, color: 'text.primary', lineHeight: 1.1, fontSize: {xs: '2rem', md: '2.6rem'}}}>
+                        <Typography sx={{fontWeight: 800, lineHeight: 1.1, fontSize: {xs: '2rem', md: '2.6rem'}, display: 'inline-block', ...gradientTextSx(dark)}}>
                             <StatNumber value={t.value}/>{t.value !== null ? t.suffix : ''}
                         </Typography>
                         <Typography variant='body2' sx={{color: 'text.secondary', mt: 0.5}}>{t.label}</Typography>
