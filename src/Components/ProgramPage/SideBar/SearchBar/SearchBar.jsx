@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import "./SearchBar.css"
 import {useSearchParams} from "react-router-dom";
 import Select from "@mui/material/Select";
-import {Box, Checkbox, Divider, FormControl, InputBase, InputLabel, ListItemText, MenuItem, OutlinedInput, Paper} from "@mui/material";
+import {Box, Checkbox, Divider, InputBase, ListItemText, MenuItem, OutlinedInput, Paper} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {degreeList, majorList, regionFlagMapping, regionList} from "../../../../Data/Schemas";
 
@@ -70,35 +70,37 @@ function SearchBarForm({query, pageName}) {
                     size="small"
                 />}
             </Paper>
-            {pageName === 'program' || pageName === 'favorites' ? <>
-                <Filter
-                    label='Select Degree'
-                    id='d'
-                    name='d'
-                    value={filters.d}
-                    handleFilterChange={handleFilterChange}
-                    options={degreeList}
-                    OptionItem={CheckBoxOptionItem}
-                />
-                <Filter
-                    label='Select Major'
-                    id='m'
-                    name='m'
-                    value={filters.m}
-                    handleFilterChange={handleFilterChange}
-                    options={majorList}
-                    OptionItem={CheckBoxOptionItem}
-                />
-                <Filter
-                    label='Select Region'
-                    id='r'
-                    name='r'
-                    value={filters.r}
-                    handleFilterChange={handleFilterChange}
-                    options={regionList}
-                    OptionItem={FlagOptionContent}
-                />
-            </> : null}
+            {pageName === 'program' || pageName === 'favorites' ? (
+                <Box sx={{display: 'flex', gap: '8px'}}>
+                    <Filter
+                        label='学历'
+                        id='d'
+                        name='d'
+                        value={filters.d}
+                        handleFilterChange={handleFilterChange}
+                        options={degreeList}
+                        OptionItem={CheckBoxOptionItem}
+                    />
+                    <Filter
+                        label='专业'
+                        id='m'
+                        name='m'
+                        value={filters.m}
+                        handleFilterChange={handleFilterChange}
+                        options={majorList}
+                        OptionItem={CheckBoxOptionItem}
+                    />
+                    <Filter
+                        label='地区'
+                        id='r'
+                        name='r'
+                        value={filters.r}
+                        handleFilterChange={handleFilterChange}
+                        options={regionList}
+                        OptionItem={FlagOptionContent}
+                    />
+                </Box>
+            ) : null}
         </Box>
     )
 }
@@ -118,34 +120,35 @@ function splitFilter(value) {
 }
 
 function Filter({label, id, name, value, handleFilterChange, options, OptionItem: OptionContent}) {
+    const active = value.length > 0;
     return (
-        <FormControl component={Paper} elevation={0} fullWidth sx={{
-            bgcolor: (theme) => theme.palette.surfaceVariant,
-        }}>
-            <InputLabel size='small' sx={{fontSize: '0.8rem', lineHeight: 'inherit'}}>{label}</InputLabel>
-            <Select
-                multiple
-                id={id}
-                name={name}
-                value={value}
-                onChange={handleFilterChange}
-                className='searchContainer'
-                input={<OutlinedInput label={label} size="small"/>}
-                renderValue={(selected) => selected.join(', ')}
-                sx={{
-                    '.MuiOutlinedInput-notchedOutline': {border: 0},
-                }}
-                size="small"
-            >
-                {options.map((opt) => (
-                        <MenuItem key={opt} value={opt}>
-                            <Checkbox checked={value.includes(opt)} size='small'/>
-                            <OptionContent optionValue={opt}/>
-                        </MenuItem>
-                    )
-                )}
-            </Select>
-        </FormControl>
+        <Select
+            multiple
+            displayEmpty
+            size="small"
+            id={id}
+            name={name}
+            value={value}
+            onChange={handleFilterChange}
+            input={<OutlinedInput/>}
+            className={`filter-pill${active ? ' filter-pill-active' : ''}`}
+            MenuProps={{PaperProps: {sx: {borderRadius: 2, mt: 0.5, backgroundImage: 'none'}}}}
+            renderValue={() => (active ? `${label} · ${value.length}` : label)}
+            sx={{
+                flex: 1,
+                minWidth: 0,
+                bgcolor: (theme) => theme.palette.surfaceVariant,
+                color: (theme) => (active ? theme.palette.primary.main : theme.palette.text.secondary),
+                '& .MuiSelect-select': {py: '7px', pl: '12px', fontSize: 13},
+            }}
+        >
+            {options.map((opt) => (
+                <MenuItem key={opt} value={opt} dense>
+                    <Checkbox checked={value.includes(opt)} size='small'/>
+                    <OptionContent optionValue={opt}/>
+                </MenuItem>
+            ))}
+        </Select>
     )
 }
 

@@ -3,7 +3,7 @@ import {Form, Link} from "react-router-dom";
 import "./SideBar.css";
 import SearchBar from "./SearchBar/SearchBar";
 import {univAbbrFullNameMapping} from "../../../Data/Common";
-import {Box, Button, Collapse, Divider, List, ListItemButton, ListItemText, Paper, Tooltip, Typography, useTheme} from "@mui/material";
+import {Box, Collapse, Divider, IconButton, List, ListItemButton, ListItemText, Paper, Tooltip, Typography, useTheme} from "@mui/material";
 import {Add, ExpandMore, NavigateNext, Refresh} from "@mui/icons-material";
 import {grey} from "@mui/material/colors";
 import {CollapseSideBar} from "../../common";
@@ -35,40 +35,23 @@ export default function SideBar({loaderData}) {
                 }}
             >
                 <SearchBar query={getQuery(loaderData)} pageName='program'/>
-                <Box
-                    sx={{
-                        boxSizing: 'border-box',
-                        columnGap: 1,
-                        display: 'grid',
-                        gridTemplateColumns: 'minmax(0, 8fr) minmax(0, 3fr)',
-                        width: '100%',
-                    }}
-                >
-                    <Box sx={{minWidth: 0}}>
-                        <Form action='/programs/new' style={{width: "100%"}}>
+                <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: '2px'}}>
+                    <Typography variant='caption' sx={{color: 'text.secondary', fontWeight: 600, letterSpacing: '0.04em'}}>
+                        学校列表
+                    </Typography>
+                    <Box sx={{display: 'flex', gap: '2px'}}>
+                        <Form action='/programs/new'>
                             <Tooltip title='添加新项目' arrow>
-                                <Button fullWidth type='submit' variant="outlined"
-                                        sx={{
-                                            transition: 'background-color 0s',
-                                            bgcolor: (theme) => theme.palette.surfaceVariant,
-                                        }}
-                                >
-                                    <Add/>
-                                </Button>
+                                <IconButton type='submit' size='small' sx={{color: 'text.secondary'}}>
+                                    <Add fontSize='small'/>
+                                </IconButton>
                             </Tooltip>
                         </Form>
-                    </Box>
-                    <Box sx={{minWidth: 0}}>
-                        <Form method='post' style={{width: "100%"}}>
+                        <Form method='post'>
                             <Tooltip title='刷新项目列表' arrow>
-                                <Button fullWidth type='submit' variant="outlined"
-                                        sx={{
-                                            transition: 'background-color 0s',
-                                            bgcolor: (theme) => theme.palette.surfaceVariant,
-                                        }}
-                                >
-                                    <Refresh/>
-                                </Button>
+                                <IconButton type='submit' size='small' sx={{color: 'text.secondary'}}>
+                                    <Refresh fontSize='small'/>
+                                </IconButton>
                             </Tooltip>
                         </Form>
                     </Box>

@@ -24,7 +24,20 @@
     border-radius: 8px;
 }
 
+.searchbar-style .MuiOutlinedInput-notchedOutline {
+    border: none;
+}
+
 .searchbar-style .searchContainer:focus-within,
 .searchbar-style .MuiOutlinedInput-root.Mui-focused {
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--link-color) 28%, transparent);
+}
+
+/* compact filter pills sitting in one row */
+.filter-pill .MuiSelect-icon {
+    right: 4px;
+}
+
+.filter-pill-active .MuiSelect-icon {
+    color: var(--link-color);
 }
