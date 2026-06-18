@@ -222,7 +222,7 @@ export default function PostContent() {
                     </Form>
                 </Box>
             </Box>
-            <Paper sx={{display: 'flex', flexDirection: 'column', p: '1rem'}}>
+            <Paper elevation={0} sx={{display: 'flex', flexDirection: 'column', p: '1rem', bgcolor: (theme) => theme.palette.surfaceVariant, borderRadius: 2}}>
                 <Typography variant={'h4'} sx={{display: 'flex', position: 'relative', mb: '1rem'}}>
                     {postObj.title}
                 </Typography>
@@ -233,7 +233,7 @@ export default function PostContent() {
                     <LikeButton content={postObj}/>
                 </Box>
             </Paper>
-            <Paper sx={{display: 'flex', flexDirection: 'column', gap: 2, mt: 2, p: '1rem'}}>
+            <Paper elevation={0} sx={{display: 'flex', flexDirection: 'column', gap: 2, mt: 2, p: '1rem', bgcolor: (theme) => theme.palette.surfaceVariant, borderRadius: 2}}>
                 <Typography variant="h6">评论</Typography>
                 <CommentForm parentId={postObj.id} placeholder="写下评论"/>
                 {topLevelComments.length === 0 ? (
