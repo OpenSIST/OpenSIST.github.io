@@ -77,6 +77,15 @@ export function HomeIndex() {
 function HomeIndexContent() {
     const [pageIndex, setPageIndex] = useState(0);
     const contentRef = useRef(null);
+    const pageIndexRef = useRef(0);
+
+    // keep the ref in sync for the imperative scroll handlers, and start each
+    // newly-shown screen at the top
+    useEffect(() => {
+        pageIndexRef.current = pageIndex;
+        const screen = contentRef.current?.firstElementChild?.children[pageIndex];
+        if (screen) screen.scrollTop = 0;
+    }, [pageIndex]);
 
     useEffect(() => {
         const node = contentRef.current;
@@ -95,11 +104,21 @@ function HomeIndexContent() {
                 return next;
             });
         };
+        // when the active screen's own content overflows, let it scroll natively
+        // until it hits the edge — only then do we snap to the next/prev screen
+        const canScrollWithin = (dir) => {
+            const screen = node.firstElementChild?.children[pageIndexRef.current];
+            if (!screen) return false;
+            const {scrollTop, scrollHeight, clientHeight} = screen;
+            if (scrollHeight - clientHeight <= 2) return false;
+            return dir > 0 ? scrollTop + clientHeight < scrollHeight - 2 : scrollTop > 2;
+        };
         const onWheel = (e) => {
-            // the landing is a fixed two-screen snap — never let the browser scroll
-            // (kills the rubber-band that drags the sticky top bar)
-            e.preventDefault();
             if (Math.abs(e.deltaY) < 8) return;
+            if (canScrollWithin(e.deltaY)) return;
+            // at an edge — own the gesture (also kills the rubber-band that drags
+            // the sticky top bar) and snap to the neighbouring screen
+            e.preventDefault();
             go(e.deltaY);
         };
         let touchStartY = null;
@@ -107,9 +126,10 @@ function HomeIndexContent() {
             touchStartY = e.touches[0].clientY;
         };
         const onTouchMove = (e) => {
-            e.preventDefault();
             if (touchStartY === null) return;
             const dy = touchStartY - e.touches[0].clientY;
+            if (canScrollWithin(dy)) return;
+            e.preventDefault();
             if (Math.abs(dy) > 40) {
                 go(dy);
                 touchStartY = null;
@@ -133,7 +153,7 @@ function HomeIndexContent() {
     };
     const centeredScreenSx = {
         ...screenSx,
-        justifyContent: 'center',
+        justifyContent: 'safe center',
         alignItems: 'center',
         px: {xs: 2, md: 4},
     };
@@ -154,7 +174,7 @@ function HomeIndexContent() {
                 transform: `translateY(calc(-${pageIndex} * (100vh - 60px)))`,
                 transition: 'transform 0.9s cubic-bezier(0.65, 0, 0.35, 1)',
             }}>
-                <Box sx={{...screenSx, justifyContent: 'center', px: {xs: 2, md: 0}, ml: {xs: 0, md: '2rem'}}}>
+                <Box sx={{...screenSx, justifyContent: 'safe center', px: {xs: 2, md: 0}, ml: {xs: 0, md: '2rem'}}}>
                     <WelcomeBlock/>
                 </Box>
                 <Box sx={centeredScreenSx}>
