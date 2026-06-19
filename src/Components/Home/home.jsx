@@ -79,6 +79,20 @@ function HomeIndexContent() {
     const contentRef = useRef(null);
     const pageIndexRef = useRef(0);
 
+    // the landing is a fixed full-screen snap experience — lock document scroll
+    // while it's mounted so the sticky top bar can never be dragged by a gesture
+    useEffect(() => {
+        const html = document.documentElement;
+        const prevHtml = html.style.overflow;
+        const prevBody = document.body.style.overflow;
+        html.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+        return () => {
+            html.style.overflow = prevHtml;
+            document.body.style.overflow = prevBody;
+        };
+    }, []);
+
     // keep the ref in sync for the imperative scroll handlers, and start each
     // newly-shown screen at the top
     useEffect(() => {
@@ -151,6 +165,7 @@ function HomeIndexContent() {
         flexDirection: 'column',
         overflowY: 'auto',
         overflowX: 'hidden',
+        overscrollBehavior: 'contain',
     };
     const centeredScreenSx = {
         ...screenSx,
