@@ -6,7 +6,6 @@ import React, {useState} from "react";
 import {BoldTypography, useSmallPage} from "../../common";
 import "./PostContent.css"
 import {getAvatar, getDisplayName, getMetadata} from "../../../Data/UserData";
-import Grid2 from "@mui/material/Grid";
 import {utcToLocal} from "../../../Data/Common";
 import {decodePathParam, postsApplicantPath, postsPostPath} from "../../RouteUtils";
 import ReactMarkdown, {defaultUrlTransform} from "react-markdown";
@@ -145,42 +144,30 @@ export default function PostContent() {
     return (
         <>
             <Box className="PostContentHeader" sx={{pb: "0.5rem"}}>
-                <Box sx={{pb: "0.5rem", display: 'flex', gap: '1rem'}}>
+                <Box sx={{pb: "0.5rem", display: 'flex', gap: '1rem', alignItems: 'center'}}>
                     <Avatar
                         src={avatar}
                         sx={{
-                            height: (smallPage ? "5rem" : "4rem"),
-                            width: (smallPage ? "5rem" : "4rem"),
+                            height: (smallPage ? "4.5rem" : "4rem"),
+                            width: (smallPage ? "4.5rem" : "4rem"),
                             cursor: authorUrl ? 'pointer' : 'default'
                         }}
                         {...authorLinkProps}
                     />
-                    <Grid2 container>
-                        <Grid2 size={12}>
-                            <BoldTypography variant="h6"
-                                            sx={authorUrl ? {cursor: 'pointer', textDecoration: "none"} : {}}
-                                            {...authorLinkProps}
-                            >
-                                {postObj.author}
-                            </BoldTypography>
-                        </Grid2>
-                        <Grid2
-                            component={Typography}
-                            size={{
-                                xs: 12,
-                                md: 5
-                            }}>
-                            创建于: {utcToLocal(postObj.created_at, true)}
-                        </Grid2>
-                        <Grid2
-                            component={Typography}
-                            size={{
-                                xs: 12,
-                                md: 7
-                            }}>
-                            最后修改于: {utcToLocal(postObj.updated_at ?? postObj.created_at, true)}
-                        </Grid2>
-                    </Grid2>
+                    <Box sx={{minWidth: 0}}>
+                        <BoldTypography variant="h6"
+                                        sx={authorUrl ? {cursor: 'pointer', textDecoration: "none"} : {}}
+                                        {...authorLinkProps}
+                        >
+                            {postObj.author}
+                        </BoldTypography>
+                        <Typography variant="body2" sx={{color: 'text.secondary'}}>
+                            创建于 {utcToLocal(postObj.created_at, true)}
+                        </Typography>
+                        <Typography variant="body2" sx={{color: 'text.secondary'}}>
+                            最后修改于 {utcToLocal(postObj.updated_at ?? postObj.created_at, true)}
+                        </Typography>
+                    </Box>
                 </Box>
                 <Box className='ReviseRefreshButtonGroup'>
                     {editable ?
