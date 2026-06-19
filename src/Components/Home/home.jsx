@@ -85,6 +85,9 @@ function HomeIndexContent() {
         const html = document.documentElement;
         const prevHtml = html.style.overflow;
         const prevBody = document.body.style.overflow;
+        // reset any scroll carried over from the previous page before locking,
+        // otherwise the frozen offset would clip the sticky top bar
+        window.scrollTo(0, 0);
         html.style.overflow = 'hidden';
         document.body.style.overflow = 'hidden';
         return () => {
