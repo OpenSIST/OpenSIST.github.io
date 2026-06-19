@@ -2,7 +2,6 @@ import {useMemo, useState} from "react";
 import {Box, Button, Link as MuiLink, Paper, TextField, Tooltip, Typography} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import Grid2 from "@mui/material/Grid";
-import {grey} from "@mui/material/colors";
 import {HelpOutline} from "@mui/icons-material";
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {DatePicker} from "@mui/x-date-pickers";
@@ -159,11 +158,14 @@ export default function AddModifyRecord({type}) {
                     variant='elevation'
                     sx={{
                         width: smallPage ? '90%' : '70%',
-                        bgcolor: (theme) => theme.palette.mode === "dark" ? grey[900] : grey[50]
+                        bgcolor: (theme) => theme.palette.surface,
+                        borderRadius: 3,
+                        pb: 1,
+                        mt: 3,
                     }}
-                    elevation={2}
+                    elevation={0}
                 >
-                    <Typography variant="h4" sx={{alignSelf: 'center', marginTop: '10px'}}>{`${mode}申请记录`}</Typography>
+                    <Typography variant="h6" sx={{fontWeight: 600, pt: 2.5, pb: 1}}>{`${mode}申请记录`}</Typography>
                     <Box className='AddModifyForm'>
                         <Grid2 container spacing={2} sx={{width: '80%', marginTop: '10px'}}>
                             <Grid2 size={{xs: 12, md: 6}}>

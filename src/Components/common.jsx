@@ -38,7 +38,7 @@ export function CollapseSideBar({children, sx}) {
                 open={!smallPage || (smallPage && open)}
                 onOpen={() => setOpen(true)}
                 onClose={() => setOpen(false)}
-                elevation={1}
+                elevation={0}
                 sx={{
                     display: "flex",
                     width: 'auto',
@@ -46,12 +46,15 @@ export function CollapseSideBar({children, sx}) {
                     zIndex: (smallPage ? 1201 : 1),
                     ...sx,
                     '& .MuiDrawer-paper': {
-                        borderRadius: (smallPage ? '0 5px 5px 0' : '5px'),
+                        borderRadius: (smallPage ? '0 18px 18px 0' : '12px'),
                         border: 'none',
+                        backgroundImage: 'none',
                         position: (smallPage ? 'absolute' : 'initial'),
                         top: '60px',
                         overflowY: 'auto',
-                        boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);",
+                        // flat on desktop (no 3D card shadow); on the mobile overlay
+                        // drawer use a soft modern shadow to lift it off the page
+                        boxShadow: (smallPage ? "0 12px 40px rgba(16,24,40,0.22)" : 'none'),
                         ...(sx['& .MuiDrawer-paper'] ?? {})
                     },
                 }}
@@ -60,20 +63,32 @@ export function CollapseSideBar({children, sx}) {
             </SwipeableDrawer>
             <Button
                 className="ShowUpButton"
-                variant="contained"
                 onClick={() => setOpen(!open)}
+                disableRipple
                 sx={{
                     position: 'absolute',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
                     visibility: smallPage ? 'visible' : 'hidden',
-                    minWidth: "0",
-                    px: "1vw",
-                    width: "20px",
-                    height: "80px",
-                    borderRadius: "0 10px 10px 0",
+                    minWidth: 0,
+                    p: 0,
+                    width: 26,
+                    height: 64,
+                    borderRadius: '0 16px 16px 0',
+                    bgcolor: (theme) => theme.palette.surface,
+                    color: 'primary.main',
+                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                    borderLeft: 'none',
+                    boxShadow: '0 4px 16px rgba(16,24,40,0.18)',
+                    transition: 'background-color 0.15s ease, padding-left 0.15s ease',
+                    '&:hover': {
+                        bgcolor: (theme) => theme.palette.surfaceVariant,
+                        pl: '2px',
+                    },
                     zIndex: (smallPage ? 1200 : 1)
                 }}
             >
-                <ChevronRight/>
+                <ChevronRight fontSize="small"/>
             </Button>
         </>
     )

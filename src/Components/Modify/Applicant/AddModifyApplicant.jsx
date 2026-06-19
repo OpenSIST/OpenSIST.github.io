@@ -97,35 +97,41 @@ export default function AddModifyApplicant({type}) {
     return (
         <Form method='post' encType='multipart/form-data'>
             <Input type='hidden' value={type} name='ActionType'/>
-            <Stepper
-                nonLinear
-                alternativeLabel
-                activeStep={activeStep}
-                sx={{mt: 10}}
-            >
-                {steps.map((label) => (
-                    <Step key={label}>
-                        <StepButton color="inherit" sx={{
-                            "&.MuiButtonBase-root:hover": {
-                                bgcolor: "transparent",
-                                cursor: "default"
-                            }
-                        }}>
-                            {label}
-                        </StepButton>
-                    </Step>
-                ))}
-            </Stepper>
             <Input type="hidden" value={JSON.stringify(formValues)} name="formValues"/>
             <Box
                 sx={{
                     display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    textAlign: "center"
+                    flexDirection: {xs: "column", md: "row"},
+                    alignItems: {xs: "stretch", md: "flex-start"},
+                    gap: {xs: 1, md: 4},
+                    py: 2,
                 }}
             >
-                {FormContent(activeStep, formValues, handleBack, handleNext, handleChange, type, loaderData)}
+                <Stepper
+                    orientation="vertical"
+                    nonLinear
+                    activeStep={activeStep}
+                    sx={{
+                        flexShrink: 0,
+                        minWidth: {md: 132},
+                        pt: 1,
+                        '& .MuiStepLabel-label': {fontSize: 15},
+                        display: {xs: "none", md: "flex"},
+                    }}
+                >
+                    {steps.map((label) => (
+                        <Step key={label}>
+                            <StepButton color="inherit" sx={{
+                                "&.MuiButtonBase-root:hover": {bgcolor: "transparent", cursor: "default"},
+                            }}>
+                                {label}
+                            </StepButton>
+                        </Step>
+                    ))}
+                </Stepper>
+                <Box sx={{flex: 1, minWidth: 0, display: "flex", justifyContent: "center", textAlign: "center"}}>
+                    {FormContent(activeStep, formValues, handleBack, handleNext, handleChange, type, loaderData)}
+                </Box>
             </Box>
         </Form>
     )

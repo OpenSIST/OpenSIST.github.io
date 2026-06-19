@@ -123,7 +123,11 @@ export default function MarkDownEditor({
     }, [allowAttachments, onAttachmentPrepared, resolveAttachmentPreview, onMarkdownError]);
 
     return (
-        <div className="MarkDownEditorFocusLayer" onMouseDownCapture={handleEditorMouseDown}>
+        <div className="MarkDownEditorFocusLayer" onMouseDownCapture={handleEditorMouseDown}
+             style={{
+                 '--md-editor-bg': darkMode ? theme.palette.surface : theme.palette.surfaceVariant,
+                 '--md-editor-border': theme.palette.divider,
+             }}>
             <MDXEditor
                 ref={editorRef}
                 markdown={Description}

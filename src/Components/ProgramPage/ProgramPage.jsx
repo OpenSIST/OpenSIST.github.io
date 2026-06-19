@@ -2,8 +2,7 @@ import SideBar from "./SideBar/SideBar";
 import {Outlet, redirect, useLoaderData} from "react-router-dom";
 import {getPrograms} from "../../Data/ProgramData";
 import './ProgramPage.css';
-import {Paper, useTheme} from "@mui/material";
-import {grey} from "@mui/material/colors";
+import {Paper} from "@mui/material";
 import {collectProgram, getMetadata, uncollectProgram} from "../../Data/UserData";
 
 export async function loader({request}) {
@@ -34,15 +33,14 @@ export async function action({request}) {
 
 export default function ProgramPage() {
     const loaderData = useLoaderData();
-    const theme = useTheme();
-    const darkMode = theme.palette.mode === 'dark';
     return (
         <>
             <SideBar loaderData={loaderData}/>
             <Paper
                 className="ProgramContent"
+                elevation={0}
                 sx={{
-                    bgcolor: darkMode ? grey[900] : grey[50],
+                    bgcolor: (theme) => theme.palette.surface,
                 }}>
                 <Outlet/>
             </Paper>

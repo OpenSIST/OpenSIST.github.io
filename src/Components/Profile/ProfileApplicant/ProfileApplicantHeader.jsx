@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {
     Avatar,
     Badge,
+    Box,
     Button,
     ButtonGroup,
     Chip,
@@ -303,76 +304,58 @@ function GradeBar({ranking, gpa}) {
     );
 }
 
-function GREBlock({gre}) {
-    const displayGre = gre ?? {
-        "Total": "-",
-        "V": "-",
-        "Q": "-",
-        "AW": "-"
-    };
-
+function ScoreStat({label, value, emphasize}) {
     return (
-        <Grid2 container size={12}>
-            <ContentCenteredGrid size={12 / 5} sx={{flexDirection: 'column', justifyContent: 'center'}}>
-                <BoldTypography variant="subtitle1">GRE</BoldTypography>
-                <Typography>{displayGre.Total}</Typography>
-            </ContentCenteredGrid>
-            {Object.entries(displayGre).map(([key, value]) => {
-                if (key === 'Total') {
-                    return null;
-                }
-                return (
-                    <ContentCenteredGrid size={12 / 5} key={key}
-                                         sx={{flexDirection: 'column', justifyContent: 'center'}}>
-                        <BoldTypography variant="subtitle1">{EnglishExamMapping.GRE[key] ?? key}</BoldTypography>
-                        <Typography>{value}</Typography>
-                    </ContentCenteredGrid>
-                )
-            })}
-            <ContentCenteredGrid size={12 / 5} sx={{flexDirection: 'column', justifyContent: 'center'}}/>
+        <Box sx={{flex: 1, minWidth: 44, textAlign: "center"}}>
+            <Typography sx={{fontSize: 12, color: "text.secondary", mb: 0.25, whiteSpace: "nowrap"}}>{label}</Typography>
+            <Typography sx={{
+                fontWeight: 600,
+                fontSize: emphasize ? 20 : 16,
+                lineHeight: 1.2,
+                color: emphasize ? "primary.main" : "text.primary",
+            }}>
+                {value ?? "-"}
+            </Typography>
+        </Box>
+    );
+}
+
+function ScoreRow({examType, grade}) {
+    return (
+        <Box sx={{display: "flex", alignItems: "flex-end", gap: 1, width: "100%"}}>
+            <ScoreStat label={examType} value={grade.Total} emphasize/>
+            {Object.entries(grade).map(([key, value]) => (
+                key === "Total" ? null :
+                    <ScoreStat key={key} label={EnglishExamMapping[examType]?.[key] ?? key} value={value}/>
+            ))}
+        </Box>
+    );
+}
+
+function GREBlock({gre}) {
+    const displayGre = gre ?? {"Total": "-", "V": "-", "Q": "-", "AW": "-"};
+    return (
+        <Grid2 size={12}>
+            <ScoreRow
+                examType="GRE"
+                grade={{...displayGre}}
+            />
         </Grid2>
     );
 }
 
 function EnglishExamBlock({englishProficiency}) {
-    const displayEnglishProficiency = englishProficiency && Object.keys(englishProficiency).length > 0 ?
-        englishProficiency : {
-            "语言成绩": {
-                "Total": "-",
-                "S": "-",
-                "R": "-",
-                "L": "-",
-                "W": "-"
-            }
-        };
+    const displayEnglishProficiency = englishProficiency && Object.keys(englishProficiency).length > 0
+        ? englishProficiency
+        : {"语言成绩": {"Total": "-", "S": "-", "R": "-", "L": "-", "W": "-"}};
 
     return (
-        <>
-            {Object.entries(displayEnglishProficiency).map(([examType, grade]) => {
-                return (
-                    <Grid2 container key={examType} size={12}>
-                        <ContentCenteredGrid size={12 / 5}
-                                             sx={{flexDirection: 'column', justifyContent: 'center'}}>
-                            <BoldTypography variant="subtitle1">{examType}</BoldTypography>
-                            <Typography>{grade.Total}</Typography>
-                        </ContentCenteredGrid>
-                        {Object.entries(grade).map(([key, value]) => {
-                            if (key === 'Total') {
-                                return null;
-                            }
-                            return (
-                                <ContentCenteredGrid size={12 / 5} key={key}
-                                                     sx={{flexDirection: 'column', justifyContent: 'center'}}>
-                                    <BoldTypography variant="subtitle1">
-                                        {EnglishExamMapping[examType]?.[key] ?? key}
-                                    </BoldTypography>
-                                    <Typography>{value}</Typography>
-                                </ContentCenteredGrid>
-                            )
-                        })}
-                    </Grid2>
-                );
-            })}
-        </>
+        <Grid2 size={12} container spacing={1.5}>
+            {Object.entries(displayEnglishProficiency).map(([examType, grade]) => (
+                <Grid2 size={12} key={examType}>
+                    <ScoreRow examType={examType} grade={grade}/>
+                </Grid2>
+            ))}
+        </Grid2>
     );
 }
