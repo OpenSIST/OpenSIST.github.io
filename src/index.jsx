@@ -66,8 +66,8 @@ function App() {
                 contrastText: activeMode === 'dark' ? '#0B1B2E' : '#ffffff',
             },
             background: {
-                default: activeMode === 'dark' ? '#0F1318' : '#E8EDF5',
-                paper: activeMode === 'dark' ? '#181D25' : '#F6F9FD',
+                default: activeMode === 'dark' ? '#0F1318' : '#E2E8F2',
+                paper: activeMode === 'dark' ? '#181D25' : '#ECF1F9',
             },
             text: {
                 primary: activeMode === 'dark' ? '#E7EBF1' : '#1A2027',
@@ -78,8 +78,8 @@ function App() {
             // (never pure #fff — it reads as glaring); tiers are distinguished by gentle
             // tone shifts, not borders. surface = panels/content; surfaceVariant = flat
             // filled controls/cards sitting on a surface.
-            surface: activeMode === 'dark' ? '#161B22' : '#F6F9FD',
-            surfaceVariant: activeMode === 'dark' ? '#1F2630' : '#E9EFF8',
+            surface: activeMode === 'dark' ? '#161B22' : '#ECF1F9',
+            surfaceVariant: activeMode === 'dark' ? '#1F2630' : '#E6EDF6',
             reject: {
                 main: activeMode === 'dark' ? '#FF375F' : '#FF2D55',
                 contrastText: '#ffffffde',

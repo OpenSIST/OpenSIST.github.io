@@ -22,7 +22,7 @@ function TopBar() {
         <AppBar position='sticky'
                 elevation={0}
                 sx={{
-                    bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(15, 19, 24, 0.8)' : 'rgba(246, 249, 253, 0.8)',
+                    bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(15, 19, 24, 0.8)' : 'rgba(236, 241, 249, 0.8)',
                     color: (theme) => theme.palette.text.primary,
                     backdropFilter: 'blur(12px)',
                     WebkitBackdropFilter: 'blur(12px)',

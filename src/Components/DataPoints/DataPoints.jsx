@@ -123,6 +123,7 @@ export default function DataPoints() {
         <div style={{overflowY: 'hidden', width: '100%', height: '100%'}}>
             <Paper
                 className="DataPointsContent"
+                elevation={0}
                 sx={{
                     bgcolor: (theme) => theme.palette.background.default,
                     display: 'flex',
