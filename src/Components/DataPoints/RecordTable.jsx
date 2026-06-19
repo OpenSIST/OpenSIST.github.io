@@ -1,7 +1,7 @@
 import React, {forwardRef, useMemo, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {TableVirtuoso} from "react-virtuoso";
-import {alpha, useTheme} from "@mui/material/styles";
+import {alpha, darken, useTheme} from "@mui/material/styles";
 import {Box, Button, Checkbox, IconButton, ListItemText, MenuItem, OutlinedInput, Select, TextField, Tooltip, Typography} from "@mui/material";
 import {ArrowDownward, ArrowUpward, Check, ControlPoint, Search, ViewAgendaOutlined} from "@mui/icons-material";
 import {recordStatusList} from "../../Data/Schemas";
@@ -34,7 +34,12 @@ function useChipColors() {
     const theme = useTheme();
     return useMemo(() => {
         const dark = theme.palette.mode === "dark";
-        const make = (main) => ({bg: alpha(main, dark ? 0.22 : 0.14), fg: main});
+        // light mode: darken the text so it stays legible on the pale tinted
+        // chip background (the full-saturation hue was too light to read)
+        const make = (main) => ({
+            bg: alpha(main, dark ? 0.22 : 0.16),
+            fg: dark ? main : darken(main, 0.32),
+        });
         return {
             status: {
                 Admit: make(theme.palette.admit.main),
