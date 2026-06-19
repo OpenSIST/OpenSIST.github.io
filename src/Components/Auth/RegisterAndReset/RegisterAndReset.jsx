@@ -1,14 +1,12 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {Form, Link, useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {z} from 'zod';
-import "./RegisterAndReset.css"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheck, faXmark} from "@fortawesome/free-solid-svg-icons";
+import {CheckCircleRounded, RadioButtonUncheckedRounded} from "@mui/icons-material";
 import {SEND_RESET_VERIFY_TOKEN, SEND_VERIFY_TOKEN} from "../../../APIs/APIs";
 import {apiRequest} from "../../../Data/Common";
-import {Box, Button, Checkbox, FormControlLabel, Input, MenuItem, TextField, Typography} from "@mui/material";
+import {Box, Button, Checkbox, FormControlLabel, Link as MuiLink, TextField, Typography} from "@mui/material";
 import {registerReset} from "../../../Data/UserData";
-import Select from "@mui/material/Select";
+import {AuthCard, AuthHeader, EmailSuffixField, PasswordField} from "../AuthShared";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -26,8 +24,6 @@ const passwordSchema = z.string().min(8).max(24).refine(password => (
     ),
 );
 
-const checkMark = <FontAwesomeIcon icon={faCheck} style={{color: "#439d2a",}}/>
-const crossMark = <FontAwesomeIcon icon={faXmark} style={{color: "#c24b24",}}/>
 const VERIFY_COOLDOWN_SECONDS = 60;
 
 function readVerifyCooldown() {
@@ -46,6 +42,17 @@ export function isValidPassword(password) {
     return result.success;
 }
 
+function PasswordRule({ok, children}) {
+    return (
+        <Box sx={{display: 'flex', alignItems: 'center', gap: 0.75}}>
+            {ok
+                ? <CheckCircleRounded sx={{fontSize: 16, color: 'success.main'}}/>
+                : <RadioButtonUncheckedRounded sx={{fontSize: 16, color: 'text.disabled'}}/>}
+            <Typography variant='caption' sx={{color: ok ? 'text.secondary' : 'text.disabled'}}>{children}</Typography>
+        </Box>
+    );
+}
+
 export default function RegisterAndReset() {
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
@@ -61,7 +68,6 @@ export default function RegisterAndReset() {
     const [boxChecked, setChecked] = useState(false);
 
     const location = useLocation();
-
     const status = location.pathname.split('/')[1];
 
     const [{timeLeft, sendButtonDisabled}, setCooldown] = useState(readVerifyCooldown);
@@ -100,123 +106,120 @@ export default function RegisterAndReset() {
         }
     };
 
-    const title = status === 'reset' ? 'Reset Password' : 'Register';
-    const chineseTitle = status === 'reset' ? '重置密码' : '用户注册';
+    const isReset = status === 'reset';
+    const chineseTitle = isReset ? '重置密码' : '用户注册';
+    const passwordsMismatch = passwordConfirm !== "" && password !== passwordConfirm;
+    const canSubmit = tokenSent && isValidPassword(password) && password === passwordConfirm
+        && (isReset || boxChecked);
+    const submitText = !tokenSent ? '请先发送验证码'
+        : !isValidPassword(password) ? '密码不符合要求'
+            : passwordsMismatch ? '两次密码不一致'
+                : (isReset ? '重置密码' : '注册');
 
     return (
-        <Form method='post' className="RegisterAndReset">
-            <Typography variant='h4' sx={{mb: "1rem"}}>{chineseTitle}</Typography>
-            <Box sx={{
-                display: 'flex'
-            }}>
-                <TextField
-                    fullWidth
-                    variant='standard'
-                    label='邮箱'
-                    id='username'
-                    name='username'
-                    value={user}
-                    onChange={(e) => setUser(e.target.value.split('@')[0])}
-                    required
-                />
-                <Select
-                    id='suffix'
-                    name='suffix'
-                    value={suffix}
-                    input={<Input/>}
-                    onChange={(e) => setSuffix(e.target.value)}
-                    sx={{maxWidth: "200px"}}
-                >
-                    <MenuItem value="@shanghaitech.edu.cn">@shanghaitech.edu.cn</MenuItem>
-                    <MenuItem value="@alumni.shanghaitech.edu.cn">@alumni.shanghaitech.edu.cn</MenuItem>
-                </Select>
-            </Box>
-            <TextField
-                fullWidth
-                variant='standard'
+        <AuthCard method='post'>
+            <AuthHeader subtitle='上海科技大学留学申请信息分享平台'/>
+            <Typography variant='h6' sx={{fontWeight: 700, textAlign: 'center'}}>{chineseTitle}</Typography>
+
+            <EmailSuffixField
+                value={user}
+                onChange={(e) => setUser(e.target.value.split('@')[0])}
+                suffix={suffix}
+                onSuffixChange={(e) => setSuffix(e.target.value)}
+            />
+            <PasswordField
                 label='密码'
-                type="password"
                 id='password'
                 name='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                size='small'
                 required
             />
-            <TextField
-                fullWidth
-                error={password !== passwordConfirm}
-                variant='standard'
+            <PasswordField
                 label='确认密码'
-                type="password"
                 id='confirmPassword'
                 name='confirmPassword'
                 value={passwordConfirm}
-                onChange={(e) => {
-                    setPasswordConfirm(() => e.target.value);
-                }}
-                size='small'
+                onChange={(e) => setPasswordConfirm(e.target.value)}
+                error={passwordsMismatch}
+                helperText={passwordsMismatch ? '两次输入的密码不一致' : undefined}
                 required
             />
-            <div className='VerificationSendBlock'>
+
+            <Box sx={{display: 'flex', gap: 1, alignItems: 'flex-start'}}>
                 <TextField
                     fullWidth
+                    size='small'
+                    variant='outlined'
+                    label='验证码'
                     id='token'
                     name='token'
-                    label="验证码"
-                    variant='standard'
                     value={token}
                     onChange={(e) => setToken(e.target.value)}
-                    size='small'
                     required
                 />
                 <Button
-                    variant='contained'
-                    disabled={sendButtonDisabled || user === ""}
+                    type='button'
+                    variant='outlined'
                     onClick={handleVerify}
-                    required
+                    disabled={sendButtonDisabled || user === ""}
+                    sx={{flexShrink: 0, height: 40, whiteSpace: 'nowrap', px: 1.5}}
                 >
-                    {sendButtonDisabled ? `${timeLeft} 秒后重新发送` : '发送验证码'}
+                    {sendButtonDisabled ? `重发 ${timeLeft}s` : '发送验证码'}
                 </Button>
-            </div>
-            <div>
-                <span>{isLengthValid ? checkMark : crossMark} 密码长度为8-24个字符</span><br/>
-                <span>{hasNumber ? checkMark : crossMark} 密码至少包含一个数字</span><br/>
-                <span>{hasLowercase ? checkMark : crossMark} 密码至少包含一个小写字母</span><br/>
-                <span>{hasUppercase ? checkMark : crossMark} 密码至少包含一个大写字母</span>
-            </div>
-            {status === 'register' &&
+            </Box>
+
+            <Box sx={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: 0.5,
+                p: 1.25,
+                borderRadius: 2,
+                bgcolor: (theme) => theme.palette.surfaceVariant,
+            }}>
+                <PasswordRule ok={isLengthValid}>8–24 个字符</PasswordRule>
+                <PasswordRule ok={hasNumber}>至少一个数字</PasswordRule>
+                <PasswordRule ok={hasLowercase}>至少一个小写字母</PasswordRule>
+                <PasswordRule ok={hasUppercase}>至少一个大写字母</PasswordRule>
+            </Box>
+
+            {!isReset &&
                 <FormControlLabel
-                    sx={{width: '100%'}}
-                    label={(
-                        <label htmlFor='privacyPolicy'>我已阅读并同意且愿意遵守
-                            <Link to={'/agreement'}>OpenSIST隐私条款和用户守则</Link>。
-                        </label>
-                    )}
+                    sx={{m: 0, alignItems: 'flex-start'}}
                     control={
                         <Checkbox
                             id="privacyPolicy"
                             name="privacyPolicy"
+                            size='small'
                             checked={boxChecked}
-                            onChange={(e) => {
-                                setChecked(e.target.checked);
-                            }}
+                            onChange={(e) => setChecked(e.target.checked)}
+                            sx={{pt: 0, mr: 0.5}}
                         />
                     }
-                    required
+                    label={
+                        <Typography variant='body2' sx={{color: 'text.secondary'}}>
+                            我已阅读并同意 <MuiLink component={Link} to='/agreement'>OpenSIST 隐私条款和用户守则</MuiLink>。
+                        </Typography>
+                    }
                 />
             }
+
             <Button
                 fullWidth
+                size='large'
                 variant='contained'
                 type='submit'
                 name='status'
                 value={status}
-                disabled={!tokenSent || !isValidPassword(password)}
+                disabled={!canSubmit}
             >
-                {!tokenSent ? '请先发送验证码' : !isValidPassword(password) ? '密码不符合要求' : title}
+                {submitText}
             </Button>
-            {status === 'register' && <Link to="/login">已有账号？点此登录</Link>}
-        </Form>
+
+            {!isReset &&
+                <Typography variant='body2' sx={{textAlign: 'center', color: 'text.secondary'}}>
+                    已有账号？<MuiLink component={Link} to="/login">点此登录</MuiLink>
+                </Typography>}
+        </AuthCard>
     );
 }
