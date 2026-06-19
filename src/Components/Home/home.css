@@ -1,5 +1,6 @@
 .GlassCard {
     position: relative;
+    box-sizing: border-box;
     border-radius: 16px;
     border: 1px solid rgba(128, 128, 128, 0.2);
     backdrop-filter: blur(14px);

@@ -1,7 +1,7 @@
 import TopBar from "../TopBar/TopBar";
 import {Outlet} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
-import {LoadingBackdrop, OpenSIST, useSmallPage} from "../common";
+import {LoadingBackdrop, OpenSIST} from "../common";
 import {Box, Button, Chip, Divider, Link as MuiLink, Paper, Stack, Typography, useTheme} from "@mui/material";
 import {
     AutoGraphOutlined,
@@ -75,7 +75,6 @@ export function HomeIndex() {
 }
 
 function HomeIndexContent() {
-    const smallPage = useSmallPage();
     const [pageIndex, setPageIndex] = useState(0);
     const contentRef = useRef(null);
 
@@ -144,7 +143,8 @@ function HomeIndexContent() {
             ref={contentRef}
             sx={{
                 position: 'absolute',
-                width: '80%',
+                width: {xs: '100%', md: '80%'},
+                left: {xs: 0, md: 'auto'},
                 height: 'calc(100vh - 60px)',
                 overflow: 'hidden'
             }}
@@ -154,7 +154,7 @@ function HomeIndexContent() {
                 transform: `translateY(calc(-${pageIndex} * (100vh - 60px)))`,
                 transition: 'transform 0.9s cubic-bezier(0.65, 0, 0.35, 1)',
             }}>
-                <Box sx={{...screenSx, justifyContent: 'center', ml: smallPage ? 0 : '2rem'}}>
+                <Box sx={{...screenSx, justifyContent: 'center', px: {xs: 2, md: 0}, ml: {xs: 0, md: '2rem'}}}>
                     <WelcomeBlock/>
                 </Box>
                 <Box sx={centeredScreenSx}>
@@ -289,6 +289,8 @@ function WelcomeBlock() {
     return (
         <Box className="GlassCard" sx={{
             width: {xs: '100%', sm: '80%', md: '62%', lg: '52%'},
+            maxWidth: '100%',
+            minWidth: 0,
             p: {xs: '1.5rem', md: '2rem 2.25rem'},
             bgcolor: dark ? 'rgba(21,25,32,0.55)' : 'rgba(246,249,253,0.66)',
             boxShadow: dark ? '0 10px 40px rgba(0,0,0,0.45)' : '0 10px 40px rgba(16,24,40,0.12)',
@@ -298,6 +300,7 @@ function WelcomeBlock() {
             </Typography>
             <OpenSIST props={{variant: 'h2'}} sx={{
                 display: 'inline-block',
+                fontSize: {xs: '2.4rem', sm: '3rem', md: '3.75rem'},
                 background: dark ? 'linear-gradient(120deg, #93C0F2, #6BA6E8)' : 'linear-gradient(120deg, #1C5BAA, #4F86CE)',
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',

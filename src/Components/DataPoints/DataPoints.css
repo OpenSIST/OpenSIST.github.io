@@ -277,6 +277,7 @@
 @media (max-width: 768px) {
     .DataPointsContent {
         margin: 5px;
+        width: calc(100% - 10px);
         height: calc(100% - 10px);
     }
 
