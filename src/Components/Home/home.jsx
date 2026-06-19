@@ -149,7 +149,8 @@ function HomeIndexContent() {
         height: 'calc(100vh - 60px)',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'auto',
+        overflowY: 'auto',
+        overflowX: 'hidden',
     };
     const centeredScreenSx = {
         ...screenSx,
