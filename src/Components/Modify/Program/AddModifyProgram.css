@@ -17,6 +17,12 @@
     min-height: 0;
 }
 
+/* keep the sticky toolbar at its natural height — without this the flex
+   column shrinks it to a sliver when the (source) content is tall */
+.MarkDownEditor .mdxeditor-toolbar {
+    flex-shrink: 0;
+}
+
 .MarkDownToolBar {
     width: 100%;
     display: flex;
