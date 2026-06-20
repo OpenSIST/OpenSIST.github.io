@@ -11,7 +11,7 @@
     z-index: 1200;
     top: 10px;
     left: 0;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 8px 8px 0;
 }
 
 .ShowUpButton:hover {
@@ -19,13 +19,12 @@
 }
 
 .UnivProgramList {
-    border-radius: 5px;
-    /*max-height: calc(100vh - 460px);*/
+    border-radius: 8px;
     overflow-y: auto;
 }
 
 .UnivProgramList div:first-child {
-    border-radius: 5px 5px 0 0;
+    border-radius: 8px 8px 0 0;
 }
 
 .ProgramItem::before {

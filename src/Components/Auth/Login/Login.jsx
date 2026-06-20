@@ -1,10 +1,8 @@
 import React, {useState} from "react";
-import {Form, Link} from 'react-router-dom';
-import "./Login.css"
+import {Link} from 'react-router-dom';
 import {login} from "../../../Data/UserData";
-import {Box, Button, Input, MenuItem, TextField, Typography} from "@mui/material";
-import Select from "@mui/material/Select";
-
+import {Box, Button, Link as MuiLink, Typography} from "@mui/material";
+import {AuthCard, AuthHeader, EmailSuffixField, PasswordField} from "../AuthShared";
 
 export async function action({request}) {
     const formData = await request.formData();
@@ -21,52 +19,36 @@ function Login() {
     const [suffix, setSuffix] = useState("@shanghaitech.edu.cn");
 
     return (
-        <Form method='post' className="login">
-            <Typography variant='h4' sx={{mb: "1rem"}}>用户登录</Typography>
-            <Box sx={{
-                display: 'flex',
-                width: '100%'
-            }}>
-                <TextField
-                    fullWidth
-                    variant='standard'
-                    label='邮箱'
-                    id='username'
-                    name='username'
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value.split('@')[0])}
-                    required
-                />
-                <Select
-                    id='suffix'
-                    name='suffix'
-                    value={suffix}
-                    input={<Input/>}
-                    onChange={(e) => setSuffix(e.target.value)}
-                    sx={{maxWidth: "200px"}}
-                >
-                    <MenuItem value="@shanghaitech.edu.cn">@shanghaitech.edu.cn</MenuItem>
-                    <MenuItem value="@alumni.shanghaitech.edu.cn">@alumni.shanghaitech.edu.cn</MenuItem>
-                </Select>
-            </Box>
-            <TextField
-                fullWidth
-                variant='standard'
+        <AuthCard method='post'>
+            <AuthHeader subtitle='上海科技大学留学申请信息分享平台'/>
+            <Typography variant='h6' sx={{fontWeight: 700, textAlign: 'center'}}>用户登录</Typography>
+
+            <EmailSuffixField
+                value={username}
+                onChange={(e) => setUsername(e.target.value.split('@')[0])}
+                suffix={suffix}
+                onSuffixChange={(e) => setSuffix(e.target.value)}
+            />
+            <PasswordField
                 label='密码'
-                type="password"
                 id='password'
                 name='password'
                 value={password}
-                helperText='注：首次访问请先用上科大邮箱注册账号'
                 onChange={(e) => setPassword(e.target.value)}
                 required
             />
-            <Box sx={{display: 'flex', justifyContent: "space-between", width: "100%"}}>
-                <Link to="/register">注册账号</Link>
-                <Link to="/reset">忘记密码?</Link>
+
+            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <MuiLink component={Link} to="/register" variant='body2'>注册账号</MuiLink>
+                <MuiLink component={Link} to="/reset" variant='body2'>忘记密码？</MuiLink>
             </Box>
-            <Button fullWidth variant='contained' type='submit'>Login</Button>
-        </Form>
+
+            <Button fullWidth size='large' variant='contained' type='submit'>登录</Button>
+
+            <Typography variant='caption' sx={{color: 'text.secondary', textAlign: 'center'}}>
+                首次访问请先用上科大邮箱注册账号
+            </Typography>
+        </AuthCard>
     );
 }
 

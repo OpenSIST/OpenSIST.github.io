@@ -6,7 +6,7 @@ import {Paper} from "@mui/material";
 export default function MarkDownPage({sx}) {
     const {content} = useLoaderData();
     return (
-        <Paper className="MarkDownPaper" sx={{...sx}}>
+        <Paper className="MarkDownPaper" elevation={0} sx={{bgcolor: 'transparent', ...sx}}>
             <ReactMarkdown remarkPlugins={[remarkGfm]} className="MarkDownContent">
                 {content}
             </ReactMarkdown>

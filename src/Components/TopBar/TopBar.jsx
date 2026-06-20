@@ -4,7 +4,6 @@ import {StatusBlock} from "./StatusBlock/StatusBlock";
 import NavBar from "./NavBar/NavBar";
 import {useNavigate} from "react-router-dom";
 import {AppBar, SvgIcon, Toolbar, useTheme} from "@mui/material";
-import {grey} from "@mui/material/colors";
 import LightIcon from '../icons/header.svg?react';
 import DarkIcon from '../icons/header-dark.svg?react';
 import LightShortIcon from '../icons/light.svg?react';
@@ -21,10 +20,13 @@ function TopBar() {
     const darkMode = theme.palette.mode === 'dark';
     return (
         <AppBar position='sticky'
-                elevation={1}
+                elevation={0}
                 sx={{
-                    bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : grey[200],
-                    color: (theme) => theme.palette.mode === 'dark' ? grey[100] : grey[900],
+                    bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(15, 19, 24, 0.8)' : 'rgba(236, 241, 249, 0.8)',
+                    color: (theme) => theme.palette.text.primary,
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
                     display: "block",
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}>
