@@ -1,12 +1,11 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
+import Markdown from "../../Markdown/Markdown";
 import './ProgramContent.css'
 import {Form, Link, Outlet, redirect, useLoaderData, useNavigate} from "react-router-dom";
 import {getProgramContent, getProgramDesc} from "../../../Data/ProgramData";
 import {collectProgram, getMetadata, uncollectProgram} from '../../../Data/UserData';
 import {Box, IconButton, Paper, Tooltip, Typography} from "@mui/material";
 import {AddRounded, CloseRounded, EditRounded, RefreshRounded} from "@mui/icons-material";
-import remarkGfm from 'remark-gfm'
 import {getRecordByProgram} from "../../../Data/RecordData";
 import {DataGrid} from "../../DataPoints/DataPoints";
 import {DraggableFAB} from "../../common";
@@ -86,11 +85,9 @@ function ProgramContent({editable = true, inDialog = false}) {
                     bgcolor: (theme) => theme.palette.surfaceVariant,
                     borderRadius: 2,
                 }}>
-                    <div className='ProgramDescription'>
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                            {programContent.description}
-                        </ReactMarkdown>
-                    </div>
+                    <Markdown className='ProgramDescription'>
+                        {programContent.description}
+                    </Markdown>
                 </Paper>
 
                 {editable &&

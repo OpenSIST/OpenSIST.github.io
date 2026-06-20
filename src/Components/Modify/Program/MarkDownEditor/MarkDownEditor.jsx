@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import React, {useCallback, useRef, useState} from "react";
 import {Box, Divider, IconButton, ToggleButton, ToggleButtonGroup, Tooltip, useTheme} from "@mui/material";
 import {
     AddPhotoAlternateOutlined,
@@ -12,27 +12,9 @@ import {
     TableChartOutlined,
     TitleOutlined,
 } from "@mui/icons-material";
-import ReactMarkdown, {defaultUrlTransform} from "react-markdown";
-import remarkGfm from "remark-gfm";
+import Markdown from "../../../Markdown/Markdown";
 import {useSmallPage} from "../../../common";
 import "./MarkDownEditor.css";
-
-// Resolve an image src that may be an async-resolved attachment token (posts)
-// or a plain URL (programs).
-function PreviewImage({src, resolve, node, alt, ...props}) {
-    const [url, setUrl] = useState(null);
-    useEffect(() => {
-        let alive = true;
-        Promise.resolve(resolve ? resolve(src) : src)
-            .then((u) => alive && setUrl(u ?? null))
-            .catch(() => alive && setUrl(src));
-        return () => {
-            alive = false;
-        };
-    }, [src, resolve]);
-    if (!url) return null;
-    return <img src={url} alt={alt ?? ""} loading="lazy" {...props}/>;
-}
 
 function ToolBtn({title, onClick, children}) {
     return (
@@ -99,14 +81,6 @@ export default function MarkDownEditor({
         insert(`![${file.name}](${token})`);
     };
 
-    const components = useMemo(() => ({
-        img: (props) => <PreviewImage {...props} resolve={resolveAttachmentPreview}/>,
-        a: ({node, ...props}) => <a {...props} target="_blank" rel="noopener noreferrer"/>,
-    }), [resolveAttachmentPreview]);
-
-    // keep image src (tokens / data URLs) intact; sanitize everything else
-    const urlTransform = useCallback((value, key) => (key === 'src' ? value : defaultUrlTransform(value)), []);
-
     return (
         <Box
             className="MD2"
@@ -157,9 +131,7 @@ export default function MarkDownEditor({
                 )}
                 {view !== 'write' && (
                     <Box className="MD2-preview">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]} components={components} urlTransform={urlTransform}>
-                            {Description}
-                        </ReactMarkdown>
+                        <Markdown resolveImage={resolveAttachmentPreview}>{Description}</Markdown>
                     </Box>
                 )}
             </Box>

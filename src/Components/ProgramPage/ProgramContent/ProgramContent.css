@@ -31,27 +31,6 @@
     z-index: 0;
 }
 
-.ProgramDescription table {
-    border-collapse: collapse;
-    margin: 0.5rem 0;
-}
-
-.ProgramDescription th,
-.ProgramDescription td {
-    border: 1px solid rgba(128, 128, 128, 0.35);
-    padding: 4px 10px;
-}
-
-.ProgramDescription img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-}
-
-.ProgramDescription pre {
-    overflow-x: auto;
-}
-
 .ProgramHeader {
     display: flex;
     justify-content: space-between;

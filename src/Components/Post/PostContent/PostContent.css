@@ -2,14 +2,3 @@
     display: flex;
     justify-content: space-between;
 }
-
-.PostMarkdownBody table {
-    border-collapse: collapse;
-    margin: 0.5rem 0;
-}
-
-.PostMarkdownBody th,
-.PostMarkdownBody td {
-    border: 1px solid rgba(128, 128, 128, 0.35);
-    padding: 4px 10px;
-}

@@ -63,39 +63,7 @@
     border-left: none;
 }
 
-.MD2-preview > :first-child {
-    margin-top: 0;
-}
-
-.MD2-preview img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-}
-
-.MD2-preview table {
-    border-collapse: collapse;
-}
-
-.MD2-preview th,
-.MD2-preview td {
-    border: 1px solid var(--md2-border, rgba(128, 128, 128, 0.2));
-    padding: 4px 10px;
-}
-
-.MD2-preview pre {
-    background: var(--md2-code-bg, rgba(128, 128, 128, 0.12));
-    padding: 10px 12px;
-    border-radius: 6px;
-    overflow-x: auto;
-}
-
-.MD2-preview :not(pre) > code {
-    background: var(--md2-code-bg, rgba(128, 128, 128, 0.12));
-    padding: 0.1em 0.35em;
-    border-radius: 4px;
-    font-size: 0.9em;
-}
+/* shared markdown content styles live in Markdown/Markdown.css (.md-body) */
 
 @media (max-width: 900px) {
     .MD2-body {
