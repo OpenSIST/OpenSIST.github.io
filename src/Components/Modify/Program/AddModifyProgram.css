@@ -12,7 +12,9 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    height: 100%;
+    /* fill the remaining space and allow shrinking so the editor scrolls
+       internally instead of growing past the form's bottom */
+    min-height: 0;
 }
 
 .MarkDownToolBar {
