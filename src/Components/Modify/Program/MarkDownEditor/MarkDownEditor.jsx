@@ -23,6 +23,7 @@ import {
     toolbarPlugin,
     UndoRedo
 } from "@mdxeditor/editor";
+import {EditorView} from "@codemirror/view";
 import {useTheme} from "@mui/material";
 import {AddPhotoAlternate} from "@mui/icons-material";
 import {useMemo, useRef} from "react";
@@ -148,7 +149,7 @@ export default function MarkDownEditor({
                     linkDialogPlugin({}),
                     tablePlugin(),
                     markdownShortcutPlugin(),
-                    diffSourcePlugin({viewMode: 'rich-text'}),
+                    diffSourcePlugin({viewMode: 'rich-text', codeMirrorExtensions: [EditorView.lineWrapping]}),
                     toolbarPlugin({
                         toolbarContents: () => (
                             <div className='MarkDownToolBar'>
