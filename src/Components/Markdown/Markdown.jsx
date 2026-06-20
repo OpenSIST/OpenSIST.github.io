@@ -25,8 +25,17 @@ function ResolvedImage({src, resolveImage, node, alt, ...props}) {
     return <img src={url} alt={alt ?? ""} loading="lazy" {...props}/>;
 }
 
-// keep image src (tokens / data URLs) intact; sanitize everything else
-const urlTransform = (value, key) => (key === 'src' ? value : defaultUrlTransform(value));
+// Image src may be an editor attachment token or an inline image data URL —
+// both are safe and must survive react-markdown's URI sanitization. Everything
+// else (including any other src) goes through defaultUrlTransform so unsafe
+// protocols like javascript: can't slip in via user-authored markdown.
+const POST_IMAGE_TOKEN_PREFIX = "opensist-image:";
+const urlTransform = (value, key) => {
+    if (key === 'src' && (value.startsWith(POST_IMAGE_TOKEN_PREFIX) || /^data:image\//i.test(value))) {
+        return value;
+    }
+    return defaultUrlTransform(value);
+};
 
 export default function Markdown({children, resolveImage, className}) {
     const components = {

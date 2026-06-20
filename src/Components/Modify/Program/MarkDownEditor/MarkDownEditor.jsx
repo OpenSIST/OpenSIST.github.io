@@ -78,7 +78,10 @@ export default function MarkDownEditor({
         const token = onAttachmentPrepared?.(file);
         if (!token) return;
         onMarkdownError?.("");
-        insert(`![${file.name}](${token})`);
+        // escape characters that would break the ![alt](src) markdown (and could
+        // otherwise be used to inject extra markdown via a crafted filename)
+        const alt = file.name.replace(/[\\[\]]/g, "\\$&");
+        insert(`![${alt}](${token})`);
     };
 
     return (
