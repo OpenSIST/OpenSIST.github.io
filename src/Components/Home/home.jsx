@@ -169,6 +169,11 @@ function HomeIndexContent() {
         overflowY: 'auto',
         overflowX: 'hidden',
         overscrollBehavior: 'contain',
+        // content is compacted to fit common viewport heights; on unusually
+        // short windows it stays scrollable (wheel/touch) but we hide the
+        // scrollbar so the landing never shows an ugly bar
+        scrollbarWidth: 'none',
+        '&::-webkit-scrollbar': {display: 'none'},
     };
     const centeredScreenSx = {
         ...screenSx,
@@ -330,30 +335,30 @@ function WelcomeBlock() {
             width: {xs: '100%', sm: '80%', md: '62%', lg: '52%'},
             maxWidth: '100%',
             minWidth: 0,
-            p: {xs: '1.5rem', md: '2rem 2.25rem'},
+            p: {xs: '1.25rem', md: '1.25rem 2.25rem'},
             bgcolor: dark ? 'rgba(21,25,32,0.55)' : 'rgba(246,249,253,0.66)',
             boxShadow: dark ? '0 10px 40px rgba(0,0,0,0.45)' : '0 10px 40px rgba(16,24,40,0.12)',
         }}>
-            <Typography variant='h5' sx={{fontFamily: 'Merriweather', color: 'text.secondary', mb: '0.25rem'}}>
+            <Typography variant='h6' sx={{fontFamily: 'Merriweather', color: 'text.secondary', mb: '0.15rem'}}>
                 Welcome to
             </Typography>
             <OpenSIST props={{variant: 'h2'}} sx={{
                 display: 'inline-block',
-                fontSize: {xs: '2.4rem', sm: '3rem', md: '3.75rem'},
+                fontSize: {xs: '2.4rem', sm: '2.8rem', md: '3rem'},
                 background: dark ? 'linear-gradient(120deg, #93C0F2, #6BA6E8)' : 'linear-gradient(120deg, #1C5BAA, #4F86CE)',
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
                 color: 'transparent',
                 WebkitTextFillColor: 'transparent',
             }}/>
-            <Typography sx={{mt: '0.5rem', color: 'text.secondary', letterSpacing: '0.02em'}}>
+            <Typography sx={{mt: '0.4rem', color: 'text.secondary', letterSpacing: '0.02em'}}>
                 上海科技大学留学申请信息分享平台
             </Typography>
-            <Divider sx={{my: '1.25rem', borderColor: 'divider'}}/>
-            <Typography sx={{mb: '1.25rem', lineHeight: 1.8}}>
+            <Divider sx={{my: '0.85rem', borderColor: 'divider'}}/>
+            <Typography sx={{mb: '1rem', lineHeight: 1.7}}>
                 OpenSIST由上海科技大学2020级信息学院同学自发创建，旨在为上科大学子提供一个更加开放的留学申请信息分享平台，帮助大家更好地规划自己的留学申请。如果喜欢，欢迎给我们一个 Star ⭐
             </Typography>
-            <Stack direction='row' sx={{mb: '1.5rem', flexWrap: 'wrap', gap: 1}}>
+            <Stack direction='row' sx={{mb: '0.85rem', flexWrap: 'wrap', gap: 1}}>
                 <Chip
                     icon={<StarRounded/>}
                     label={stars !== null ? `${stars} Stars` : 'Star on GitHub'}
@@ -411,9 +416,9 @@ function LinkRow({item, dark}) {
             rel='noopener'
             sx={{
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'baseline',
                 gap: 1,
-                py: 0.85,
+                py: 0.5,
                 px: 1,
                 borderRadius: 2,
                 textDecoration: 'none',
@@ -426,11 +431,13 @@ function LinkRow({item, dark}) {
                 '&:hover .linkArrow': {opacity: 1},
             }}
         >
-            <Box sx={{flex: 1, minWidth: 0}}>
-                <Typography variant='body2' sx={{fontWeight: 700, color: 'primary.main'}}>{item.name}</Typography>
-                <Typography variant='caption' sx={{color: 'text.secondary'}}>{item.label}</Typography>
-            </Box>
-            <NorthEastRounded className='linkArrow' sx={{fontSize: 16, color: 'primary.main', opacity: 0.45, transition: 'opacity 0.15s ease'}}/>
+            <Typography variant='body2' sx={{fontWeight: 700, color: 'primary.main', whiteSpace: 'nowrap', flexShrink: 0}}>
+                {item.name}
+            </Typography>
+            <Typography variant='caption' sx={{color: 'text.secondary', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, minWidth: 0}}>
+                {item.label}
+            </Typography>
+            <NorthEastRounded className='linkArrow' sx={{fontSize: 16, color: 'primary.main', opacity: 0.45, transition: 'opacity 0.15s ease', flexShrink: 0, alignSelf: 'center'}}/>
         </Box>
     );
 }
@@ -447,29 +454,29 @@ function LinksBlock() {
     return (
         <Box sx={{width: '100%', maxWidth: 980}}>
             <SectionHeading title='友情链接 & 致谢' subtitle='站在前人的肩膀上，也感谢一路同行的人'/>
-            <Box sx={{display: 'grid', gridTemplateColumns: {xs: '1fr', md: '1fr 1fr'}, gap: {xs: 2, md: 2.5}}}>
-                <Box className='GlassCard' sx={glassSx(dark, {p: {xs: '1.5rem', md: '1.75rem'}})}>
+            <Box sx={{display: 'grid', gridTemplateColumns: {xs: '1fr', sm: '1fr 1fr'}, gap: {xs: 2, md: 2.5}, alignItems: 'start'}}>
+                <Box className='GlassCard' sx={glassSx(dark, {p: {xs: '1.25rem', md: '1.5rem'}})}>
                     <Typography variant='h6' sx={cardTitleSx}>友情链接</Typography>
-                    <Divider sx={{my: 1.5, borderColor: 'divider'}}/>
+                    <Divider sx={{my: 1.25, borderColor: 'divider'}}/>
                     {FRIEND_LINKS.map((sec) => (
-                        <Box key={sec.group} sx={{mb: 1.5}}>
+                        <Box key={sec.group} sx={{mb: 1}}>
                             <Typography variant='overline' sx={{color: 'text.secondary', fontWeight: 700, letterSpacing: '0.08em'}}>
                                 {sec.group}
                             </Typography>
-                            <Box sx={{mt: 0.5}}>
+                            <Box sx={{mt: 0.25}}>
                                 {sec.items.map((item) => <LinkRow key={item.name} item={item} dark={dark}/>)}
                             </Box>
                         </Box>
                     ))}
                 </Box>
-                <Box className='GlassCard' sx={glassSx(dark, {p: {xs: '1.5rem', md: '1.75rem'}})}>
+                <Box className='GlassCard' sx={glassSx(dark, {p: {xs: '1.25rem', md: '1.5rem'}})}>
                     <Typography variant='h6' sx={cardTitleSx}>特别鸣谢</Typography>
-                    <Divider sx={{my: 1.5, borderColor: 'divider'}}/>
-                    <Stack spacing={1.5}>
+                    <Divider sx={{my: 1.25, borderColor: 'divider'}}/>
+                    <Stack spacing={1.25}>
                         {thanks.map((t, i) => (
                             <Box key={i} sx={{display: 'flex', gap: 1.25, alignItems: 'flex-start'}}>
                                 <Box sx={{mt: '0.5em', width: 7, height: 7, borderRadius: '50%', flexShrink: 0, background: brandGradient(dark)}}/>
-                                <Typography variant='body2' sx={{color: 'text.secondary', lineHeight: 1.8}}>{t}</Typography>
+                                <Typography variant='body2' sx={{color: 'text.secondary', lineHeight: 1.7}}>{t}</Typography>
                             </Box>
                         ))}
                     </Stack>
@@ -524,11 +531,11 @@ function IconBadge({children}) {
 function SectionHeading({title, subtitle}) {
     const dark = useTheme().palette.mode === 'dark';
     return (
-        <Box sx={{textAlign: 'center', mb: {xs: 3, md: 5}}}>
+        <Box sx={{textAlign: 'center', mb: {xs: 2, md: 3}}}>
             <Typography variant='h4' sx={{fontWeight: 800, display: 'inline-block', ...gradientTextSx(dark)}}>
                 {title}
             </Typography>
-            {subtitle ? <Typography sx={{color: 'text.secondary', mt: 1}}>{subtitle}</Typography> : null}
+            {subtitle ? <Typography sx={{color: 'text.secondary', mt: 0.75}}>{subtitle}</Typography> : null}
         </Box>
     );
 }
