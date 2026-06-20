@@ -5,6 +5,8 @@ import {
     ButtonWithTooltip,
     CodeToggle,
     CreateLink,
+    diffSourcePlugin,
+    DiffSourceToggleWrapper,
     headingsPlugin,
     imagePlugin,
     InsertTable,
@@ -146,28 +148,31 @@ export default function MarkDownEditor({
                     linkDialogPlugin({}),
                     tablePlugin(),
                     markdownShortcutPlugin(),
+                    diffSourcePlugin({viewMode: 'rich-text'}),
                     toolbarPlugin({
                         toolbarContents: () => (
                             <div className='MarkDownToolBar'>
-                                <UndoRedo/>
-                                <Separator/>
-                                <BoldItalicUnderlineToggles/>
-                                <CodeToggle/>
-                                <Separator/>
-                                <ListsToggle/>
-                                <Separator/>
-                                <BlockTypeSelect/>
-                                <Separator/>
-                                <CreateLink/>
-                                {allowAttachments ? <>
-                                    <InsertDiskImage
-                                        editorRef={editorRef}
-                                        onAttachmentPrepared={onAttachmentPrepared}
-                                        onMarkdownError={onMarkdownError}
-                                    />
-                                </> : null}
-                                <InsertTable/>
-                                <InsertThematicBreak/>
+                                <DiffSourceToggleWrapper options={['rich-text', 'source']}>
+                                    <UndoRedo/>
+                                    <Separator/>
+                                    <BoldItalicUnderlineToggles/>
+                                    <CodeToggle/>
+                                    <Separator/>
+                                    <ListsToggle/>
+                                    <Separator/>
+                                    <BlockTypeSelect/>
+                                    <Separator/>
+                                    <CreateLink/>
+                                    {allowAttachments ? <>
+                                        <InsertDiskImage
+                                            editorRef={editorRef}
+                                            onAttachmentPrepared={onAttachmentPrepared}
+                                            onMarkdownError={onMarkdownError}
+                                        />
+                                    </> : null}
+                                    <InsertTable/>
+                                    <InsertThematicBreak/>
+                                </DiffSourceToggleWrapper>
                             </div>)
                     })
                 ]}
