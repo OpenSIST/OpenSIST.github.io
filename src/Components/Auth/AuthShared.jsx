@@ -105,7 +105,7 @@ export function PasswordField({label, ...props}) {
             InputProps={{
                 endAdornment: (
                     <InputAdornment position='end'>
-                        <IconButton size='small' edge='end' tabIndex={-1} onClick={() => setShow((s) => !s)}>
+                        <IconButton size='small' edge='end' aria-label={show ? '隐藏密码' : '显示密码'} onClick={() => setShow((s) => !s)}>
                             {show ? <VisibilityOff fontSize='small'/> : <Visibility fontSize='small'/>}
                         </IconButton>
                     </InputAdornment>

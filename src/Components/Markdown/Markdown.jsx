@@ -30,8 +30,11 @@ function ResolvedImage({src, resolveImage, node, alt, ...props}) {
 // else (including any other src) goes through defaultUrlTransform so unsafe
 // protocols like javascript: can't slip in via user-authored markdown.
 const POST_IMAGE_TOKEN_PREFIX = "opensist-image:";
+// only the raster formats the app actually produces/accepts — deliberately
+// excludes data:image/svg+xml and other non-raster payloads
+const SAFE_IMAGE_DATA_URL = /^data:image\/(?:png|jpe?g|gif|webp|bmp|avif);/i;
 const urlTransform = (value, key) => {
-    if (key === 'src' && (value.startsWith(POST_IMAGE_TOKEN_PREFIX) || /^data:image\//i.test(value))) {
+    if (key === 'src' && (value.startsWith(POST_IMAGE_TOKEN_PREFIX) || SAFE_IMAGE_DATA_URL.test(value))) {
         return value;
     }
     return defaultUrlTransform(value);

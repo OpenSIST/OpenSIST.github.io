@@ -131,6 +131,7 @@ function Filter({label, id, name, value, handleFilterChange, options, OptionItem
             value={value}
             onChange={handleFilterChange}
             input={<OutlinedInput/>}
+            inputProps={{'aria-label': label}}
             className={`filter-pill${active ? ' filter-pill-active' : ''}`}
             MenuProps={{PaperProps: {sx: {borderRadius: 2, mt: 0.5, backgroundImage: 'none'}}}}
             renderValue={() => (active ? `${label} · ${value.length}` : label)}

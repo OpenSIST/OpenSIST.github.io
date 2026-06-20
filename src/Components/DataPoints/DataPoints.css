@@ -215,7 +215,9 @@
     border-radius: 999px;
     padding: 0 10px;
     height: 1.45rem;
+    font-family: inherit;
     font-size: 0.78rem;
+    border: none;
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;

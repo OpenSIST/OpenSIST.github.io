@@ -23,6 +23,8 @@ import {getRecords} from "../../Data/RecordData";
 import {getPosts} from "../../Data/PostData";
 
 const PAGE_COUNT = 5;
+const GITHUB_STARS_CACHE_KEY = 'opensist:github-stars';
+const GITHUB_STARS_TTL = 6 * 60 * 60 * 1000; // 6h — GitHub's unauth limit is 60 req/hr/IP
 
 function Home() {
     return (
@@ -278,15 +280,21 @@ function PageDots({pageIndex, setPageIndex}) {
                 return (
                     <Box
                         key={p}
-                        role="button"
+                        component="button"
+                        type="button"
                         aria-label={`第 ${p + 1} 屏`}
+                        aria-current={active ? 'true' : undefined}
                         onClick={() => setPageIndex(p)}
                         sx={{
+                            p: 0,
+                            border: 'none',
+                            appearance: 'none',
                             width: 10,
                             height: 10,
                             borderRadius: '50%',
                             cursor: 'pointer',
                             background: active ? gradient : idle,
+                            '&:focus-visible': {outline: '2px solid', outlineColor: 'primary.main', outlineOffset: 3},
                             transform: active ? 'scale(1.6)' : 'scale(1)',
                             boxShadow: active ? `0 0 0 4px ${ring}, 0 3px 12px ${glow}` : 'none',
                             transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease, box-shadow 0.3s ease',
@@ -302,12 +310,19 @@ function PageDots({pageIndex, setPageIndex}) {
 function ScrollHint({show, onClick}) {
     return (
         <Box
+            component="button"
+            type="button"
+            aria-label="滚动到下一屏"
             onClick={onClick}
             sx={{
                 position: 'fixed',
                 left: '50%',
                 bottom: 24,
                 transform: 'translateX(-50%)',
+                p: 0,
+                border: 'none',
+                background: 'none',
+                font: 'inherit',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -319,6 +334,7 @@ function ScrollHint({show, onClick}) {
                 pointerEvents: show ? 'auto' : 'none',
                 transition: 'opacity 0.4s ease, color 0.2s ease',
                 '&:hover': {color: 'primary.main'},
+                '&:focus-visible': {outline: '2px solid', outlineColor: 'primary.main', outlineOffset: 4, borderRadius: 1},
             }}
         >
             <Typography variant='caption' sx={{letterSpacing: '0.12em'}}>向下滑动</Typography>
@@ -327,16 +343,37 @@ function ScrollHint({show, onClick}) {
     );
 }
 
+function readCachedStars() {
+    try {
+        const cached = JSON.parse(localStorage.getItem(GITHUB_STARS_CACHE_KEY) || 'null');
+        if (cached && typeof cached.count === 'number') return cached;
+    } catch {
+        /* ignore unreadable cache */
+    }
+    return null;
+}
+
 function WelcomeBlock() {
     const dark = useTheme().palette.mode === 'dark';
-    const [stars, setStars] = useState(null);
+    // seed from cache so we never block the first paint on the network
+    const [stars, setStars] = useState(() => readCachedStars()?.count ?? null);
 
     useEffect(() => {
         let alive = true;
+        const cached = readCachedStars();
+        // cache still fresh — already shown as initial state, skip the request
+        if (cached && Date.now() - cached.at < GITHUB_STARS_TTL) return;
         fetch('https://api.github.com/repos/opensist/opensist.github.io')
             .then((r) => (r.ok ? r.json() : null))
             .then((d) => {
-                if (alive && d && typeof d.stargazers_count === 'number') setStars(d.stargazers_count);
+                if (alive && d && typeof d.stargazers_count === 'number') {
+                    setStars(d.stargazers_count);
+                    try {
+                        localStorage.setItem(GITHUB_STARS_CACHE_KEY, JSON.stringify({count: d.stargazers_count, at: Date.now()}));
+                    } catch {
+                        /* ignore write failures (private mode / quota) */
+                    }
+                }
             })
             .catch(() => {
             });

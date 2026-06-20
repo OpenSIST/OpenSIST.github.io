@@ -59,13 +59,23 @@ function useChipColors() {
 }
 
 function Chip({label, colors, onClick, title}) {
+    const style = {backgroundColor: colors.bg, color: colors.fg};
+    if (onClick) {
+        return (
+            <button
+                type="button"
+                className="rt-chip rt-chip-click"
+                style={style}
+                onClick={onClick}
+                title={title}
+                aria-label={title || label}
+            >
+                {label}
+            </button>
+        );
+    }
     return (
-        <span
-            className={onClick ? "rt-chip rt-chip-click" : "rt-chip"}
-            style={{backgroundColor: colors.bg, color: colors.fg}}
-            onClick={onClick}
-            title={title}
-        >
+        <span className="rt-chip" style={style} title={title}>
             {label}
         </span>
     );
@@ -350,6 +360,7 @@ function MultiFilter({label, value, onChange, options}) {
             value={value}
             onChange={(e) => onChange(e.target.value)}
             input={<OutlinedInput/>}
+            inputProps={{"aria-label": label}}
             MenuProps={MENU_PROPS}
             className={`rt-pill rt-select${value.length ? " rt-pill-active" : ""}`}
             renderValue={() => (value.length ? `${label} · ${value.length}` : label)}
@@ -390,6 +401,7 @@ function FilterBar({
                 value={finalFilter}
                 onChange={(e) => setFinalFilter(e.target.value)}
                 input={<OutlinedInput/>}
+                inputProps={{"aria-label": "最终去向"}}
                 MenuProps={MENU_PROPS}
                 className={`rt-pill rt-select${finalFilter !== "" ? " rt-pill-active" : ""}`}
                 renderValue={(v) => (v === "" ? "最终去向" : v === "true" ? "是最终去向" : "非最终去向")}
