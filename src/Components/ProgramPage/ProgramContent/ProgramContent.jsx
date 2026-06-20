@@ -86,12 +86,11 @@ function ProgramContent({editable = true, inDialog = false}) {
                     bgcolor: (theme) => theme.palette.surfaceVariant,
                     borderRadius: 2,
                 }}>
-                    <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        className='ProgramDescription'
-                    >
-                        {programContent.description}
-                    </ReactMarkdown>
+                    <div className='ProgramDescription'>
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {programContent.description}
+                        </ReactMarkdown>
+                    </div>
                 </Paper>
 
                 {editable &&

@@ -55,9 +55,11 @@ const markdownComponents = {
 
 function PostMarkdown({children}) {
     return (
-        <ReactMarkdown urlTransform={postUrlTransform} components={markdownComponents}>
-            {children}
-        </ReactMarkdown>
+        <div className="PostMarkdownBody">
+            <ReactMarkdown urlTransform={postUrlTransform} components={markdownComponents}>
+                {children}
+            </ReactMarkdown>
+        </div>
     );
 }
 
