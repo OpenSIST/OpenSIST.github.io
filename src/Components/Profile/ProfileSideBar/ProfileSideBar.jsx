@@ -126,8 +126,10 @@ export function ProfileHeader({loaderData}) {
                     <Box sx={{display: "flex", alignItems: "center", gap: 0.25, mt: 0.5, flexWrap: "wrap"}}>
                         {contactEntries.length > 0 ? contactEntries.map(([field, meta]) => {
                             const value = userContact[field];
-                            const linkProps = meta.href
-                                ? {component: "a", href: meta.href(value), target: "_blank", rel: "noopener"}
+                            const rawHref = meta.href ? meta.href(value) : "";
+                            const safeHref = rawHref && (rawHref.startsWith("mailto:") || /^https?:\/\//i.test(rawHref)) ? rawHref : "";
+                            const linkProps = safeHref
+                                ? {component: "a", href: safeHref, target: "_blank", rel: "noopener noreferrer"}
                                 : {};
                             return (
                                 <Tooltip key={field} title={`${meta.label}: ${value}`} arrow>
