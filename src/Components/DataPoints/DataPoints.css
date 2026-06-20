@@ -265,15 +265,6 @@
     padding: 2rem 0;
     color: var(--rt-text-2);
 }
-
-/* floating refresh button */
-.refresh-button {
-    position: fixed;
-    z-index: 20;
-    bottom: 40px;
-    right: 20px;
-}
-
 @media (max-width: 768px) {
     .DataPointsContent {
         margin: 5px;
@@ -285,11 +276,5 @@
     .rt-search {
         flex: 1 1 100%;
         max-width: none;
-    }
-
-    .refresh-button {
-        bottom: 20px;
-        right: 16px;
-        transform: scale(0.9);
     }
 }

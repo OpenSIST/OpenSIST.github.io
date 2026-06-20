@@ -119,8 +119,8 @@ export function ProfileHeader({loaderData}) {
                         <Typography variant="h6" sx={{fontWeight: 600, lineHeight: 1.2}}>{displayName}</Typography>
                         <FormControlLabel
                             sx={{m: 0}}
-                            control={<Switch size="small" checked={anonymous} onChange={() => setAnonymousOpen(true)}/>}
-                            label={<Typography variant="body2" sx={{color: "text.secondary"}}>{anonymous ? "匿名展示" : "实名展示"}</Typography>}
+                            control={<Switch size="small" checked={!anonymous} onChange={() => setAnonymousOpen(true)}/>}
+                            label={<Typography variant="body2" sx={{color: "text.secondary"}}>实名展示</Typography>}
                         />
                     </Box>
                     <Box sx={{display: "flex", alignItems: "center", gap: 0.25, mt: 0.5, flexWrap: "wrap"}}>

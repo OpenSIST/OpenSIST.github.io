@@ -639,10 +639,10 @@ function StatsBlock() {
     }, []);
 
     const tiles = [
-        {icon: <TravelExploreOutlined/>, value: stats.programs, label: '收录项目', suffix: '+'},
-        {icon: <SchoolOutlined/>, value: stats.univs, label: '覆盖高校', suffix: ''},
-        {icon: <TableChartOutlined/>, value: stats.records, label: '申请记录', suffix: '+'},
-        {icon: <MenuBookOutlined/>, value: stats.posts, label: '经验分享', suffix: '+'},
+        {icon: <TravelExploreOutlined/>, value: stats.programs, label: '收录项目'},
+        {icon: <SchoolOutlined/>, value: stats.univs, label: '覆盖高校'},
+        {icon: <TableChartOutlined/>, value: stats.records, label: '申请记录'},
+        {icon: <MenuBookOutlined/>, value: stats.posts, label: '经验分享'},
     ];
     return (
         <Box sx={{width: '100%', maxWidth: 920}}>
@@ -653,7 +653,7 @@ function StatsBlock() {
                          sx={glassSx(dark, {p: {xs: '1.25rem', md: '1.75rem 1rem'}, textAlign: 'center'})}>
                         <Box sx={{color: 'primary.main', display: 'flex', justifyContent: 'center', mb: 1}}>{t.icon}</Box>
                         <Typography sx={{fontWeight: 800, lineHeight: 1.1, fontSize: {xs: '2rem', md: '2.6rem'}, display: 'inline-block', ...gradientTextSx(dark)}}>
-                            <StatNumber value={t.value}/>{t.value !== null ? t.suffix : ''}
+                            <StatNumber value={t.value}/>
                         </Typography>
                         <Typography variant='body2' sx={{color: 'text.secondary', mt: 0.5}}>{t.label}</Typography>
                     </Box>

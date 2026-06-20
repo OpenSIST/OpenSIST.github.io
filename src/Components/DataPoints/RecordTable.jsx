@@ -147,7 +147,7 @@ function HeaderCell({col, sortKey, sortDir, onSort}) {
 
 /* ------------------------------ main table ------------------------------- */
 
-export default function RecordTable({records, insideProgramPage = false, style = {}}) {
+export default function RecordTable({records, insideProgramPage = false, style = {}, refreshSlot = null}) {
     const navigate = useNavigate();
     const location = useLocation();
     const chip = useChipColors();
@@ -297,6 +297,7 @@ export default function RecordTable({records, insideProgramPage = false, style =
                     finalFilter={finalFilter} setFinalFilter={setFinalFilter}
                     grouped={grouped} setGrouped={setGrouped}
                     filteredCount={filtered.length} total={records.length}
+                    refreshSlot={refreshSlot}
                 />
             )}
             <TableVirtuoso
@@ -370,6 +371,7 @@ function FilterBar({
                        finalFilter, setFinalFilter,
                        grouped, setGrouped,
                        filteredCount, total,
+                       refreshSlot,
                    }) {
     return (
         <Box className="rt-filterbar">
@@ -404,6 +406,7 @@ function FilterBar({
             >
                 按项目分组
             </Button>
+            {refreshSlot}
             <span className="rt-count">
                 {filteredCount === total
                     ? <>共 <b>{total}</b> 条</>

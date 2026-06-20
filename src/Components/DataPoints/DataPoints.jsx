@@ -1,13 +1,13 @@
 import React, {useMemo} from "react";
-import {Form, Outlet, redirect, useLoaderData, useNavigate, useParams} from "react-router-dom";
-import {Dialog, DialogActions, DialogContent, IconButton, Paper} from "@mui/material";
+import {Outlet, redirect, useLoaderData, useNavigate, useNavigation, useParams, useSubmit} from "react-router-dom";
+import {Button, Dialog, DialogActions, DialogContent, IconButton, Paper} from "@mui/material";
 import {Close, Refresh} from "@mui/icons-material";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByRecordIDs} from "../../Data/RecordData";
 import './DataPoints.css';
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
-import {DraggableFAB, LoadingBackdrop} from "../common";
+import {LoadingBackdrop} from "../common";
 import RecordTable from "./RecordTable";
 import {decodePathParam} from "../RouteUtils";
 
@@ -92,18 +92,27 @@ export function ProgramContentInDataPoints() {
  */
 export const DataGrid = RecordTable;
 
-const FloatingControls = () => (
-    /* Refresh FAB */
-    (<Form method="post" className="refresh-button">
-        <DraggableFAB
-            Icon={<Refresh/>}
-            ActionType="Refresh"
-            ButtonClassName="HiddenRefreshButton"
-            color="primary"
-            tooltipTitle="刷新表格"
-        />
-    </Form>)
-)
+function RefreshButton() {
+    const submit = useSubmit();
+    const navigation = useNavigation();
+    const busy = navigation.state !== "idle";
+    return (
+        <Button
+            disableRipple
+            className="rt-pill rt-group-pill"
+            onClick={() => submit(null, {method: "post"})}
+            startIcon={
+                <Refresh sx={{
+                    fontSize: 16,
+                    "@keyframes rtspin": {to: {transform: "rotate(360deg)"}},
+                    animation: busy ? "rtspin 0.8s linear infinite" : "none",
+                }}/>
+            }
+        >
+            刷新
+        </Button>
+    );
+}
 
 export default function DataPoints() {
     const loaderRecords = useLoaderData();
@@ -130,9 +139,8 @@ export default function DataPoints() {
                     flexDirection: 'column',
                 }}
             >
-                <DataGrid records={records} insideProgramPage={false}/>
+                <DataGrid records={records} insideProgramPage={false} refreshSlot={<RefreshButton/>}/>
                 <Outlet/>
-                <FloatingControls/>
             </Paper>
         </div>
     )
