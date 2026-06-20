@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ReactMarkdown, {defaultUrlTransform} from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
 import "./Markdown.css";
 
 // Single source of truth for rendering markdown across the app (program/post
@@ -34,7 +35,7 @@ export default function Markdown({children, resolveImage, className}) {
     };
     return (
         <div className={"md-body" + (className ? ` ${className}` : "")}>
-            <ReactMarkdown remarkPlugins={[remarkGfm]} components={components} urlTransform={urlTransform}>
+            <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} components={components} urlTransform={urlTransform}>
                 {children ?? ""}
             </ReactMarkdown>
         </div>
