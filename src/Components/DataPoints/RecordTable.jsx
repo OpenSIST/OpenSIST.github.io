@@ -127,10 +127,12 @@ function defaultSort(records) {
 /* ------------------------------ virtuoso table --------------------------- */
 
 const VirtuosoTableComponents = {
-    Scroller: forwardRef((props, ref) => <div {...props} ref={ref} className="rt-scroller"/>),
-    Table: (props) => <table {...props} className="rt-table"/>,
+    Scroller: forwardRef(({className, ...props}, ref) => (
+        <div {...props} ref={ref} className={["rt-scroller", className].filter(Boolean).join(" ")}/>
+    )),
+    Table: ({className, ...props}) => <table {...props} className={["rt-table", className].filter(Boolean).join(" ")}/>,
     TableHead: forwardRef((props, ref) => <thead {...props} ref={ref}/>),
-    TableRow: (props) => <tr {...props} className="rt-row"/>,
+    TableRow: ({className, ...props}) => <tr {...props} className={["rt-row", className].filter(Boolean).join(" ")}/>,
     TableBody: forwardRef((props, ref) => <tbody {...props} ref={ref}/>),
 };
 
