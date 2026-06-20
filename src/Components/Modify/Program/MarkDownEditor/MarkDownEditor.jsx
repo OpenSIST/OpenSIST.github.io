@@ -1,191 +1,170 @@
-import '@mdxeditor/editor/style.css'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {Box, Divider, IconButton, ToggleButton, ToggleButtonGroup, Tooltip, useTheme} from "@mui/material";
 import {
-    BlockTypeSelect,
-    BoldItalicUnderlineToggles,
-    ButtonWithTooltip,
-    CodeToggle,
-    CreateLink,
-    diffSourcePlugin,
-    DiffSourceToggleWrapper,
-    headingsPlugin,
-    imagePlugin,
-    InsertTable,
-    InsertThematicBreak,
-    linkDialogPlugin,
-    linkPlugin,
-    listsPlugin,
-    ListsToggle,
-    markdownShortcutPlugin,
-    MDXEditor,
-    quotePlugin,
-    tablePlugin,
-    thematicBreakPlugin,
-    toolbarPlugin,
-    UndoRedo
-} from "@mdxeditor/editor";
-import {EditorView} from "@codemirror/view";
-import {useTheme} from "@mui/material";
-import {AddPhotoAlternate} from "@mui/icons-material";
-import {useMemo, useRef} from "react";
-import "./dark-editor.css"
+    AddPhotoAlternateOutlined,
+    CodeOutlined,
+    FormatBold,
+    FormatItalic,
+    FormatListBulleted,
+    FormatListNumbered,
+    FormatQuoteOutlined,
+    InsertLinkOutlined,
+    TableChartOutlined,
+    TitleOutlined,
+} from "@mui/icons-material";
+import ReactMarkdown, {defaultUrlTransform} from "react-markdown";
+import remarkGfm from "remark-gfm";
+import {useSmallPage} from "../../../common";
+import "./MarkDownEditor.css";
 
-function escapeMarkdownLinkText(text) {
-    return text
-        .replaceAll("\\", "\\\\")
-        .replaceAll("[", "\\[")
-        .replaceAll("]", "\\]");
+// Resolve an image src that may be an async-resolved attachment token (posts)
+// or a plain URL (programs).
+function PreviewImage({src, resolve, node, alt, ...props}) {
+    const [url, setUrl] = useState(null);
+    useEffect(() => {
+        let alive = true;
+        Promise.resolve(resolve ? resolve(src) : src)
+            .then((u) => alive && setUrl(u ?? null))
+            .catch(() => alive && setUrl(src));
+        return () => {
+            alive = false;
+        };
+    }, [src, resolve]);
+    if (!url) return null;
+    return <img src={url} alt={alt ?? ""} loading="lazy" {...props}/>;
 }
 
-function InsertDiskImage({editorRef, onAttachmentPrepared, onMarkdownError}) {
-    const inputRef = useRef(null);
+function ToolBtn({title, onClick, children}) {
+    return (
+        <Tooltip title={title} arrow>
+            <IconButton size="small" onClick={onClick} sx={{color: 'text.secondary'}}>{children}</IconButton>
+        </Tooltip>
+    );
+}
 
-    function onFileChange(event) {
+export default function MarkDownEditor({
+                                          Description,
+                                          setDescription,
+                                          allowAttachments = false,
+                                          onAttachmentPrepared,
+                                          resolveAttachmentPreview,
+                                          onMarkdownError,
+                                      }) {
+    const theme = useTheme();
+    const dark = theme.palette.mode === 'dark';
+    const smallPage = useSmallPage();
+    const taRef = useRef(null);
+    const fileRef = useRef(null);
+    const [view, setView] = useState(() => (smallPage ? 'write' : 'split'));
+
+    const apply = useCallback((fn) => {
+        const ta = taRef.current;
+        if (!ta) return;
+        const {selectionStart: s, selectionEnd: e, value} = ta;
+        const {text, selStart, selEnd} = fn(value, s, e, value.slice(s, e));
+        setDescription(text);
+        requestAnimationFrame(() => {
+            ta.focus();
+            ta.setSelectionRange(selStart, selEnd);
+        });
+    }, [setDescription]);
+
+    const wrap = (token) => apply((v, s, e, sel) => ({
+        text: v.slice(0, s) + token + sel + token + v.slice(e),
+        selStart: s + token.length,
+        selEnd: e + token.length,
+    }));
+    const prefixLines = (prefix) => apply((v, s, e) => {
+        const lineStart = v.lastIndexOf('\n', s - 1) + 1;
+        const block = v.slice(lineStart, e);
+        const replaced = block.split('\n').map((l) => prefix + l).join('\n');
+        return {text: v.slice(0, lineStart) + replaced + v.slice(e), selStart: lineStart, selEnd: lineStart + replaced.length};
+    });
+    const insert = (snippet, cursorOffset) => apply((v, s, e) => {
+        const pos = s + (cursorOffset ?? snippet.length);
+        return {text: v.slice(0, s) + snippet + v.slice(e), selStart: pos, selEnd: pos};
+    });
+
+    const onFile = (event) => {
         const file = event.target.files?.[0];
         event.target.value = "";
-        if (!file) {
-            return;
-        }
+        if (!file) return;
         if (!file.type.startsWith("image/")) {
             onMarkdownError?.("只能插入图片文件。");
             return;
         }
         const token = onAttachmentPrepared?.(file);
-        if (!token) {
-            return;
-        }
-        const markdown = `![${escapeMarkdownLinkText(file.name)}](${token})`;
+        if (!token) return;
         onMarkdownError?.("");
-        editorRef.current?.focus(() => {
-            editorRef.current?.insertMarkdown(markdown);
-        }, {defaultSelection: 'rootEnd'});
-    }
+        insert(`![${file.name}](${token})`);
+    };
+
+    const components = useMemo(() => ({
+        img: (props) => <PreviewImage {...props} resolve={resolveAttachmentPreview}/>,
+        a: ({node, ...props}) => <a {...props} target="_blank" rel="noopener noreferrer"/>,
+    }), [resolveAttachmentPreview]);
+
+    // keep image src (tokens / data URLs) intact; sanitize everything else
+    const urlTransform = useCallback((value, key) => (key === 'src' ? value : defaultUrlTransform(value)), []);
 
     return (
-        <>
-            <ButtonWithTooltip title="从本地上传图片" type="button" onClick={() => inputRef.current?.click()}>
-                <AddPhotoAlternate fontSize="small"/>
-            </ButtonWithTooltip>
-            <input ref={inputRef} type="file" accept="image/*" hidden onChange={onFileChange}/>
-        </>
+        <Box
+            className="MD2"
+            sx={{
+                '--md2-bg': dark ? theme.palette.surface : theme.palette.surfaceVariant,
+                '--md2-border': theme.palette.divider,
+                '--md2-code-bg': dark ? 'rgba(255,255,255,0.08)' : 'rgba(16,24,40,0.06)',
+            }}
+        >
+            <Box className="MD2-toolbar">
+                <ToolBtn title="标题" onClick={() => prefixLines('## ')}><TitleOutlined fontSize="small"/></ToolBtn>
+                <ToolBtn title="加粗" onClick={() => wrap('**')}><FormatBold fontSize="small"/></ToolBtn>
+                <ToolBtn title="斜体" onClick={() => wrap('*')}><FormatItalic fontSize="small"/></ToolBtn>
+                <ToolBtn title="行内代码" onClick={() => wrap('`')}><CodeOutlined fontSize="small"/></ToolBtn>
+                <Divider orientation="vertical" flexItem sx={{mx: 0.5, my: 0.5}}/>
+                <ToolBtn title="引用" onClick={() => prefixLines('> ')}><FormatQuoteOutlined fontSize="small"/></ToolBtn>
+                <ToolBtn title="无序列表" onClick={() => prefixLines('- ')}><FormatListBulleted fontSize="small"/></ToolBtn>
+                <ToolBtn title="有序列表" onClick={() => prefixLines('1. ')}><FormatListNumbered fontSize="small"/></ToolBtn>
+                <Divider orientation="vertical" flexItem sx={{mx: 0.5, my: 0.5}}/>
+                <ToolBtn title="链接" onClick={() => insert('[链接文字](https://)', 1)}><InsertLinkOutlined fontSize="small"/></ToolBtn>
+                <ToolBtn title="表格" onClick={() => insert('\n| 列1 | 列2 |\n| --- | --- |\n| 内容 | 内容 |\n')}><TableChartOutlined fontSize="small"/></ToolBtn>
+                {allowAttachments &&
+                    <ToolBtn title="上传图片" onClick={() => fileRef.current?.click()}><AddPhotoAlternateOutlined fontSize="small"/></ToolBtn>}
+                <Box sx={{flex: 1, minWidth: 8}}/>
+                <ToggleButtonGroup
+                    size="small"
+                    exclusive
+                    value={view}
+                    onChange={(e, v) => v && setView(v)}
+                    className="MD2-viewtoggle"
+                >
+                    <ToggleButton value="write">编辑</ToggleButton>
+                    <ToggleButton value="split">并排</ToggleButton>
+                    <ToggleButton value="preview">预览</ToggleButton>
+                </ToggleButtonGroup>
+            </Box>
+
+            <Box className="MD2-body">
+                {view !== 'preview' && (
+                    <textarea
+                        ref={taRef}
+                        className="MD2-textarea"
+                        value={Description}
+                        spellCheck={false}
+                        placeholder="在此输入 Markdown（支持 GFM：标题、列表、表格、链接、图片……）"
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                )}
+                {view !== 'write' && (
+                    <Box className="MD2-preview">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]} components={components} urlTransform={urlTransform}>
+                            {Description}
+                        </ReactMarkdown>
+                    </Box>
+                )}
+            </Box>
+
+            {allowAttachments && <input ref={fileRef} type="file" accept="image/*" hidden onChange={onFile}/>}
+        </Box>
     );
-}
-
-function shouldFocusEditorFromClick(target) {
-    if (!(target instanceof Element)) {
-        return false;
-    }
-    if (target.closest(".MarkDownToolBar, [contenteditable='true'], button, input, textarea, select, a, [role='button']")) {
-        return false;
-    }
-    return Boolean(target.closest(".mdxeditor-root-contenteditable"));
-}
-
-export default function MarkDownEditor({
-                                           Description,
-                                           setDescription,
-                                           allowAttachments = false,
-                                           onAttachmentPrepared,
-                                           resolveAttachmentPreview,
-                                           onMarkdownError
-                                       }) {
-    const theme = useTheme();
-    const editorRef = useRef(null);
-    const darkMode = theme.palette.mode === 'dark';
-
-    function handleEditorMouseDown(event) {
-        if (!shouldFocusEditorFromClick(event.target)) {
-            return;
-        }
-        event.preventDefault();
-        editorRef.current?.focus(undefined, {defaultSelection: 'rootEnd'});
-    }
-
-    const attachmentPlugins = useMemo(() => {
-        if (!allowAttachments) {
-            return [];
-        }
-        return [
-            imagePlugin({
-                imageUploadHandler: async (file) => {
-                    if (!file.type.startsWith("image/")) {
-                        onMarkdownError?.("只能以图片方式插入图片文件。");
-                        throw new Error("Only image files can be inserted as images.");
-                    }
-                    const token = onAttachmentPrepared?.(file);
-                    if (!token) {
-                        throw new Error("Post content is too large.");
-                    }
-                    onMarkdownError?.("");
-                    return token;
-                },
-                imagePreviewHandler: (src) => resolveAttachmentPreview?.(src) ?? src,
-                disableImageResize: true,
-                disableImageSettingsButton: true,
-            })
-        ];
-    }, [allowAttachments, onAttachmentPrepared, resolveAttachmentPreview, onMarkdownError]);
-
-    return (
-        <div className="MarkDownEditorFocusLayer" onMouseDownCapture={handleEditorMouseDown}
-             style={{
-                 '--md-editor-bg': darkMode ? theme.palette.surface : theme.palette.surfaceVariant,
-                 '--md-editor-border': theme.palette.divider,
-             }}>
-            <MDXEditor
-                ref={editorRef}
-                markdown={Description}
-                onChange={(value) => {
-                    setDescription(value)
-                }}
-                className={"MarkDownEditor " + (darkMode ? "dark-theme dark-editor" : "light-theme")}
-                contentEditableClassName="MarkDownEditorContent"
-                plugins={[
-                    headingsPlugin(),
-                    listsPlugin(),
-                    quotePlugin(),
-                    thematicBreakPlugin(),
-                    ...attachmentPlugins,
-                    linkPlugin(),
-                    linkDialogPlugin({}),
-                    tablePlugin(),
-                    markdownShortcutPlugin(),
-                    diffSourcePlugin({viewMode: 'rich-text', codeMirrorExtensions: [EditorView.lineWrapping]}),
-                    toolbarPlugin({
-                        toolbarContents: () => (
-                            <div className='MarkDownToolBar'>
-                                <DiffSourceToggleWrapper options={['rich-text', 'source']}>
-                                    <UndoRedo/>
-                                    <Separator/>
-                                    <BoldItalicUnderlineToggles/>
-                                    <CodeToggle/>
-                                    <Separator/>
-                                    <ListsToggle/>
-                                    <Separator/>
-                                    <BlockTypeSelect/>
-                                    <Separator/>
-                                    <CreateLink/>
-                                    {allowAttachments ? <>
-                                        <InsertDiskImage
-                                            editorRef={editorRef}
-                                            onAttachmentPrepared={onAttachmentPrepared}
-                                            onMarkdownError={onMarkdownError}
-                                        />
-                                    </> : null}
-                                    <InsertTable/>
-                                    <InsertThematicBreak/>
-                                </DiffSourceToggleWrapper>
-                            </div>)
-                    })
-                ]}
-            />
-        </div>
-    )
-}
-
-function Separator() {
-    return (
-        <div
-            data-orientation="vertical" aria-orientation="vertical" role="separator">
-        </div>
-    )
 }
