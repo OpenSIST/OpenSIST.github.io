@@ -68,6 +68,21 @@ export function HomeIndex() {
                 justifyContent: 'center',
             }}
         >
+            {/* full-viewport soft wash — gives the frosted cards smooth tonal
+                variation to refract. It's fixed so it spans edge to edge instead
+                of being clipped by the 1700px content cap. */}
+            <Box aria-hidden sx={{
+                position: 'fixed',
+                top: 60,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: 0,
+                pointerEvents: 'none',
+                background: (theme) => theme.palette.mode === 'dark'
+                    ? 'linear-gradient(155deg, #141B26 0%, #0F1318 52%, #12171F 100%)'
+                    : 'linear-gradient(155deg, #EEF4FD 0%, #D8E4F6 48%, #E7ECF6 100%)',
+            }}/>
             <WorldMap width={width} height={height}/>
             <HomeIndexContent/>
         </Box>
@@ -336,7 +351,8 @@ function WelcomeBlock() {
             maxWidth: '100%',
             minWidth: 0,
             p: {xs: '1.25rem', md: '1.25rem 2.25rem'},
-            bgcolor: dark ? 'rgba(21,25,32,0.55)' : 'rgba(246,249,253,0.66)',
+            bgcolor: dark ? 'rgba(21,25,32,0.55)' : 'rgba(255,255,255,0.42)',
+            border: dark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(255,255,255,0.5)',
             boxShadow: dark ? '0 10px 40px rgba(0,0,0,0.45)' : '0 10px 40px rgba(16,24,40,0.12)',
         }}>
             <Typography variant='h6' sx={{fontFamily: 'Merriweather', color: 'text.secondary', mb: '0.15rem'}}>
@@ -502,7 +518,8 @@ function gradientTextSx(dark) {
 
 function glassSx(dark, extra = {}) {
     return {
-        bgcolor: dark ? 'rgba(21,25,32,0.55)' : 'rgba(246,249,253,0.66)',
+        bgcolor: dark ? 'rgba(21,25,32,0.55)' : 'rgba(255,255,255,0.42)',
+        border: dark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(255,255,255,0.5)',
         boxShadow: dark ? '0 10px 40px rgba(0,0,0,0.4)' : '0 10px 40px rgba(16,24,40,0.1)',
         ...extra,
     };

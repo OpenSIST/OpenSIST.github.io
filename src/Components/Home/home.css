@@ -2,9 +2,9 @@
     position: relative;
     box-sizing: border-box;
     border-radius: 16px;
-    border: 1px solid rgba(128, 128, 128, 0.2);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid transparent;
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
     animation: cardFadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 

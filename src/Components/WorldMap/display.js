@@ -30,8 +30,8 @@ let shanghai_projected = null;
 const longest_tail = 16000;
 const color = {
     'light': {
-        'country_fill': '#E8EAED',
-        'country_border': '#A5A6A8'
+        'country_fill': '#F2F6FD',
+        'country_border': '#AEC0DD'
     },
     'dark': {
         'country_fill': '#243347',
