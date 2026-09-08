@@ -19,38 +19,45 @@ function TopBar() {
 
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
+    const toolbarHeight = {
+        minHeight: '60px',
+        '@media (min-width:600px)': {
+            minHeight: '60px',
+        },
+    };
+
     return (
-        <AppBar position='sticky'
-                elevation={1}
-                sx={{
-                    bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : grey[200],
-                    color: (theme) => theme.palette.mode === 'dark' ? grey[100] : grey[900],
-                    display: "block",
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
-                }}>
-            <Toolbar className="TopBar" sx={{
-                p: (smallPage ? 0 : 'auto'),
-                minHeight: '60px',
-                '@media (min-width:600px)': {
-                    minHeight: '60px',
-                },
-            }}>
-                <SvgIcon
-                    component={darkMode ? (smallPage ? DarkShortIcon : DarkIcon) : (smallPage ? LightShortIcon : LightIcon)}
-                    inheritViewBox
-                    onClick={() => navigate(user === null ? "/login" : "/")}
+        <>
+            <AppBar position='fixed'
+                    elevation={1}
                     sx={{
-                        height: "40px",
-                        width: (smallPage ? "40px" : "auto"),
-                        pl: (smallPage ? "8px" : 0),
-                        fontSize: '10em',
-                        cursor: 'pointer',
-                    }}
-                />
-                <NavBar/>
-                <StatusBlock/>
-            </Toolbar>
-        </AppBar>
+                        bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : grey[200],
+                        color: (theme) => theme.palette.mode === 'dark' ? grey[100] : grey[900],
+                        display: "block",
+                        zIndex: (theme) => theme.zIndex.drawer + 1,
+                    }}>
+                <Toolbar className="TopBar" sx={{
+                    p: (smallPage ? 0 : 'auto'),
+                    ...toolbarHeight,
+                }}>
+                    <SvgIcon
+                        component={darkMode ? (smallPage ? DarkShortIcon : DarkIcon) : (smallPage ? LightShortIcon : LightIcon)}
+                        inheritViewBox
+                        onClick={() => navigate(user === null ? "/login" : "/")}
+                        sx={{
+                            height: "40px",
+                            width: (smallPage ? "40px" : "auto"),
+                            pl: (smallPage ? "8px" : 0),
+                            fontSize: '10em',
+                            cursor: 'pointer',
+                        }}
+                    />
+                    <NavBar/>
+                    <StatusBlock/>
+                </Toolbar>
+            </AppBar>
+            <Toolbar aria-hidden="true" sx={toolbarHeight}/>
+        </>
     );
 }
 
