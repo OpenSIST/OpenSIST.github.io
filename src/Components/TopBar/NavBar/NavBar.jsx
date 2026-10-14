@@ -38,7 +38,7 @@ export default function NavBar() {
             name: "经验分享帖",
             path: "/posts",
         }, {
-            name: "常见问题",
+            name: "帮助中心",
             path: "/FAQ",
         }
     ]

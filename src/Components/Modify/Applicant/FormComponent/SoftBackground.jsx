@@ -1,14 +1,11 @@
 import {useRef} from "react";
 import {Box, Button, Paper} from "@mui/material";
-import {grey} from "@mui/material/colors";
 import {useNavigate} from "react-router-dom";
-import {useSmallPage} from "../../../common";
 import {ApplicantMaterialsSection, CompetitionSection, createListController, ExchangeSection, ExperienceSection, PublicationSection, RecommendationSection} from "./SoftBackgroundSections";
 import "../AddModifyApplicant.css";
 
 function SoftBackground({formValues, handleBack, handleChange}) {
     const navigate = useNavigate();
-    const smallPage = useSmallPage();
     const cvInputRef = useRef(null);
     const sopInputRef = useRef(null);
     const exchangeController = createListController(
@@ -68,10 +65,12 @@ function SoftBackground({formValues, handleBack, handleChange}) {
         <Paper
             variant='elevation'
             sx={{
-                width: smallPage ? '90%' : '80%',
-                bgcolor: (theme) => theme.palette.mode === "dark" ? grey[900] : grey[50]
+                width: '100%',
+                bgcolor: (theme) => theme.palette.surface,
+                borderRadius: 3,
+                pb: 1,
             }}
-            elevation={2}
+            elevation={0}
         >
             <ExchangeSection controller={exchangeController}/>
             <ExperienceSection formValues={formValues} handleChange={handleChange} research/>

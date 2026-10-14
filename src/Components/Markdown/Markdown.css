@@ -1,0 +1,49 @@
+.md-body {
+    word-break: break-word;
+}
+
+.md-body > :first-child {
+    margin-top: 0;
+}
+
+.md-body > :last-child {
+    margin-bottom: 0;
+}
+
+.md-body table {
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+}
+
+.md-body th,
+.md-body td {
+    border: 1px solid rgba(128, 128, 128, 0.35);
+    padding: 4px 10px;
+}
+
+.md-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.md-body blockquote {
+    margin: 0.5rem 0;
+    padding: 0.2rem 0 0.2rem 1rem;
+    border-left: 3px solid rgba(128, 128, 128, 0.4);
+    opacity: 0.85;
+}
+
+.md-body pre {
+    overflow-x: auto;
+    background: rgba(128, 128, 128, 0.12);
+    padding: 10px 12px;
+    border-radius: 6px;
+}
+
+.md-body :not(pre) > code {
+    background: rgba(128, 128, 128, 0.12);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.9em;
+}

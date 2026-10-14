@@ -1,6 +1,5 @@
-import {Box, ListItem, ListItemIcon, ListItemText, Paper, styled, Typography} from "@mui/material";
+import {Box, Paper, styled, Typography} from "@mui/material";
 import Grid2 from "@mui/material/Grid";
-import {BoldTypography} from "../../common";
 
 export const ContentCenteredGrid = styled(Grid2)(() => ({
     display: 'flex',
@@ -19,10 +18,18 @@ function getGridProps(checkpointProps = {}) {
     };
 }
 
-export function BaseItemBlock({children, className, checkpointProps, spacing = 0, elevation = 2}) {
+export function BaseItemBlock({children, className, checkpointProps, spacing = 0}) {
     return (
         <Grid2 sx={{display: "flex"}} {...getGridProps(checkpointProps)}>
-            <Paper className={className} elevation={elevation}>
+            <Paper
+                className={className}
+                elevation={0}
+                sx={{
+                    width: '100%',
+                    bgcolor: (theme) => theme.palette.surface,
+                    borderRadius: 3,
+                }}
+            >
                 <Grid2 container spacing={spacing}>
                     {children}
                 </Grid2>
@@ -33,35 +40,31 @@ export function BaseItemBlock({children, className, checkpointProps, spacing = 0
 
 export function BaseListItem({Icon, primary, secondary}) {
     return (
-        <ListItem alignItems="flex-start" sx={{gap: '1rem'}}>
-            <ListItemIcon sx={{minWidth: '2rem'}}>
+        <Box sx={{display: 'flex', gap: 1.5, py: 1.25, alignItems: 'flex-start'}}>
+            <Box sx={{flexShrink: 0, mt: '2px', color: 'primary.main', display: 'flex'}}>
                 {Icon}
-            </ListItemIcon>
-            <ListItemText
-                primary={
-                    <BoldTypography variant='h6' sx={{
-                        color: (theme) => theme.palette.mode === 'dark' ? "#fff" : "#000",
-                    }}>
-                        {primary}
-                    </BoldTypography>
-                }
-                secondary={
-                    <Box component='span' sx={{display: 'flex', flexDirection: 'column'}}>
-                        {typeof secondary === 'string' ?
-                            <Typography component='span'>
-                                {secondary}
-                            </Typography> :
-                            Object.entries(secondary ?? {}).map(([key, value]) => {
-                                return (
-                                    <Typography component='span' key={key}>
-                                        {`${key}：${value}`}
-                                    </Typography>
-                                )
-                            })
-                        }
-                    </Box>
-                }
-            />
-        </ListItem>
+            </Box>
+            <Box sx={{minWidth: 0, flex: 1}}>
+                <Typography sx={{fontWeight: 600, color: 'text.primary'}}>
+                    {primary}
+                </Typography>
+                {typeof secondary === 'string' ? (
+                    <Typography variant='body2' sx={{color: 'text.secondary', mt: 0.25, whiteSpace: 'pre-wrap'}}>
+                        {secondary}
+                    </Typography>
+                ) : (
+                    Object.entries(secondary ?? {}).map(([key, value]) => (
+                        <Box key={key} sx={{display: 'flex', gap: 1, mt: 0.25}}>
+                            <Typography variant='body2' sx={{color: 'text.secondary', flexShrink: 0}}>
+                                {key}
+                            </Typography>
+                            <Typography variant='body2' sx={{color: 'text.primary', minWidth: 0, overflowWrap: 'anywhere'}}>
+                                {value}
+                            </Typography>
+                        </Box>
+                    ))
+                )}
+            </Box>
+        </Box>
     )
 }

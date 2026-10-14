@@ -1,111 +1,46 @@
-.HomeIndexContent-0 {
-    transform: translateY(0);
-    transition: transform 1s cubic-bezier(0.95, 0, 0.38, 1);
+.GlassCard {
+    position: relative;
+    box-sizing: border-box;
+    border-radius: 16px;
+    border: 1px solid transparent;
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    animation: cardFadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
-.HomeIndexContent-1 {
-    transform: translateY(calc(-100vh + 60px));
-    transition: transform 1s cubic-bezier(0.95, 0, 0.38, 1);
+/* soft accent halo behind the card */
+.GlassCard::before {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    z-index: -1;
+    background: radial-gradient(closest-side, var(--rt-accent, #4F86CE), transparent 70%);
+    opacity: 0.16;
+    filter: blur(40px);
+    pointer-events: none;
 }
 
-.slide-out-blurred-top:focus {
-    -webkit-animation: slide-out-blurred-top 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both;
-    animation: slide-out-blurred-top 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both;
-}
-
-.slide-out-blurred-top:active {
-    -webkit-animation: slide-out-blurred-top 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both;
-    animation: slide-out-blurred-top 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both;
-}
-
-@-webkit-keyframes slide-out-blurred-top {
-    0% {
-        -webkit-transform: translateY(0) scaleY(1) scaleX(1);
-        transform: translateY(0) scaleY(1) scaleX(1);
-        -webkit-transform-origin: 50% 0%;
-        transform-origin: 50% 0%;
-        -webkit-filter: blur(0);
-        filter: blur(0);
-        opacity: 1;
-    }
-    100% {
-        -webkit-transform: translateY(-1000px) scaleY(2) scaleX(0.2);
-        transform: translateY(-1000px) scaleY(2) scaleX(0.2);
-        -webkit-transform-origin: 50% 0%;
-        transform-origin: 50% 0%;
-        -webkit-filter: blur(40px);
-        filter: blur(40px);
+@keyframes cardFadeUp {
+    from {
         opacity: 0;
+        transform: translateY(26px);
     }
-}
-@keyframes slide-out-blurred-top {
-    0% {
-        -webkit-transform: translateY(0) scaleY(1) scaleX(1);
-        transform: translateY(0) scaleY(1) scaleX(1);
-        -webkit-transform-origin: 50% 0%;
-        transform-origin: 50% 0%;
-        -webkit-filter: blur(0);
-        filter: blur(0);
+    to {
         opacity: 1;
-    }
-    100% {
-        -webkit-transform: translateY(-1000px) scaleY(2) scaleX(0.2);
-        transform: translateY(-1000px) scaleY(2) scaleX(0.2);
-        -webkit-transform-origin: 50% 0%;
-        transform-origin: 50% 0%;
-        -webkit-filter: blur(40px);
-        filter: blur(40px);
-        opacity: 0;
+        transform: translateY(0);
     }
 }
 
-.slide-out-blurred-bottom:focus {
-    -webkit-animation: slide-out-blurred-bottom 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both;
-    animation: slide-out-blurred-bottom 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both;
+/* gentle hint bounce on the scroll arrow */
+@keyframes hintBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(6px);
+    }
 }
 
-.slide-out-blurred-bottom:active {
-    -webkit-animation: slide-out-blurred-bottom 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both;
-    animation: slide-out-blurred-bottom 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both;
-}
-
-@-webkit-keyframes slide-out-blurred-bottom {
-    0% {
-        -webkit-transform: translateY(0) scaleY(1) scaleX(1);
-        transform: translateY(0) scaleY(1) scaleX(1);
-        -webkit-transform-origin: 50% 50%;
-        transform-origin: 50% 50%;
-        -webkit-filter: blur(0);
-        filter: blur(0);
-        opacity: 1;
-    }
-    100% {
-        -webkit-transform: translateY(1000px) scaleY(2) scaleX(0.2);
-        transform: translateY(1000px) scaleY(2) scaleX(0.2);
-        -webkit-transform-origin: 50% 100%;
-        transform-origin: 50% 100%;
-        -webkit-filter: blur(40px);
-        filter: blur(40px);
-        opacity: 0;
-    }
-}
-@keyframes slide-out-blurred-bottom {
-    0% {
-        -webkit-transform: translateY(0) scaleY(1) scaleX(1);
-        transform: translateY(0) scaleY(1) scaleX(1);
-        -webkit-transform-origin: 50% 50%;
-        transform-origin: 50% 50%;
-        -webkit-filter: blur(0);
-        filter: blur(0);
-        opacity: 1;
-    }
-    100% {
-        -webkit-transform: translateY(1000px) scaleY(2) scaleX(0.2);
-        transform: translateY(1000px) scaleY(2) scaleX(0.2);
-        -webkit-transform-origin: 50% 100%;
-        transform-origin: 50% 100%;
-        -webkit-filter: blur(40px);
-        filter: blur(40px);
-        opacity: 0;
-    }
+.ScrollHint {
+    animation: hintBounce 1.8s ease-in-out infinite;
 }

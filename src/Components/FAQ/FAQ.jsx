@@ -1,7 +1,8 @@
-import React from "react";
-import {Accordion, AccordionDetails, AccordionSummary, Box, Divider, Link as MuiLink, List, ListItem, Paper, Typography} from "@mui/material";
-import {ExpandMore} from "@mui/icons-material";
+import React, {useMemo, useState} from "react";
+import {Accordion, AccordionDetails, AccordionSummary, Box, InputAdornment, Link as MuiLink, List, ListItem, Paper, Tab, Tabs, TextField, Typography} from "@mui/material";
+import {ExpandMore, SearchRounded} from "@mui/icons-material";
 import {AboutUs} from "./AboutUs";
+import {AgreementContent} from "../Agreement/Agreement";
 
 const faqItems = [
     {
@@ -35,19 +36,17 @@ const faqItems = [
     {
         question: "我在OpenSIST上看到了一些错误的信息，我可以直接修改吗？",
         answer: (
-            <>
-                <List dense>
-                    <ListItem>项目信息表数据来源于用户创建。我们鼓励用户创建更多项目信息；如果发现错误，可以点击项目描述中的修改按钮直接修改。</ListItem>
-                    <ListItem>对于往年录取数据汇总和申请分享贴的数据，用户只能修改自己创建的信息，不能直接修改其他用户创建的信息。</ListItem>
-                    <ListItem>
-                        对于其他错误信息，可以前往GitHub提出&nbsp;
-                        <MuiLink href="https://github.com/OpenSIST/OpenSIST.github.io/issues" target="_blank" rel="noopener noreferrer">
-                            issue
-                        </MuiLink>
-                        ，我们会尽快处理。
-                    </ListItem>
-                </List>
-            </>
+            <List dense sx={{listStyleType: 'disc', pl: 3, '& .MuiListItem-root': {display: 'list-item', px: 0}}}>
+                <ListItem>项目信息表数据来源于用户创建。我们鼓励用户创建更多项目信息；如果发现错误，可以点击项目描述中的修改按钮直接修改。</ListItem>
+                <ListItem>对于往年录取数据汇总和申请分享贴的数据，用户只能修改自己创建的信息，不能直接修改其他用户创建的信息。</ListItem>
+                <ListItem>
+                    对于其他错误信息，可以前往GitHub提出&nbsp;
+                    <MuiLink href="https://github.com/OpenSIST/OpenSIST.github.io/issues" target="_blank" rel="noopener noreferrer">
+                        issue
+                    </MuiLink>
+                    ，我们会尽快处理。
+                </ListItem>
+            </List>
         ),
     },
     {
@@ -82,7 +81,7 @@ const faqItems = [
 
 const glossarySections = [
     {
-        title: "常用词缩写：网站/申请相关",
+        title: "网站 / 申请相关",
         terms: [
             "dp: datapoints",
             "IE: 信息学院的研究生专业，全称Information Engineering",
@@ -110,10 +109,27 @@ const glossarySections = [
             "RA: Research Assistant",
             "bar: 项目录取的准入门槛",
             "co-op: Cooperative education，学期内官方带薪实习。",
+            "GPA: Grade Point Average，平均绩点",
+            "GRE: Graduate Record Examination，美国研究生入学标化考试",
+            "TOEFL: 托福，英语水平考试",
+            "IELTS: 雅思，英语水平考试",
+            "DET: Duolingo English Test，多邻国英语测试",
+            "SoP: Statement of Purpose，目的陈述（学术动机文书）",
+            "PS: Personal Statement，个人陈述",
+            "CV: Curriculum Vitae，学术简历",
+            "WES: World Education Services，成绩单/学历认证机构",
+            "offer: 录取通知",
+            "WL: Waitlist，候补名单",
+            "rolling: 滚动录取，先到先审、招满为止",
+            "conditional offer: 有条件录取，需满足特定条件后正式入学",
+            "safety/target/reach: 保底/匹配/冲刺，选校档次的划分",
+            "funding/fully-funded: 资助/全额资助，通常免学费并发放津贴",
+            "fellowship: 奖学金，通常免学费并发放津贴且无工作义务",
+            "stipend: 津贴/生活补助",
         ],
     },
     {
-        title: "常用词缩写：签证/国外身份/找工作相关",
+        title: "签证 / 身份 / 求职相关",
         terms: [
             "I20: 接offer之后学校签发的文件，是维持在美国学生身份的唯一合法文件，办签证必带",
             "F-1: 美国的学生签证",
@@ -126,53 +142,158 @@ const glossarySections = [
             "NG: New Grad，是美国就业市场中的概念，对应着国内的应届毕业生的概念",
             "BCPNP: 加拿大不列颠哥伦比亚省提名移民计划",
             "ONIP: 加拿大安大略省提名移民计划",
+            "GC: Green Card，美国绿卡（永久居留权）",
+            "PR: Permanent Resident，永久居民（加拿大等）",
+            "EAD: Employment Authorization Document，美国工作许可卡",
+            "SSN: Social Security Number，美国社会安全号",
+            "SIN: Social Insurance Number，加拿大社会保险号",
+            "DS-160: 美国非移民签证在线申请表",
+            "SEVIS: 学生与交流访问者信息系统，缴纳SEVIS费后由学校签发",
+            "PGWP: Post-Graduation Work Permit，加拿大毕业后工签",
+            "EE: Express Entry，加拿大快速通道移民",
+            "NIW: National Interest Waiver，美国国家利益豁免（职业移民绿卡途径）",
         ],
     },
 ];
 
-function FoldedSection({title, children}) {
+function splitTerm(s) {
+    const i = s.indexOf(": ");
+    return i < 0 ? {term: s, def: ""} : {term: s.slice(0, i), def: s.slice(i + 2)};
+}
+
+function FaqAccordion({question, children}) {
     return (
-        <Accordion disableGutters>
-            <AccordionSummary expandIcon={<ExpandMore/>}>
-                <Typography fontWeight="bold">{title}</Typography>
+        <Accordion
+            disableGutters
+            elevation={0}
+            square
+            sx={{
+                bgcolor: 'transparent',
+                borderBottom: '1px solid',
+                borderColor: 'divider',
+                '&:before': {display: 'none'},
+            }}
+        >
+            <AccordionSummary
+                expandIcon={<ExpandMore sx={{color: 'primary.main'}}/>}
+                sx={{px: 0.5, '& .MuiAccordionSummary-content': {my: 1.75}}}
+            >
+                <Typography sx={{fontWeight: 600}}>{question}</Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{px: 0.5, pb: 2.5, color: 'text.secondary'}}>
                 {children}
             </AccordionDetails>
         </Accordion>
     );
 }
 
+function GlossaryPanel() {
+    const [query, setQuery] = useState("");
+    const q = query.trim().toLowerCase();
+    const sections = useMemo(() => glossarySections
+        .map((section) => ({
+            title: section.title,
+            terms: section.terms
+                .map(splitTerm)
+                .filter(({term, def}) => !q || term.toLowerCase().includes(q) || def.toLowerCase().includes(q)),
+        }))
+        .filter((section) => section.terms.length > 0), [q]);
+
+    return (
+        <Box>
+            <TextField
+                size="small"
+                placeholder="搜索缩写或释义…"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                sx={{mb: 3, width: '100%', maxWidth: 360}}
+                InputProps={{startAdornment: <InputAdornment position="start"><SearchRounded fontSize="small"/></InputAdornment>}}
+            />
+            {sections.length === 0 && <Typography color="text.secondary">未找到匹配的词条</Typography>}
+            {sections.map((section) => (
+                <Box key={section.title} sx={{mb: 3.5}}>
+                    <Typography sx={{fontWeight: 600, color: 'text.secondary', fontSize: 13, letterSpacing: '0.04em', mb: 1}}>
+                        {section.title}
+                    </Typography>
+                    <Box sx={{display: 'grid', gridTemplateColumns: {xs: '1fr', md: '1fr 1fr'}, columnGap: 4, rowGap: 0}}>
+                        {section.terms.map(({term, def}) => (
+                            <Box
+                                key={term}
+                                sx={{
+                                    display: 'flex',
+                                    gap: 1.5,
+                                    alignItems: 'baseline',
+                                    py: 1,
+                                    borderBottom: '1px solid',
+                                    borderColor: 'divider',
+                                }}
+                            >
+                                <Typography
+                                    component="span"
+                                    sx={{
+                                        color: 'primary.main',
+                                        fontWeight: 600,
+                                        fontFamily: '"SF Mono", ui-monospace, Menlo, monospace',
+                                        fontSize: 13,
+                                        whiteSpace: 'nowrap',
+                                        flexShrink: 0,
+                                        minWidth: 56,
+                                    }}
+                                >
+                                    {term}
+                                </Typography>
+                                <Typography component="span" variant="body2" sx={{color: 'text.secondary'}}>
+                                    {def}
+                                </Typography>
+                            </Box>
+                        ))}
+                    </Box>
+                </Box>
+            ))}
+        </Box>
+    );
+}
+
 export default function FAQ() {
+    const [tab, setTab] = useState(0);
     return (
         <Paper
             elevation={0}
             sx={{
-                bgcolor: (theme) => theme.palette.mode === "dark" ? "#1A1E24" : "#FAFAFA",
+                bgcolor: (theme) => theme.palette.background.default,
                 overflowY: "auto",
-                p: "1rem",
-                width: "80%",
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
             }}
         >
-            <Typography variant="h4" sx={{mb: 2, textAlign: "center"}}>常见问题</Typography>
-            {faqItems.map((item) => (
-                <FoldedSection key={item.question} title={item.question}>
-                    {item.answer}
-                </FoldedSection>
-            ))}
-            <Box sx={{mt: 2}}>
-                {glossarySections.map((section) => (
-                    <FoldedSection key={section.title} title={section.title}>
-                        <List dense>
-                            {section.terms.map((term) => (
-                                <ListItem key={term}>{term}</ListItem>
-                            ))}
-                        </List>
-                    </FoldedSection>
-                ))}
+            <Box sx={{width: "100%", maxWidth: 980, px: {xs: 2, sm: 3}, py: 3}}>
+                <Typography variant="h4" sx={{fontWeight: 600, mb: 0.5}}>帮助中心</Typography>
+                <Typography sx={{color: "text.secondary", mb: 2}}>常见问题、名词缩写、关于我们与用户协议</Typography>
+                <Tabs
+                    value={tab}
+                    onChange={(_, v) => setTab(v)}
+                    sx={{mb: 3, borderBottom: "1px solid", borderColor: "divider", "& .MuiTab-root": {textTransform: "none", fontSize: 15}}}
+                >
+                    <Tab label="常见问题"/>
+                    <Tab label="名词缩写"/>
+                    <Tab label="关于我们"/>
+                    <Tab label="用户协议"/>
+                </Tabs>
+
+                {tab === 0 && (
+                    <Box>
+                        {faqItems.map((item) => (
+                            <FaqAccordion key={item.question} question={item.question}>
+                                {item.answer}
+                            </FaqAccordion>
+                        ))}
+                    </Box>
+                )}
+                {tab === 1 && <GlossaryPanel/>}
+                {tab === 2 && <AboutUs sx={{width: "100%", p: 0}}/>}
+                {tab === 3 && <Box sx={{color: "text.secondary"}}><AgreementContent/></Box>}
             </Box>
-            <Divider sx={{my: 3}}/>
-            <AboutUs sx={{p: 0, width: "100%"}}/>
         </Paper>
     );
 }

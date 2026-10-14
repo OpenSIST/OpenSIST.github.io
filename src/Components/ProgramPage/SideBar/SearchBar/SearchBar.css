@@ -3,8 +3,7 @@
     padding-left: 8px;
     padding-top: 6px;
     padding-bottom: 6px;
-    /*height: 40px;*/
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 8px 8px 0;
 }
 
 .SearchBlock svg {
@@ -15,8 +14,30 @@
 .searchContainer {
     display: flex;
     align-items: center;
-    /*margin-bottom: 10px;*/
-    border-radius: 5px;
-    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+    border-radius: 8px;
     width: 100%;
+    transition: box-shadow 0.15s ease;
+}
+
+/* flat filled controls (no border) — defined by a gentle fill, lit blue on focus */
+.searchbar-style .MuiOutlinedInput-root {
+    border-radius: 8px;
+}
+
+.searchbar-style .MuiOutlinedInput-notchedOutline {
+    border: none;
+}
+
+.searchbar-style .searchContainer:focus-within,
+.searchbar-style .MuiOutlinedInput-root.Mui-focused {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--link-color) 28%, transparent);
+}
+
+/* compact filter pills sitting in one row */
+.filter-pill .MuiSelect-icon {
+    right: 4px;
+}
+
+.filter-pill-active .MuiSelect-icon {
+    color: var(--link-color);
 }

@@ -10,20 +10,14 @@
 .ProgramContent {
     display: flex;
     flex-direction: column;
-    width: clamp(0px, 100%, calc(100% - 400px));
-    /*height: calc(100vh - 120px);*/
+    width: 100%;
+    height: calc(100vh - 120px);
     padding: 20px;
     margin-top: 10px;
     margin-left: 1vw;
     margin-right: 1vw;
-    border-radius: 5px;
+    border-radius: 8px;
     user-select: text;
-}
-
-@media (max-width: 900px) {
-    .ProgramContent {
-        width: clamp(0px, 100%, calc(100% - 50px));
-    }
 }
 
 .ReviseRefreshButtonGroup {

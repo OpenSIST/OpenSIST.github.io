@@ -37,10 +37,12 @@ function App() {
         const root = document.documentElement;
         if (activeMode === 'dark') {
             root.style.setProperty('--scrollbar-color', 'rgba(155, 155, 155, 0.7)');
-            root.style.setProperty('--bg-color', '#1A1E24');
+            root.style.setProperty('--bg-color', '#0F1318');
+            root.style.setProperty('--link-color', '#6BA6E8');
         } else {
             root.style.setProperty('--scrollbar-color', 'rgba(0, 0, 0, 0.5)');
-            root.style.setProperty('--bg-color', '#FAFAFA');
+            root.style.setProperty('--bg-color', '#E8EDF5');
+            root.style.setProperty('--link-color', '#1C5BAA');
         }
     }, [activeMode]);
 
@@ -53,6 +55,31 @@ function App() {
         palette: {
             mode: activeMode,
             contrastThreshold: 3,
+            primary: {
+                main: activeMode === 'dark' ? '#6BA6E8' : '#1C5BAA',
+                light: activeMode === 'dark' ? '#93C0F2' : '#5189C9',
+                dark: activeMode === 'dark' ? '#4F86CE' : '#14457F',
+                contrastText: activeMode === 'dark' ? '#0B1B2E' : '#ffffff',
+            },
+            secondary: {
+                main: activeMode === 'dark' ? '#9AA4B2' : '#55606C',
+                contrastText: activeMode === 'dark' ? '#0B1B2E' : '#ffffff',
+            },
+            background: {
+                default: activeMode === 'dark' ? '#0F1318' : '#E2E8F2',
+                paper: activeMode === 'dark' ? '#181D25' : '#ECF1F9',
+            },
+            text: {
+                primary: activeMode === 'dark' ? '#E7EBF1' : '#1A2027',
+                secondary: activeMode === 'dark' ? '#97A1AF' : '#55606C',
+            },
+            divider: activeMode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(16,24,40,0.08)',
+            // App-level surface tiers. Light mode is a soft blue-tinted off-white family
+            // (never pure #fff — it reads as glaring); tiers are distinguished by gentle
+            // tone shifts, not borders. surface = panels/content; surfaceVariant = flat
+            // filled controls/cards sitting on a surface.
+            surface: activeMode === 'dark' ? '#161B22' : '#ECF1F9',
+            surfaceVariant: activeMode === 'dark' ? '#1F2630' : '#E6EDF6',
             reject: {
                 main: activeMode === 'dark' ? '#FF375F' : '#FF2D55',
                 contrastText: '#ffffffde',
@@ -76,7 +103,28 @@ function App() {
                 contrastText: '#ffffffde',
             }
         },
+        shape: {
+            borderRadius: 8,
+        },
         components: {
+            MuiButton: {
+                defaultProps: {
+                    disableElevation: true,
+                },
+                styleOverrides: {
+                    root: {
+                        textTransform: 'none',
+                        borderRadius: 8,
+                    },
+                },
+            },
+            MuiPaper: {
+                styleOverrides: {
+                    root: {
+                        backgroundImage: 'none',
+                    },
+                },
+            },
             MuiButtonBase: {
                 defaultProps: {
                     disableRipple: true,
@@ -140,6 +188,13 @@ function App() {
                 'Twemoji',
                 'sans-serif',
             ].join(','),
+            h1: {fontWeight: 600, letterSpacing: '-0.02em'},
+            h2: {fontWeight: 600, letterSpacing: '-0.01em'},
+            h3: {fontWeight: 600, letterSpacing: '-0.01em'},
+            h4: {fontWeight: 600},
+            h5: {fontWeight: 600},
+            h6: {fontWeight: 600},
+            button: {fontWeight: 600},
         },
     }), [activeMode]);
     const themeContextValue = useMemo(() => ({toggleTheme}), [toggleTheme]);

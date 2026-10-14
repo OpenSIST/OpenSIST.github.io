@@ -1,26 +1,12 @@
-import {Container, createTheme, ThemeProvider, Typography} from "@mui/material";
-import Grid from "@mui/material/Grid";
-import {Outlet, useLoaderData} from "react-router-dom";
-import {getMetadata} from "../../Data/UserData";
+import {Box, Typography} from "@mui/material";
+import {Outlet, redirect, useLoaderData} from "react-router-dom";
+import {getMetadata, uncollectProgram} from "../../Data/UserData";
 import {loader as ProgramPageLoader} from "../ProgramPage/ProgramPage";
 import SearchBar from "../ProgramPage/SideBar/SearchBar/SearchBar";
 import {getQuery} from "../ProgramPage/SideBar/SideBar";
 import ProgramCard from "./ProgramCard";
 import "./Favorites.css";
 import capoobeat from "../../Assets/images/Favorites/capoobeat.gif";
-
-const favoritesTheme = (theme) => createTheme({
-    ...theme,
-    breakpoints: {
-        values: {
-            xs: 0,
-            sm: 580,
-            md: 900,
-            lg: 1100,
-            xl: 1436,
-        },
-    },
-});
 
 function filterProgramsById(programs, programIDs) {
     const filtered = {};
@@ -53,50 +39,75 @@ export async function loader({request}) {
     return {programPageData};
 }
 
+export async function action({request}) {
+    const formData = await request.formData();
+    const actionType = formData.get("ActionType");
+    const programId = formData.get("ProgramID");
+    if (actionType === "UnStar") {
+        await uncollectProgram(programId);
+    }
+    return redirect(request.url);
+}
+
 export default function Favorites() {
     const {programPageData} = useLoaderData();
-
-    const noPrograms = Object.keys(programPageData.programs).length === 0;
+    const programs = flattenPrograms(programPageData.programs);
+    const noPrograms = programs.length === 0;
 
     return (
-        <Container maxWidth={"xl"}>
-            <Container maxWidth={"lg"} sx={{mt: 1.5}}>
+        <Box sx={{flexGrow: 1, width: "100%", minWidth: 0, height: "calc(100vh - 60px)", display: "flex", flexDirection: "column", px: {xs: 2, sm: 3, md: 4}, py: 2}}>
+            <Box sx={{display: "flex", alignItems: "baseline", gap: 1.5, mb: 2}}>
+                <Typography variant="h5" sx={{fontWeight: 700}}>我的收藏</Typography>
+                {!noPrograms ? (
+                    <Typography variant="body2" sx={{color: "text.secondary"}}>
+                        {programs.length} 个项目
+                    </Typography>
+                ) : null}
+            </Box>
+
+            <Box sx={{mb: 2, maxWidth: 720}}>
                 <SearchBar query={getQuery(programPageData)} pageName="favorites"/>
-            </Container>
+            </Box>
+
             {noPrograms ? (
-                <Container
+                <Box
                     sx={{
-                        height: "100%",
-                        maxHeight: "calc(100vh - 150px)",
+                        flex: 1,
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "20px",
-                        p: 0,
+                        gap: 2,
+                        color: "text.secondary",
                     }}
                 >
-                    <Typography variant="h4" component="div" textAlign="center">
-                        No programs to display.
+                    <img src={capoobeat} height="140px" alt="还没有收藏"/>
+                    <Typography variant="h6" sx={{fontWeight: 600, color: "text.primary"}}>
+                        还没有收藏任何项目
                     </Typography>
-                    <img src={capoobeat} height="150px" alt="No programs saved"/>
-                </Container>
+                    <Typography variant="body2" sx={{textAlign: "center", maxWidth: 360}}>
+                        在「项目信息表」中打开任意项目，点击右上角的收藏按钮，即可把它添加到这里。
+                    </Typography>
+                </Box>
             ) : (
-                <ThemeProvider theme={favoritesTheme}>
-                    <Grid
-                        container
-                        spacing={2}
-                        columns={60}
-                        maxHeight={"calc(100vh - 150px)"}
-                        sx={{my: 2, overflowY: "auto"}}
-                    >
-                        {flattenPrograms(programPageData.programs).map((program) => (
-                            <ProgramCard key={program.ProgramID} program={program}/>
-                        ))}
-                    </Grid>
-                </ThemeProvider>
+                <Box
+                    sx={{
+                        flex: 1,
+                        minHeight: 0,
+                        overflowY: "auto",
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                        gap: 2,
+                        alignContent: "start",
+                        pb: 2,
+                    }}
+                >
+                    {programs.map((program) => (
+                        <ProgramCard key={program.ProgramID} program={program}/>
+                    ))}
+                </Box>
             )}
-            <Outlet></Outlet>
-        </Container>
+            <Outlet/>
+        </Box>
     );
 }

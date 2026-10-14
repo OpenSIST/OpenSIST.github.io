@@ -4,7 +4,6 @@ import React, {useContext, useEffect} from "react";
 import {getAvatar, getDisplayName, getMetadata, logout, useUser} from "../../../Data/UserData";
 import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography, useTheme} from "@mui/material";
 import {AccountBoxRounded, ExitToAppRounded, LockResetRounded, StarRounded} from "@mui/icons-material";
-import {blue} from "@mui/material/colors";
 import {ThemeContext} from "../../../index";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -63,7 +62,7 @@ export function StatusBlock() {
         {user ? <>
             <Tooltip title="Account settings" arrow>
                 <IconButton onClick={handleMenu}>
-                    <Avatar src={avatarUrl} sx={{bgcolor: blue[500]}}>{displayName?.slice(0, 1).toUpperCase()}</Avatar>
+                    <Avatar src={avatarUrl} sx={{bgcolor: 'primary.main'}}>{displayName?.slice(0, 1).toUpperCase()}</Avatar>
                 </IconButton>
             </Tooltip>
             <Menu

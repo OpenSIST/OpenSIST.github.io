@@ -45,8 +45,20 @@ function AddListButton({onClick}) {
     return (
         <Grid2 container sx={sectionGridSx}>
             <Grid2 size={12}>
-                <Button onClick={onClick} variant="contained" fullWidth>
-                    <Add/>
+                <Button
+                    onClick={onClick}
+                    variant="outlined"
+                    fullWidth
+                    startIcon={<Add/>}
+                    sx={{
+                        py: 0.75,
+                        color: 'text.secondary',
+                        borderColor: 'divider',
+                        borderStyle: 'dashed',
+                        '&:hover': {borderStyle: 'dashed', borderColor: 'primary.main', color: 'primary.main', bgcolor: 'transparent'},
+                    }}
+                >
+                    添加
                 </Button>
             </Grid2>
         </Grid2>
@@ -356,10 +368,10 @@ function PdfUploadField({fileType, inputRef, label, onRemove, onUpload, value}) 
             <Grid2 size={{xs: 10, sm: 11}}>
                 <Button
                     component='label'
-                    variant="contained"
+                    variant="outlined"
                     fullWidth
                     startIcon={<CloudUpload/>}
-                    sx={{textTransform: 'none'}}
+                    sx={{textTransform: 'none', justifyContent: 'flex-start'}}
                 >
                     {value?.Title ?? label}
                     <input

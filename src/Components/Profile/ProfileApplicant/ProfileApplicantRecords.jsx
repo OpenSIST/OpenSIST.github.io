@@ -2,7 +2,6 @@ import {useState} from "react";
 import {
     Box,
     Button,
-    ButtonGroup,
     Card,
     Chip,
     Dialog,
@@ -10,7 +9,8 @@ import {
     DialogTitle,
     IconButton,
     Input,
-    Tooltip
+    Tooltip,
+    Typography
 } from "@mui/material";
 import {Add, Delete, Edit} from "@mui/icons-material";
 import Grid2 from "@mui/material/Grid";
@@ -18,7 +18,16 @@ import {Form, Link, useNavigate} from "react-router-dom";
 import {RecordStatusPalette} from "../../../Data/Schemas";
 import {BoldTypography} from "../../common";
 import {profileApplicantPath, profileRecordEditPath} from "../../RouteUtils";
-import {BaseItemBlock, BaseListItem, ContentCenteredGrid} from "./ProfileApplicantShared";
+import {BaseItemBlock, ContentCenteredGrid} from "./ProfileApplicantShared";
+
+function RecordDate({label, value}) {
+    return (
+        <Box>
+            <Typography sx={{fontSize: 11, color: "text.secondary", lineHeight: 1.4}}>{label}</Typography>
+            <Typography variant="body2" sx={{fontWeight: 500}}>{value || "—"}</Typography>
+        </Box>
+    );
+}
 
 export function RecordBlock({records = {}, applicantId, editable}) {
     const [open, setOpen] = useState(false);
@@ -59,46 +68,47 @@ export function RecordBlock({records = {}, applicantId, editable}) {
                             lg: 6,
                             xl: 4
                         }}>
-                        <Card elevation={3} sx={{
+                        <Card elevation={0} sx={{
                             width: "100%",
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between'
+                            bgcolor: (theme) => theme.palette.surface,
+                            border: "1px solid",
+                            borderColor: "divider",
+                            borderRadius: 2,
                         }}>
-                            <BaseListItem
-                                Icon={<Chip label={record.Status} color={RecordStatusPalette[record.Status]}/>}
-                                primary={
-                                    <Box sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-between',
-                                        overflowWrap: 'anywhere'
-                                    }}>
+                            <Box sx={{p: 1.75, display: 'flex', flexDirection: 'column', gap: 1.25}}>
+                                <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+                                    <Chip size="small" label={record.Status} color={RecordStatusPalette[record.Status]}/>
+                                    <BoldTypography sx={{flex: 1, minWidth: 0, overflowWrap: 'anywhere'}}>
                                         {record.ProgramID}
-                                        {editable ?
-                                            <ButtonGroup>
-                                                <Tooltip title='编辑此记录' arrow>
-                                                    <IconButton component={Link}
-                                                                to={profileRecordEditPath(record.ApplicantID, record.ProgramID)}>
-                                                        <Edit/>
-                                                    </IconButton>
-                                                </Tooltip>
-                                                <Tooltip title='删除此记录' arrow>
-                                                    <IconButton onClick={() => handleOpen(record.RecordID)} color='error'>
-                                                        <Delete/>
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </ButtonGroup> : null}
-                                    </Box>
-                                }
-                                secondary={{
-                                    "申请季": `${record.ProgramYear ?? ""}${record.Semester ?? ""}`,
-                                    "提交时间": record.TimeLine?.Submit?.split('T')[0] ?? "暂无",
-                                    "面试时间": record.TimeLine?.Interview?.split('T')[0] ?? '暂无',
-                                    "通知时间": record.TimeLine?.Decision?.split('T')[0] ?? '暂无',
-                                    "补充说明": record.Detail || '暂无'
-                                }}
-                            />
+                                    </BoldTypography>
+                                    {editable ?
+                                        <Box sx={{display: 'flex', flexShrink: 0}}>
+                                            <Tooltip title='编辑此记录' arrow>
+                                                <IconButton size="small" component={Link}
+                                                            to={profileRecordEditPath(record.ApplicantID, record.ProgramID)}>
+                                                    <Edit fontSize="small"/>
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title='删除此记录' arrow>
+                                                <IconButton size="small" onClick={() => handleOpen(record.RecordID)} color='error'>
+                                                    <Delete fontSize="small"/>
+                                                </IconButton>
+                                            </Tooltip>
+                                        </Box> : null}
+                                </Box>
+                                <Box>
+                                    <Chip size="small" variant="outlined" label={`${record.ProgramYear ?? ""}${record.Semester ?? ""}`}/>
+                                </Box>
+                                <Box sx={{display: 'flex', gap: 3, flexWrap: 'wrap'}}>
+                                    <RecordDate label="提交" value={record.TimeLine?.Submit?.split('T')[0]}/>
+                                    <RecordDate label="面试" value={record.TimeLine?.Interview?.split('T')[0]}/>
+                                    <RecordDate label="通知" value={record.TimeLine?.Decision?.split('T')[0]}/>
+                                </Box>
+                                {record.Detail ?
+                                    <Typography variant="body2" sx={{color: 'text.secondary', whiteSpace: 'pre-wrap'}}>
+                                        {record.Detail}
+                                    </Typography> : null}
+                            </Box>
                         </Card>
                     </Grid2>
                 );

@@ -1,13 +1,11 @@
 import {getPosts} from "../../Data/PostData";
 import {Link, Outlet, useLoaderData} from "react-router-dom";
 import {CollapseSideBar} from "../common";
-import {Button, Divider, List, ListItemButton, ListItemText, Paper, Tooltip, useTheme} from "@mui/material";
-import {grey} from "@mui/material/colors";
+import {Box, Divider, IconButton, List, ListItemButton, ListItemText, Paper, Tooltip, Typography} from "@mui/material";
 import {Add} from "@mui/icons-material";
 import "./PostPage.css"
 import React, {Fragment} from "react";
 import SearchBar from "../ProgramPage/SideBar/SearchBar/SearchBar";
-import Grid2 from "@mui/material/Grid";
 import {postsPostPath} from "../RouteUtils";
 
 export async function loader({request}) {
@@ -19,13 +17,11 @@ export async function loader({request}) {
 
 export default function PostPage() {
     const loaderData = useLoaderData();
-    const theme = useTheme();
-    const darkMode = theme.palette.mode === 'dark';
     return (
         <>
             <CollapseSideBar sx={{
                 '& .MuiDrawer-paper': {
-                    bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[900] : grey[50],
+                    bgcolor: (theme) => theme.palette.surface,
                     width: '250px',
                     height: 'calc(100vh - 120px)',
                     p: '20px',
@@ -34,21 +30,21 @@ export default function PostPage() {
                 }
             }}>
                 <SearchBar query={{searchStr: loaderData.searchStr}} pageName='post'/>
-                <Grid2 container sx={{width: '100%'}}>
+                <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: '2px'}}>
+                    <Typography variant='caption' sx={{color: 'text.secondary', fontWeight: 600, letterSpacing: '0.04em'}}>
+                        文章列表
+                    </Typography>
                     <Tooltip title="撰写新文章" arrow>
-                        <Button component={Link} to="/posts/new" variant="outlined" fullWidth sx={{
-                            transition: 'background-color 0s',
-                            bgcolor: (theme) => theme.palette.mode === 'dark' ? grey[800] : '#fff',
-                        }}>
-                            <Add/>
-                        </Button>
+                        <IconButton component={Link} to="/posts/new" size='small' sx={{color: 'text.secondary'}}>
+                            <Add fontSize='small'/>
+                        </IconButton>
                     </Tooltip>
-                </Grid2>
+                </Box>
                 <Paper
                     variant='elevation'
-                    elevation={darkMode ? 0 : 1}
+                    elevation={0}
                     sx={{
-                        bgcolor: darkMode ? grey[800] : '#fff',
+                        bgcolor: (theme) => theme.palette.surfaceVariant,
                         height: "100%",
                         overflowY: "auto"
                     }}
@@ -56,7 +52,7 @@ export default function PostPage() {
                     <List
                         component='nav'
                         sx={{
-                            borderRadius: '5px',
+                            borderRadius: '8px',
                             overflowY: 'auto'
                         }}
                     >
@@ -73,10 +69,11 @@ export default function PostPage() {
             </CollapseSideBar>
             <Paper
                 className="PostContent"
+                elevation={0}
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    bgcolor: (theme) => theme.palette.mode === "dark" ? grey[900] : grey[50],
+                    bgcolor: (theme) => theme.palette.surface,
                 }}
             >
                 <Outlet/>

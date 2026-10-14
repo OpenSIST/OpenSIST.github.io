@@ -1,0 +1,77 @@
+.MD2 {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    border: 1px solid var(--md2-border, rgba(128, 128, 128, 0.2));
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: var(--md2-bg, #f0f0f3);
+}
+
+.MD2-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 4px 8px;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--md2-border, rgba(128, 128, 128, 0.2));
+}
+
+.MD2-viewtoggle .MuiToggleButton-root {
+    text-transform: none;
+    padding: 2px 10px;
+    font-size: 12px;
+    line-height: 1.6;
+    border-color: var(--md2-border, rgba(128, 128, 128, 0.2));
+}
+
+.MD2-body {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+.MD2-textarea {
+    flex: 1 1 50%;
+    min-width: 0;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: 12px 14px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.75;
+    background: transparent;
+    color: inherit;
+    overflow-y: auto;
+}
+
+.MD2-preview {
+    flex: 1 1 50%;
+    min-width: 0;
+    padding: 12px 16px;
+    overflow-y: auto;
+    word-break: break-word;
+    border-left: 1px solid var(--md2-border, rgba(128, 128, 128, 0.2));
+}
+
+/* when the preview is the only pane, drop the divider border */
+.MD2-body > .MD2-preview:first-child {
+    border-left: none;
+}
+
+/* shared markdown content styles live in Markdown/Markdown.css (.md-body) */
+
+@media (max-width: 900px) {
+    .MD2-body {
+        flex-direction: column;
+    }
+
+    .MD2-preview {
+        border-left: none;
+        border-top: 1px solid var(--md2-border, rgba(128, 128, 128, 0.2));
+    }
+}
