@@ -2,13 +2,12 @@ import {Box, Chip, IconButton, Paper, Tooltip, Typography} from "@mui/material";
 import {BookmarkRemoveOutlined} from "@mui/icons-material";
 import {Form, useNavigate} from "react-router-dom";
 import {regionFlagMapping} from "../../Data/Schemas";
-import {univAbbrFullNameMapping, univColorMapping} from "../../Data/Common";
+import {univAbbrFullNameMapping} from "../../Data/Common";
 import {favoritesProgramPath} from "../RouteUtils";
 
 const ProgramCard = ({program}) => {
     const navigate = useNavigate();
 
-    const color = univColorMapping[program.University] ?? [85, 221, 128];
     const flags = (program.Region ?? []).map((r) => regionFlagMapping[r]).join(" ");
     const majors = program.TargetApplicantMajor ?? [];
 
@@ -21,19 +20,16 @@ const ProgramCard = ({program}) => {
             sx={{
                 position: "relative",
                 cursor: "pointer",
-                borderRadius: 3,
+                borderRadius: 1,
                 p: 2,
                 minHeight: 150,
                 display: "flex",
                 flexDirection: "column",
                 gap: 0.5,
-                bgcolor: (theme) => theme.palette.surface,
-                borderLeft: `4px solid rgb(${color})`,
-                transition: "transform 0.15s ease, box-shadow 0.15s ease",
-                "&:hover": {
-                    transform: "translateY(-2px)",
-                    boxShadow: "0 6px 16px rgba(16,24,40,0.10)",
-                },
+                bgcolor: (theme) => theme.palette.surfaceVariant,
+                border: "1px solid transparent",
+                transition: "border-color 0.15s ease",
+                "&:hover": {borderColor: "primary.main"},
             }}
         >
             <Box sx={{display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 1}}>
@@ -71,7 +67,7 @@ const ProgramCard = ({program}) => {
                     <Chip
                         size="small"
                         label={program.Degree}
-                        sx={{bgcolor: (theme) => theme.palette.surfaceVariant, fontWeight: 600}}
+                        sx={{bgcolor: (theme) => theme.palette.surface, color: "primary.main", fontWeight: 600}}
                     />
                 ) : null}
                 {majors.map((m) => (
@@ -79,8 +75,7 @@ const ProgramCard = ({program}) => {
                         key={m}
                         size="small"
                         label={m}
-                        variant="outlined"
-                        sx={{color: "text.secondary", borderColor: "divider"}}
+                        sx={{bgcolor: (theme) => theme.palette.surface, color: "primary.main"}}
                     />
                 ))}
             </Box>

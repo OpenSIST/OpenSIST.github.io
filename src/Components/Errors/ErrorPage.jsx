@@ -1,5 +1,5 @@
 import {useNavigate, useRouteError} from "react-router-dom";
-import {Box, Button, Paper, Typography, useTheme} from "@mui/material";
+import {Box, Button, Paper, Typography} from "@mui/material";
 import {CloudOffOutlined, HomeOutlined, RefreshOutlined, SentimentDissatisfiedOutlined} from "@mui/icons-material";
 
 const NetworkBrokeMessage = "网络异常，请检查网络连接或采取以下措施：\n" +
@@ -7,14 +7,9 @@ const NetworkBrokeMessage = "网络异常，请检查网络连接或采取以下
     "2. 如果您在国内且未连接上科大校园网，请尝试开启VPN并保证网络稳定\n" +
     "3. 如果您在海外（包含港澳台地区），则无需使用代理服务";
 
-function brandGradient(dark) {
-    return dark ? 'linear-gradient(140deg, #93C0F2, #6BA6E8)' : 'linear-gradient(140deg, #1C5BAA, #4F86CE)';
-}
-
 export default function ErrorPage() {
     const error = useRouteError();
     const navigate = useNavigate();
-    const dark = useTheme().palette.mode === 'dark';
 
     const isNetwork = error?.message === 'Failed to fetch';
     const status = typeof error?.status === 'number' ? error.status : null;
@@ -56,11 +51,7 @@ export default function ErrorPage() {
                         fontSize: {xs: '3.5rem', sm: '4.5rem'},
                         lineHeight: 1,
                         display: 'inline-block',
-                        background: brandGradient(dark),
-                        backgroundClip: 'text',
-                        WebkitBackgroundClip: 'text',
-                        color: 'transparent',
-                        WebkitTextFillColor: 'transparent',
+                        color: 'text.primary',
                     }}>
                         {status}
                     </Typography>
@@ -72,9 +63,8 @@ export default function ErrorPage() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        background: brandGradient(dark),
-                        color: '#fff',
-                        boxShadow: dark ? '0 8px 22px rgba(107,166,232,0.35)' : '0 8px 22px rgba(28,91,170,0.28)',
+                        bgcolor: 'surfaceVariant',
+                        color: 'text.primary',
                     }}>
                         <Icon sx={{fontSize: 38}}/>
                     </Box>
