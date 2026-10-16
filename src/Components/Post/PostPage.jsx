@@ -19,7 +19,7 @@ export default function PostPage() {
     const loaderData = useLoaderData();
     return (
         <>
-            <CollapseSideBar sx={{
+            <CollapseSideBar label="搜索 / 文章列表" sx={{
                 '& .MuiDrawer-paper': {
                     bgcolor: (theme) => theme.palette.surface,
                     width: '250px',

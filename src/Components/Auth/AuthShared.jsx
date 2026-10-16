@@ -3,16 +3,19 @@ import {Form} from "react-router-dom";
 import {Box, IconButton, InputAdornment, MenuItem, Paper, TextField, Typography} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {OpenSIST} from "../common";
+import LightLogo from "../icons/light.svg?react";
+import DarkLogo from "../icons/dark.svg?react";
 
 export function AuthCard({children, ...formProps}) {
     return (
         <Box sx={{
-            minHeight: 'calc(100vh - 60px)',
+            minHeight: 'calc(100dvh - 60px)',
+            boxSizing: 'border-box',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             px: 2,
-            py: 4,
+            py: {xs: 2, sm: 4},
         }}>
             <Paper
                 component={Form}
@@ -21,6 +24,7 @@ export function AuthCard({children, ...formProps}) {
                 sx={{
                     width: '100%',
                     maxWidth: 430,
+                    boxSizing: 'border-box',
                     bgcolor: (theme) => theme.palette.surface,
                     borderRadius: 3,
                     p: {xs: 3, sm: 4},
@@ -38,7 +42,16 @@ export function AuthCard({children, ...formProps}) {
 export function AuthHeader({subtitle}) {
     return (
         <Box sx={{textAlign: 'center', mb: 0.5}}>
-            <OpenSIST props={{variant: 'h4'}} sx={{display: 'inline-block', color: 'text.primary'}}/>
+            <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5}}>
+                <Box aria-hidden='true' sx={{width: 48, height: 48, '& svg': {width: '100%', height: '100%'},
+                    '& .light-logo': {display: (theme) => theme.palette.mode === 'dark' ? 'none' : 'block'},
+                    '& .dark-logo': {display: (theme) => theme.palette.mode === 'dark' ? 'block' : 'none'},
+                }}>
+                    <LightLogo className='light-logo'/>
+                    <DarkLogo className='dark-logo'/>
+                </Box>
+                <OpenSIST props={{variant: 'h4'}} sx={{color: (theme) => theme.palette.mode === 'dark' ? '#80b3fa' : '#004098'}}/>
+            </Box>
             <Typography sx={{color: 'text.secondary', mt: 0.75, fontSize: 14}}>{subtitle}</Typography>
         </Box>
     );

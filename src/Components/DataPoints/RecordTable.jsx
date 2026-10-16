@@ -357,7 +357,7 @@ const MENU_PROPS = {
             borderColor: "divider",
             backgroundImage: "none",
             "& .MuiList-root": {py: 0.5},
-            "& .MuiMenuItem-root": {fontSize: 13, minHeight: "auto", py: 0.25, px: 1, borderRadius: 1, mx: 0.5},
+            "& .MuiMenuItem-root": {fontSize: 13, minHeight: {xs: 44, sm: "auto"}, py: 0.25, px: 1, borderRadius: 1, mx: 0.5},
             "& .MuiCheckbox-root": {p: 0.5, mr: 0.5},
             "& .MuiCheckbox-root .MuiSvgIcon-root": {fontSize: 18},
         },

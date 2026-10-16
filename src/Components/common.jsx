@@ -28,7 +28,7 @@ export function useSmallPage() {
     return useMediaQuery('(max-width:900px)');
 }
 
-export function CollapseSideBar({children, sx}) {
+export function CollapseSideBar({children, sx = {}, label = "浏览列表"}) {
     const smallPage = useSmallPage();
     const [open, setOpen] = useState(false)
     return (
@@ -55,26 +55,31 @@ export function CollapseSideBar({children, sx}) {
                         // flat on desktop (no 3D card shadow); on the mobile overlay
                         // drawer use a soft modern shadow to lift it off the page
                         boxShadow: (smallPage ? "0 12px 40px rgba(16,24,40,0.22)" : 'none'),
-                        ...(sx['& .MuiDrawer-paper'] ?? {})
+                        ...(sx['& .MuiDrawer-paper'] ?? {}),
+                        ...(smallPage ? {boxSizing: 'border-box', width: 'min(340px, 90vw)', height: 'calc(100dvh - 60px)', mt: 0} : {})
                     },
                 }}
             >
-                {children}
+                {smallPage && <Button onClick={() => setOpen(false)} sx={{minHeight: 44}}>关闭列表</Button>}
+                <Box sx={{display: 'contents'}} onClick={(event) => {
+                    if (smallPage && event.target.closest('a[href]')) setOpen(false);
+                }}>{children}</Box>
             </SwipeableDrawer>
             <Button
                 className="ShowUpButton"
                 onClick={() => setOpen(!open)}
                 disableRipple
                 sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
+                    position: 'fixed',
+                    top: 'auto',
+                    bottom: 'max(16px, env(safe-area-inset-bottom))',
+                    left: 12,
+
                     visibility: smallPage ? 'visible' : 'hidden',
                     minWidth: 0,
-                    p: 0,
-                    width: 26,
-                    height: 64,
-                    borderRadius: '0 16px 16px 0',
+                    px: 2,
+                    height: 44,
+                    borderRadius: 2,
                     bgcolor: (theme) => theme.palette.surface,
                     color: 'primary.main',
                     border: (theme) => `1px solid ${theme.palette.divider}`,
@@ -83,12 +88,11 @@ export function CollapseSideBar({children, sx}) {
                     transition: 'background-color 0.15s ease, padding-left 0.15s ease',
                     '&:hover': {
                         bgcolor: (theme) => theme.palette.surfaceVariant,
-                        pl: '2px',
                     },
                     zIndex: (smallPage ? 1200 : 1)
                 }}
             >
-                <ChevronRight fontSize="small"/>
+                <ChevronRight fontSize="small"/>{label}
             </Button>
         </>
     )

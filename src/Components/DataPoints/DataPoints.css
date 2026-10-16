@@ -280,3 +280,13 @@
         max-width: none;
     }
 }
+
+@media (max-width: 600px) {
+    .rt-filterbar .MuiOutlinedInput-root,
+    .rt-filterbar .rt-pill { height: 44px; min-height: 44px; }
+    .rt-search input { font-size: 16px; }
+    .rt-td { padding-top: 8px; padding-bottom: 8px; }
+    .rt-chip-click { min-height: 36px; }
+    .rt-group-add.MuiIconButton-root { min-width: 44px; min-height: 44px; }
+    .rt-scroller { overscroll-behavior: contain; }
+}
