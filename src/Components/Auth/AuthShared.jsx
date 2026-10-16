@@ -1,22 +1,8 @@
 import React, {useState} from "react";
 import {Form} from "react-router-dom";
-import {Box, IconButton, InputAdornment, MenuItem, Paper, TextField, Typography, useTheme} from "@mui/material";
+import {Box, IconButton, InputAdornment, MenuItem, Paper, TextField, Typography} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {OpenSIST} from "../common";
-
-export function brandGradient(dark) {
-    return dark ? 'linear-gradient(140deg, #93C0F2, #6BA6E8)' : 'linear-gradient(140deg, #1C5BAA, #4F86CE)';
-}
-
-export function gradientTextSx(dark) {
-    return {
-        background: brandGradient(dark),
-        backgroundClip: 'text',
-        WebkitBackgroundClip: 'text',
-        color: 'transparent',
-        WebkitTextFillColor: 'transparent',
-    };
-}
 
 export function AuthCard({children, ...formProps}) {
     return (
@@ -50,10 +36,9 @@ export function AuthCard({children, ...formProps}) {
 }
 
 export function AuthHeader({subtitle}) {
-    const dark = useTheme().palette.mode === 'dark';
     return (
         <Box sx={{textAlign: 'center', mb: 0.5}}>
-            <OpenSIST props={{variant: 'h4'}} sx={{display: 'inline-block', fontWeight: 800, ...gradientTextSx(dark)}}/>
+            <OpenSIST props={{variant: 'h4'}} sx={{display: 'inline-block', color: 'text.primary'}}/>
             <Typography sx={{color: 'text.secondary', mt: 0.75, fontSize: 14}}>{subtitle}</Typography>
         </Box>
     );

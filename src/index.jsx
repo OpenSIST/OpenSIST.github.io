@@ -37,12 +37,12 @@ function App() {
         const root = document.documentElement;
         if (activeMode === 'dark') {
             root.style.setProperty('--scrollbar-color', 'rgba(155, 155, 155, 0.7)');
-            root.style.setProperty('--bg-color', '#0F1318');
-            root.style.setProperty('--link-color', '#6BA6E8');
+            root.style.setProperty('--bg-color', '#1A1A1A');
+            root.style.setProperty('--link-color', '#EEEEEE');
         } else {
             root.style.setProperty('--scrollbar-color', 'rgba(0, 0, 0, 0.5)');
-            root.style.setProperty('--bg-color', '#E8EDF5');
-            root.style.setProperty('--link-color', '#1C5BAA');
+            root.style.setProperty('--bg-color', '#FAFAFA');
+            root.style.setProperty('--link-color', '#333333');
         }
     }, [activeMode]);
 
@@ -56,30 +56,27 @@ function App() {
             mode: activeMode,
             contrastThreshold: 3,
             primary: {
-                main: activeMode === 'dark' ? '#6BA6E8' : '#1C5BAA',
-                light: activeMode === 'dark' ? '#93C0F2' : '#5189C9',
-                dark: activeMode === 'dark' ? '#4F86CE' : '#14457F',
-                contrastText: activeMode === 'dark' ? '#0B1B2E' : '#ffffff',
+                main: activeMode === 'dark' ? '#EEEEEE' : '#333333',
+                light: activeMode === 'dark' ? '#FFFFFF' : '#555555',
+                dark: activeMode === 'dark' ? '#CCCCCC' : '#111111',
+                contrastText: activeMode === 'dark' ? '#1A1A1A' : '#ffffff',
             },
             secondary: {
-                main: activeMode === 'dark' ? '#9AA4B2' : '#55606C',
-                contrastText: activeMode === 'dark' ? '#0B1B2E' : '#ffffff',
+                main: activeMode === 'dark' ? '#AAAAAA' : '#666666',
+                contrastText: activeMode === 'dark' ? '#1A1A1A' : '#ffffff',
             },
             background: {
-                default: activeMode === 'dark' ? '#0F1318' : '#E2E8F2',
-                paper: activeMode === 'dark' ? '#181D25' : '#ECF1F9',
+                default: activeMode === 'dark' ? '#1A1A1A' : '#FAFAFA',
+                paper: activeMode === 'dark' ? '#242424' : '#FFFFFF',
             },
             text: {
-                primary: activeMode === 'dark' ? '#E7EBF1' : '#1A2027',
-                secondary: activeMode === 'dark' ? '#97A1AF' : '#55606C',
+                primary: activeMode === 'dark' ? '#EEEEEE' : '#222222',
+                secondary: activeMode === 'dark' ? '#AAAAAA' : '#666666',
             },
             divider: activeMode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(16,24,40,0.08)',
-            // App-level surface tiers. Light mode is a soft blue-tinted off-white family
-            // (never pure #fff — it reads as glaring); tiers are distinguished by gentle
-            // tone shifts, not borders. surface = panels/content; surfaceVariant = flat
-            // filled controls/cards sitting on a surface.
-            surface: activeMode === 'dark' ? '#161B22' : '#ECF1F9',
-            surfaceVariant: activeMode === 'dark' ? '#1F2630' : '#E6EDF6',
+            // Neutral surfaces shared by tables, forms, and sidebars.
+            surface: activeMode === 'dark' ? '#242424' : '#FFFFFF',
+            surfaceVariant: activeMode === 'dark' ? '#303030' : '#F0F0F0',
             reject: {
                 main: activeMode === 'dark' ? '#FF375F' : '#FF2D55',
                 contrastText: '#ffffffde',

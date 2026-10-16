@@ -30,8 +30,8 @@ body,html {
     --side-bar-bg-color: #fafafa;
     --font-body: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Twemoji', 'Segoe UI Emoji', sans-serif;
     --scrollbar-color: rgba(0, 0, 0, 0.5);
-    --bg-color: #E8EDF5;
-    --link-color: #1C5BAA;
+    --bg-color: #FAFAFA;
+    --link-color: #333333;
     font-size: clamp(14px, 1.5vw, 18px);
     background-color: var(--bg-color);
 }

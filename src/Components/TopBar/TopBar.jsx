@@ -30,10 +30,8 @@ function TopBar() {
             <AppBar position='fixed'
                     elevation={0}
                     sx={{
-                        bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(15, 19, 24, 0.8)' : 'rgba(236, 241, 249, 0.8)',
+                        bgcolor: 'background.paper',
                         color: (theme) => theme.palette.text.primary,
-                        backdropFilter: 'blur(12px)',
-                        WebkitBackdropFilter: 'blur(12px)',
                         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
                         display: "block",
                         zIndex: (theme) => theme.zIndex.drawer + 1,
