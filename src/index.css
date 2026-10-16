@@ -203,6 +203,5 @@ tt {
 @media (max-width: 900px) {
     #root { height: 100dvh; }
     .ContentBlock { height: calc(100dvh - 60px); }
-    .PostContent, .ProgramContent { box-sizing: border-box; height: calc(100dvh - 80px); padding: 16px 16px 72px; min-width: 0; }
     input, textarea { scroll-margin-top: 72px; }
 }
