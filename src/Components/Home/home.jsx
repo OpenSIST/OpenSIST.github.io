@@ -220,7 +220,7 @@ function PageDots({pageIndex, setPageIndex}) {
                      onClick={() => setPageIndex(p)}
                      sx={{
                          width: 32, height: 40, p: 0, border: 0, bgcolor: 'transparent',
-                         color: 'text.primary', cursor: 'pointer',
+                         color: pageIndex === p ? 'primary.main' : 'text.secondary', cursor: 'pointer',
                          '&::after': {content: '""', display: 'block', mx: 'auto', width: 4,
                              height: pageIndex === p ? 24 : 10, bgcolor: 'currentColor',
                              opacity: pageIndex === p ? 1 : 0.3, transition: 'height 0.2s'},
@@ -271,7 +271,7 @@ function ScrollHint({show, onClick}) {
 
 function WelcomeBlock() {
     const theme = useTheme();
-    const linkColor = theme.palette.mode === "dark" ? "#fff" : "#333";
+    const linkColor = theme.palette.mode === "dark" ? "#fff" : "#4183C4";
 
     return (
         <Box
@@ -283,7 +283,7 @@ function WelcomeBlock() {
             <Typography variant='h4' sx={{fontFamily: 'Merriweather', mb: '1rem'}}>
                 Welcome to
             </Typography>
-            <OpenSIST props={{variant: 'h2'}}/>
+            <OpenSIST props={{variant: 'h2'}} sx={{color: theme.palette.mode === 'dark' ? '#80b3fa' : '#004098'}}/>
             <Divider sx={{
                 mt: '1rem',
                 mb: '1rem',
@@ -312,7 +312,7 @@ function WelcomeBlock() {
 
 function HomeIndexContentBlock({title}) {
     const theme = useTheme();
-    const linkColor = theme.palette.mode === "dark" ? "#fff" : "#333";
+    const linkColor = theme.palette.mode === "dark" ? "#fff" : "#4183C4";
     const blockItems = (title) => {
         if (title === "友情链接") {
             return (

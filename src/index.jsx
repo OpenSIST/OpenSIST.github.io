@@ -38,11 +38,11 @@ function App() {
         if (activeMode === 'dark') {
             root.style.setProperty('--scrollbar-color', 'rgba(155, 155, 155, 0.7)');
             root.style.setProperty('--bg-color', '#1A1A1A');
-            root.style.setProperty('--link-color', '#EEEEEE');
+            root.style.setProperty('--link-color', '#90CAF9');
         } else {
             root.style.setProperty('--scrollbar-color', 'rgba(0, 0, 0, 0.5)');
             root.style.setProperty('--bg-color', '#FAFAFA');
-            root.style.setProperty('--link-color', '#333333');
+            root.style.setProperty('--link-color', '#4183C4');
         }
     }, [activeMode]);
 
@@ -55,12 +55,6 @@ function App() {
         palette: {
             mode: activeMode,
             contrastThreshold: 3,
-            primary: {
-                main: activeMode === 'dark' ? '#EEEEEE' : '#333333',
-                light: activeMode === 'dark' ? '#FFFFFF' : '#555555',
-                dark: activeMode === 'dark' ? '#CCCCCC' : '#111111',
-                contrastText: activeMode === 'dark' ? '#1A1A1A' : '#ffffff',
-            },
             secondary: {
                 main: activeMode === 'dark' ? '#AAAAAA' : '#666666',
                 contrastText: activeMode === 'dark' ? '#1A1A1A' : '#ffffff',

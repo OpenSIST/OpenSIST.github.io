@@ -1,4 +1,4 @@
-import {Box, Typography} from "@mui/material";
+import {Box, Paper, Typography} from "@mui/material";
 import {Outlet, redirect, useLoaderData} from "react-router-dom";
 import {getMetadata, uncollectProgram} from "../../Data/UserData";
 import {loader as ProgramPageLoader} from "../ProgramPage/ProgramPage";
@@ -6,7 +6,6 @@ import SearchBar from "../ProgramPage/SideBar/SearchBar/SearchBar";
 import {getQuery} from "../ProgramPage/SideBar/SideBar";
 import ProgramCard from "./ProgramCard";
 import "./Favorites.css";
-import capoobeat from "../../Assets/images/Favorites/capoobeat.gif";
 
 function filterProgramsById(programs, programIDs) {
     const filtered = {};
@@ -55,7 +54,7 @@ export default function Favorites() {
     const noPrograms = programs.length === 0;
 
     return (
-        <Box sx={{flexGrow: 1, width: "100%", minWidth: 0, height: "calc(100vh - 60px)", display: "flex", flexDirection: "column", px: {xs: 2, sm: 3, md: 4}, py: 2}}>
+        <Paper elevation={0} sx={{flexGrow: 1, minWidth: 0, m: '10px', height: "calc(100vh - 80px)", boxSizing: "border-box", display: "flex", flexDirection: "column", bgcolor: (theme) => theme.palette.surface, p: {xs: 2, sm: 2.5}}}>
             <Box sx={{display: "flex", alignItems: "baseline", gap: 1.5, mb: 2}}>
                 <Typography variant="h5" sx={{fontWeight: 700}}>我的收藏</Typography>
                 {!noPrograms ? (
@@ -81,7 +80,6 @@ export default function Favorites() {
                         color: "text.secondary",
                     }}
                 >
-                    <img src={capoobeat} height="140px" alt="还没有收藏"/>
                     <Typography variant="h6" sx={{fontWeight: 600, color: "text.primary"}}>
                         还没有收藏任何项目
                     </Typography>
@@ -96,7 +94,7 @@ export default function Favorites() {
                         minHeight: 0,
                         overflowY: "auto",
                         display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                        gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
                         gap: 2,
                         alignContent: "start",
                         pb: 2,
@@ -108,6 +106,6 @@ export default function Favorites() {
                 </Box>
             )}
             <Outlet/>
-        </Box>
+        </Paper>
     );
 }

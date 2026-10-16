@@ -2,6 +2,7 @@ import React, {useMemo} from "react";
 import {Outlet, redirect, useLoaderData, useNavigate, useNavigation, useParams, useSubmit} from "react-router-dom";
 import {Button, Dialog, DialogActions, DialogContent, IconButton, Paper} from "@mui/material";
 import {Close, Refresh} from "@mui/icons-material";
+import {getApplicants} from "../../Data/ApplicantData";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByRecordIDs} from "../../Data/RecordData";
 import './DataPoints.css';
@@ -32,11 +33,12 @@ async function getAllRecords(isRefresh = false) {
 }
 
 export async function loader() {
-    return {records: await getAllRecords()};
+    const [records, applicants] = await Promise.all([getAllRecords(), getApplicants()]);
+    return {records, applicants};
 }
 
 export async function action() {
-    await getAllRecords(true);
+    await Promise.all([getAllRecords(true), getApplicants(true)]);
     return redirect('/datapoints');
 }
 
@@ -119,8 +121,10 @@ export default function DataPoints() {
     const hasLoadedRecords = Array.isArray(loaderRecords?.records);
     const records = useMemo(() => {
         const sourceRecords = Array.isArray(loaderRecords?.records) ? loaderRecords.records : [];
+        const degrees = new Map((loaderRecords?.applicants ?? []).map(applicant => [applicant.ApplicantID, applicant.CurrentDegree]));
         return sourceRecords.filter(isLoadedRecord).map(record => ({
             ...record,
+            ApplicantDegree: degrees.get(record.ApplicantID),
             Season: record.ProgramYear + " " + record.Semester,
         }));
     }, [loaderRecords]);
