@@ -16,9 +16,9 @@
 @media (max-width: 900px) {
     .PostContent {
         width: calc(100% - 16px);
-        height: calc(100dvh - 76px);
-        margin: 8px;
-        padding: 16px 12px 72px;
+        height: calc(100dvh - 128px);
+        margin: 60px 8px 8px;
+        padding: 16px 12px;
         overflow: auto;
     }
 }

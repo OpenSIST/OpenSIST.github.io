@@ -119,6 +119,8 @@
 /* scroller (virtuoso viewport) */
 .rt-scroller {
     overflow: auto;
+    overscroll-behavior: none;
+    scroll-behavior: auto;
 }
 
 /* table */
@@ -289,7 +291,6 @@
     .rt-td { padding-top: 8px; padding-bottom: 8px; }
     .rt-chip-click { min-height: 36px; }
     .rt-group-add.MuiIconButton-root { min-width: 44px; min-height: 44px; }
-    .rt-scroller { overscroll-behavior: contain; }
 }
 
 @media (max-width: 600px) {

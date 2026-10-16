@@ -28,7 +28,7 @@ export function useSmallPage() {
     return useMediaQuery('(max-width:900px)');
 }
 
-export function CollapseSideBar({children, sx = {}, label = "浏览列表"}) {
+export function CollapseSideBar({children, sx = {}, label = "浏览列表", mobileTop = false}) {
     const smallPage = useSmallPage();
     const [open, setOpen] = useState(false)
     return (
@@ -71,8 +71,8 @@ export function CollapseSideBar({children, sx = {}, label = "浏览列表"}) {
                 disableRipple
                 sx={{
                     position: 'fixed',
-                    top: 'auto',
-                    bottom: 'max(16px, env(safe-area-inset-bottom))',
+                    top: mobileTop ? 68 : 'auto',
+                    bottom: mobileTop ? 'auto' : 'max(16px, env(safe-area-inset-bottom))',
                     left: 12,
 
                     visibility: smallPage ? 'visible' : 'hidden',
@@ -83,7 +83,7 @@ export function CollapseSideBar({children, sx = {}, label = "浏览列表"}) {
                     bgcolor: (theme) => theme.palette.surface,
                     color: 'primary.main',
                     border: (theme) => `1px solid ${theme.palette.divider}`,
-                    borderLeft: 'none',
+                    borderLeft: mobileTop ? undefined : 'none',
                     boxShadow: '0 4px 16px rgba(16,24,40,0.18)',
                     transition: 'background-color 0.15s ease, padding-left 0.15s ease',
                     '&:hover': {

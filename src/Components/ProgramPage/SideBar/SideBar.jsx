@@ -22,7 +22,7 @@ export default function SideBar({loaderData}) {
     const univProgramList = loaderData.programs;
     return (
         <MetadataContext.Provider value={loaderData.metadata}>
-            <CollapseSideBar label="搜索 / 项目列表"
+            <CollapseSideBar mobileTop label="搜索 / 项目列表"
                 sx={{
                     '& .MuiDrawer-paper': {
                         bgcolor: (theme) => theme.palette.surface,
