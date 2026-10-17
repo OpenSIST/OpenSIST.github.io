@@ -117,6 +117,7 @@ function HomeIndexContent() {
             return dir > 0 ? scrollTop + clientHeight < scrollHeight - 2 : scrollTop > 2;
         };
         const onWheel = (e) => {
+            if (e.ctrlKey || (window.visualViewport?.scale ?? 1) > 1.01) return;
             if (Math.abs(e.deltaY) < 8) return;
             if (canScrollWithin(e.deltaY)) return;
             // at an edge — own the gesture (also kills the rubber-band that drags
@@ -126,9 +127,15 @@ function HomeIndexContent() {
         };
         let touchStartY = null;
         const onTouchStart = (e) => {
-            touchStartY = e.touches[0].clientY;
+            touchStartY = e.touches.length === 1 && (window.visualViewport?.scale ?? 1) <= 1.01
+                ? e.touches[0].clientY : null;
         };
         const onTouchMove = (e) => {
+            // Leave pinch zoom and panning a zoomed page to the browser.
+            if (e.touches.length !== 1 || (window.visualViewport?.scale ?? 1) > 1.01) {
+                touchStartY = null;
+                return;
+            }
             if (touchStartY === null) return;
             const dy = touchStartY - e.touches[0].clientY;
             if (canScrollWithin(dy)) return;

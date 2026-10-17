@@ -31,6 +31,10 @@ export function AuthCard({children, ...formProps}) {
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 2,
+                    // Use CSS pixels: the mobile root font is smaller than 16px.
+                    '@media (max-width:900px), (pointer: coarse)': {
+                        '& input, & textarea, & .MuiSelect-select': {fontSize: 'max(16px, 1em)'},
+                    },
                 }}
             >
                 {children}
