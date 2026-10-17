@@ -1,8 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import "./NavBar.css";
 import {Link, useLocation} from "react-router-dom";
-import {Tab, Tabs} from "@mui/material";
+import {Button, Menu, MenuItem, Tab, Tabs} from "@mui/material";
 import {useUser} from "../../../Data/UserData";
+
+import {Menu as MenuIcon} from "@mui/icons-material";
+import {useSmallPage} from "../../common";
 
 function useRouteMatch(patterns) {
     const {pathname} = useLocation();
@@ -45,8 +48,24 @@ export default function NavBar() {
     const routeMatch = useRouteMatch(navItems.map((item) => item.path));
     const currentTab = routeMatch ?? false;
 
+    const smallPage = useSmallPage();
+    const [anchor, setAnchor] = useState(null);
     if (!useUser()) {
         return null;
+    }
+    if (smallPage) {
+        return <>
+            <Button aria-label="打开导航菜单" aria-haspopup="menu" aria-expanded={Boolean(anchor)}
+                    onClick={(event) => setAnchor(event.currentTarget)} startIcon={<MenuIcon/>}
+                    sx={{minHeight: 44, flex: 1, justifyContent: 'flex-start', ml: 1, color: 'text.primary'}}>
+                {navItems.find((item) => item.path === currentTab)?.name ?? '导航'}
+            </Button>
+            <Menu anchorEl={anchor} open={Boolean(anchor)} onClose={() => setAnchor(null)}>
+                {navItems.map((item) => <MenuItem key={item.path} component={Link} to={item.path}
+                    selected={item.path === currentTab} onClick={() => setAnchor(null)}
+                    sx={{minHeight: 48, minWidth: 200}}>{item.name}</MenuItem>)}
+            </Menu>
+        </>;
     }
     return (
         <Tabs

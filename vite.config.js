@@ -4,7 +4,7 @@ import basicSsl from "@vitejs/plugin-basic-ssl";
 import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
-    plugins: [react(), basicSsl(), svgr()],
+    plugins: [react(), ...(process.env.LOCAL_ALPHA_PREVIEW === "true" ? [] : [basicSsl()]), svgr()],
     optimizeDeps: {
         rolldownOptions: {
             output: {
@@ -14,7 +14,12 @@ export default defineConfig({
     },
     server: {
         host: true,
-        https: process.env.HTTPS === "true",
+        https: process.env.LOCAL_ALPHA_PREVIEW === "true" ? false : process.env.HTTPS === "true",
+        ...(process.env.LOCAL_ALPHA_PREVIEW === "true" ? {
+            proxy: {
+                "/api": {target: "https://alpha.opensist.tech", changeOrigin: true},
+            },
+        } : {}),
         port: Number(process.env.PORT) || 61234,
     },
     build: {
