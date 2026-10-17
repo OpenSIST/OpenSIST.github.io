@@ -78,7 +78,9 @@ function ProgramContent({editable = true, inDialog = false}) {
                 overflow: 'hidden'
             }}>
                 <Paper elevation={0} sx={{
-                    p: '1.5rem',
+                    p: {xs: 1.5, sm: '1.5rem'},
+                    boxSizing: 'border-box',
+                    flexShrink: 0,
                     height: '48%',
                     overflowY: 'auto',
                     marginBottom: '1rem',

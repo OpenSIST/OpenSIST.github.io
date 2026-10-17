@@ -10,7 +10,9 @@
 .ProgramContent {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
     height: calc(100vh - 120px);
     padding: 20px;
     margin-top: 10px;
@@ -34,4 +36,20 @@
 .ProgramHeader {
     display: flex;
     justify-content: space-between;
+}
+
+@media (max-width: 900px) {
+    .ProgramContent {
+        width: calc(100% - 16px);
+        height: calc(100dvh - 128px);
+        margin: 60px 8px 8px;
+        padding: 16px 12px;
+        overflow: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .ProgramHeader { flex-wrap: wrap; gap: 8px; }
+    .ProgramHeader > .MuiTypography-root { min-width: 0; max-width: 100%; overflow-wrap: anywhere; font-size: 1.5rem; }
+    .ReviseRefreshButtonGroup { margin-left: auto; gap: 4px; }
 }

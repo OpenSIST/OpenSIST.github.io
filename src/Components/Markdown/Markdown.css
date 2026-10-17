@@ -1,5 +1,7 @@
 .md-body {
     word-break: break-word;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .md-body > :first-child {
@@ -11,6 +13,9 @@
 }
 
 .md-body table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
     border-collapse: collapse;
     margin: 0.5rem 0;
 }

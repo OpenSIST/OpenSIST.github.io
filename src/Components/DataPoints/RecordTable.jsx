@@ -2,7 +2,7 @@ import React, {forwardRef, useMemo, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {TableVirtuoso} from "react-virtuoso";
 import {alpha, darken, useTheme} from "@mui/material/styles";
-import {Box, Button, Checkbox, IconButton, ListItemText, MenuItem, OutlinedInput, Select, TextField, Tooltip, Typography} from "@mui/material";
+import {Box, Button, Checkbox, IconButton, ListItemText, MenuItem, OutlinedInput, Select, TextField, Tooltip, Typography, useMediaQuery} from "@mui/material";
 import {ArrowDownward, ArrowUpward, Check, ControlPoint, Search, ViewAgendaOutlined} from "@mui/icons-material";
 import {recordStatusList} from "../../Data/Schemas";
 import {applicantDialogPath, dataPointsProgramPath} from "../RouteUtils";
@@ -171,9 +171,12 @@ export default function RecordTable({records, insideProgramPage = false, style =
     const chip = useChipColors();
     const theme = useTheme();
     const dark = theme.palette.mode === "dark";
+    const mobile = useMediaQuery("(max-width:600px)");
     const columns = useMemo(
-        () => COLUMNS.filter((c) => !(insideProgramPage && c.programOnly)),
-        [insideProgramPage]
+        () => COLUMNS.filter((c) => !(insideProgramPage && c.programOnly)).map((column) => (
+            mobile ? {...column, width: ({applicant: 100, program: 120, status: 88, detail: 220})[column.key] ?? column.width} : column
+        )),
+        [insideProgramPage, mobile]
     );
     const tableWidth = columns.reduce((sum, c) => sum + c.width, 0);
     const cssVars = {
@@ -357,7 +360,7 @@ const MENU_PROPS = {
             borderColor: "divider",
             backgroundImage: "none",
             "& .MuiList-root": {py: 0.5},
-            "& .MuiMenuItem-root": {fontSize: 13, minHeight: "auto", py: 0.25, px: 1, borderRadius: 1, mx: 0.5},
+            "& .MuiMenuItem-root": {fontSize: 13, minHeight: {xs: 44, sm: "auto"}, py: 0.25, px: 1, borderRadius: 1, mx: 0.5},
             "& .MuiCheckbox-root": {p: 0.5, mr: 0.5},
             "& .MuiCheckbox-root .MuiSvgIcon-root": {fontSize: 18},
         },

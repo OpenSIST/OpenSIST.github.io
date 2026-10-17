@@ -8,7 +8,7 @@ import {getRecordByRecordIDs} from "../../Data/RecordData";
 import './DataPoints.css';
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
-import {LoadingBackdrop} from "../common";
+import {LoadingBackdrop, useSmallPage} from "../common";
 import RecordTable from "./RecordTable";
 import {decodePathParam} from "../RouteUtils";
 
@@ -44,6 +44,7 @@ export async function action() {
 
 export function ApplicantProfileInDataPoints() {
     const navigate = useNavigate();
+    const smallPage = useSmallPage();
     const params = useParams();
     const applicantID = decodePathParam(params.applicantId);
     const {applicant} = useLoaderData();
@@ -51,13 +52,14 @@ export function ApplicantProfileInDataPoints() {
         <Dialog
             open={applicantID === applicant.ApplicantID}
             onClose={() => navigate("..")}
+            fullScreen={smallPage}
             fullWidth
             maxWidth={'xl'}
             sx={{userSelect: 'text'}}
             PaperProps={{sx: {bgcolor: (theme) => theme.palette.background.default}}}
         >
             <DialogActions>
-                <IconButton onClick={() => navigate("..")}>
+                <IconButton aria-label="关闭详情" onClick={() => navigate("..")}>
                     <Close/>
                 </IconButton>
             </DialogActions>
@@ -70,6 +72,7 @@ export function ApplicantProfileInDataPoints() {
 
 export function ProgramContentInDataPoints() {
     const navigate = useNavigate();
+    const smallPage = useSmallPage();
     const params = useParams();
     const programID = decodePathParam(params.programId);
     const {programContent} = useLoaderData();
@@ -77,10 +80,12 @@ export function ProgramContentInDataPoints() {
         <Dialog
             open={programID === programContent.ProgramID}
             onClose={() => navigate("..")}
+            fullScreen={smallPage}
             fullWidth
             maxWidth={'xl'}
             sx={{userSelect: 'text'}}
         >
+            <DialogActions><IconButton aria-label="关闭详情" onClick={() => navigate("..")}><Close/></IconButton></DialogActions>
             <DialogContent>
                 <ProgramContent editable={false} inDialog={true}/>
             </DialogContent>

@@ -3,9 +3,8 @@ import {Link, Outlet} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 import {BoldTypography, LoadingBackdrop, OpenSIST} from "../common";
 import {Box, Button, Divider, Paper, Typography, useTheme} from "@mui/material";
-import {KeyboardArrowDown} from "@mui/icons-material";
+import {GitHub, KeyboardArrowDown} from "@mui/icons-material";
 import Grid2 from "@mui/material/Grid";
-import ReactMarkdown from "react-markdown";
 import {clickHandler, initMap} from "../WorldMap/display";
 import './home.css';
 
@@ -150,7 +149,9 @@ function HomeIndexContent() {
     }, []);
 
     const screenSx = {
-        height: 'calc(100vh - 60px)',
+        height: 'calc(100dvh - 60px)',
+        boxSizing: 'border-box',
+        minWidth: 0,
         display: 'flex',
         flexDirection: 'column',
         overflowY: 'auto',
@@ -166,7 +167,7 @@ function HomeIndexContent() {
         ...screenSx,
         justifyContent: 'safe center',
         alignItems: 'center',
-        px: {xs: 4, md: 4},
+        px: {xs: 2, md: 4},
     };
 
     return (
@@ -176,17 +177,17 @@ function HomeIndexContent() {
                 position: 'absolute',
                 width: {xs: '100%', md: '80%'},
                 left: {xs: 0, md: 'auto'},
-                height: 'calc(100vh - 60px)',
+                height: 'calc(100dvh - 60px)',
                 overflow: 'hidden'
             }}
         >
             <Box sx={{
-                height: `calc(${PAGE_COUNT} * (100vh - 60px))`,
-                transform: `translateY(calc(-${pageIndex} * (100vh - 60px)))`,
+                height: `calc(${PAGE_COUNT} * (100dvh - 60px))`,
+                transform: `translateY(calc(-${pageIndex} * (100dvh - 60px)))`,
                 transition: 'transform 0.9s cubic-bezier(0.65, 0, 0.35, 1)',
                 '@media (prefers-reduced-motion: reduce)': {transition: 'none'},
             }}>
-                <Box sx={{...screenSx, justifyContent: 'safe center', px: {xs: 4, md: 0}, ml: {xs: 0, md: '2rem'}}}>
+                <Box sx={{...screenSx, justifyContent: 'safe center', pl: {xs: 2, md: 0}, pr: {xs: 4, md: 0}, ml: {xs: 0, md: '2rem'}}}>
                     <WelcomeBlock/>
                 </Box>
                 <Box sx={centeredScreenSx}>
@@ -283,7 +284,7 @@ function WelcomeBlock() {
             <Typography variant='h4' sx={{fontFamily: 'Merriweather', mb: '1rem'}}>
                 Welcome to
             </Typography>
-            <OpenSIST props={{variant: 'h2'}} sx={{color: theme.palette.mode === 'dark' ? '#80b3fa' : '#004098'}}/>
+            <OpenSIST props={{variant: 'h2'}} sx={{fontSize: {xs: 'clamp(2.5rem, 12vw, 3.75rem)', md: '3.75rem'}, color: theme.palette.mode === 'dark' ? '#80b3fa' : '#004098'}}/>
             <Divider sx={{
                 mt: '1rem',
                 mb: '1rem',
@@ -296,12 +297,12 @@ function WelcomeBlock() {
             <BoldTypography>
                 如果你喜欢这个网站，请前往<a href='https://github.com/opensist/opensist.github.io' style={{color: linkColor}}><b>GitHub</b></a>给我们一个Star!
             </BoldTypography>
-            <ReactMarkdown>
-                [![License: GPL
-                v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-                [![GitHub Repo
-                stars](https://img.shields.io/github/stars/opensist/opensist.github.io?style=social)](https://github.com/opensist/opensist.github.io)
-            </ReactMarkdown>
+            <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 1, my: 2}}>
+                <Button variant="outlined" component="a" href="https://www.gnu.org/licenses/gpl-3.0"
+                        size="small" sx={{color: 'text.secondary', borderColor: 'divider'}}>GPL v3</Button>
+                <Button variant="outlined" component="a" href="https://github.com/opensist/opensist.github.io"
+                        startIcon={<GitHub/>} size="small" sx={{color: 'text.primary', borderColor: 'divider', textTransform: 'none'}}>Star</Button>
+            </Box>
             <Button variant='contained' component={Link} to='https://qm.qq.com/q/U1QvSyE6u6'
                     sx={{textTransform: 'none'}}>
                 OpenSIST QQ群
