@@ -12,18 +12,32 @@ import {HelpOutline} from "@mui/icons-material";
 import {programsProgramPath} from "../../RouteUtils";
 
 const invalidProgramCharacters = ['@', '|', '/', '$', '\\', '?', '!'];
+const PROGRAM_NAME_PATTERN = String.raw`^(?!\s*$)[^@|/\\$?!]+$`;
 
-function isProgramNameInvalid(programName) {
+export function hasInvalidProgramCharacters(programName) {
     return typeof programName !== 'string' || invalidProgramCharacters.some(character => programName.includes(character));
+}
+
+export function isProgramNameInvalid(programName) {
+    return typeof programName !== 'string' || programName.trim().length === 0 || hasInvalidProgramCharacters(programName);
 }
 
 export async function action({request}) {
     const formData = await request.formData();
     const actionType = formData.get('ActionType');
-    const university = formData.get('University');
-    const program = formData.get('Program');
-    if (isProgramNameInvalid(program)) {
-        throw new Error("Program names cannot contain @, |, /, \\, ?, !, or $.");
+    const university = formData.get('University')?.toString().trim() ?? '';
+    const program = formData.get('Program')?.toString().trim() ?? '';
+    const isNew = actionType === 'new';
+    if (
+        !program ||
+        program.includes('@') ||
+        program.includes('|') ||
+        (isNew && isProgramNameInvalid(program)) ||
+        !university ||
+        university.includes('@') ||
+        university.includes('|')
+    ) {
+        throw new Error("Program names cannot be empty or contain @, |, /, \\, ?, !, or $.");
     }
     const programId = `${program}@${university}`;
     const targetApplicantMajor = formData.get('TargetApplicantMajor')?.split(',');
@@ -31,7 +45,7 @@ export async function action({request}) {
     const degree = formData.get('Degree');
     const description = formData.get('Description');
     const requestBody = {
-        'newProgram': actionType === 'new',
+        'newProgram': isNew,
         'content': {
             ProgramID: programId,
             University: university,
@@ -69,7 +83,10 @@ export default function AddModifyProgram({type}) {
     const [univ, setUniv] = useState(univOptions.find((univ) => univ.value === initialUniversity) ?? null);
     const [major, setMajor] = useState(majorOptions.filter((m) => programContent?.TargetApplicantMajor?.includes(m.value)) ?? []);
     const [programName, setProgramName] = useState(programContent?.Program ?? '');
-    const programNameInvalid = isProgramNameInvalid(programName);
+    const programNameHasInvalidChars = addMode
+        ? hasInvalidProgramCharacters(programName)
+        : (programName.includes('@') || programName.includes('|'));
+    const submitDisabled = addMode ? isProgramNameInvalid(programName) : programNameHasInvalidChars;
     return (
         <Form method="post"
               style={{display: 'flex', flexDirection: 'column', height: "100%"}}
@@ -110,14 +127,15 @@ export default function AddModifyProgram({type}) {
                 </Autocomplete>
                 <TextField
                     InputProps={{readOnly: !addMode}}
+                    inputProps={addMode ? {pattern: PROGRAM_NAME_PATTERN} : undefined}
                     variant="outlined"
                     size="small"
                     name="Program"
                     label={"项目名称" + (addMode ? "" : " (不可修改)")}
                     value={programName}
                     onChange={(event) => setProgramName(event.target.value)}
-                    error={programNameInvalid}
-                    helperText={programNameInvalid ? "项目名称中不可包含@, |, /, \\, ?, !, $，如果必须要使用'/'字符，请用'&'代替" : ""}
+                    error={programNameHasInvalidChars}
+                    helperText={programNameHasInvalidChars ? "项目名称中不可包含@, |, /, \\, ?, !, $，如果必须要使用'/'字符，请用'&'代替" : ""}
                     placeholder="硕士写简称 (e.g. MSCS)，博士要加院系 (e.g. EECS PhD)"
                     sx={addMode ? {} : {cursor: 'not-allowed', pointerEvents: 'none'}}
                     fullWidth
@@ -205,7 +223,7 @@ export default function AddModifyProgram({type}) {
             <textarea id='Description' name='Description' hidden={true} value={Description} readOnly/>
             <Box sx={{display: "flex", justifyContent: "flex-end", gap: 1.5, mt: 2}}>
                 <Button variant="text" color="inherit" onClick={() => navigate("..")}>取消</Button>
-                <Button variant="contained" color="success" type="submit" disabled={programNameInvalid}>提交</Button>
+                <Button variant="contained" color="success" type="submit" disabled={submitDisabled}>提交</Button>
             </Box>
         </Form>
     )
