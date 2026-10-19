@@ -36,12 +36,21 @@ const CONTACT_META = {
     OtherLink: {label: "其他链接", icon: <LinkIcon fontSize="small"/>, href: (v) => v},
 };
 
+const DEFAULT_CONTACT = {
+    HomePage: "",
+    Email: "",
+    LinkedIn: "",
+    QQ: "",
+    WeChat: "",
+    OtherLink: "",
+};
+
 export function ProfileHeader({loaderData}) {
     const applicants = loaderData.metadata.ApplicantIDs;
     const avatar = loaderData.avatarUrl;
     const displayName = loaderData.displayName;
     const user = loaderData.user;
-    const userContact = loaderData.metadata.Contact ?? {};
+    const userContact = {...DEFAULT_CONTACT, ...loaderData.metadata.Contact};
     const avatarFormRef = useRef(null);
     const anonymous = displayName !== user;
     const [anonymousOpen, setAnonymousOpen] = useState(false);
@@ -263,14 +272,10 @@ function ContactField({field, label, icon, contact, setContact}) {
                     fullWidth
                     value={contact[field] ?? ""}
                     onChange={(e) => {
-                        setContact((currentContact) => {
-                            if (e.target.value.length > 0) {
-                                return {...currentContact, [field]: e.target.value};
-                            }
-                            const newContact = {...currentContact};
-                            delete newContact[field];
-                            return newContact;
-                        });
+                        setContact((currentContact) => ({
+                            ...currentContact,
+                            [field]: e.target.value,
+                        }));
                     }}
                 />
             </Grid2>
