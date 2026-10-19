@@ -1,4 +1,12 @@
-import {addComment, getPostThread, removeContent, toggleLikeContent} from "../../../Data/PostData";
+import {
+    addComment,
+    formatPostContentSize,
+    getPostThread,
+    getUtf8ByteLength,
+    POST_CONTENT_MAX_BYTES,
+    removeContent,
+    toggleLikeContent
+} from "../../../Data/PostData";
 import {Form, Link, Outlet, redirect, useLoaderData} from "react-router-dom";
 import {Avatar, Box, Button, Dialog, DialogActions, DialogTitle, IconButton, Paper, TextField, Tooltip, Typography} from "@mui/material";
 import {Delete, Edit, Favorite, FavoriteBorder, Refresh, Send} from "@mui/icons-material";
@@ -204,8 +212,10 @@ function LikeButton({content}) {
 
 function CommentForm({parentId, placeholder, onSubmitted}) {
     const [content, setContent] = useState("");
+    const contentBytes = getUtf8ByteLength(content);
+    const contentTooLarge = contentBytes > POST_CONTENT_MAX_BYTES;
     const handleSubmit = (event) => {
-        if (!content.trim()) {
+        if (!content.trim() || contentTooLarge) {
             event.preventDefault();
             return;
         }
@@ -225,11 +235,13 @@ function CommentForm({parentId, placeholder, onSubmitted}) {
                 multiline
                 minRows={2}
                 size="small"
+                error={contentTooLarge}
+                helperText={contentTooLarge ? `评论内容不能超过 ${formatPostContentSize(POST_CONTENT_MAX_BYTES)}，当前 ${formatPostContentSize(contentBytes)}。` : undefined}
                 fullWidth
             />
             <Tooltip title="发送" arrow>
                 <span>
-                    <IconButton type="submit" name="ActionType" value="Comment" disabled={!content.trim()}>
+                    <IconButton type="submit" name="ActionType" value="Comment" disabled={!content.trim() || contentTooLarge}>
                         <Send/>
                     </IconButton>
                 </span>

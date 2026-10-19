@@ -1,16 +1,17 @@
 import {apiJson, apiRequest} from "./Common";
 import {CREATE_COMMENT_API, CREATE_POST_API, DELETE_CONTENT_API, GET_CONTENT_API, LIST_POSTS_API, MODIFY_CONTENT_API, TOGGLE_LIKE_API} from "../APIs/APIs"
 
-export const POST_CONTENT_MAX_BYTES = 20 * 1000 * 1000;
+export const POST_CONTENT_MAX_BYTES = 20 * 1024 * 1024;
+export const POST_TITLE_MAX_LENGTH = 200;
 
 const textEncoder = new TextEncoder();
 
 export function getUtf8ByteLength(value = "") {
-    return textEncoder.encode(value ?? "").length;
+    return textEncoder.encode(value ?? "").byteLength;
 }
 
 export function formatPostContentSize(bytes) {
-    return `${(bytes / 1000 / 1000).toFixed(2)} MB`;
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 
 function assertPostContentWithinLimit(content) {
@@ -116,11 +117,18 @@ export async function removeContent(contentId) {
 export async function addModifyPost(requestData, type) {
     let API;
     let requestBody;
+    const title = requestData.content.Title?.toString().trim() ?? "";
+    if (!title) {
+        throw new Error("Post title is required.");
+    }
+    if (title.length > POST_TITLE_MAX_LENGTH) {
+        throw new Error(`Post title cannot exceed ${POST_TITLE_MAX_LENGTH} characters.`);
+    }
     assertPostContentWithinLimit(requestData.content.Content);
     if (type === 'new') {
         API = CREATE_POST_API;
         requestBody = {
-            title: requestData.content.Title,
+            title,
             content: requestData.content.Content,
             tags: []
         };
@@ -128,7 +136,7 @@ export async function addModifyPost(requestData, type) {
         API = MODIFY_CONTENT_API;
         requestBody = {
             contentId: requestData.PostID.toString(),
-            title: requestData.content.Title,
+            title,
             content: requestData.content.Content,
             tags: []
         };
