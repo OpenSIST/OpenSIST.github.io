@@ -21,21 +21,6 @@ function assertPostContentWithinLimit(content) {
     }
 }
 
-function normalizeTags(tags) {
-    if (Array.isArray(tags)) {
-        return tags;
-    }
-    if (typeof tags !== "string") {
-        return [];
-    }
-    try {
-        const parsedTags = JSON.parse(tags || "[]");
-        return Array.isArray(parsedTags) ? parsedTags : [];
-    } catch {
-        return [];
-    }
-}
-
 function normalizePostContent(content) {
     if (!content) {
         return content;
@@ -44,7 +29,6 @@ function normalizePostContent(content) {
         ...content,
         id: content.id?.toString(),
         parentId: (content.parentId ?? content.parent_id)?.toString(),
-        tags: normalizeTags(content.tags),
         like_count: content.like_count ?? 0,
         liked: Boolean(content.liked),
         is_deleted: Boolean(content.is_deleted),
@@ -59,8 +43,7 @@ export async function getPosts(query = {}) {
     ).filter(
         (post) =>
             (post.title ?? "").toLowerCase().includes(searchTerm) ||
-            (post.author ?? "").toLowerCase().includes(searchTerm) ||
-            post.tags.some((tag) => tag.toLowerCase().includes(searchTerm))
+            (post.author ?? "").toLowerCase().includes(searchTerm)
     );
 }
 
@@ -130,7 +113,6 @@ export async function addModifyPost(requestData, type) {
         requestBody = {
             title,
             content: requestData.content.Content,
-            tags: []
         };
     } else if (type === 'edit') {
         API = MODIFY_CONTENT_API;
@@ -138,7 +120,6 @@ export async function addModifyPost(requestData, type) {
             contentId: requestData.PostID.toString(),
             title,
             content: requestData.content.Content,
-            tags: []
         };
     } else {
         throw new Error(`Invalid type specified for addModifyPost: ${type}`);
