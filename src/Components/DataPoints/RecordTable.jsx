@@ -4,7 +4,7 @@ import {TableVirtuoso} from "react-virtuoso";
 import {alpha, darken, useTheme} from "@mui/material/styles";
 import {Box, Button, Checkbox, IconButton, ListItemText, MenuItem, OutlinedInput, Select, TextField, Tooltip, Typography, useMediaQuery} from "@mui/material";
 import {ArrowDownward, ArrowUpward, Check, ControlPoint, Search, ViewAgendaOutlined} from "@mui/icons-material";
-import {recordStatusList} from "../../Data/Schemas";
+import {currentDegreeOptions, recordStatusList} from "../../Data/Schemas";
 import {applicantDialogPath, dataPointsProgramPath} from "../RouteUtils";
 import "./DataPoints.css";
 
@@ -22,11 +22,7 @@ const COLUMNS = [
     {key: "detail", label: "备注、补充说明等", width: 340, align: "left", sortType: null},
 ];
 
-const APPLICANT_DEGREES = [
-    {value: "Undergraduate", label: "本科生"},
-    {value: "Master", label: "硕士生"},
-    {value: "PhD", label: "博士生"},
-];
+const APPLICANT_DEGREES = currentDegreeOptions;
 
 const STATUS_RANK = {Admit: 0, Waitlist: 1, Defer: 2, Reject: 3};
 const SEMESTER_WEIGHT = {Fall: 2, Spring: 1, Summer: 1, Winter: 1};

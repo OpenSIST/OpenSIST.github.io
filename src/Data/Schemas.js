@@ -63,6 +63,7 @@ export const genderOptions = dict2Options(genderMapping);
 export const currentDegreeMapping = {
     'Undergraduate': '本科生',
     'Master': '硕士生',
+    'PhD': '博士生',
 }
 export const currentDegreeOptions = dict2Options(currentDegreeMapping);
 
