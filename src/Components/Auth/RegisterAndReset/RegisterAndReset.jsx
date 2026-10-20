@@ -19,7 +19,7 @@ export async function action({request}) {
     return registerReset(email, password, token, status);
 }
 
-const passwordSchema = z.string().min(8).max(24).refine(password => (
+const passwordSchema = z.string().min(8).max(64).refine(password => (
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password)
     ),
 );
@@ -61,7 +61,7 @@ export default function RegisterAndReset() {
     const [tokenSent, setTokenSent] = useState(false);
     const [suffix, setSuffix] = useState("@shanghaitech.edu.cn");
 
-    const isLengthValid = password.length >= 8 && password.length <= 24;
+    const isLengthValid = password.length >= 8 && password.length <= 64;
     const hasNumber = /[0-9]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
     const hasUppercase = /[A-Z]/.test(password);
@@ -177,7 +177,7 @@ export default function RegisterAndReset() {
                 borderRadius: 2,
                 bgcolor: (theme) => theme.palette.surfaceVariant,
             }}>
-                <PasswordRule ok={isLengthValid}>8–24 个字符</PasswordRule>
+                <PasswordRule ok={isLengthValid}>8–64 个字符</PasswordRule>
                 <PasswordRule ok={hasNumber}>至少一个数字</PasswordRule>
                 <PasswordRule ok={hasLowercase}>至少一个小写字母</PasswordRule>
                 <PasswordRule ok={hasUppercase}>至少一个大写字母</PasswordRule>

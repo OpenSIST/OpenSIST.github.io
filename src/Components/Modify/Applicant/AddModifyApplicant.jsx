@@ -5,14 +5,11 @@ import React, {useState} from "react";
 import BasicInfo from "./FormComponent/BasicInfo";
 import SoftBackground from "./FormComponent/SoftBackground";
 import {getDisplayName} from "../../../Data/UserData";
-import {getPrograms} from "../../../Data/ProgramData";
 import {getFiles} from "../../../Data/FileData";
 import {createApplicantRequestBody, createInitialApplicantFormValues, syncApplicantFile,} from "./applicantFormData";
 import {decodePathParam, profileApplicantPath} from "../../RouteUtils";
 
 export async function loader({params}) {
-    let programs = await getPrograms();
-    programs = Object.values(programs).flat().map(program => program.ProgramID);
     let applicant = null;
     let cvPost = null;
     let sopPost = null;
@@ -25,7 +22,7 @@ export async function loader({params}) {
             sopPost = files.find(file => file.type === "SoP" || file.PostID.startsWith("SoP"));
         }
     }
-    return {programs, applicant, cvPost, sopPost};
+    return {applicant, cvPost, sopPost};
 }
 
 export async function action({request}) {

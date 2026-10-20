@@ -1,37 +1,23 @@
 import {apiJson, apiRequest} from "./Common";
 import {CREATE_COMMENT_API, CREATE_POST_API, DELETE_CONTENT_API, GET_CONTENT_API, LIST_POSTS_API, MODIFY_CONTENT_API, TOGGLE_LIKE_API} from "../APIs/APIs"
 
-export const POST_CONTENT_MAX_BYTES = 20 * 1000 * 1000;
+export const POST_CONTENT_MAX_BYTES = 20 * 1024 * 1024;
+export const POST_TITLE_MAX_LENGTH = 200;
 
 const textEncoder = new TextEncoder();
 
 export function getUtf8ByteLength(value = "") {
-    return textEncoder.encode(value ?? "").length;
+    return textEncoder.encode(value ?? "").byteLength;
 }
 
 export function formatPostContentSize(bytes) {
-    return `${(bytes / 1000 / 1000).toFixed(2)} MB`;
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 
 function assertPostContentWithinLimit(content) {
     const size = getUtf8ByteLength(content);
     if (size > POST_CONTENT_MAX_BYTES) {
         throw new Error(`Post content cannot exceed ${formatPostContentSize(POST_CONTENT_MAX_BYTES)}.`);
-    }
-}
-
-function normalizeTags(tags) {
-    if (Array.isArray(tags)) {
-        return tags;
-    }
-    if (typeof tags !== "string") {
-        return [];
-    }
-    try {
-        const parsedTags = JSON.parse(tags || "[]");
-        return Array.isArray(parsedTags) ? parsedTags : [];
-    } catch {
-        return [];
     }
 }
 
@@ -43,7 +29,6 @@ function normalizePostContent(content) {
         ...content,
         id: content.id?.toString(),
         parentId: (content.parentId ?? content.parent_id)?.toString(),
-        tags: normalizeTags(content.tags),
         like_count: content.like_count ?? 0,
         liked: Boolean(content.liked),
         is_deleted: Boolean(content.is_deleted),
@@ -58,8 +43,7 @@ export async function getPosts(query = {}) {
     ).filter(
         (post) =>
             (post.title ?? "").toLowerCase().includes(searchTerm) ||
-            (post.author ?? "").toLowerCase().includes(searchTerm) ||
-            post.tags.some((tag) => tag.toLowerCase().includes(searchTerm))
+            (post.author ?? "").toLowerCase().includes(searchTerm)
     );
 }
 
@@ -116,21 +100,26 @@ export async function removeContent(contentId) {
 export async function addModifyPost(requestData, type) {
     let API;
     let requestBody;
+    const title = requestData.content.Title?.toString().trim() ?? "";
+    if (!title) {
+        throw new Error("Post title is required.");
+    }
+    if (title.length > POST_TITLE_MAX_LENGTH) {
+        throw new Error(`Post title cannot exceed ${POST_TITLE_MAX_LENGTH} characters.`);
+    }
     assertPostContentWithinLimit(requestData.content.Content);
     if (type === 'new') {
         API = CREATE_POST_API;
         requestBody = {
-            title: requestData.content.Title,
+            title,
             content: requestData.content.Content,
-            tags: []
         };
     } else if (type === 'edit') {
         API = MODIFY_CONTENT_API;
         requestBody = {
             contentId: requestData.PostID.toString(),
-            title: requestData.content.Title,
+            title,
             content: requestData.content.Content,
-            tags: []
         };
     } else {
         throw new Error(`Invalid type specified for addModifyPost: ${type}`);

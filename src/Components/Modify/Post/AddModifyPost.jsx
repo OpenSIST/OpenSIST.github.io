@@ -2,7 +2,7 @@ import {Form, redirect, useLoaderData, useNavigate, useSubmit} from "react-route
 import {Box, Button, TextField, Typography, useTheme} from "@mui/material";
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import MarkDownEditor from "../Program/MarkDownEditor/MarkDownEditor";
-import {addModifyPost, formatPostContentSize, getPostObject, getUtf8ByteLength, POST_CONTENT_MAX_BYTES} from "../../../Data/PostData";
+import {addModifyPost, formatPostContentSize, getPostObject, getUtf8ByteLength, POST_CONTENT_MAX_BYTES, POST_TITLE_MAX_LENGTH} from "../../../Data/PostData";
 import {getDisplayName} from "../../../Data/UserData";
 import {decodePathParam, postsPostPath} from "../../RouteUtils";
 
@@ -146,6 +146,8 @@ export default function AddModifyPost({type}) {
     const attachmentsRef = useRef(attachments);
     const theme = useTheme();
     const darkMode = theme.palette.mode === 'dark';
+    const titleTrimmed = title.trim();
+    const titleTooLong = title.length > POST_TITLE_MAX_LENGTH;
     const contentBytes = estimateFinalPostContentBytes(content, attachments);
     const contentTooLarge = contentBytes > POST_CONTENT_MAX_BYTES;
     const postContentMessage = contentTooLarge
@@ -170,7 +172,7 @@ export default function AddModifyPost({type}) {
 
     async function handleSubmit(event) {
         event.preventDefault();
-        if (contentTooLarge || submitting) {
+        if (!titleTrimmed || titleTooLong || contentTooLarge || submitting) {
             return;
         }
         const form = event.currentTarget;
@@ -187,6 +189,7 @@ export default function AddModifyPost({type}) {
             if (submitter?.name) {
                 formData.set(submitter.name, submitter.value);
             }
+            formData.set("Title", titleTrimmed);
             formData.set("Content", finalizedContent);
             submit(formData, {method: "post"});
         } catch (error) {
@@ -210,6 +213,9 @@ export default function AddModifyPost({type}) {
                 name='Title'
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                inputProps={{maxLength: POST_TITLE_MAX_LENGTH}}
+                error={titleTooLong}
+                helperText={titleTooLong ? `题目不能超过 ${POST_TITLE_MAX_LENGTH} 个字符` : undefined}
                 required
             />
             <MarkDownEditor
@@ -233,7 +239,7 @@ export default function AddModifyPost({type}) {
             <Box sx={{display: "flex", justifyContent: "flex-end", gap: 1.5}}>
                 <Button variant="text" color="inherit" onClick={() => navigate(-1)}>取消</Button>
                 <Button variant="contained" color="success" type="submit" name="ActionType" value={type}
-                        disabled={contentTooLarge || submitting}>提交</Button>
+                        disabled={!titleTrimmed || titleTooLong || contentTooLarge || submitting}>提交</Button>
             </Box>
         </Form>
     )

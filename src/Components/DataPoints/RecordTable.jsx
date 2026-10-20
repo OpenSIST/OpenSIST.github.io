@@ -2,9 +2,9 @@ import React, {forwardRef, useMemo, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {TableVirtuoso} from "react-virtuoso";
 import {alpha, darken, useTheme} from "@mui/material/styles";
-import {Box, Button, Checkbox, IconButton, ListItemText, MenuItem, OutlinedInput, Select, TextField, Tooltip, Typography} from "@mui/material";
+import {Box, Button, Checkbox, IconButton, ListItemText, MenuItem, OutlinedInput, Select, TextField, Tooltip, Typography, useMediaQuery} from "@mui/material";
 import {ArrowDownward, ArrowUpward, Check, ControlPoint, Search, ViewAgendaOutlined} from "@mui/icons-material";
-import {recordStatusList} from "../../Data/Schemas";
+import {currentDegreeOptions, recordStatusList} from "../../Data/Schemas";
 import {applicantDialogPath, dataPointsProgramPath} from "../RouteUtils";
 import "./DataPoints.css";
 
@@ -22,6 +22,8 @@ const COLUMNS = [
     {key: "detail", label: "备注、补充说明等", width: 340, align: "left", sortType: null},
 ];
 
+const APPLICANT_DEGREES = currentDegreeOptions;
+
 const STATUS_RANK = {Admit: 0, Waitlist: 1, Defer: 2, Reject: 3};
 const SEMESTER_WEIGHT = {Fall: 2, Spring: 1, Summer: 1, Winter: 1};
 const TIMELINE_KEY = {decision: "Decision", interview: "Interview", submit: "Submit"};
@@ -37,7 +39,7 @@ function useChipColors() {
         // light mode: darken the text so it stays legible on the pale tinted
         // chip background (the full-saturation hue was too light to read)
         const make = (main) => ({
-            bg: alpha(main, dark ? 0.22 : 0.16),
+            bg: alpha(main, dark ? 0.22 : 0.24),
             fg: dark ? main : darken(main, 0.32),
         });
         return {
@@ -165,9 +167,12 @@ export default function RecordTable({records, insideProgramPage = false, style =
     const chip = useChipColors();
     const theme = useTheme();
     const dark = theme.palette.mode === "dark";
+    const mobile = useMediaQuery("(max-width:600px)");
     const columns = useMemo(
-        () => COLUMNS.filter((c) => !(insideProgramPage && c.programOnly)),
-        [insideProgramPage]
+        () => COLUMNS.filter((c) => !(insideProgramPage && c.programOnly)).map((column) => (
+            mobile ? {...column, width: ({applicant: 100, program: 120, status: 88, detail: 220})[column.key] ?? column.width} : column
+        )),
+        [insideProgramPage, mobile]
     );
     const tableWidth = columns.reduce((sum, c) => sum + c.width, 0);
     const cssVars = {
@@ -186,6 +191,7 @@ export default function RecordTable({records, insideProgramPage = false, style =
     };
 
     const [search, setSearch] = useState("");
+    const [degreeFilter, setDegreeFilter] = useState([]);
     const [statusFilter, setStatusFilter] = useState([]);
     const [seasonFilter, setSeasonFilter] = useState([]);
     const [finalFilter, setFinalFilter] = useState(""); // '', 'true', 'false'
@@ -201,6 +207,7 @@ export default function RecordTable({records, insideProgramPage = false, style =
     const filtered = useMemo(() => {
         const q = search.trim().toLowerCase();
         return records.filter((r) => {
+            if (degreeFilter.length && !degreeFilter.includes(r.ApplicantDegree)) return false;
             if (statusFilter.length && !statusFilter.includes(r.Status)) return false;
             if (seasonFilter.length && !seasonFilter.includes(`${r.ProgramYear} ${r.Semester}`)) return false;
             if (finalFilter !== "" && r.Final !== (finalFilter === "true")) return false;
@@ -210,7 +217,7 @@ export default function RecordTable({records, insideProgramPage = false, style =
             }
             return true;
         });
-    }, [records, search, statusFilter, seasonFilter, finalFilter]);
+    }, [records, search, degreeFilter, statusFilter, seasonFilter, finalFilter]);
 
     const rows = useMemo(() => {
         const comparator = makeComparator(sortKey, sortDir);
@@ -303,6 +310,7 @@ export default function RecordTable({records, insideProgramPage = false, style =
             {!insideProgramPage && (
                 <FilterBar
                     search={search} setSearch={setSearch}
+                    degreeFilter={degreeFilter} setDegreeFilter={setDegreeFilter}
                     statusFilter={statusFilter} setStatusFilter={setStatusFilter}
                     seasonFilter={seasonFilter} setSeasonFilter={setSeasonFilter}
                     seasonOptions={seasonOptions}
@@ -348,7 +356,7 @@ const MENU_PROPS = {
             borderColor: "divider",
             backgroundImage: "none",
             "& .MuiList-root": {py: 0.5},
-            "& .MuiMenuItem-root": {fontSize: 13, minHeight: "auto", py: 0.25, px: 1, borderRadius: 1, mx: 0.5},
+            "& .MuiMenuItem-root": {fontSize: 13, minHeight: {xs: 44, sm: "auto"}, py: 0.25, px: 1, borderRadius: 1, mx: 0.5},
             "& .MuiCheckbox-root": {p: 0.5, mr: 0.5},
             "& .MuiCheckbox-root .MuiSvgIcon-root": {fontSize: 18},
         },
@@ -367,18 +375,23 @@ function MultiFilter({label, value, onChange, options}) {
             className={`rt-pill rt-select${value.length ? " rt-pill-active" : ""}`}
             renderValue={() => (value.length ? `${label} · ${value.length}` : label)}
         >
-            {options.map((o) => (
-                <MenuItem key={o} value={o} dense>
-                    <Checkbox size="small" checked={value.includes(o)}/>
-                    <ListItemText primary={o}/>
-                </MenuItem>
-            ))}
+            {options.map((option) => {
+                const optionValue = typeof option === "string" ? option : option.value;
+                const label = typeof option === "string" ? option : option.label;
+                return (
+                    <MenuItem key={optionValue} value={optionValue} dense>
+                        <Checkbox size="small" checked={value.includes(optionValue)}/>
+                        <ListItemText primary={label}/>
+                    </MenuItem>
+                );
+            })}
         </Select>
     );
 }
 
 function FilterBar({
                        search, setSearch,
+                       degreeFilter, setDegreeFilter,
                        statusFilter, setStatusFilter,
                        seasonFilter, setSeasonFilter, seasonOptions,
                        finalFilter, setFinalFilter,
@@ -396,6 +409,7 @@ function FilterBar({
                 className="rt-search"
                 InputProps={{startAdornment: <Search fontSize="small" sx={{mr: 0.5, color: "text.secondary"}}/>}}
             />
+            <MultiFilter label="申请人学位" value={degreeFilter} onChange={setDegreeFilter} options={APPLICANT_DEGREES}/>
             <MultiFilter label="申请结果" value={statusFilter} onChange={setStatusFilter} options={recordStatusList}/>
             <MultiFilter label="申请季" value={seasonFilter} onChange={setSeasonFilter} options={seasonOptions}/>
             <Select

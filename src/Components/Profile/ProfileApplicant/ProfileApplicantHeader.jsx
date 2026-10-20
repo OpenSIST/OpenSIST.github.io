@@ -158,7 +158,7 @@ export function BasicInfoBlock({avatarUrl, contact = {}, applicant, records, edi
         link.click();
     }
 
-    const contactEntries = Object.entries(contact);
+    const contactEntries = Object.entries(contact).filter(([, value]) => Boolean(value));
     const cvPostId = applicant?.Posts?.find(post => post.startsWith('CV'));
     const sopPostId = applicant?.Posts?.find(post => post.startsWith('SoP'));
 

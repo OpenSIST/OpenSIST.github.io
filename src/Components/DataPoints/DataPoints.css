@@ -1,7 +1,7 @@
 .DataPointsContent {
     width: 100%;
     margin-top: 10px;
-    overflow-x: auto;
+    overflow: hidden;
     user-select: text;
     height: calc(100% - 20px);
     display: flex;
@@ -18,6 +18,7 @@
     width: 100%;
     height: 100%;
     min-height: 0;
+    min-width: 0;
 }
 
 /* filter bar — a single row of compact "pill" controls that wrap gracefully */
@@ -118,6 +119,8 @@
 /* scroller (virtuoso viewport) */
 .rt-scroller {
     overflow: auto;
+    overscroll-behavior: none;
+    scroll-behavior: auto;
 }
 
 /* table */
@@ -279,4 +282,18 @@
         flex: 1 1 100%;
         max-width: none;
     }
+}
+
+@media (max-width: 600px) {
+    .rt-filterbar .MuiOutlinedInput-root,
+    .rt-filterbar .rt-pill { height: 44px; min-height: 44px; }
+    .rt-search input { font-size: 16px; }
+    .rt-td { padding-top: 8px; padding-bottom: 8px; }
+    .rt-chip-click { min-height: 36px; }
+    .rt-group-add.MuiIconButton-root { min-width: 44px; min-height: 44px; }
+}
+
+@media (max-width: 600px) {
+    .rt-th, .rt-td { padding-left: 6px; padding-right: 6px; }
+    .rt-chip { padding-left: 6px; padding-right: 6px; }
 }

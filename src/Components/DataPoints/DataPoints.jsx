@@ -2,12 +2,13 @@ import React, {useMemo} from "react";
 import {Outlet, redirect, useLoaderData, useNavigate, useNavigation, useParams, useSubmit} from "react-router-dom";
 import {Button, Dialog, DialogActions, DialogContent, IconButton, Paper} from "@mui/material";
 import {Close, Refresh} from "@mui/icons-material";
+import {getApplicants} from "../../Data/ApplicantData";
 import {getPrograms} from "../../Data/ProgramData";
 import {getRecordByRecordIDs} from "../../Data/RecordData";
 import './DataPoints.css';
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
-import {LoadingBackdrop} from "../common";
+import {LoadingBackdrop, useSmallPage} from "../common";
 import RecordTable from "./RecordTable";
 import {decodePathParam} from "../RouteUtils";
 
@@ -32,16 +33,18 @@ async function getAllRecords(isRefresh = false) {
 }
 
 export async function loader() {
-    return {records: await getAllRecords()};
+    const [records, applicants] = await Promise.all([getAllRecords(), getApplicants()]);
+    return {records, applicants};
 }
 
 export async function action() {
-    await getAllRecords(true);
+    await Promise.all([getAllRecords(true), getApplicants(true)]);
     return redirect('/datapoints');
 }
 
 export function ApplicantProfileInDataPoints() {
     const navigate = useNavigate();
+    const smallPage = useSmallPage();
     const params = useParams();
     const applicantID = decodePathParam(params.applicantId);
     const {applicant} = useLoaderData();
@@ -49,13 +52,14 @@ export function ApplicantProfileInDataPoints() {
         <Dialog
             open={applicantID === applicant.ApplicantID}
             onClose={() => navigate("..")}
+            fullScreen={smallPage}
             fullWidth
             maxWidth={'xl'}
             sx={{userSelect: 'text'}}
             PaperProps={{sx: {bgcolor: (theme) => theme.palette.background.default}}}
         >
             <DialogActions>
-                <IconButton onClick={() => navigate("..")}>
+                <IconButton aria-label="关闭详情" onClick={() => navigate("..")}>
                     <Close/>
                 </IconButton>
             </DialogActions>
@@ -68,6 +72,7 @@ export function ApplicantProfileInDataPoints() {
 
 export function ProgramContentInDataPoints() {
     const navigate = useNavigate();
+    const smallPage = useSmallPage();
     const params = useParams();
     const programID = decodePathParam(params.programId);
     const {programContent} = useLoaderData();
@@ -75,6 +80,7 @@ export function ProgramContentInDataPoints() {
         <Dialog
             open={programID === programContent.ProgramID}
             onClose={() => navigate("..")}
+            fullScreen={smallPage}
             fullWidth
             maxWidth={'xl'}
             sx={{userSelect: 'text'}}
@@ -119,8 +125,10 @@ export default function DataPoints() {
     const hasLoadedRecords = Array.isArray(loaderRecords?.records);
     const records = useMemo(() => {
         const sourceRecords = Array.isArray(loaderRecords?.records) ? loaderRecords.records : [];
+        const degrees = new Map((loaderRecords?.applicants ?? []).map(applicant => [applicant.ApplicantID, applicant.CurrentDegree]));
         return sourceRecords.filter(isLoadedRecord).map(record => ({
             ...record,
+            ApplicantDegree: degrees.get(record.ApplicantID),
             Season: record.ProgramYear + " " + record.Semester,
         }));
     }, [loaderRecords]);

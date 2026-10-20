@@ -1,32 +1,21 @@
 import React, {useState} from "react";
 import {Form} from "react-router-dom";
-import {Box, IconButton, InputAdornment, MenuItem, Paper, TextField, Typography, useTheme} from "@mui/material";
+import {Box, IconButton, InputAdornment, MenuItem, Paper, TextField, Typography} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {OpenSIST} from "../common";
-
-export function brandGradient(dark) {
-    return dark ? 'linear-gradient(140deg, #93C0F2, #6BA6E8)' : 'linear-gradient(140deg, #1C5BAA, #4F86CE)';
-}
-
-export function gradientTextSx(dark) {
-    return {
-        background: brandGradient(dark),
-        backgroundClip: 'text',
-        WebkitBackgroundClip: 'text',
-        color: 'transparent',
-        WebkitTextFillColor: 'transparent',
-    };
-}
+import LightLogo from "../icons/light.svg?react";
+import DarkLogo from "../icons/dark.svg?react";
 
 export function AuthCard({children, ...formProps}) {
     return (
         <Box sx={{
-            minHeight: 'calc(100vh - 60px)',
+            minHeight: 'calc(100dvh - 60px)',
+            boxSizing: 'border-box',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             px: 2,
-            py: 4,
+            py: {xs: 2, sm: 4},
         }}>
             <Paper
                 component={Form}
@@ -35,12 +24,17 @@ export function AuthCard({children, ...formProps}) {
                 sx={{
                     width: '100%',
                     maxWidth: 430,
+                    boxSizing: 'border-box',
                     bgcolor: (theme) => theme.palette.surface,
                     borderRadius: 3,
                     p: {xs: 3, sm: 4},
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 2,
+                    // Use CSS pixels: the mobile root font is smaller than 16px.
+                    '@media (max-width:900px), (pointer: coarse)': {
+                        '& input, & textarea, & .MuiSelect-select': {fontSize: 'max(16px, 1em)'},
+                    },
                 }}
             >
                 {children}
@@ -50,10 +44,18 @@ export function AuthCard({children, ...formProps}) {
 }
 
 export function AuthHeader({subtitle}) {
-    const dark = useTheme().palette.mode === 'dark';
     return (
         <Box sx={{textAlign: 'center', mb: 0.5}}>
-            <OpenSIST props={{variant: 'h4'}} sx={{display: 'inline-block', fontWeight: 800, ...gradientTextSx(dark)}}/>
+            <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5}}>
+                <Box aria-hidden='true' sx={{width: 48, height: 48, '& svg': {width: '100%', height: '100%'},
+                    '& .light-logo': {display: (theme) => theme.palette.mode === 'dark' ? 'none' : 'block'},
+                    '& .dark-logo': {display: (theme) => theme.palette.mode === 'dark' ? 'block' : 'none'},
+                }}>
+                    <LightLogo className='light-logo'/>
+                    <DarkLogo className='dark-logo'/>
+                </Box>
+                <OpenSIST props={{variant: 'h4'}} sx={{color: (theme) => theme.palette.mode === 'dark' ? '#80b3fa' : '#004098'}}/>
+            </Box>
             <Typography sx={{color: 'text.secondary', mt: 0.75, fontSize: 14}}>{subtitle}</Typography>
         </Box>
     );

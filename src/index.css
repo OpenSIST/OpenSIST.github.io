@@ -30,8 +30,8 @@ body,html {
     --side-bar-bg-color: #fafafa;
     --font-body: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Twemoji', 'Segoe UI Emoji', sans-serif;
     --scrollbar-color: rgba(0, 0, 0, 0.5);
-    --bg-color: #E8EDF5;
-    --link-color: #1C5BAA;
+    --bg-color: #FAFAFA;
+    --link-color: #4183C4;
     font-size: clamp(14px, 1.5vw, 18px);
     background-color: var(--bg-color);
 }
@@ -198,4 +198,10 @@ tt {
     border-radius: 4px;
     padding: 0 4px;
     font-size: 0.9em;
+}
+
+@media (max-width: 900px) {
+    #root { height: 100dvh; }
+    .ContentBlock { height: calc(100dvh - 60px); }
+    input, textarea { scroll-margin-top: 72px; }
 }

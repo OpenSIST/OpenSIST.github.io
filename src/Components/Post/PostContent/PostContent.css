@@ -2,3 +2,7 @@
     display: flex;
     justify-content: space-between;
 }
+@media (max-width: 600px) {
+    .PostContentHeader { flex-wrap: wrap; gap: 8px; }
+    .PostContentHeader > * { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+}

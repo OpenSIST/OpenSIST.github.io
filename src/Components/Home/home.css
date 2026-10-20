@@ -1,46 +1,8 @@
-.GlassCard {
-    position: relative;
-    box-sizing: border-box;
-    border-radius: 16px;
-    border: 1px solid transparent;
-    backdrop-filter: blur(16px) saturate(1.4);
-    -webkit-backdrop-filter: blur(16px) saturate(1.4);
-    animation: cardFadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-
-/* soft accent halo behind the card */
-.GlassCard::before {
-    content: "";
-    position: absolute;
-    inset: -30%;
-    z-index: -1;
-    background: radial-gradient(closest-side, var(--rt-accent, #4F86CE), transparent 70%);
-    opacity: 0.16;
-    filter: blur(40px);
-    pointer-events: none;
-}
-
-@keyframes cardFadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(26px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* gentle hint bounce on the scroll arrow */
+.ScrollHint { animation: hintBounce 1.8s ease-in-out infinite; }
 @keyframes hintBounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(6px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
 }
-
-.ScrollHint {
-    animation: hintBounce 1.8s ease-in-out infinite;
+@media (prefers-reduced-motion: reduce) {
+    .ScrollHint { animation: none; }
 }

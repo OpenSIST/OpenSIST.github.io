@@ -1,7 +1,9 @@
 .PostContent {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
     height: calc(100vh - 120px);
     padding: 20px;
     margin-top: 10px;
@@ -10,4 +12,13 @@
     border-radius: 8px;
     user-select: text;
     overflow-y: auto;
+}
+@media (max-width: 900px) {
+    .PostContent {
+        width: calc(100% - 16px);
+        height: calc(100dvh - 128px);
+        margin: 60px 8px 8px;
+        padding: 16px 12px;
+        overflow: auto;
+    }
 }
