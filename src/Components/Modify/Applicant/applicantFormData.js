@@ -99,7 +99,7 @@ export function createApplicantRequestBody(formValues, actionType, applicantId) 
             ...(recommendation.length > 0 && {Recommendation: recommendation}),
             ...(Competition !== undefined && {Competition}),
             Programs: isNewApplicant ? {} : Programs,
-            Final: Final ?? "",
+            Final: !isNewApplicant && Final && (Final in (Programs ?? {})) ? Final : "",
             Posts: isNewApplicant ? [] : (formValues.Posts ?? []),
         },
     };
