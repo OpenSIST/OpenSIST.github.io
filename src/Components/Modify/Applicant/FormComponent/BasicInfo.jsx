@@ -1,4 +1,4 @@
-import {Box, Button, Link as MuiLink, Paper, TextField, Tooltip} from "@mui/material";
+import {Box, Button, Paper, TextField, Tooltip} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import Grid2 from "@mui/material/Grid";
 import {HelpOutline} from "@mui/icons-material";
@@ -29,6 +29,7 @@ function isOutsideRange(value, minimum, maximum) {
 }
 
 function OptionField({
+                         disabled = false,
                          endAdornment,
                          helperText,
                          label,
@@ -43,6 +44,7 @@ function OptionField({
         <Autocomplete
             fullWidth
             options={options}
+            disabled={disabled}
             readOnly={readOnly}
             renderInput={(params) =>
                 <TextField
@@ -93,7 +95,16 @@ function NumberField({error, helperText, label, name, onChange, required = false
 
 function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData}) {
     const navigate = useNavigate();
-    const finalOptions = list2Options(loaderData.programs);
+    const recordedPrograms = actionType === 'edit'
+        ? Object.keys(formValues.Programs ?? loaderData?.applicant?.Programs ?? {})
+        : [];
+    const finalOptions = list2Options(recordedPrograms);
+    const finalDisabled = actionType !== 'edit' || finalOptions.length === 0;
+    const finalHelperText = actionType !== 'edit'
+        ? '请先创建申请人并添加申请记录后再填写最终去向'
+        : finalOptions.length === 0
+            ? '请先添加申请记录后再填写最终去向'
+            : '仅可从已添加的申请记录中选择最终去向';
     const requiredGreValues = [formValues.GRETotal, formValues.V, formValues.Q, formValues.AW];
     const isGreRequired = requiredGreValues.some(hasValue);
     const englishMaximum = formValues.EnglishOption === 'TOEFL' ? 30 : 9;
@@ -261,13 +272,12 @@ function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData
                     <Grid2 size={12}>
                         <OptionField
                             name="Final"
-                            label="最终去向"
+                            label={finalDisabled ? "最终去向 (创建申请记录后可填写)" : "最终去向"}
                             options={finalOptions}
-                            value={formValues.Final}
+                            value={finalDisabled ? "" : formValues.Final}
                             onChange={handleChange}
-                            helperText={
-                                <MuiLink href='/programs/new'>如果未找到项目，请点此前往添加项目信息</MuiLink>
-                            }
+                            disabled={finalDisabled}
+                            helperText={finalHelperText}
                         />
                     </Grid2>
                 </Grid2>
