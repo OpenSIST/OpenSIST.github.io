@@ -85,7 +85,6 @@ export function ProgramContentInDataPoints() {
             maxWidth={'xl'}
             sx={{userSelect: 'text'}}
         >
-            <DialogActions><IconButton aria-label="关闭详情" onClick={() => navigate("..")}><Close/></IconButton></DialogActions>
             <DialogContent>
                 <ProgramContent editable={false} inDialog={true}/>
             </DialogContent>
