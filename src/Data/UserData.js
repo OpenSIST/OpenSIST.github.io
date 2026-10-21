@@ -29,7 +29,7 @@ import {
 } from "./CacheStore";
 import {useEffect, useState} from "react";
 import {getApplicants, setApplicants} from "./ApplicantData";
-import {getRecordByApplicant, updateCachedRecords} from "./RecordData";
+import {updateCachedRecords} from "./RecordData";
 
 const avatarCacheKey = (displayName, avatarId) => `${displayName}-avatar-${avatarId}`;
 const metadataCacheKey = (displayName) => `${displayName}-metadata`;
@@ -330,7 +330,6 @@ export async function toggleAnonymous() {
     const originalAvatar = await getAvatar(originalMetadata.Avatar, originalDisplayName, false);
     const originalApplicantIds = originalMetadata.ApplicantIDs ?? [];
     const allApplicants = await getApplicants();
-    const applicantRecords = await Promise.all(originalApplicantIds.map((applicantId) => getRecordByApplicant(applicantId)));
 
     const displayName = (await apiJson(TOGGLE_NICKNAME))['name'];
     await setDisplayName(displayName);
@@ -362,16 +361,12 @@ export async function toggleAnonymous() {
                 };
             }
             return applicant;
-        })
-    await Promise.all([
-        setApplicants(updatedApplicants),
-        removeCacheValue('programs'),
-    ]);
+        });
+    await setApplicants(updatedApplicants);
     await updateCachedRecords((records) => {
-        const updatedRecords = {...records};
-        applicantRecords.forEach((recordGroup) => {
-            Object.entries(recordGroup).forEach(([recordId, content]) => {
-                delete updatedRecords[recordId];
+        const updatedRecords = {};
+        Object.values(records).forEach((content) => {
+            if (originalApplicantIdSet.has(content.ApplicantID)) {
                 const ApplicantID = `${displayName}@${content.ApplicantID.split('@')[1]}`;
                 const updatedRecord = {
                     ...content,
@@ -379,7 +374,9 @@ export async function toggleAnonymous() {
                     RecordID: `${ApplicantID}|${content.ProgramID}`,
                 };
                 updatedRecords[updatedRecord.RecordID] = updatedRecord;
-            });
+            } else {
+                updatedRecords[content.RecordID] = content;
+            }
         });
         return updatedRecords;
     });

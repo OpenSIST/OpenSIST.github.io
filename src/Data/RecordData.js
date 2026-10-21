@@ -1,8 +1,8 @@
 import {ADD_MODIFY_RECORD, RECORD_LIST, REMOVE_RECORD} from "../APIs/APIs";
 import {apiJson, apiRequest} from "./Common";
 import {FOREGROUND_PRIORITY, isCacheEntryExpired, loadCachedValue, readCacheEntry, writeCacheValue} from "./CacheStore";
-import { getApplicant, setApplicant } from "./ApplicantData";
-import { getProgram } from "./ProgramData";
+import {getApplicant, getApplicants, setApplicant} from "./ApplicantData";
+import {getPrograms} from "./ProgramData";
 
 const RECORDS_CACHE_KEY = "records";
 
@@ -18,7 +18,7 @@ export async function addModifyRecord(requestBody) {
 
 export async function getRecordByApplicant(applicantId, isRefresh = false, options = {}) {
     const [, records] = await Promise.all([
-        getApplicant(applicantId, isRefresh, options),
+        isRefresh ? getApplicants(true, options) : Promise.resolve(),
         getRecords(isRefresh, options),
     ]);
     return Object.fromEntries(
@@ -28,7 +28,7 @@ export async function getRecordByApplicant(applicantId, isRefresh = false, optio
 
 export async function getRecordByProgram(programId, isRefresh = false, options = {}) {
     const [, records] = await Promise.all([
-        getProgram(programId, isRefresh, options),
+        isRefresh ? getPrograms(true, {}, "cs_rank", options) : Promise.resolve(),
         getRecords(isRefresh, options),
     ]);
     return Object.fromEntries(
@@ -120,11 +120,15 @@ export async function deleteRecord(recordId) {
 
     const [applicantID, programID] = recordId.split('|');
 
-    const applicant = await getApplicant(applicantID);
-    if (applicant.Final === programID) {
-        await setApplicant({
-            ...applicant,
-            Final: "",
-        });
+    try {
+        const applicant = await getApplicant(applicantID);
+        if (applicant.Final === programID) {
+            await setApplicant({
+                ...applicant,
+                Final: "",
+            });
+        }
+    } catch {
+        // Ignore if applicant was already removed from local cache
     }
 }

@@ -2,7 +2,7 @@ import {ADD_MODIFY_APPLICANT, APPLICANT_LIST, REMOVE_APPLICANT} from "../APIs/AP
 import {apiJson, apiRequest} from "./Common";
 import {FOREGROUND_PRIORITY, loadCachedValue, writeCacheValue} from "./CacheStore";
 import {getDisplayName, getMetadata, setMetadata} from "./UserData";
-import {deleteRecord, getRecordByApplicant, getRecordByRecordIDs, setRecord} from "./RecordData";
+import {getRecordByRecordIDs, setRecord, updateCachedRecords} from "./RecordData";
 
 export async function getApplicants(isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
     /*
@@ -99,15 +99,17 @@ export async function setApplicant(applicant) {
     const finalRecordId = applicant.Final
         ? `${applicant.ApplicantID}|${applicant.Final}`
         : null;
-    const finalRecordIds = [originalFinalRecordId, finalRecordId].filter(Boolean);
-    const records = await getRecordByRecordIDs(finalRecordIds);
-    const originalFinalRecord = records[originalFinalRecordId];
-    const finalRecord = records[finalRecordId];
-    if (originalFinalRecord) {
-        await setRecord({...originalFinalRecord, Final: false});
-    }
-    if (finalRecord) {
-        await setRecord({...finalRecord, Final: true});
+    if (originalFinalRecordId !== finalRecordId) {
+        const finalRecordIds = [originalFinalRecordId, finalRecordId].filter(Boolean);
+        const records = await getRecordByRecordIDs(finalRecordIds);
+        const originalFinalRecord = records[originalFinalRecordId];
+        const finalRecord = records[finalRecordId];
+        if (originalFinalRecord) {
+            await setRecord({...originalFinalRecord, Final: false});
+        }
+        if (finalRecord) {
+            await setRecord({...finalRecord, Final: true});
+        }
     }
     const updatedApplicants = originalApplicant
         ? applicants.map(currentApplicant => (
@@ -149,14 +151,13 @@ export async function removeApplicant(applicantId) {
         },
     });
 
-    const records = await getRecordByApplicant(applicantId);
     const applicants = await getApplicants();
     await setApplicants(applicants.filter(p => p.ApplicantID !== applicantId));
     await deleteApplicantIDByDisplayName(applicantId);
     // The backend currently blocks deletion with records, but clear stale local records defensively.
-    for (const recordId of Object.keys(records)) {
-        await deleteRecord(recordId);
-    }
+    await updateCachedRecords((records) => Object.fromEntries(
+        Object.entries(records).filter(([, record]) => record.ApplicantID !== applicantId)
+    ));
 }
 
 
