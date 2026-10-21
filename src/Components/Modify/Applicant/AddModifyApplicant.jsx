@@ -1,5 +1,6 @@
 import {Form, redirect, useLoaderData} from "react-router-dom";
 import {addModifyApplicant, getApplicant} from "../../../Data/ApplicantData";
+import {getRecordByApplicant} from "../../../Data/RecordData";
 import {Box, Input, Step, StepButton, Stepper} from "@mui/material";
 import React, {useState} from "react";
 import BasicInfo from "./FormComponent/BasicInfo";
@@ -13,8 +14,15 @@ export async function loader({params}) {
     let applicant = null;
     let cvPost = null;
     let sopPost = null;
+    let appliedPrograms = [];
     if (params.applicantId) {
-        applicant = await getApplicant(decodePathParam(params.applicantId));
+        const applicantId = decodePathParam(params.applicantId);
+        const [loadedApplicant, recordsDict] = await Promise.all([
+            getApplicant(applicantId),
+            getRecordByApplicant(applicantId),
+        ]);
+        applicant = loadedApplicant;
+        appliedPrograms = Object.values(recordsDict ?? {}).map(record => record.ProgramID);
         if (applicant.Posts && applicant.Posts.length > 0) {
             const applicantPostIds = new Set(applicant.Posts.map(String));
             const files = (await getFiles()).filter(file => applicantPostIds.has(file.PostID.toString()));
@@ -22,7 +30,7 @@ export async function loader({params}) {
             sopPost = files.find(file => file.type === "SoP" || file.PostID.startsWith("SoP"));
         }
     }
-    return {applicant, cvPost, sopPost};
+    return {applicant, cvPost, sopPost, appliedPrograms};
 }
 
 export async function action({request}) {
@@ -68,7 +76,12 @@ export default function AddModifyApplicant({type}) {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const applicantContent = createInitialApplicantFormValues(loaderData.applicant, loaderData.cvPost, loaderData.sopPost);
+    const applicantContent = createInitialApplicantFormValues(
+        loaderData.applicant,
+        loaderData.cvPost,
+        loaderData.sopPost,
+        loaderData.appliedPrograms
+    );
     const [formValues, setFormValues] = useState(applicantContent ?? {});
     const handleChange = (event, value, name) => {
         const fieldName = event?.target?.name ?? name;

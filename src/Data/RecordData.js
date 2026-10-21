@@ -1,8 +1,8 @@
 import {ADD_MODIFY_RECORD, RECORD_LIST, REMOVE_RECORD} from "../APIs/APIs";
 import {apiJson, apiRequest} from "./Common";
 import {FOREGROUND_PRIORITY, isCacheEntryExpired, loadCachedValue, readCacheEntry, writeCacheValue} from "./CacheStore";
-import {getApplicant, setApplicant} from "./ApplicantData";
-import {getProgram, setProgram} from "./ProgramData";
+import { getApplicant, setApplicant } from "./ApplicantData";
+import { getProgram } from "./ProgramData";
 
 const RECORDS_CACHE_KEY = "records";
 
@@ -14,36 +14,26 @@ export async function addModifyRecord(requestBody) {
         },
     });
     await setRecord(requestBody.content);
-
-    const applicantID = requestBody.content.ApplicantID;
-    const programID = requestBody.content.ProgramID;
-
-    const applicant = await getApplicant(applicantID);
-    await setApplicant({
-        ...applicant,
-        Programs: {...applicant.Programs, [programID]: requestBody.content.Status},
-    });
-
-    const program = await getProgram(programID);
-    if (!program.Applicants.includes(applicantID)) {
-        await setProgram({...program, Applicants: [...program.Applicants, applicantID]});
-    }
 }
 
 export async function getRecordByApplicant(applicantId, isRefresh = false, options = {}) {
-    const applicant = await getApplicant(applicantId, isRefresh, options);
-    const recordIDs = Object.keys(applicant.Programs).map(programID => {
-        return applicantId + '|' + programID;
-    });
-    return getRecordByRecordIDs(recordIDs, isRefresh, options);
+    const [, records] = await Promise.all([
+        getApplicant(applicantId, isRefresh, options),
+        getRecords(isRefresh, options),
+    ]);
+    return Object.fromEntries(
+        Object.entries(records).filter(([, record]) => record.ApplicantID === applicantId)
+    );
 }
 
 export async function getRecordByProgram(programId, isRefresh = false, options = {}) {
-    const program = await getProgram(programId, isRefresh, options);
-    const recordIDs = program.Applicants.map(applicantID => {
-        return applicantID + '|' + programId;
-    });
-    return getRecordByRecordIDs(recordIDs, isRefresh, options);
+    const [, records] = await Promise.all([
+        getProgram(programId, isRefresh, options),
+        getRecords(isRefresh, options),
+    ]);
+    return Object.fromEntries(
+        Object.entries(records).filter(([, record]) => record.ProgramID === programId)
+    );
 }
 
 export async function getRecordByRecordIDs(recordIDs, isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
@@ -131,18 +121,10 @@ export async function deleteRecord(recordId) {
     const [applicantID, programID] = recordId.split('|');
 
     const applicant = await getApplicant(applicantID);
-    const Programs = Object.fromEntries(
-        Object.entries(applicant.Programs).filter(([key]) => key !== programID)
-    );
-    await setApplicant({
-        ...applicant,
-        Programs,
-        Final: applicant.Final === programID ? "" : applicant.Final,
-    });
-
-    const program = await getProgram(programID);
-    await setProgram({
-        ...program,
-        Applicants: program.Applicants.filter(applicant => applicant !== applicantID),
-    });
+    if (applicant.Final === programID) {
+        await setApplicant({
+            ...applicant,
+            Final: "",
+        });
+    }
 }

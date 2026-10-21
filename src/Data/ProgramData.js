@@ -263,11 +263,7 @@ export async function addModifyProgram(requestBody) {
     * Set the program (with description) to the local storage (i.e. localforage.getItem('programs') and localforage.getItem(`${programId}-Desc`), and post to the server.
     * @param program [Object]: program (with description)
     */
-    let content = requestBody.content;
-    if (!requestBody.newProgram) {
-        const originalProgram = await getProgram(content.ProgramID);
-        content = {...content, Applicants: originalProgram.Applicants};
-    }
+    const content = requestBody.content;
     await apiRequest(ADD_MODIFY_PROGRAM, {
         body: {
             newProgram: requestBody.newProgram,

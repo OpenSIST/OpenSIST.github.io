@@ -48,7 +48,6 @@ export function createApplicantRequestBody(formValues, actionType, applicantId) 
         InternationalInternDetail,
         Competition,
         Final,
-        Programs,
     } = formValues;
     const gre = {
         Total: numberOr(formValues.GRETotal, 260),
@@ -98,14 +97,13 @@ export function createApplicantRequestBody(formValues, actionType, applicantId) 
             },
             ...(recommendation.length > 0 && {Recommendation: recommendation}),
             ...(Competition !== undefined && {Competition}),
-            Programs: isNewApplicant ? {} : Programs,
-            Final: !isNewApplicant && Final && (Final in (Programs ?? {})) ? Final : "",
+            Final: !isNewApplicant && Final ? Final : "",
             Posts: isNewApplicant ? [] : (formValues.Posts ?? []),
         },
     };
 }
 
-export function createInitialApplicantFormValues(applicant, cvPost, sopPost) {
+export function createInitialApplicantFormValues(applicant, cvPost, sopPost, appliedPrograms = []) {
     if (!applicant) {
         return {};
     }
@@ -147,11 +145,10 @@ export function createInitialApplicantFormValues(applicant, cvPost, sopPost) {
         InternationalInternNum: applicant.Internship?.International?.Num,
         InternationalInternDetail: applicant.Internship?.International?.Detail,
         Competition: applicant.Competition,
-        Programs: applicant.Programs,
         Exchange: applicant.Exchange,
         Publication: applicant.Publication,
         Recommendation: applicant.Recommendation,
-        Final: applicant.Final,
+        Final: appliedPrograms.includes(applicant.Final) ? applicant.Final : "",
         Posts: applicant.Posts,
         CV: {
             PostID: cvPost?.PostID,
