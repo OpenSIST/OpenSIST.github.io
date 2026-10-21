@@ -1,7 +1,7 @@
 import {ADD_MODIFY_RECORD, RECORD_LIST, REMOVE_RECORD} from "../APIs/APIs";
 import {apiJson, apiRequest} from "./Common";
-import {FOREGROUND_PRIORITY, isCacheEntryExpired, loadCachedValue, readCacheEntry, writeCacheValue} from "./CacheStore";
-import {getApplicant, getApplicants, setApplicant} from "./ApplicantData";
+import {FOREGROUND_PRIORITY, loadCachedValue, removeCacheValue} from "./CacheStore";
+import {getApplicants} from "./ApplicantData";
 import {getPrograms} from "./ProgramData";
 
 const RECORDS_CACHE_KEY = "records";
@@ -13,7 +13,7 @@ export async function addModifyRecord(requestBody) {
             content: requestBody.content,
         },
     });
-    await setRecord(requestBody.content);
+    await removeCacheValue(RECORDS_CACHE_KEY);
 }
 
 export async function getRecordByApplicant(applicantId, isRefresh = false, options = {}) {
@@ -62,26 +62,6 @@ export async function getRecords(isRefresh = false, {priority = FOREGROUND_PRIOR
     }) ?? {};
 }
 
-export async function setRecords(records) {
-    if (!records) {
-        return;
-    }
-    await writeCacheValue(RECORDS_CACHE_KEY, normalizeRecordList(records));
-}
-
-export async function updateCachedRecords(update) {
-    const records = await readFreshCachedRecords();
-    if (!records) {
-        return;
-    }
-    await setRecords(update(records));
-}
-
-async function readFreshCachedRecords() {
-    const entry = await readCacheEntry(RECORDS_CACHE_KEY, {legacyFields: ["data"]});
-    return isCacheEntryExpired(entry) ? null : normalizeRecordList(entry.value);
-}
-
 function normalizeRecordList(records) {
     const recordList = Array.isArray(records) ? records : Object.values(records ?? {});
     return Object.fromEntries(
@@ -95,40 +75,14 @@ function isRecordData(record) {
     return Boolean(record?.RecordID && record?.ApplicantID && record?.ProgramID);
 }
 
-export async function setRecord(record) {
-    if (!record) {
-        return;
-    }
-    await updateCachedRecords((records) => ({...records, [record.RecordID]: record}));
-}
-
 export async function removeRecord(recordId) {
     await apiRequest(REMOVE_RECORD, {
         body: {
             RecordID: recordId,
         },
     });
-    await deleteRecord(recordId);
-}
-
-export async function deleteRecord(recordId) {
-    await updateCachedRecords((records) => {
-        const updatedRecords = {...records};
-        delete updatedRecords[recordId];
-        return updatedRecords;
-    });
-
-    const [applicantID, programID] = recordId.split('|');
-
-    try {
-        const applicant = await getApplicant(applicantID);
-        if (applicant.Final === programID) {
-            await setApplicant({
-                ...applicant,
-                Final: "",
-            });
-        }
-    } catch {
-        // Ignore if applicant was already removed from local cache
-    }
+    await Promise.all([
+        removeCacheValue(RECORDS_CACHE_KEY),
+        removeCacheValue("applicants"),
+    ]);
 }

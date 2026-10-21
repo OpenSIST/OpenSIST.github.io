@@ -62,9 +62,18 @@ export async function readCacheEntry(key, {legacyFields = [], requestEpoch = cac
     if (requestEpoch === cacheEpoch && memoryCache.has(key)) {
         return memoryCache.get(key);
     }
+    const pendingWrite = writeQueues.get(key);
+    if (pendingWrite) {
+        await pendingWrite.catch(() => {
+        });
+        if (requestEpoch === cacheEpoch && memoryCache.has(key)) {
+            return memoryCache.get(key);
+        }
+    }
+    const versionBeforeRead = latestRequestVersions.get(key) ?? 0;
     const entry = normalizeCacheEntry(await localforage.getItem(key), legacyFields);
-    if (requestEpoch !== cacheEpoch) {
-        return null;
+    if (requestEpoch !== cacheEpoch || (latestRequestVersions.get(key) ?? 0) !== versionBeforeRead) {
+        return memoryCache.get(key) ?? null;
     }
     if (entry) {
         memoryCache.set(key, entry);
@@ -104,6 +113,8 @@ export async function removeCacheValue(key, {requestEpoch = cacheEpoch, requestV
         return false;
     }
     memoryCache.delete(key);
+    foregroundLoads.delete(key);
+    backgroundLoads.delete(key);
     return enqueueCacheWrite(key, async () => {
         if (requestEpoch !== cacheEpoch || version < (latestRequestVersions.get(key) ?? 0)) {
             return false;

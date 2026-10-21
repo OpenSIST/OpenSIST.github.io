@@ -1,6 +1,6 @@
 import {ADD_FILE, FILE_LIST, GET_FILE_CONTENT, MODIFY_FILE, REMOVE_FILE} from "../APIs/APIs";
 import {apiJson, apiRequest} from "./Common";
-import {getApplicant, setApplicant} from "./ApplicantData";
+import {removeCacheValue} from "./CacheStore";
 
 export async function getFiles() {
     const files = await apiJson(FILE_LIST);
@@ -37,27 +37,11 @@ export async function addModifyFile(requestBody, type) {
     if (!endpoint) {
         throw new Error(`Invalid file mutation type: ${type}`);
     }
-    const response = await apiRequest(endpoint, {body: requestBody});
-    if (type === 'new') {
-        const postId = (await response.json()).PostID;
-        const postObj = {
-            Title: requestBody.content.Title,
-            PostID: postId,
-            Author: requestBody.ApplicantID,
-            type: requestBody.content.type,
-            created: Date.now(),
-            modified: Date.now()
-        };
-        const applicant = await getApplicant(postObj.Author);
-        await setApplicant({...applicant, Posts: [...(applicant.Posts ?? []), postId]});
-    }
+    await apiRequest(endpoint, {body: requestBody});
+    await removeCacheValue("applicants");
 }
 
-export async function removeFile(fileId, author) {
+export async function removeFile(fileId) {
     await apiRequest(REMOVE_FILE, {body: {PostID: fileId}});
-    const applicant = await getApplicant(author);
-    await setApplicant({
-        ...applicant,
-        Posts: applicant.Posts.filter((post) => post.toString() !== fileId.toString()),
-    });
+    await removeCacheValue("applicants");
 }

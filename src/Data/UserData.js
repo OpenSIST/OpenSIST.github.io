@@ -28,8 +28,6 @@ import {
     writeCacheValue
 } from "./CacheStore";
 import {useEffect, useState} from "react";
-import {getApplicants, setApplicants} from "./ApplicantData";
-import {updateCachedRecords} from "./RecordData";
 
 const avatarCacheKey = (displayName, avatarId) => `${displayName}-avatar-${avatarId}`;
 const metadataCacheKey = (displayName) => `${displayName}-metadata`;
@@ -121,21 +119,23 @@ export function useUser() {
 }
 
 export async function uploadAvatar(avatar) {
+    const displayName = await getDisplayName();
+    const previousMetadataEntry = displayName
+        ? await readCacheEntry(metadataCacheKey(displayName), {legacyFields: ["result"]})
+        : null;
+    const previousAvatarId = previousMetadataEntry?.value?.Avatar;
+
     avatar = await blobToBase64(avatar);
     const response = await apiRequest(UPLOAD_AVATAR, {body: avatar});
-    const avatarId = await response.json();
-    await setAvatarID(avatarId['avatar_id']);
-    await setAvatar(avatar, null, avatarId['avatar_id']);
-}
+    const avatarId = (await response.json())?.['avatar_id'];
 
-export async function setAvatarID(avatarId) {
-    if (!avatarId) {
-        return;
+    if (displayName) {
+        await Promise.all([
+            removeCacheValue(metadataCacheKey(displayName)),
+            ...(previousAvatarId ? [removeCacheValue(avatarCacheKey(displayName, previousAvatarId))] : []),
+            ...(avatarId ? [removeCacheValue(avatarCacheKey(displayName, avatarId))] : []),
+        ]);
     }
-    const displayName = await getDisplayName();
-    const metadata = await getMetadata(displayName);
-    await setMetadata({...metadata, Avatar: avatarId}, displayName);
-
 }
 
 export async function getAvatar(avatarId, displayName = null, isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
@@ -158,22 +158,6 @@ export async function getAvatar(avatarId, displayName = null, isRefresh = false,
             fetchPriority: priority,
         }),
     });
-}
-
-export async function setAvatar(avatar, displayName = null, avatarId = null) {
-    if (!avatar) {
-        return
-    }
-    if (!displayName) {
-        displayName = await getDisplayName();
-    }
-    if (!avatarId) {
-        avatarId = (await getMetadata(displayName))?.Avatar;
-    }
-    if (!displayName || !avatarId) {
-        return;
-    }
-    await writeCacheValue(avatarCacheKey(displayName, avatarId), avatar);
 }
 
 /**
@@ -281,24 +265,14 @@ function displayNameFromMetadataCacheKey(key) {
     return key.slice(0, -"-metadata".length);
 }
 
-export async function setMetadata(metadata, displayName = null) {
-    /*
-    * Set the user metadata to the local storage
-    * @param metadata [Object]: metadata
-    */
-    if (!metadata) {
-        return;
-    }
-    if (displayName === null) {
+export async function invalidateMetadataCache(displayName = null) {
+    if (!displayName) {
         displayName = await getDisplayName();
     }
     if (!displayName) {
         return;
     }
-
-    const persistedMetadata = {...metadata};
-    delete persistedMetadata.latestYear;
-    await writeCacheValue(metadataCacheKey(displayName), persistedMetadata);
+    await removeCacheValue(metadataCacheKey(displayName));
 }
 
 export async function getDisplayName(isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
@@ -317,96 +291,40 @@ export async function getDisplayName(isRefresh = false, {priority = FOREGROUND_P
     });
 }
 
-export async function setDisplayName(displayName) {
-    if (!displayName) {
-        return;
-    }
-    await writeCacheValue("displayName", displayName);
-}
-
 export async function toggleAnonymous() {
     const originalDisplayName = await getDisplayName();
-    const originalMetadata = await getMetadata(originalDisplayName);
-    const originalAvatar = await getAvatar(originalMetadata.Avatar, originalDisplayName, false);
-    const originalApplicantIds = originalMetadata.ApplicantIDs ?? [];
-    const allApplicants = await getApplicants();
+    const originalMetadataEntry = originalDisplayName
+        ? await readCacheEntry(metadataCacheKey(originalDisplayName), {legacyFields: ["result"]})
+        : null;
+    const originalAvatarId = originalMetadataEntry?.value?.Avatar;
 
-    const displayName = (await apiJson(TOGGLE_NICKNAME))['name'];
-    await setDisplayName(displayName);
+    const response = await apiJson(TOGGLE_NICKNAME);
+    const nextDisplayName = response?.['name'];
 
-    await removeCacheValue(metadataCacheKey(originalDisplayName));
-    const updatedApplicantIds = originalApplicantIds.map((applicant) => {
-        return `${displayName}@${applicant.split('@')[1]}`;
-    });
-    const updatedMetadata = {
-        ...originalMetadata,
-        ApplicantIDs: updatedApplicantIds,
-    };
-    await setMetadata(updatedMetadata, displayName);
-    await removeCacheValue(avatarCacheKey(originalDisplayName, originalMetadata.Avatar));
-
-    await setAvatar(originalAvatar, displayName, originalMetadata.Avatar);
-
-    const originalApplicantIdSet = new Set(originalApplicantIds);
-    const updatedApplicantIdSet = new Set(updatedApplicantIds);
-    const updatedApplicants = allApplicants
-        .filter((applicant) => {
-            return originalApplicantIdSet.has(applicant.ApplicantID) || !updatedApplicantIdSet.has(applicant.ApplicantID);
-        })
-        .map((applicant) => {
-            if (originalApplicantIdSet.has(applicant.ApplicantID)) {
-                return {
-                    ...applicant,
-                    ApplicantID: `${displayName}@${applicant.ApplicantID.split('@')[1]}`,
-                };
-            }
-            return applicant;
-        });
-    await setApplicants(updatedApplicants);
-    await updateCachedRecords((records) => {
-        const updatedRecords = {};
-        Object.values(records).forEach((content) => {
-            if (originalApplicantIdSet.has(content.ApplicantID)) {
-                const ApplicantID = `${displayName}@${content.ApplicantID.split('@')[1]}`;
-                const updatedRecord = {
-                    ...content,
-                    ApplicantID,
-                    RecordID: `${ApplicantID}|${content.ProgramID}`,
-                };
-                updatedRecords[updatedRecord.RecordID] = updatedRecord;
-            } else {
-                updatedRecords[content.RecordID] = content;
-            }
-        });
-        return updatedRecords;
-    });
-
+    await Promise.all([
+        removeCacheValue("displayName"),
+        removeCacheValue("applicants"),
+        removeCacheValue("records"),
+        ...(originalDisplayName ? [removeCacheValue(metadataCacheKey(originalDisplayName))] : []),
+        ...(nextDisplayName ? [removeCacheValue(metadataCacheKey(nextDisplayName))] : []),
+        ...(originalDisplayName && originalAvatarId
+            ? [removeCacheValue(avatarCacheKey(originalDisplayName, originalAvatarId))]
+            : []),
+    ]);
 }
 
 export async function updateContact(contact) {
     const normalizedContact = typeof contact === 'string' ? JSON.parse(contact) : contact;
     await apiRequest(UPDATE_CONTACT, {body: {newContact: normalizedContact}});
-
-    const metadata = await getMetadata();
-    await setMetadata({...metadata, Contact: normalizedContact});
+    await invalidateMetadataCache();
 }
 
 export async function collectProgram(programID) {
     await apiRequest(COLLECT_PROGRAM, {body: {ProgramID: programID}});
-
-    const metadata = await getMetadata();
-    await setMetadata({
-        ...metadata,
-        ProgramCollection: [...new Set([...(metadata.ProgramCollection ?? []), programID])],
-    });
+    await invalidateMetadataCache();
 }
 
 export async function uncollectProgram(programID) {
     await apiRequest(UNCOLLECT_PROGRAM, {body: {ProgramID: programID}});
-
-    const metadata = await getMetadata();
-    await setMetadata({
-        ...metadata,
-        ProgramCollection: (metadata.ProgramCollection ?? []).filter(id => id !== programID),
-    });
+    await invalidateMetadataCache();
 }

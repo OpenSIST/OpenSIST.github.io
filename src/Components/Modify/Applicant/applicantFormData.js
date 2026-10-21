@@ -167,7 +167,7 @@ export async function syncApplicantFile({applicantId, fileType, formData, formVa
     const hasStoredFile = posts.includes(postId);
 
     if (hasStoredFile && !title) {
-        await removeFile(postId, applicantId);
+        await removeFile(postId);
         return;
     }
 
