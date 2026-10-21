@@ -22,7 +22,7 @@
         "react-dom": "18.2.0",
         "react-draggable": "4.4.6",
         "react-markdown": "9.0.1",
-        "react-router-dom": "6.21.1",
+        "react-router-dom": "^6.30.6",
         "react-virtuoso": "^4.13.0",
         "remark-breaks": "^4.0.0",
         "remark-gfm": "^4.0.1",
