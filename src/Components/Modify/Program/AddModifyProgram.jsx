@@ -53,8 +53,7 @@ export async function action({request}) {
             Region: region,
             Degree: degree,
             'TargetApplicantMajor': targetApplicantMajor,
-            Description: description,
-            'Applicants': []
+            Description: description
         }
     };
     await addModifyProgram(requestBody);

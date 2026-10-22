@@ -4,7 +4,7 @@ import {Button, Dialog, DialogActions, DialogContent, IconButton, Paper} from "@
 import {Close, Refresh} from "@mui/icons-material";
 import {getApplicants} from "../../Data/ApplicantData";
 import {getPrograms} from "../../Data/ProgramData";
-import {getRecordByRecordIDs} from "../../Data/RecordData";
+import {getRecords} from "../../Data/RecordData";
 import './DataPoints.css';
 import {ProfileApplicantPage} from "../Profile/ProfileApplicant/ProfileApplicantPage";
 import ProgramContent from "../ProgramPage/ProgramContent/ProgramContent";
@@ -13,18 +13,13 @@ import RecordTable from "./RecordTable";
 import {decodePathParam} from "../RouteUtils";
 
 async function getAllRecords(isRefresh = false) {
-    let programs = await getPrograms(isRefresh);
-    programs = Object.values(programs).flat().filter(program => program.Applicants?.length > 0);
-    const recordIDs = programs.flatMap(program => (
-        program.Applicants.map(applicant => applicant + "|" + program.ProgramID)
-    ));
+    const [programsByUniv, recordsById] = await Promise.all([
+        getPrograms(isRefresh),
+        getRecords(isRefresh),
+    ]);
+    const programs = Object.values(programsByUniv).flat();
     const programOrder = new Map(programs.map((program, index) => [program.ProgramID, index]));
-    const recordsById = await getRecordByRecordIDs(recordIDs, isRefresh);
-    const missingRecordIDs = recordIDs.filter((recordId) => !isLoadedRecord(recordsById[recordId]));
-    const refreshedMissingRecords = missingRecordIDs.length > 0 && !isRefresh
-        ? await getRecordByRecordIDs(missingRecordIDs, true)
-        : {};
-    return Object.values({...recordsById, ...refreshedMissingRecords})
+    return Object.values(recordsById)
         .filter(isLoadedRecord)
         .sort((a, b) => {
             return (programOrder.get(a.ProgramID) ?? Number.MAX_SAFE_INTEGER) -

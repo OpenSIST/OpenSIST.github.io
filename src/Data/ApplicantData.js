@@ -1,8 +1,7 @@
 import {ADD_MODIFY_APPLICANT, APPLICANT_LIST, REMOVE_APPLICANT} from "../APIs/APIs";
 import {apiJson, apiRequest} from "./Common";
-import {FOREGROUND_PRIORITY, loadCachedValue, writeCacheValue} from "./CacheStore";
-import {getDisplayName, getMetadata, setMetadata} from "./UserData";
-import {deleteRecord, getRecordByApplicant, getRecordByRecordIDs, setRecord} from "./RecordData";
+import {FOREGROUND_PRIORITY, loadCachedValue, removeCacheValue} from "./CacheStore";
+import {getDisplayName, getMetadata, invalidateMetadataCache} from "./UserData";
 
 export async function getApplicants(isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
     /*
@@ -34,28 +33,6 @@ export async function getApplicantIDByDisplayName(isRefresh = false) {
     return metadata.ApplicantIDs;
 }
 
-export async function setApplicantIDByDisplayName(applicants) {
-    /*
-    * Set the list of applicants to the local storage (i.e. localforage.getItem('applicants'))
-    * @param applicants [Array]: list of applicants
-    */
-    if (!applicants) {
-        return;
-    }
-    const displayName = await getDisplayName();
-    const metadata = await getMetadata(displayName, true);
-    await setMetadata({...metadata, ApplicantIDs: applicants}, displayName);
-}
-
-export async function deleteApplicantIDByDisplayName(applicantId) {
-    /*
-    * Remove the applicant from the local storage.
-    * @param applicantId [String]: applicantId
-    */
-    const applicants = await getApplicantIDByDisplayName(true);
-    await setApplicantIDByDisplayName(applicants.filter(p => p !== applicantId));
-}
-
 export async function getApplicant(applicantId, isRefresh = false, options = {}) {
     /*
     * Get the applicant from the server or local storage by applicantId
@@ -72,75 +49,28 @@ export async function getApplicant(applicantId, isRefresh = false, options = {})
     return applicant;
 }
 
-export async function setApplicants(applicants) {
-    /*
-    * Set the list of applicants to the local storage (i.e. localforage.getItem('applicants'))
-    * @param applicants [Array]: list of applicants
-    */
-    if (!applicants) {
-        return;
-    }
-    await writeCacheValue("applicants", applicants);
-}
-
-export async function setApplicant(applicant) {
-    /*
-    * Set the applicant to the local storage (i.e. localforage.getItem('applicants'))
-    * @param applicant [Object]: applicant
-    */
-    if (!applicant) {
-        return;
-    }
-    const applicants = await getApplicants();
-    const originalApplicant = applicants.find(p => p.ApplicantID === applicant.ApplicantID);
-    const originalFinalRecordId = originalApplicant?.Final
-        ? `${originalApplicant.ApplicantID}|${originalApplicant.Final}`
-        : null;
-    const finalRecordId = applicant.Final
-        ? `${applicant.ApplicantID}|${applicant.Final}`
-        : null;
-    const finalRecordIds = [originalFinalRecordId, finalRecordId].filter(Boolean);
-    const records = await getRecordByRecordIDs(finalRecordIds);
-    const originalFinalRecord = records[originalFinalRecordId];
-    const finalRecord = records[finalRecordId];
-    if (originalFinalRecord) {
-        await setRecord({...originalFinalRecord, Final: false});
-    }
-    if (finalRecord) {
-        await setRecord({...finalRecord, Final: true});
-    }
-    const updatedApplicants = originalApplicant
-        ? applicants.map(currentApplicant => (
-            currentApplicant.ApplicantID === applicant.ApplicantID ? applicant : currentApplicant
-        ))
-        : [...applicants, applicant];
-    await setApplicants(updatedApplicants);
-    if (await isAuthApplicant(applicant.ApplicantID)) {
-        const applicantIds = await getApplicantIDByDisplayName();
-        if (!applicantIds.includes(applicant.ApplicantID)) {
-            await setApplicantIDByDisplayName([...applicantIds, applicant.ApplicantID]);
-        }
-    }
-}
-
 export async function addModifyApplicant(requestBody) {
     /*
-    * Set the applicant to the local storage (i.e. localforage.getItem('applicants')), and post to the server.
-    * @param applicant [Object]: applicant information
+    * Post applicant creation/update to the server and invalidate local applicant, record, and metadata caches.
+    * @param requestBody [Object]: { newApplicant: Boolean, content: Object }
     */
-
     await apiRequest(ADD_MODIFY_APPLICANT, {
         body: {
             newApplicant: requestBody.newApplicant,
             content: requestBody.content,
         },
     });
-    await setApplicant(requestBody.content);
+    const displayName = requestBody.content?.ApplicantID?.split('@')[0];
+    await Promise.all([
+        removeCacheValue("applicants"),
+        removeCacheValue("records"),
+        invalidateMetadataCache(displayName),
+    ]);
 }
 
 export async function removeApplicant(applicantId) {
     /*
-    * Remove the applicant from the local storage and the server.
+    * Remove the applicant on the server and invalidate local applicant, record, and metadata caches.
     * @param applicantId [String]: applicantId
     */
     await apiRequest(REMOVE_APPLICANT, {
@@ -148,15 +78,12 @@ export async function removeApplicant(applicantId) {
             ApplicantID: applicantId,
         },
     });
-
-    const records = await getRecordByApplicant(applicantId);
-    const applicants = await getApplicants();
-    await setApplicants(applicants.filter(p => p.ApplicantID !== applicantId));
-    await deleteApplicantIDByDisplayName(applicantId);
-    // The backend currently blocks deletion with records, but clear stale local records defensively.
-    for (const recordId of Object.keys(records)) {
-        await deleteRecord(recordId);
-    }
+    const displayName = applicantId?.split('@')[0];
+    await Promise.all([
+        removeCacheValue("applicants"),
+        removeCacheValue("records"),
+        invalidateMetadataCache(displayName),
+    ]);
 }
 
 

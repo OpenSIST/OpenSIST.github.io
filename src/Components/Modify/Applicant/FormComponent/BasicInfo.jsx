@@ -96,7 +96,7 @@ function NumberField({error, helperText, label, name, onChange, required = false
 function BasicInfo({formValues, handleNext, handleChange, actionType, loaderData}) {
     const navigate = useNavigate();
     const recordedPrograms = actionType === 'edit'
-        ? Object.keys(formValues.Programs ?? loaderData?.applicant?.Programs ?? {})
+        ? (loaderData?.appliedPrograms ?? [])
         : [];
     const finalOptions = list2Options(recordedPrograms);
     const finalDisabled = actionType !== 'edit' || finalOptions.length === 0;

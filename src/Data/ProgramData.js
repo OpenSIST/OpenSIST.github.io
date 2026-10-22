@@ -1,13 +1,11 @@
 import {ADD_MODIFY_PROGRAM, PROGRAM_DESC_BATCH, PROGRAM_LIST} from "../APIs/APIs";
 import {apiJson, apiRequest, univAbbrFullNameMapping} from "./Common";
-import {BACKGROUND_PRIORITY, beginCacheRequests, FOREGROUND_PRIORITY, getCacheEpoch, isCacheEntryExpired, loadCachedValue, readCacheEntry, writeCacheValue} from "./CacheStore";
+import {BACKGROUND_PRIORITY, beginCacheRequests, FOREGROUND_PRIORITY, getCacheEpoch, isCacheEntryExpired, loadCachedValue, readCacheEntry, removeCacheValue, writeCacheValue} from "./CacheStore";
 import univListOrder from "./UnivList.json";
 
 /*
-* All functions started with 'set' -> Offline operation to set items to local cache
-* All functions started with 'get' -> Optionally online operation to get data
-* All functions started with 'delete' -> Offline operation to remove items from local cache
-* All functions starred with other words -> Online operation to corresponding backend APIs
+* Local cache is strictly read-only.
+* Mutating operations call backend APIs and invalidate affected cache keys so subsequent reads sync from the backend.
 */
 
 export async function getPrograms(isRefresh = false, query = {}, ranking = "cs_rank", {priority = FOREGROUND_PRIORITY} = {}) {
@@ -205,76 +203,22 @@ export async function getProgramContent(programId, isRefresh = false) {
     return {...program, 'description': programDesc};
 }
 
-export async function setPrograms(programs) {
-    /*
-    * Set the list of programs (without description) to the local storage (i.e. localforage.getItem('programs'))
-    * @param programs [Array]: list of programs (without description)
-    */
-    if (!programs) {
-        return;
-    }
-    await writeCacheValue("programs", programs);
-}
-
-export async function setProgram(program) {
-    /*
-    * Set the program (without description) to the local storage (i.e. localforage.getItem('programs'))
-    * @param program [Object]: program (without description)
-    */
-    if (!program) {
-        return;
-    }
-    const programs = await getPrograms();
-    const univName = program.University;
-    const universityPrograms = programs[univName] ?? [];
-    const updatedUniversityPrograms = universityPrograms.some(p => p.ProgramID === program.ProgramID)
-        ? universityPrograms.map(currentProgram => currentProgram.ProgramID === program.ProgramID ? program : currentProgram)
-        : [...universityPrograms, program];
-    await setPrograms({...programs, [univName]: updatedUniversityPrograms});
-}
-
-export async function setProgramDesc(programId, programDesc) {
-    /*
-    * Set the description of the program to the local storage (i.e. localforage.getItem(`${programId}-Desc`))
-    * @param programId [String]: programId
-    * @param programDesc [String]: description of the program
-    */
-    if (programDesc === null || programDesc === undefined) {
-        return;
-    }
-    await writeCacheValue(programDescCacheKey(programId), programDesc);
-}
-
-export async function setProgramContent(program) {
-    /*
-    * Set the program (with description) to the local storage (i.e. localforage.getItem('programs') and localforage.getItem(`${programId}-Desc`))
-    * @param program [Object]: program (with description)
-    */
-    if (!program) {
-        return;
-    }
-    const {Description, ...summary} = program;
-    await setProgramDesc(program.ProgramID, Description);
-    await setProgram(summary);
-}
-
 export async function addModifyProgram(requestBody) {
     /*
-    * Set the program (with description) to the local storage (i.e. localforage.getItem('programs') and localforage.getItem(`${programId}-Desc`), and post to the server.
-    * @param program [Object]: program (with description)
+    * Post program creation/update to the server and invalidate local program caches.
+    * @param requestBody [Object]: { newProgram: Boolean, content: Object }
     */
-    let content = requestBody.content;
-    if (!requestBody.newProgram) {
-        const originalProgram = await getProgram(content.ProgramID);
-        content = {...content, Applicants: originalProgram.Applicants};
-    }
+    const content = requestBody.content;
     await apiRequest(ADD_MODIFY_PROGRAM, {
         body: {
             newProgram: requestBody.newProgram,
             content,
         },
     });
-    await setProgramContent(content);
+    await Promise.all([
+        removeCacheValue("programs"),
+        ...(content?.ProgramID ? [removeCacheValue(programDescCacheKey(content.ProgramID))] : []),
+    ]);
 }
 
 function normalizeQueryValues(value) {
