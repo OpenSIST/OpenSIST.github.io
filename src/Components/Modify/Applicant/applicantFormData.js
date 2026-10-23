@@ -177,16 +177,8 @@ export async function syncApplicantFile({applicantId, fileType, formData, formVa
     }
 
     const content = await blobToBase64(file);
-    if (hasStoredFile) {
-        await addModifyFile({
-            PostID: postId,
-            content: {Content: content},
-        }, 'edit');
-        return;
-    }
-
     await addModifyFile({
         ApplicantID: applicantId,
         content: {type: fileType, Content: content},
-    }, 'new');
+    });
 }
