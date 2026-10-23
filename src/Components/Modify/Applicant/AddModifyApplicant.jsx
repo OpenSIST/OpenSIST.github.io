@@ -6,7 +6,6 @@ import React, {useState} from "react";
 import BasicInfo from "./FormComponent/BasicInfo";
 import SoftBackground from "./FormComponent/SoftBackground";
 import {getDisplayName} from "../../../Data/UserData";
-import {getFiles} from "../../../Data/FileData";
 import {createApplicantRequestBody, createInitialApplicantFormValues, syncApplicantFile,} from "./applicantFormData";
 import {decodePathParam, profileApplicantPath} from "../../RouteUtils";
 
@@ -24,10 +23,11 @@ export async function loader({params}) {
         applicant = loadedApplicant;
         appliedPrograms = Object.values(recordsDict ?? {}).map(record => record.ProgramID);
         if (applicant.Posts && applicant.Posts.length > 0) {
-            const applicantPostIds = new Set(applicant.Posts.map(String));
-            const files = (await getFiles()).filter(file => applicantPostIds.has(file.PostID.toString()));
-            cvPost = files.find(file => file.type === "CV" || file.PostID.startsWith("CV"));
-            sopPost = files.find(file => file.type === "SoP" || file.PostID.startsWith("SoP"));
+            const posts = applicant.Posts.map(String);
+            const cvPostId = posts.find(postId => postId.startsWith("CV-"));
+            const sopPostId = posts.find(postId => postId.startsWith("SoP-"));
+            cvPost = cvPostId ? {PostID: cvPostId, type: "CV"} : null;
+            sopPost = sopPostId ? {PostID: sopPostId, type: "SoP"} : null;
         }
     }
     return {applicant, cvPost, sopPost, appliedPrograms};
