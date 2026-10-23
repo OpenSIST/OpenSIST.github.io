@@ -49,8 +49,9 @@ async function authRequest(path, body) {
 }
 
 export async function login(email, password) {
-    const username = email.split('@')[0];
-    const response = await authRequest(LOGIN, {email, password});
+    const normalizedEmail = email.trim().toLowerCase();
+    const username = normalizedEmail.split('@')[0];
+    const response = await authRequest(LOGIN, {email: normalizedEmail, password});
     if (response.status !== 200) {
         const content = await response.json();
         alert(`${content.error}, Error code: ${response.status}`)
@@ -64,8 +65,9 @@ export async function login(email, password) {
 }
 
 export async function registerReset(email, password, token, status) {
+    const normalizedEmail = email.trim().toLowerCase();
     const api = status === 'reset' ? RESET_PASSWORD : REGISTER;
-    const response = await authRequest(api, {email, password, token});
+    const response = await authRequest(api, {email: normalizedEmail, password, token});
 
     if (response.status === 200) {
         return redirect("/login");

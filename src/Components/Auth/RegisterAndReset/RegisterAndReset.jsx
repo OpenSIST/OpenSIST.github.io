@@ -97,7 +97,7 @@ export default function RegisterAndReset() {
         e.preventDefault();
         const api = status === 'reset' ? SEND_RESET_VERIFY_TOKEN : SEND_VERIFY_TOKEN;
         try {
-            await apiRequest(api, {body: {email: user + suffix}});
+            await apiRequest(api, {body: {email: (user + suffix).trim().toLowerCase()}});
             sendAndStartTimer();
             setTokenSent(true);
             alert("验证码已发送到您的上科大邮箱。若未收到，请查看postmaster垃圾邮件系统。");
