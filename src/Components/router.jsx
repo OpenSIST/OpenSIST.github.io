@@ -28,6 +28,7 @@ import ProgramIndex from "./ProgramPage/ProgramIndex";
 import ProfileIndex from "./Profile/ProfileIndex";
 import PostIndex from "./Post/PostIndex";
 import Favorites, {action as FavoritesAction, loader as FavoritesLoader} from "./Favorites/Favorites";
+import AdminPage, {loader as AdminPageLoader} from "./Admin/AdminPage";
 
 const router = createBrowserRouter([
     {
@@ -204,6 +205,10 @@ const router = createBrowserRouter([
                     }, {
                         path: '/FAQ',
                         element: <FAQ/>,
+                    }, {
+                        path: '/admin',
+                        element: <AdminPage/>,
+                        loader: AdminPageLoader,
                     }, {
                         path: '/login',
                         element: <Login/>,

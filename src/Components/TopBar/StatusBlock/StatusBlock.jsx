@@ -1,9 +1,9 @@
 import {Form, Link, useLoaderData, useNavigate} from "react-router-dom";
 import "./StatusBlock.css";
 import React, {useContext, useEffect} from "react";
-import {getAvatar, getDisplayName, getMetadata, logout, useUser} from "../../../Data/UserData";
-import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography, useTheme} from "@mui/material";
-import {AccountBoxRounded, ExitToAppRounded, LockResetRounded, StarRounded} from "@mui/icons-material";
+import {getAvatar, getDisplayName, getIsAdmin, getMetadata, logout, useUser} from "../../../Data/UserData";
+import {Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography, useTheme} from "@mui/material";
+import {AccountBoxRounded, AdminPanelSettingsRounded, ExitToAppRounded, LockResetRounded, StarRounded} from "@mui/icons-material";
 import {ThemeContext} from "../../../index";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -12,9 +12,12 @@ import {startCoreCacheSync} from "../../../Data/CoreCacheSync";
 
 export async function loader() {
     const displayName = await getDisplayName();
-    const metadata = await getMetadata(displayName);
+    const [metadata, isAdmin] = await Promise.all([
+        getMetadata(displayName),
+        getIsAdmin(),
+    ]);
     const avatarUrl = await getAvatar(metadata?.Avatar, displayName);
-    return {displayName, avatarUrl};
+    return {displayName, avatarUrl, isAdmin};
 }
 
 export async function action() {
@@ -22,7 +25,7 @@ export async function action() {
 }
 
 export function StatusBlock() {
-    const {displayName, avatarUrl} = useLoaderData();
+    const {displayName, avatarUrl, isAdmin} = useLoaderData();
     const navigate = useNavigate();
     const theme = useTheme();
     const {toggleTheme} = useContext(ThemeContext);
@@ -112,6 +115,15 @@ export function StatusBlock() {
                     </ListItemIcon>
                     Reset Password
                 </MenuItem>
+                {isAdmin ? [
+                    <Divider key="admin-divider"/>,
+                    <MenuItem key="admin-link" to="/admin" component={Link} onClick={handleClose}>
+                        <ListItemIcon>
+                            <AdminPanelSettingsRounded fontSize="small"/>
+                        </ListItemIcon>
+                        Admin
+                    </MenuItem>,
+                ] : null}
                 <Form method='post'>
                     <MenuItem component='button' type='submit' sx={{width: "100%"}} onClick={handleClose}>
                         <ListItemIcon>

@@ -288,7 +288,26 @@ export async function getDisplayName(isRefresh = false, {priority = FOREGROUND_P
                 allowUnauthorized: true,
                 fetchPriority: priority,
             });
+            if (typeof displayName?.isAdmin === "boolean") {
+                void writeCacheValue("isAdmin", displayName.isAdmin).catch(() => {
+                });
+            }
             return displayName.name;
+        },
+    });
+}
+
+export async function getIsAdmin(isRefresh = false, {priority = FOREGROUND_PRIORITY} = {}) {
+    return loadCachedValue({
+        key: "isAdmin",
+        forceRefresh: isRefresh,
+        priority,
+        load: async () => {
+            const response = await apiJson(GET_DISPLAY_NAME, {
+                allowUnauthorized: true,
+                fetchPriority: priority,
+            });
+            return Boolean(response?.isAdmin);
         },
     });
 }
